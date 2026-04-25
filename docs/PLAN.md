@@ -30,8 +30,6 @@ Living document: update this file when flows, routes, or UI behavior change.
 | `/kyc/processing` | Processing |
 | `/kyc/documents-received` | Documents received |
 | `/kyc/booking-confirmed` | Booking confirmed |
-| `/dev/flow-visualiser` | **Dev only** — product **Flows** (e.g. Express delivery) + **Screen** picker, iPhone/Android chrome, iframe (`components/dev/FlowVisualiser.tsx`) |
-| `/dev/mobile-mock` | **Dev only** — URL-driven iframe preview (`?path=…`) |
 
 Intended journey (from product doc): **Payment success → KYC → Processing → Confirmed** (wire as needed per final IA).
 
@@ -65,6 +63,17 @@ Intended journey (from product doc): **Payment success → KYC → Processing �
 ### Assets added / referenced
 
 - `public/assets/ACKO Drive logo.svg` (wordmark; synced from `assets/ACKO Drive logo.svg`)
+
+---
+
+## Local-only dev tools (not in git)
+
+These paths are **gitignored** (see root `.gitignore`). They are optional helpers kept on developer machines only; fresh clones will not include them unless you restore copies locally.
+
+| Path | Purpose |
+|------|---------|
+| `/dev/flow-visualiser` | Flow catalogue + screen picker, device chrome, iframe (`app/dev/flow-visualiser/page.tsx`, `components/dev/FlowVisualiser.tsx`) |
+| `/dev/mobile-mock` | Same-origin iframe preview (`app/dev/mobile-mock/page.tsx`, e.g. `?path=/payment`) |
 
 ---
 
