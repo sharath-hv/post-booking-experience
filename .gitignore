@@ -30,3 +30,8 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# dev-only tools (keep local; do not commit)
+/app/dev/flow-visualiser/
+/app/dev/mobile-mock/
+/components/dev/FlowVisualiser.tsx
