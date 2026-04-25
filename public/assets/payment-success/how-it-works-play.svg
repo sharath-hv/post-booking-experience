@@ -1,0 +1,6 @@
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Play">
+<rect width="40" height="40" rx="20" fill="var(--fill-0, white)"/>
+<path id="Polygon 1" d="M24 16.5359C26.6667 18.0755 28 18.8453 28 20C28 21.1547 26.6667 21.9245 24 23.4641L21 25.1962C18.3333 26.7358 17 27.5056 16 26.9282C15 26.3509 15 24.8113 15 21.7321L15 18.268C15 15.1887 15 13.6491 16 13.0718C17 12.4944 18.3333 13.2642 21 14.8038L24 16.5359Z" fill="var(--fill-0, #121212)"/>
+</g>
+</svg>

@@ -1,0 +1,344 @@
+@import "tailwindcss";
+
+/*
+ * Typography: skills/Font primitive/primitives.md — Euclid Circular B + scale.
+ * Colors: semantic tokens (Layer 2).
+ */
+
+/* Euclid Circular B — Layer 1 font primitives (hosted per design foundation) */
+@font-face {
+  font-family: "Euclid Circular B";
+  src: url("https://pub-c050457d48794d5bb9ffc2b4649de2c1.r2.dev/Euclid%20Font/EuclidCircularB-Light.otf")
+    format("opentype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Euclid Circular B";
+  src: url("https://pub-c050457d48794d5bb9ffc2b4649de2c1.r2.dev/Euclid%20Font/EuclidCircularB-Regular.otf")
+    format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Euclid Circular B";
+  src: url("https://pub-c050457d48794d5bb9ffc2b4649de2c1.r2.dev/Euclid%20Font/EuclidCircularB-Medium.otf")
+    format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Euclid Circular B";
+  src: url("https://pub-c050457d48794d5bb9ffc2b4649de2c1.r2.dev/Euclid%20Font/EuclidCircularB-Semibold.otf")
+    format("opentype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Euclid Circular B";
+  src: url("https://pub-c050457d48794d5bb9ffc2b4649de2c1.r2.dev/Euclid%20Font/EuclidCircularB-Bold.otf")
+    format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --font-family-sans: "Euclid Circular B", -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Typography scale (reference — use Tailwind utilities + weights per skill) */
+  --type-display-sm-size: 40px;
+  --type-display-sm-leading: 48px;
+  --type-heading-xl-size: 32px;
+  --type-heading-xl-leading: 40px;
+  --type-heading-lg-size: 24px;
+  --type-heading-lg-leading: 32px;
+  --type-heading-md-size: 20px;
+  --type-heading-md-leading: 28px;
+  --type-heading-sm-size: 18px;
+  --type-heading-sm-leading: 24px;
+  --type-body-lg-size: 18px;
+  --type-body-lg-leading: 28px;
+  --type-body-md-size: 16px;
+  --type-body-md-leading: 24px;
+  --type-body-sm-size: 14px;
+  --type-body-sm-leading: 20px;
+  --type-label-lg-size: 14px;
+  --type-label-lg-leading: 20px;
+  --type-label-md-size: 12px;
+  --type-label-md-leading: 16px;
+  --type-label-sm-size: 11px;
+  --type-label-sm-leading: 14px;
+  --type-caption-size: 12px;
+  --type-caption-leading: 16px;
+
+  --color-surface: #fbfbfb;
+  --color-surface-elevated: #ffffff;
+  --color-border-subtle: #e0e0e1;
+  --color-border-strong: #cccccd;
+  --color-text-primary: #242324;
+  --color-text-secondary: #605f63;
+  --color-text-muted: #8f8e92;
+  --color-brand: #6841e6;
+  --color-brand-hover: #582fd2;
+  --color-brand-subtle: #eaeafd;
+  --color-success: #16a34a;
+  --color-success-subtle: #dcfce7;
+  --color-warning-bg: #fef9c3;
+  --color-warning-text: #a76406;
+  --color-danger: #dc2626;
+  --color-danger-subtle: #fee2e2;
+  --radius-card: 12px;
+  --radius-button: 10px;
+  --shadow-card: 0 1px 3px rgb(36 35 36 / 0.06);
+  --page-padding-x: 16px;
+  /* Quote page (Figma — Post-booking experience) */
+  --quote-header: #121212;
+  --quote-timer-bg: #fff7e5;
+  --quote-timer-text: #d16900;
+  --quote-border-light: #e8e8e8;
+  --quote-text-body: #4b4b4b;
+  --quote-text-tertiary: #757575;
+  --quote-green: #0fa457;
+  --quote-red: #d83d37;
+  --quote-link: #1b73e8;
+  --quote-purple-tint: #efe9fb;
+  --quote-purple-text: #451999;
+  --quote-info-bg: #f9f6ff;
+  --quote-info-border: #efe9fb;
+  --quote-disclaimer-bg: #f8f7fc;
+  --quote-acko-title: #040222;
+  --quote-nested-bg: #f5f5f5;
+
+  /* Figma surface — KYC pending hero card */
+  --Surface-White: #ffffff;
+
+  /* Aurora background — Tailwind palette names as CSS vars (gradient definitions) */
+  --white: #ffffff;
+  --black: #000000;
+  --transparent: transparent;
+  --blue-500: #3b82f6;
+  --indigo-300: #a5b4fc;
+  --blue-300: #93c5fd;
+  --violet-200: #ddd6fe;
+  --blue-400: #60a5fa;
+}
+
+@theme inline {
+  --font-sans: var(--font-family-sans);
+  --text-xs: 12px;
+  --text-xs--line-height: 16px;
+  --text-sm: 14px;
+  --text-sm--line-height: 20px;
+  --text-base: 16px;
+  --text-base--line-height: 24px;
+  --text-lg: 18px;
+  --text-lg--line-height: 28px;
+  --text-xl: 20px;
+  --text-xl--line-height: 28px;
+  --text-2xl: 24px;
+  --text-2xl--line-height: 32px;
+  /* Aligns with heading-xl (32 / 40) per Font primitive scale */
+  --text-3xl: 32px;
+  --text-3xl--line-height: 40px;
+  --color-surface: var(--color-surface);
+  --color-surface-elevated: var(--color-surface-elevated);
+  --color-border-subtle: var(--color-border-subtle);
+  --color-border-strong: var(--color-border-strong);
+  --color-text-primary: var(--color-text-primary);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-text-muted: var(--color-text-muted);
+  --color-brand: var(--color-brand);
+  --color-brand-hover: var(--color-brand-hover);
+  --color-brand-subtle: var(--color-brand-subtle);
+  --color-success: var(--color-success);
+  --color-success-subtle: var(--color-success-subtle);
+
+  /* Aurora — faster loop + wide horizontal sweep so motion reads clearly */
+  --animate-aurora: aurora 32s linear infinite;
+}
+
+body {
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-sans);
+  font-size: var(--type-body-md-size);
+  line-height: var(--type-body-md-leading);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  text-wrap: balance;
+}
+
+@keyframes aurora {
+  /* ~400% horizontal travel + slight layer offset = obvious sliding bands */
+  from {
+    background-position:
+      0% 50%,
+      15% 50%;
+  }
+  to {
+    background-position:
+      420% 50%,
+      400% 50%;
+  }
+}
+
+/* Payment success → expanded details (staggered entrance) */
+@keyframes payment-success-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.payment-success-stagger {
+  opacity: 0;
+  animation: payment-success-fade-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .payment-success-stagger {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+}
+
+/* KYC / staged page reveals — same motion, slightly snappier duration */
+.kyc-stagger {
+  opacity: 0;
+  animation: payment-success-fade-up 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Choose loan — down payment range (Figma 2111:7963: grey track, dark fill, white thumb + border) */
+.choose-loan-down-range {
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 9999px;
+}
+.choose-loan-down-range:focus-visible {
+  outline: none;
+}
+.choose-loan-down-range::-webkit-slider-runnable-track {
+  height: 8px;
+  border-radius: 9999px;
+  background: transparent;
+}
+.choose-loan-down-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  margin-top: -6px;
+  border-radius: 9999px;
+  border: 1px solid #121212;
+  background: #fff;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+.choose-loan-down-range::-moz-range-track {
+  height: 8px;
+  border-radius: 9999px;
+  background: transparent;
+}
+.choose-loan-down-range::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 9999px;
+  border: 1px solid #121212;
+  background: #fff;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+/* Primary CTA — 48px height, #121212, 12px radius, 16px / weight 500 */
+.primary-cta {
+  display: flex;
+  height: 48px;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  background-color: #121212;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  color: #ffffff;
+  font-family: inherit;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    opacity 0.15s ease,
+    transform 0.12s ease;
+}
+.primary-cta:hover {
+  background-color: #333333;
+}
+.primary-cta:active {
+  background-color: #0a0a0a;
+  transform: scale(0.99);
+}
+.primary-cta:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Ghost / icon actions — back, close (light surfaces) */
+.cta-ghost {
+  cursor: pointer;
+  transition: background-color 0.15s ease, opacity 0.15s ease;
+}
+.cta-ghost:hover {
+  background-color: rgb(18 18 18 / 0.06);
+}
+.cta-ghost:active {
+  background-color: rgb(18 18 18 / 0.1);
+}
+
+/* Ghost on dark header (e.g. quote close) */
+.cta-ghost-on-dark:hover {
+  background-color: rgb(255 255 255 / 0.1);
+}
+.cta-ghost-on-dark:active {
+  background-color: rgb(255 255 255 / 0.16);
+}
+
+/* KYC pending — hero content column (Figma: Surface-White + elevation shadow) */
+.kyc-pending-hero-card {
+  background: var(--Surface-White, #fff);
+  box-shadow: 0 4px 40px -2px #e6e6e6;
+}
+
+/* Aurora light layer — respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .aurora-light-layer-motion::after {
+    animation: none !important;
+  }
+}
+
+/* iOS Safari: ensure pseudo-element animation runs (GPU layer) */
+@supports (-webkit-touch-callout: none) {
+  .aurora-light-layer-motion::after {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+}
