@@ -25,6 +25,8 @@ Living document: update this file when flows, routes, or UI behavior change.
 | `/payment/acko-drive-finance-confirmed` | After bank sheet **Confirm banking partner** — same celebration UI as booking confirmed |
 | `/payment` | Payment flow screen |
 | `/payment/default` | Default payment variant |
+| `/payment/booking-success` | Booking-lock payment success — Lottie + headline + car card; **`router.replace`** → `/payment/booking-success/next` **3s** after car shows (max **10s**) |
+| `/payment/booking-success/next` | Shivi RM intro + fixed **Up next:** + **Continue** → `/kyc` |
 | `/kyc` | KYC hub / redirect |
 | `/kyc/upload` | Document upload |
 | `/kyc/processing` | Processing |
