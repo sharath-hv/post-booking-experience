@@ -1,8 +1,6 @@
-/**
- * Paths for files under `public/assets/`.
- * Must stay in sync with `basePath` in `next.config.ts` (GitHub project Pages).
- */
-export const BASE_PATH = "/post-booking-experience";
+import { BASE_PATH } from "@/lib/site-config";
+
+export { BASE_PATH };
 
 /** e.g. `public/assets/KYC.svg` → `/post-booking-experience/assets/KYC.svg` */
 export function publicAssetPath(filename: string): string {
