@@ -2,12 +2,13 @@ import Image from "next/image";
 
 import hyundaiCretaThumb from "@/assets/Hyundai Creta.png";
 import bookingSuccessTickLottie from "@/assets/booking-success-tick.json";
+import { publicAssetPath } from "@/lib/public-asset-path";
 
 /** Bundled Lottie for booking payment success tick (was remote `lottie.host`). */
 export const BOOKING_SUCCESS_LOTTIE_TICK_DATA = bookingSuccessTickLottie as unknown;
 
 /** Same top hero art as down payment success / booking confirmation. */
-export const BOOKING_PAYMENT_SUCCESS_HERO = "/assets/acko-drive-finance-hero-gradient.svg";
+export const BOOKING_PAYMENT_SUCCESS_HERO = publicAssetPath("acko-drive-finance-hero-gradient.svg");
 
 export const BOOKING_PAYMENT_SUCCESS_NEXT_PATH = "/payment/booking-success/next";
 

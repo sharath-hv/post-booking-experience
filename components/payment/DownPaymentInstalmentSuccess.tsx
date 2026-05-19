@@ -5,10 +5,11 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Lottie from "lottie-react";
 
-import { BOOKING_SUCCESS_LOTTIE_TICK_DATA } from "@/components/payment/booking-success-shared";
+import {
+  BOOKING_PAYMENT_SUCCESS_HERO,
+  BOOKING_SUCCESS_LOTTIE_TICK_DATA,
+} from "@/components/payment/booking-success-shared";
 import { SUCCESS_SCREEN_HEADLINE_SUBTEXT_GAP_CLASS } from "@/components/ui/success-screen-layout";
-
-const BOOKING_PAYMENT_SUCCESS_HERO = "/assets/acko-drive-finance-hero-gradient.svg";
 
 /** Auto-advance: pay-down-payment (partial) or insurance setup (complete). */
 export const DOWN_PAYMENT_SUCCESS_AUTO_REDIRECT_MS = 3000;
