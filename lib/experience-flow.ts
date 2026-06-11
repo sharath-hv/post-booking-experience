@@ -51,7 +51,7 @@ export const EXPERIENCE_FLOWS: readonly ExperienceFlowDefinition[] = [
   },
   {
     id: "modify_with_charges",
-    label: "Change selection with 50% charges",
+    label: "Change selection with ₹5,000 fee",
     description:
       "Express path through booking accepted — change selection with ₹5,000 booking change fee",
     entryPath: "/quote",

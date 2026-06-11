@@ -19,8 +19,8 @@ export function generateStaticParams() {
 }
 
 /**
- * Buying process onboarding (4 steps) — [Figma 2460:7661](https://www.figma.com/design/nW5SWmJdxxsCEDlqBN7C0L/Post-booking-experience?node-id=2460-7661).
- * Step 4 **Continue** → `/kyc` (KYC pending).
+ * Buying process onboarding (3 steps) — [Figma 2460:7661](https://www.figma.com/design/nW5SWmJdxxsCEDlqBN7C0L/Post-booking-experience?node-id=2460-7661).
+ * Step 3 **Let's get started** → `/kyc` (KYC pending).
  */
 export default async function BuyingGuideStepPage({ params }: PageProps) {
   const { step: stepRaw } = await params;

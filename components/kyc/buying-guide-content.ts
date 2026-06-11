@@ -1,13 +1,16 @@
 import type { StaticImageData } from "next/image";
 
+import buyingGuideStep01 from "@/assets/onboarding/Step 01.png";
+import buyingGuideStep02 from "@/assets/onboarding/Step 02.png";
+import buyingGuideStep03 from "@/assets/onboarding/Step 03.png";
+
 /**
  * Buying process onboarding — Figma:
  * [Step 1](https://www.figma.com/design/nW5SWmJdxxsCEDlqBN7C0L/Post-booking-experience?node-id=2460-7661) ·
  * [Step 2](https://www.figma.com/design/nW5SWmJdxxsCEDlqBN7C0L/Post-booking-experience?node-id=2460-7772) ·
- * [Step 3](https://www.figma.com/design/nW5SWmJdxxsCEDlqBN7C0L/Post-booking-experience?node-id=2460-7801) ·
- * [Step 4](https://www.figma.com/design/nW5SWmJdxxsCEDlqBN7C0L/Post-booking-experience?node-id=2460-7830) → `/kyc`
+ * [Step 3](https://www.figma.com/design/nW5SWmJdxxsCEDlqBN7C0L/Post-booking-experience?node-id=2460-7801) (payment + delivery) → `/kyc`
  */
-export const BUYING_GUIDE_STEP_COUNT = 4;
+export const BUYING_GUIDE_STEP_COUNT = 3;
 
 export type BuyingGuideStep = {
   step: number;
@@ -21,27 +24,24 @@ export type BuyingGuideStep = {
 export const BUYING_GUIDE_STEPS: readonly BuyingGuideStep[] = [
   {
     step: 1,
-    title: "Verify yourself",
-    body: "We need to confirm who you are before we can start working on your booking. Takes 2 min, just PAN and Aadhaar.",
+    title: "First, let me verify who you are",
+    body: "I need your PAN and Aadhaar to get started. Takes 2 minutes. Once done, I will start working on your Creta right away.",
     ctaLabel: "Next",
+    imageSrc: buyingGuideStep01,
   },
   {
     step: 2,
-    title: "We find and confirm your car",
-    body: "ACKO Drive finds the best dealer with your exact variant and colour in stock and confirms your booking with them.",
+    title: "Then I will find and confirm your car",
+    body: "I will find the best dealer who has your exact Creta in stock and confirm your booking with them.",
     ctaLabel: "Next",
+    imageSrc: buyingGuideStep02,
   },
   {
     step: 3,
-    title: "Complete your payment",
-    body: "Pay the remaining amount your way. Whether you are financing or paying in full, we will help you sort it out.",
-    ctaLabel: "Next",
-  },
-  {
-    step: 4,
-    title: "Get your car delivered",
-    body: "Pick a date that works for you. We will confirm the dealer and location where you can take delivery.",
+    title: "Finally, pay and get your Creta delivered",
+    body: "I will help you choose how to pay, then you pick a date and I will confirm the dealer and location for delivery.",
     ctaLabel: "Let's get started",
+    imageSrc: buyingGuideStep03,
   },
 ] as const;
 
@@ -49,6 +49,6 @@ export function getBuyingGuideStep(step: number): BuyingGuideStep | undefined {
   return BUYING_GUIDE_STEPS.find((item) => item.step === step);
 }
 
-export function isBuyingGuideStep(value: number): value is 1 | 2 | 3 | 4 {
+export function isBuyingGuideStep(value: number): value is 1 | 2 | 3 {
   return Number.isInteger(value) && value >= 1 && value <= BUYING_GUIDE_STEP_COUNT;
 }

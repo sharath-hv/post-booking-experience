@@ -41,21 +41,18 @@ export function BuyingGuideScreen({ step }: BuyingGuideScreenProps) {
       >
         <PaymentSuccessStagger
           key={`image-${step.step}`}
-          className="relative h-[400px] w-full shrink-0 overflow-hidden rounded-2xl bg-[#f5f5f5]"
+          className="relative w-full shrink-0 overflow-hidden rounded-2xl bg-[#f5f5f5]"
           delay={STAGGER_IMAGE}
         >
-          <div className="relative h-full w-full" aria-hidden={step.imageSrc == null}>
-            {step.imageSrc != null ? (
-              <Image
-                src={step.imageSrc}
-                alt=""
-                fill
-                className="object-cover"
-                sizes="(max-width: 640px) 100vw, 640px"
-                priority={step.step === 1}
-              />
-            ) : null}
-          </div>
+          {step.imageSrc != null ? (
+            <Image
+              src={step.imageSrc}
+              alt=""
+              className="h-auto w-full object-contain"
+              sizes="(max-width: 640px) 100vw, 640px"
+              priority={step.step === 1}
+            />
+          ) : null}
         </PaymentSuccessStagger>
 
         <div className="mt-8 flex shrink-0 flex-col gap-3" key={`copy-${step.step}`}>

@@ -9,7 +9,7 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000/post-booking-experience/](http://localhost:3000/post-booking-experience/) (redirects to `/quote`).
+Open [http://localhost:3008/post-booking-experience/](http://localhost:3008/post-booking-experience/) (redirects to `/quote`).
 
 ## Project defaults (static export + GitHub Pages)
 

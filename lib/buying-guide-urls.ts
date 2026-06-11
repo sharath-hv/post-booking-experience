@@ -7,7 +7,7 @@ import {
 /** First onboarding step after booking-lock payment success. */
 export const BUYING_GUIDE_ENTRY_PATH = JOURNEY_PATHS.buyingGuide.entry;
 
-/** After the fourth onboarding step — KYC pending hub. */
+/** After the final onboarding step — KYC pending hub. */
 export const BUYING_GUIDE_EXIT_PATH = JOURNEY_PATHS.buyingGuide.exit;
 
 export { buyingGuideStepPath };

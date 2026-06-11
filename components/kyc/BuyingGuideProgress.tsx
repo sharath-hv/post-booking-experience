@@ -10,7 +10,7 @@ type BuyingGuideProgressProps = {
 };
 
 /**
- * Header progress — four segments with 8px gaps; each fills when its step is reached.
+ * Header progress — three segments with 8px gaps; each fills when its step is reached.
  */
 export function BuyingGuideProgress({ currentStep }: BuyingGuideProgressProps) {
   return (

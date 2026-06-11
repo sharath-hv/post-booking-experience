@@ -1,6 +1,6 @@
 /**
  * PM2 — keeps `next dev` running in the background (survives closing the terminal).
- * Port matches `package.json` → `npm run dev` (3000).
+ * Port matches `package.json` → `npm run dev` (3008).
  *
  * Usage:
  *   npm run dev:daemon        # start in background

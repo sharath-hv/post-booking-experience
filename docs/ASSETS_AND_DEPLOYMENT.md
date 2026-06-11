@@ -61,7 +61,7 @@ npm run dev
 
 With the default `basePath`, open:
 
-`http://localhost:3000/post-booking-experience/`
+`http://localhost:3008/post-booking-experience/`
 
 (`next dev` applies the same `basePath` as production.)
 

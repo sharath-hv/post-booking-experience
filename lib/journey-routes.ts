@@ -53,7 +53,7 @@ const KYC_DOCUMENT_PATHS = new Set<string>([
   JOURNEY_PATHS.kyc.verificationFailed,
 ]);
 
-const BUYING_GUIDE_STEP_PATH = /^\/kyc\/buying-guide\/[1-4]$/;
+const BUYING_GUIDE_STEP_PATH = /^\/kyc\/buying-guide\/[1-3]$/;
 const CAR_ALLOCATION_PATH = /^\/car-allocation\//;
 const KYC_CAR_ALLOCATION_LEGACY = /^\/kyc\/car-allocation-/;
 const DELIVERY_PATH = /^\/kyc\/car-delivery-/;

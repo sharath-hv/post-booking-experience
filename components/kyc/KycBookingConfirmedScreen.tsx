@@ -90,7 +90,7 @@ export function KycBookingConfirmedScreen({
       ? undefined
       : afterModifySelection
         ? "Verify your identity"
-        : "Buying guide"
+        : undefined
     : "Car allocation";
 
   const paymentConfirmedAmountInr = afterModifySelection
@@ -100,12 +100,18 @@ export function KycBookingConfirmedScreen({
   return (
     <BookingCelebrationSuccessScreen
       headline={
-        isPayment ? "Booking received" : "Your booking is confirmed with Hyundai"
+        isPayment
+          ? afterModifySelection
+            ? "Booking received"
+            : `${formatInr(paymentConfirmedAmountInr)} payment received`
+          : "Your booking is confirmed with Hyundai"
       }
       belowHeadline={
         isPayment ? (
           <p className="text-base font-normal leading-6 text-[#757575]">
-            Your {formatInr(paymentConfirmedAmountInr)} payment is confirmed.
+            {afterModifySelection
+              ? `Your ${formatInr(paymentConfirmedAmountInr)} payment is confirmed.`
+              : "We will start processing your booking as soon as you verify your identity."}
           </p>
         ) : undefined
       }

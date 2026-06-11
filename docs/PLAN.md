@@ -10,7 +10,7 @@ Living document: update this file when flows, routes, or UI behavior change.
 ## Tech stack
 
 - Next.js 15 (App Router), React 19, TypeScript, Tailwind CSS 4
-- Local dev: `npm run dev` → **http://localhost:3000/post-booking-experience** (`next dev --turbopack --port 3000`; `BASE_PATH` from `lib/site-config.ts`, default `/post-booking-experience`)
+- Local dev: `npm run dev` → **http://localhost:3008/post-booking-experience** (`next dev --turbopack --port 3008`; `BASE_PATH` from `lib/site-config.ts`, default `/post-booking-experience`)
 - Static export + GitHub Pages: `npm run build` → `out/`; prefer `import` from `@/assets/` or `publicAssetPath()` for `/public/assets/`
 
 ---
@@ -25,7 +25,7 @@ Switch on **`/quote`** via the top-left menu (`QuoteFlowMenuSheet`). Active flow
 | **Standard delivery** | Yes | **Same routes as express** until a screen branches on `readExperienceFlow() === "standard"` |
 | **Verification failed** | Yes | Same as express until KYC verification in progress → `lib/kyc-verification-outcome.ts` |
 | **Change selection without any charges** | Yes | Express path through **`/kyc` (KYC pending)** only; post–KYC-pending routes redirect to `/kyc`; manage booking fees always free (`lib/manage-booking-modify.ts`); modify-selection routes unchanged |
-| **Change selection with 50% charges** | Yes | **Same routes as express** through **`/kyc/booking-accepted`**; change selection from booking accepted (`isModifyWithChargesFlow()` + `isChangeSelectionAvailablePhase`); ₹5,000 change fee in review-and-pay (`lib/modify-selection-review-pay-content.ts`) |
+| **Change selection with ₹5,000 fee** | Yes | **Same routes as express** through **`/kyc/booking-accepted`**; change selection from booking accepted (`isModifyWithChargesFlow()` + `isChangeSelectionAvailablePhase`); ₹5,000 change fee in review-and-pay (`lib/modify-selection-review-pay-content.ts`) |
 | **Cancellation with no charges** | Yes | Express path through **`/kyc/verification-in-progress`** (inclusive); post–verification-in-progress routes redirect to `/kyc/verification-in-progress`; manage booking fees always free; **Cancel booking** → confirm full page → reason bottom sheet → success; **Change selection** shown but not clickable (normal styling, no `disabled`) |
 
 ### Common vs flow-specific changes
@@ -87,7 +87,7 @@ Switch on **`/quote`** via the top-left menu (`QuoteFlowMenuSheet`). Active flow
 | `/payment/default` | Default payment prompt — CTA to **`/payment/choose`** |
 | `/payment/booking-success` | Legacy redirect → `/kyc/booking-confirmed?source=payment` |
 | `/payment/booking-success/next` | Legacy redirect → `/kyc/buying-guide/1` |
-| `/kyc/buying-guide/[1-4]` | Buying process onboarding (Figma 2460:7661); step 4 **Continue** → `/kyc` |
+| `/kyc/buying-guide/[1-3]` | Buying process onboarding (Figma 2460:7661); step 3 **Let's get started** → `/kyc` (payment + delivery combined) |
 | `/kyc` | KYC pending — Shivi intro bottom sheet on load ([Figma 2479:7600](https://www.figma.com/design/nW5SWmJdxxsCEDlqBN7C0L/Post-booking-experience?node-id=2479-7600)); **Got it** → hero + **Complete KYC Now** |
 | `/kyc/upload` | PAN/Aadhaar upload via `KycPanAadhaarDocumentUploadSections` + shared `DocumentUploadInfoTipsCard`, `DigilockerFetchButton`, `DocumentUploadDocumentCards` ([Figma 2501:8136](https://www.figma.com/design/nW5SWmJdxxsCEDlqBN7C0L/Post-booking-experience?node-id=2501-8136)); `mt-6` title→tips→cards; DigiLocker fetch above Aadhaar only; no headline subtext; re-upload from verification-failed uses same screen; **Submit documents** → `/kyc/documents-received` |
 | `/kyc/documents-received` | Documents received |
@@ -443,8 +443,8 @@ These paths are **gitignored** (see root `.gitignore`). They are optional helper
 
 ## Operational notes (local)
 
-- **“This page isn’t working” / HTTP 500 in dev** with the server still listening: often **stale Turbopack `.next`**. Fix: stop the process on **3000**, `rm -rf .next`, `npm run dev`.
-- Do not run `http://localhost:3000` in the shell as a command; open it in the **browser**.
+- **“This page isn’t working” / HTTP 500 in dev** with the server still listening: often **stale Turbopack `.next`**. Fix: stop the process on **3008**, `rm -rf .next`, `npm run dev`.
+- Do not run `http://localhost:3008` in the shell as a command; open it in the **browser**.
 
 ---
 
