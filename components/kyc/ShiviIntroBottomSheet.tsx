@@ -6,7 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import shiviAvatar from "@/assets/Shivi small.png";
 import { ShiviIntroCoachmark } from "@/components/kyc/ShiviIntroCoachmark";
 
-/** Parity with `ManageBookingBottomSheet` / `WhatsNextTimelineBottomSheet`. */
+/** Parity with `ManageBookingBottomSheet`. */
 const SHEET_TRANSITION_MS = 280;
 
 const USER_NAME = "Sharath";

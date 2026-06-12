@@ -7,7 +7,6 @@ import { NextStepCard } from "@/components/concierge/artifacts";
 import { ShimmerInfoCard } from "@/components/ui/ShimmerInfoCard";
 import { bankForQueryParam } from "@/components/payment/acko-drive-finance-bank";
 import { KycBookingProcessingScreen } from "@/components/kyc/KycBookingProcessingScreen";
-import { LoanProcessingWhatsNext } from "@/components/payment/LoanProcessingWhatsNext";
 
 const LOAN_PROCESSING_HEADLINE = "Your application is with the bank.";
 
@@ -58,7 +57,6 @@ export function LoanBookingProcessingScreen() {
           : "/payment/loan-rejected",
       }}
       callLabel="Anxious about the loan? I can call you"
-      whatsNextCard={<LoanProcessingWhatsNext />}
       manageBookingShowVehicleIdentification
     />
   );

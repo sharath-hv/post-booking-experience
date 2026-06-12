@@ -46,8 +46,6 @@ export function CarAllocationPendingPageClient() {
       heroSummaryCard={heroSummaryCard}
       nextHref="/car-allocation/confirmed"
       prefetchHref="/car-allocation/confirmed"
-      whatsNextFirstStepStatus="in_progress"
-      whatsNextFirstStepDescription="Your selected variant and colour are being matched to available stock."
       heroIllustrationSrc={carAllocationHero}
       heroIllustrationWidth={280}
       heroIllustrationHeight={80}

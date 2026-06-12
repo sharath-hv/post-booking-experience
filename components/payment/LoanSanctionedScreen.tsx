@@ -13,10 +13,13 @@ import {
   FULL_PAYMENT_INSURANCE_INR,
   ON_ROAD_PRICE_INR,
 } from "@/components/payment/loan-amount-demo-constants";
-import { LoanProcessingWhatsNext } from "@/components/payment/LoanProcessingWhatsNext";
-import { buildPayDownPaymentHref } from "@/lib/paymentUrls";
+import { buildDownPaymentCheckoutHref } from "@/lib/paymentUrls";
 
 const LOAN_SANCTIONED_HEADLINE = "Your loan is approved, Sharath!";
+
+/** Urgency line above the CTA — consequence, not a deadline to procrastinate against. */
+const CTA_WARNING_LINE =
+  "Delivery prep starts the moment this lands — every day here moves your delivery date";
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -28,7 +31,8 @@ function formatInr(amount: number) {
 
 /**
  * Loan sanctioned — the bank's disbursement is the bank's decision (no slider);
- * the down payment is DERIVED from the price identity and shown in full.
+ * the down payment is DERIVED from the price identity and shown in full. This is
+ * the one place the split appears — the CTA goes straight to checkout.
  */
 export function LoanSanctionedScreen() {
   const searchParams = useSearchParams();
@@ -43,7 +47,7 @@ export function LoanSanctionedScreen() {
 
   const nextHref = useMemo(
     () =>
-      buildPayDownPaymentHref(
+      buildDownPaymentCheckoutHref(
         bankId,
         String(BANK_DISBURSEMENT_INR),
         ACKO_LOAN_DOWN_PAYMENT_INR,
@@ -69,8 +73,9 @@ export function LoanSanctionedScreen() {
       nextHref={nextHref}
       prefetchHref={nextHref}
       nextCtaLabel={`Pay down payment ${formatInr(ACKO_LOAN_DOWN_PAYMENT_INR)}`}
+      ctaWarningLine={CTA_WARNING_LINE}
       callLabel="Questions on the split? I can call you"
-      whatsNextCard={<LoanProcessingWhatsNext variant="sanctioned" />}
+      manageBookingShowVehicleIdentification
     />
   );
 }

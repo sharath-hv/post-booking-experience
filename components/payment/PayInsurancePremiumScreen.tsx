@@ -5,12 +5,10 @@ import { useSearchParams } from "next/navigation";
 
 import { KycBookingProcessingScreen } from "@/components/kyc/KycBookingProcessingScreen";
 import { KYC_ASSETS } from "@/components/kyc/kyc-assets";
-import { LoanProcessingWhatsNext } from "@/components/payment/LoanProcessingWhatsNext";
 import { FULL_PAYMENT_INSURANCE_INR } from "@/components/payment/loan-amount-demo-constants";
-import { ZeroDepInsuranceCoverageCard } from "@/components/payment/ZeroDepInsuranceCoverageCard";
+import { ShieldPolicyCard } from "@/components/payment/ShieldPolicyCard";
 import {
   buildInsurancePremiumCheckoutHref,
-  FULL_PAYMENT_BANK_ID,
   type InsuranceJourneyQuery,
 } from "@/lib/paymentUrls";
 
@@ -40,34 +38,9 @@ export function PayInsurancePremiumScreen() {
     };
   }, [searchParams]);
 
-  const isFullPayment = journeyParams.bank === FULL_PAYMENT_BANK_ID;
-  const isSelfFinance = journeyParams.bank === "self_finance";
-
   const nextHref = useMemo(
     () => buildInsurancePremiumCheckoutHref(FULL_PAYMENT_INSURANCE_INR, journeyParams),
     [journeyParams],
-  );
-
-  const heroSummaryCard = useMemo(
-    () => (
-      <ZeroDepInsuranceCoverageCard
-        coverageTitle="ACKO Drive Shield · zero depreciation"
-        premiumAmountInr={FULL_PAYMENT_INSURANCE_INR}
-        includesLine="Only on ACKO Drive · ₹9,54,900 IDV (full ex-showroom) · 5 add-ons included"
-      />
-    ),
-    [],
-  );
-
-  const whatsNextCard = useMemo(
-    () => (
-      <LoanProcessingWhatsNext
-        variant="insurance_premium_due"
-        fullPaymentJourney={isFullPayment}
-        selfFinanceJourney={isSelfFinance}
-      />
-    ),
-    [isFullPayment, isSelfFinance],
   );
 
   return (
@@ -78,9 +51,9 @@ export function PayInsurancePremiumScreen() {
       nextHref={nextHref}
       prefetchHref={nextHref}
       nextCtaLabel={`Pay ${formatInr(FULL_PAYMENT_INSURANCE_INR)}`}
-      heroSummaryCard={heroSummaryCard}
+      heroSummaryCard={<ShieldPolicyCard mode="quote" />}
       callLabel="Price questions? I can call you"
-      whatsNextCard={whatsNextCard}
+      manageBookingShowVehicleIdentification
     />
   );
 }

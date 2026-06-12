@@ -203,6 +203,23 @@ export function appendFullPaymentBankQuery(path: string, bank: string | null): s
 }
 
 /**
+ * Mock checkout for the down payment — `/payment?bank&loan_amount&down_payment`.
+ * The fresh flow goes straight here from the screen that already showed the split
+ * (loan sanctioned / self-finance amount screens) — no “one last look” interstitial.
+ */
+export function buildDownPaymentCheckoutHref(
+  bank: string | null,
+  loanAmount: string | null,
+  downPaymentInr: number,
+): string {
+  const q = new URLSearchParams();
+  if (bank) q.set("bank", bank);
+  if (loanAmount) q.set("loan_amount", loanAmount);
+  q.set("down_payment", String(Math.round(downPaymentInr)));
+  return `/payment?${q.toString()}`;
+}
+
+/**
  * Builds `/payment/pay-down-payment?…` — action screen after a partial instalment (shows remaining + CTA).
  * Pass `originalDownPaymentInr` when remaining is part of a larger commitment so the screen can show progress.
  */

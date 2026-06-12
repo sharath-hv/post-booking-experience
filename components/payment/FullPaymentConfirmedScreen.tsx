@@ -8,7 +8,6 @@ import { KycBookingProcessingScreen } from "@/components/kyc/KycBookingProcessin
 import { KYC_ASSETS } from "@/components/kyc/kyc-assets";
 import { AckoDriveFinanceSuccessLottie } from "@/components/payment/AckoDriveFinanceSuccessLottie";
 import { DownPaymentSummaryCard } from "@/components/payment/DownPaymentSummaryCard";
-import { LoanProcessingWhatsNext } from "@/components/payment/LoanProcessingWhatsNext";
 import {
   BOOKING_AMOUNT_PAID_INR,
   FULL_PAYMENT_CAR_AMOUNT_INR,
@@ -29,15 +28,6 @@ const SUBLINE_REMAINING =
 const CTA_WARNING_LINE =
   "Delivery prep starts only after full payment — every day here moves your date";
 
-
-function formatInr(amount: number) {
-  return new Intl.NumberFormat("en-IN", {
-    style: "currency",
-    currency: "INR",
-    maximumFractionDigits: 0,
-  }).format(Math.max(0, Math.round(amount)));
-}
-
 /**
  * Full payment — action step after confirm bottom sheet on `/payment/choose`, and after
  * partial instalments (URL: `down_payment` + optional `original_down_payment`). Primary CTA
@@ -56,7 +46,6 @@ export function FullPaymentConfirmedScreen() {
     nextHref,
     prefetchHref,
     heroSummaryCard,
-    whatsNextCard,
     heroIllustrationSrc,
     heroIllustrationSlot,
   } = useMemo(() => {
@@ -78,10 +67,6 @@ export function FullPaymentConfirmedScreen() {
       hasRemainingFlow ? String(fullCommitment) : null,
     );
 
-    const paymentInProgressDescription = `Pay ${formatInr(
-      hasRemainingFlow ? totalDue : FULL_PAYMENT_CAR_AMOUNT_INR,
-    )} — delivery prep starts after this`;
-
     if (hasRemainingFlow) {
       const received = fullCommitment - totalDue;
       return {
@@ -98,13 +83,6 @@ export function FullPaymentConfirmedScreen() {
             downPaymentTotalInr={fullCommitment}
             amountPaidInr={received}
             remainingAmountInr={totalDue}
-          />
-        ),
-        whatsNextCard: (
-          <LoanProcessingWhatsNext
-            variant="full_payment"
-            fullPaymentJourney
-            paymentInProgressDescription={paymentInProgressDescription}
           />
         ),
       };
@@ -127,12 +105,6 @@ export function FullPaymentConfirmedScreen() {
           dueInr={FULL_PAYMENT_CAR_AMOUNT_INR}
         />
       ),
-      whatsNextCard: (
-        <LoanProcessingWhatsNext
-          variant="full_payment_action"
-          paymentInProgressDescription={paymentInProgressDescription}
-        />
-      ),
     };
   }, [amountDueParam, originalAmountParam]);
 
@@ -152,7 +124,6 @@ export function FullPaymentConfirmedScreen() {
       onPrimaryCtaClick={onPay}
       nextCtaLabel={nextCtaLabel}
       ctaWarningLine={CTA_WARNING_LINE}
-      whatsNextCard={whatsNextCard}
       manageBookingShowVehicleIdentification
     />
   );

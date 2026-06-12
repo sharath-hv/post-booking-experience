@@ -5,20 +5,19 @@ import { useCallback, useMemo, useState } from "react";
 
 import { KycBookingProcessingScreen } from "@/components/kyc/KycBookingProcessingScreen";
 import { AckoDriveBankPartnerRow } from "@/components/payment/AckoDriveBankPartnerRow";
-import { AckoDriveLoanDocumentsHint } from "@/components/payment/AckoDriveLoanDocumentsHint";
+import { LoanDocumentsChecklistCard } from "@/components/payment/LoanDocumentsChecklistCard";
 import {
   ackoDriveFinanceActionPath,
   bankForQueryParam,
 } from "@/components/payment/acko-drive-finance-bank";
 import { loanApplicationEntryPath } from "@/lib/loan-application-urls";
 import { BankSelectionBottomSheet } from "@/components/payment/BankSelectionBottomSheet";
-import { LoanProcessingWhatsNext } from "@/components/payment/LoanProcessingWhatsNext";
 
 const HEADLINE_LINE_1 = "Good choice — I'll run";
 const HEADLINE_LINE_2 = "your loan from here.";
 
 const SUBLINE =
-  "I take your application to the bank, chase the approval, and keep you posted at every step. Keep these documents handy and we can start right now.";
+  "I take your application to the bank, chase the approval, and keep you posted at every step. Here's everything the bank will ask for — have them nearby and we can start right now.";
 
 /**
  * ACKO Drive finance — action step after celebration confirmation.
@@ -48,12 +47,7 @@ export function AckoDriveFinanceActionScreen() {
     [bank, onBankChange],
   );
 
-  const heroSummaryCard = useMemo(() => <AckoDriveLoanDocumentsHint />, []);
-
-  const whatsNextCard = useMemo(
-    () => <LoanProcessingWhatsNext variant="acko_drive_action" />,
-    [],
-  );
+  const heroSummaryCard = useMemo(() => <LoanDocumentsChecklistCard />, []);
 
   return (
     <>
@@ -66,7 +60,6 @@ export function AckoDriveFinanceActionScreen() {
         nextHref={uploadHref}
         prefetchHref={uploadHref}
         nextCtaLabel="Start my loan application"
-        whatsNextCard={whatsNextCard}
         manageBookingShowVehicleIdentification
       />
       <BankSelectionBottomSheet

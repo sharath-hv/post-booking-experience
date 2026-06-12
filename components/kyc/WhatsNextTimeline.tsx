@@ -39,7 +39,7 @@ export type WhatsNextTimelineProps = {
   variant?: WhatsNextTimelineVariant;
   /**
    * `card` — bordered panel with inner padding (e.g. `/payment/default`).
-   * `flat` — rail only: aligns with parent `px-5` (e.g. `WhatsNextTimelineBottomSheet` header).
+   * `flat` — rail only: aligns with parent `px-5`.
    */
   surface?: WhatsNextTimelineSurface;
   /**
@@ -58,7 +58,7 @@ function timelineStepTitleClassName(status: TimelineStepStatus) {
 const TIMELINE_STEP_DESCRIPTION_CLASS =
   "mt-1 text-xs font-normal leading-[18px] text-[#757575]";
 
-/** Completed / active connector — matches `LoanProcessingWhatsNext` main rail. */
+/** Completed / active connector. */
 const CONNECTOR_ACTIVE = "#138808";
 
 type LineSeg = { top: number; height: number };

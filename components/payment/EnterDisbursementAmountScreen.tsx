@@ -15,7 +15,7 @@ import {
   SELF_FINANCE_LOAN_DEFAULT_INR,
   SLIDER_STEP,
 } from "@/components/payment/loan-amount-demo-constants";
-import { BOOKING_LOCK_AMOUNT_INR } from "@/lib/paymentUrls";
+import { BOOKING_LOCK_AMOUNT_INR, buildDownPaymentCheckoutHref } from "@/lib/paymentUrls";
 import { formatInrAmountDigits, parseInrAmountInput } from "@/lib/loan-emi";
 
 /** Carried on `/payment/pay-down-payment` → `/payment` so the chain matches ACKO finance `?bank=` wiring. */
@@ -101,17 +101,20 @@ export function EnterDisbursementAmountScreen() {
     applyLoanAmount(parsed);
   }, [applyLoanAmount, loanAmountInput]);
 
+  /** Straight to checkout — this screen already shows the full split. */
   const navigateToPayDownPayment = useCallback(() => {
-    const q = new URLSearchParams();
-    q.set("bank", SELF_FINANCE_BANK_QUERY);
-    q.set("loan_amount", String(loanAmount));
     // Net cash due now — the price identity already excludes lock + insurance.
-    q.set("down_payment", String(carDownPaymentPortionInr));
-    router.push(`/payment/pay-down-payment?${q.toString()}`);
+    router.push(
+      buildDownPaymentCheckoutHref(
+        SELF_FINANCE_BANK_QUERY,
+        String(loanAmount),
+        carDownPaymentPortionInr,
+      ),
+    );
   }, [loanAmount, router, carDownPaymentPortionInr]);
 
   useEffect(() => {
-    router.prefetch("/payment/pay-down-payment");
+    router.prefetch("/payment");
   }, [router]);
 
   return (

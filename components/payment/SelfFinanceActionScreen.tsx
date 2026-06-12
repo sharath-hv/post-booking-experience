@@ -3,7 +3,6 @@
 import { useMemo } from "react";
 
 import { KycBookingProcessingScreen } from "@/components/kyc/KycBookingProcessingScreen";
-import { LoanProcessingWhatsNext } from "@/components/payment/LoanProcessingWhatsNext";
 import { PAYMENT_CHOOSE_ASSETS } from "@/components/payment/payment-choose-assets";
 import { ProformaInvoiceCard } from "@/components/payment/ProformaInvoiceCard";
 
@@ -23,8 +22,6 @@ const CTA_WARNING_LINE =
 export function SelfFinanceActionScreen() {
   const heroSummaryCard = useMemo(() => <ProformaInvoiceCard />, []);
 
-  const whatsNextCard = useMemo(() => <LoanProcessingWhatsNext variant="self_finance_action" />, []);
-
   return (
     <KycBookingProcessingScreen
       headline={HEADLINE_LINE_1}
@@ -36,7 +33,7 @@ export function SelfFinanceActionScreen() {
       prefetchHref="/payment/enter-disbursement-amount"
       ctaWarningLine={CTA_WARNING_LINE}
       nextCtaLabel="I have my loan amount"
-      whatsNextCard={whatsNextCard}
+      manageBookingShowVehicleIdentification
     />
   );
 }

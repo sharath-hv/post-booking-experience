@@ -7,7 +7,7 @@ import {
   ACKO_LOAN_DOWN_PAYMENT_INR,
   BANK_DISBURSEMENT_INR,
 } from "@/components/payment/loan-amount-demo-constants";
-import { buildPayDownPaymentHref } from "@/lib/paymentUrls";
+import { buildDownPaymentCheckoutHref } from "@/lib/paymentUrls";
 
 /**
  * Legacy — there is no loan-amount slider anymore: the bank's disbursement is
@@ -19,7 +19,7 @@ function LegacyChooseLoanAmountRedirect() {
 
   useEffect(() => {
     router.replace(
-      buildPayDownPaymentHref(
+      buildDownPaymentCheckoutHref(
         searchParams.get("bank"),
         String(BANK_DISBURSEMENT_INR),
         ACKO_LOAN_DOWN_PAYMENT_INR,
