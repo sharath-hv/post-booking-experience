@@ -7,6 +7,7 @@ import {
   BOTTOM_SHEET_BODY_BEFORE_CTA_CLASS,
   BOTTOM_SHEET_CTA_STRIP_TOP_CLASS,
   BOTTOM_SHEET_MAX_HEIGHT_CLASS,
+  BOTTOM_SHEET_OVERLAY_Z_CLASS,
 } from "@/components/ui/bottom-sheet-layout";
 import { bottomSheetTitleWidthWithIllustration } from "@/components/ui/bottom-sheet-title-layout";
 import { BottomSheetCloseIcon } from "@/components/ui/BottomSheetCloseIcon";
@@ -42,8 +43,8 @@ const BEFORE_YOU_CONTINUE_POINTS: readonly ReactNode[] = [
   </>,
   <>
     The insurance amount of{" "}
-    <span className="font-semibold">{formatInr(FULL_PAYMENT_INSURANCE_INR)}</span> is payable after
-    your loan is disbursed
+    <span className="font-semibold">{formatInr(FULL_PAYMENT_INSURANCE_INR)}</span> is due just
+    before delivery, for RTO registration
   </>,
   <>
     The bank will disburse the loan amount to the dealer after down payment is completed
@@ -116,7 +117,7 @@ export function LoanSubmitConfirmBottomSheet({
 
   return (
     <BottomSheetPortal>
-      <div className="fixed inset-0 z-[100]">
+      <div className={`fixed inset-0 ${BOTTOM_SHEET_OVERLAY_Z_CLASS}`}>
       <button
         type="button"
         className={`absolute inset-0 bg-black/90 transition-opacity duration-[280ms] ease-out motion-reduce:opacity-100 motion-reduce:transition-none ${
@@ -159,7 +160,7 @@ export function LoanSubmitConfirmBottomSheet({
 
             <h2
               id="loan-before-proceed-title"
-              className={`mt-[24px] ${bottomSheetTitleWidthWithIllustration} text-left text-[20px] font-semibold leading-[1.35] tracking-[-0.1px] text-[#121212]`}
+              className={`mt-6 ${bottomSheetTitleWidthWithIllustration} text-left text-[20px] font-semibold leading-[1.35] tracking-[-0.1px] text-[#121212]`}
             >
               Things to know before you continue!
             </h2>

@@ -1,3 +1,6 @@
+/** Full-screen bottom sheet scrim + panel — above ConciergeTurnShell header chrome (z-110). */
+export const BOTTOM_SHEET_OVERLAY_Z_CLASS = "z-[120]";
+
 /**
  * Max height for scrollable bottom sheets — 90% of dynamic viewport.
  * Do not use on content-sized sheets without scroll (e.g. Shivi intro).

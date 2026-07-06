@@ -9,6 +9,7 @@ import {
   BOTTOM_SHEET_BODY_BEFORE_CTA_CLASS,
   BOTTOM_SHEET_CTA_STRIP_TOP_CLASS,
   BOTTOM_SHEET_MAX_HEIGHT_CLASS,
+  BOTTOM_SHEET_OVERLAY_Z_CLASS,
 } from "@/components/ui/bottom-sheet-layout";
 import { bottomSheetTitleWidthWithIllustration } from "@/components/ui/bottom-sheet-title-layout";
 import { BottomSheetCloseIcon } from "@/components/ui/BottomSheetCloseIcon";
@@ -80,7 +81,7 @@ export function SelfFinanceConfirmBottomSheet({
   if (!mounted) return null;
 
   return (
-    <div className="fixed inset-0 z-[100]">
+    <div className={`fixed inset-0 ${BOTTOM_SHEET_OVERLAY_Z_CLASS}`}>
       <button
         type="button"
         className={`absolute inset-0 bg-black/90 transition-opacity duration-[280ms] ease-out motion-reduce:opacity-100 motion-reduce:transition-none ${
@@ -123,9 +124,9 @@ export function SelfFinanceConfirmBottomSheet({
 
             <h2
               id="self-finance-things-to-know-title"
-              className={`mt-[24px] ${bottomSheetTitleWidthWithIllustration} text-left text-[20px] font-semibold leading-[1.35] tracking-[-0.1px] text-[#121212]`}
+              className={`mt-6 ${bottomSheetTitleWidthWithIllustration} text-left text-[20px] font-semibold leading-[1.35] tracking-[-0.1px] text-[#121212]`}
             >
-              Here is how self finance works
+              Here is how your own bank loan works
             </h2>
 
             <div id="self-finance-how-it-works" className="mt-4">

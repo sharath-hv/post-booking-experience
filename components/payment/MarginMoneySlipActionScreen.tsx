@@ -6,13 +6,12 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { KycBookingProcessingScreen } from "@/components/kyc/KycBookingProcessingScreen";
 import { BankTransferUtrConfirmBottomSheet } from "@/components/payment/BankTransferUtrConfirmBottomSheet";
 import { MarginMoneySlipCard } from "@/components/payment/MarginMoneySlipCard";
-import { LoanProcessingWhatsNext } from "@/components/payment/LoanProcessingWhatsNext";
 import { PAYMENT_CHOOSE_ASSETS } from "@/components/payment/payment-choose-assets";
 
 const HEADLINE = "Your margin money slip is ready!";
 
 const SUBLINE =
-  "Your down payment is received. Share this slip with your bank so they can transfer the loan amount to the dealer.";
+  "Your down payment is in. Hand this slip to your bank — they release the loan to the dealer against it. The sooner that happens, the sooner delivery prep starts.";
 
 /**
  * Self finance — after full down payment; user downloads margin money slip for the bank.
@@ -53,11 +52,6 @@ export function MarginMoneySlipActionScreen() {
 
   const heroSummaryCard = useMemo(() => <MarginMoneySlipCard />, []);
 
-  const whatsNextCard = useMemo(
-    () => <LoanProcessingWhatsNext variant="self_finance_margin_slip" />,
-    [],
-  );
-
   return (
     <>
       <KycBookingProcessingScreen
@@ -69,7 +63,7 @@ export function MarginMoneySlipActionScreen() {
         prefetchHref={prefetchHref}
         nextCtaLabel="Confirm bank transfer"
         onPrimaryCtaClick={() => setBankTransferSheetOpen(true)}
-        whatsNextCard={whatsNextCard}
+        manageBookingShowVehicleIdentification
       />
       <BankTransferUtrConfirmBottomSheet
         open={bankTransferSheetOpen}

@@ -128,7 +128,7 @@ export function ModifySelectionColourConfirmationScreen() {
   const expressQuote = resolveModifySelectionColourQuote(option, "express");
 
   return (
-    <div className="min-h-dvh bg-white font-sans">
+    <div className="min-h-dvh bg-[#F7FAFF] font-sans">
       <KycTopNavHeader endSlot={<GetHelpPillButton />} />
 
       <main className="mx-auto flex w-full max-w-[640px] flex-1 flex-col px-5 pb-[calc(5rem+32px+env(safe-area-inset-bottom))] pt-2">
@@ -193,7 +193,7 @@ export function ModifySelectionColourConfirmationScreen() {
           <button
             type="button"
             onClick={onPay}
-            className="primary-cta ml-auto h-12 !w-[160px] shrink-0 px-[10px]"
+            className="primary-cta ml-auto h-12 !w-[160px] shrink-0 px-2.5"
           >
             {MODIFY_SELECTION_COLOUR_CONFIRM_PAY_CTA}
           </button>

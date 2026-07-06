@@ -15,13 +15,11 @@ import {
   SELF_FINANCE_LOAN_DEFAULT_INR,
   SLIDER_STEP,
 } from "@/components/payment/loan-amount-demo-constants";
-import { BOOKING_LOCK_AMOUNT_INR } from "@/lib/paymentUrls";
+import { BOOKING_LOCK_AMOUNT_INR, buildDownPaymentCheckoutHref } from "@/lib/paymentUrls";
 import { formatInrAmountDigits, parseInrAmountInput } from "@/lib/loan-emi";
 
 /** Carried on `/payment/pay-down-payment` → `/payment` so the chain matches ACKO finance `?bank=` wiring. */
 const SELF_FINANCE_BANK_QUERY = "self_finance";
-
-const CAR_DOWN_PAYMENT_DUE_LABEL = "24 Apr 2026";
 
 const STAGGER_TITLE_MS = 90;
 const STAGGER_SUBTEXT_MS = 120;
@@ -103,20 +101,24 @@ export function EnterDisbursementAmountScreen() {
     applyLoanAmount(parsed);
   }, [applyLoanAmount, loanAmountInput]);
 
+  /** Straight to checkout — this screen already shows the full split. */
   const navigateToPayDownPayment = useCallback(() => {
-    const q = new URLSearchParams();
-    q.set("bank", SELF_FINANCE_BANK_QUERY);
-    q.set("loan_amount", String(loanAmount));
-    q.set("down_payment", String(totalDownPaymentInr));
-    router.push(`/payment/pay-down-payment?${q.toString()}`);
-  }, [loanAmount, router, totalDownPaymentInr]);
+    // Net cash due now — the price identity already excludes lock + insurance.
+    router.push(
+      buildDownPaymentCheckoutHref(
+        SELF_FINANCE_BANK_QUERY,
+        String(loanAmount),
+        carDownPaymentPortionInr,
+      ),
+    );
+  }, [loanAmount, router, carDownPaymentPortionInr]);
 
   useEffect(() => {
-    router.prefetch("/payment/pay-down-payment");
+    router.prefetch("/payment");
   }, [router]);
 
   return (
-    <div className="min-h-dvh bg-white font-sans">
+    <div className="min-h-dvh bg-[#F7FAFF] font-sans">
       <KycTopNavHeader endSlot={<GetHelpPillButton />} />
 
       <main className="mx-auto w-full max-w-[640px] px-5 pb-[calc(7rem+env(safe-area-inset-bottom))] pt-2">
@@ -140,7 +142,7 @@ export function EnterDisbursementAmountScreen() {
           className="payment-success-stagger mt-8"
           style={{ animationDelay: `${STAGGER_AMOUNT_MS}ms` }}
         >
-          <div className="flex h-12 min-h-12 w-[174px] max-w-full shrink-0 items-center rounded-lg border border-[#e8e8e8] bg-white px-4">
+          <div className="flex h-12 min-h-12 w-[174px] max-w-full shrink-0 items-center rounded-lg bg-white card-elevated px-4">
             <label htmlFor="self-finance-loan-amount-input" className="sr-only">
               Loan amount in rupees
             </label>
@@ -193,7 +195,7 @@ export function EnterDisbursementAmountScreen() {
           style={{ animationDelay: `${STAGGER_SUMMARY_MS}ms` }}
           aria-label="Down payment amount and split"
         >
-          <div className="flex gap-3 px-[15px] pb-3 pt-[15px]">
+          <div className="flex gap-3 px-4 pb-3 pt-4">
             <div
               className="relative flex size-12 shrink-0 items-center justify-center rounded-lg bg-[#e4f6e7]"
               aria-hidden
@@ -208,18 +210,18 @@ export function EnterDisbursementAmountScreen() {
               />
             </div>
             <div className="min-w-0 flex-1">
-              <p className="text-xs font-normal leading-[18px] text-[#121212]">Down payment amount</p>
+              <p className="text-xs font-normal leading-[18px] text-[#121212]">Your down payment</p>
               <p className="mt-0.5 text-[18px] font-medium leading-7 tracking-[-0.1px] text-[#121212] tabular-nums">
-                {formatInr(totalDownPaymentInr)}
+                {formatInr(carDownPaymentPortionInr)}
               </p>
             </div>
           </div>
 
           <hr className="border-0 border-t border-[#d5e5d8]" />
 
-          <div className="px-[15px] pb-4 pt-3">
+          <div className="px-4 pb-4 pt-3">
             <p className="text-xs font-normal leading-[18px] text-[#4b4b4b]">
-              Your down payment is split into two parts
+              Insurance is separate — it is not part of your down payment
             </p>
             <ul className="mt-3 space-y-3">
               <li className="flex gap-1">
@@ -236,9 +238,9 @@ export function EnterDisbursementAmountScreen() {
                 </span>
                 <p className="min-w-0 text-xs leading-[18px] text-[#4b4b4b]">
                   <span className="font-medium text-[#121212]">
-                    {formatInr(carDownPaymentPortionInr)} car down payment.
+                    {formatInr(carDownPaymentPortionInr)} down payment.
                   </span>{" "}
-                  Pay by {CAR_DOWN_PAYMENT_DUE_LABEL} to keep booking active
+                  Due now — delivery prep starts once it&apos;s in
                 </p>
               </li>
               <li className="flex gap-1">
@@ -255,9 +257,9 @@ export function EnterDisbursementAmountScreen() {
                 </span>
                 <p className="min-w-0 text-xs leading-[18px] text-[#4b4b4b]">
                   <span className="font-medium text-[#121212]">
-                    {formatInr(FULL_PAYMENT_INSURANCE_INR)} insurance amount.
+                    {formatInr(FULL_PAYMENT_INSURANCE_INR)} insurance — separate.
                   </span>{" "}
-                  Pay after your loan is disbursed
+                  Pay later, just before delivery — it&apos;s needed for RTO registration
                 </p>
               </li>
             </ul>

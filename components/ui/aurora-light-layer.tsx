@@ -44,8 +44,8 @@ export function AuroraLightLayer({ className, showRadialGradient = true }: Auror
             `
             max-sm:[-webkit-mask-image:radial-gradient(ellipse_130%_100%_at_50%_0%,black_14%,transparent_78%)]
             max-sm:[mask-image:radial-gradient(ellipse_130%_100%_at_50%_0%,black_14%,transparent_78%)]
-            sm:[-webkit-mask-image:radial-gradient(ellipse_100%_80%_at_100%_0%,black_10%,var(--transparent)_70%)]
-            sm:[mask-image:radial-gradient(ellipse_at_100%_0%,black_10%,var(--transparent)_70%)]
+            sm:[-webkit-mask-image:radial-gradient(ellipse_100%_80%_at_70%_0%,black_10%,var(--transparent)_70%)]
+            sm:[mask-image:radial-gradient(ellipse_at_70%_0%,black_10%,var(--transparent)_70%)]
             `
         )}
       />

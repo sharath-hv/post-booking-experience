@@ -74,7 +74,7 @@ export function ModifySelectionReviewSelectionCard({
     : BOOKING_STANDARD_DELIVERY_TEXT_CLASS;
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-[#e8e8e8] bg-white">
+    <div className="overflow-hidden rounded-2xl bg-white card-elevated">
       <div className="relative h-[140px] w-full overflow-hidden bg-white">
         <div className="absolute inset-0 overflow-hidden" aria-hidden>
           <Image
@@ -95,7 +95,7 @@ export function ModifySelectionReviewSelectionCard({
           }}
           aria-hidden
         />
-        <div className="absolute left-1/2 top-[26px] h-[102px] w-[180px] -translate-x-1/2">
+        <div className="absolute left-1/2 top-6 h-[102px] w-[180px] -translate-x-1/2">
           <div className="relative mx-auto h-full w-[150px]">
             <Image
               src={getModifySelectionCarCutoutForColour(colourId)}

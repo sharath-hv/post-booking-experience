@@ -12,17 +12,23 @@ export type BookingLockSuccessOptions = {
   returnSource?: string;
 };
 
-/** After booking-lock payment — celebration at `/kyc/booking-confirmed`. */
+/**
+ * After booking-lock payment.
+ * Initial lock (no `returnSource`) lands on the concierge arrival at
+ * `/payment/booking-success`; modify-selection returns keep the celebration
+ * at `/kyc/booking-confirmed`.
+ */
 export function buildBookingLockSuccessHref(
   paidInr: number,
   options?: BookingLockSuccessOptions,
 ): string {
   const q = new URLSearchParams();
-  q.set("source", "payment");
   q.set("paid", String(Math.round(paidInr)));
-  if (options?.returnSource) {
-    q.set("return_source", options.returnSource);
+  if (!options?.returnSource) {
+    return `/payment/booking-success?${q.toString()}`;
   }
+  q.set("source", "payment");
+  q.set("return_source", options.returnSource);
   return `/kyc/booking-confirmed?${q.toString()}`;
 }
 
@@ -194,6 +200,23 @@ export function appendFullPaymentBankQuery(path: string, bank: string | null): s
   if (bank !== FULL_PAYMENT_BANK_ID) return path;
   const separator = path.includes("?") ? "&" : "?";
   return `${path}${separator}bank=${encodeURIComponent(FULL_PAYMENT_BANK_ID)}`;
+}
+
+/**
+ * Mock checkout for the down payment — `/payment?bank&loan_amount&down_payment`.
+ * The fresh flow goes straight here from the screen that already showed the split
+ * (loan sanctioned / self-finance amount screens) — no “one last look” interstitial.
+ */
+export function buildDownPaymentCheckoutHref(
+  bank: string | null,
+  loanAmount: string | null,
+  downPaymentInr: number,
+): string {
+  const q = new URLSearchParams();
+  if (bank) q.set("bank", bank);
+  if (loanAmount) q.set("loan_amount", loanAmount);
+  q.set("down_payment", String(Math.round(downPaymentInr)));
+  return `/payment?${q.toString()}`;
 }
 
 /**

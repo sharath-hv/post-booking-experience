@@ -26,7 +26,7 @@ export function BuyingGuideShell({ children }: BuyingGuideShellProps) {
   }, [router]);
 
   return (
-    <div className="relative flex h-dvh flex-col overflow-hidden bg-white font-sans">
+    <div className="relative flex h-dvh flex-col overflow-hidden bg-[#F7FAFF] font-sans">
       <KycTopNavHeader
         onBack={handleBack}
         afterBack={<BuyingGuideProgress currentStep={currentStep} />}

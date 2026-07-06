@@ -10,6 +10,7 @@ import {
   BOTTOM_SHEET_BODY_BEFORE_CTA_CLASS,
   BOTTOM_SHEET_CTA_STRIP_TOP_CLASS,
   BOTTOM_SHEET_MAX_HEIGHT_CLASS,
+  BOTTOM_SHEET_OVERLAY_Z_CLASS,
 } from "@/components/ui/bottom-sheet-layout";
 import {
   BOOKING_EXPRESS_DELIVERY_TEXT_CLASS,
@@ -103,7 +104,7 @@ export function ModifySelectionDeliveryOptionBottomSheet({
 
   return (
     <BottomSheetPortal>
-      <div className="fixed inset-0 z-[100]">
+      <div className={`fixed inset-0 ${BOTTOM_SHEET_OVERLAY_Z_CLASS}`}>
         <button
           type="button"
           className={cn(

@@ -11,6 +11,7 @@ import {
   BOTTOM_SHEET_BODY_BEFORE_CTA_CLASS,
   BOTTOM_SHEET_CTA_STRIP_TOP_CLASS,
   BOTTOM_SHEET_MAX_HEIGHT_CLASS,
+  BOTTOM_SHEET_OVERLAY_Z_CLASS,
 } from "@/components/ui/bottom-sheet-layout";
 import { BottomSheetCloseIcon } from "@/components/ui/BottomSheetCloseIcon";
 
@@ -104,7 +105,7 @@ export function BankSelectionBottomSheet({
   if (!mounted) return null;
 
   return (
-    <div className="fixed inset-0 z-[100]">
+    <div className={`fixed inset-0 ${BOTTOM_SHEET_OVERLAY_Z_CLASS}`}>
       <button
         type="button"
         className={`absolute inset-0 bg-black/90 transition-opacity duration-[280ms] ease-out motion-reduce:opacity-100 motion-reduce:transition-none ${
@@ -165,7 +166,7 @@ export function BankSelectionBottomSheet({
                   type="button"
                   onClick={() => setSelectedId(bank.id)}
                   aria-pressed={selected}
-                  className={`relative flex min-h-16 w-full shrink-0 items-start gap-3 rounded-xl border px-[11px] py-3 pr-10 text-left transition-colors ${
+                  className={`relative flex min-h-16 w-full shrink-0 items-start gap-3 rounded-xl border px-3 py-3 pr-10 text-left transition-colors ${
                     selected ? "border-[#121212] bg-[#F5F5F5]" : "border-[#e8e8e8] bg-white"
                   }`}
                 >

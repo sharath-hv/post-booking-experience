@@ -140,9 +140,9 @@ export function BookingCelebrationSuccessScreen({
   }, [showHeader, onHeadlineReveal]);
 
   return (
-    <div className="relative flex h-dvh flex-col overflow-hidden bg-[#fafbfb] font-sans">
+    <div className="relative flex h-dvh flex-col overflow-hidden bg-[#F7FAFF] font-sans">
       <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-[50%] bg-gradient-to-b from-[#e8f8ef]/90 via-[#f4fbf7]/40 to-transparent transition-opacity duration-700"
+        className="pointer-events-none absolute inset-x-0 top-0 h-[50%] bg-[linear-gradient(to_bottom,rgba(232,248,239,0.9),rgba(244,251,247,0.4),rgba(244,251,247,0))] transition-opacity duration-700"
         aria-hidden
       />
 
@@ -185,7 +185,7 @@ export function BookingCelebrationSuccessScreen({
             showCarSection &&
             (showDefaultCarCard ? (
               <PaymentSuccessStagger
-                className="relative mt-8 w-full self-center overflow-hidden rounded-2xl border border-[#E8E8E8] bg-white shadow-[0_4px_16px_rgba(0,0,0,0.06)]"
+                className="relative mt-8 w-full self-center overflow-hidden rounded-2xl bg-white card-elevated"
                 delay={0.6}
               >
                 <div
@@ -214,7 +214,7 @@ export function BookingCelebrationSuccessScreen({
                     />
                   </div>
 
-                  <div className="absolute left-1/2 top-[30px] h-[102px] w-[180px] -translate-x-1/2 overflow-hidden">
+                  <div className="absolute left-1/2 top-8 h-[102px] w-[180px] -translate-x-1/2 overflow-hidden">
                     <div className="relative mx-auto h-full w-full max-w-[180px]">
                       <Image
                         src={BOOKING_CONFIRMED_ASSETS.carCutout}

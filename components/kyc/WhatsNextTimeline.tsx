@@ -39,7 +39,7 @@ export type WhatsNextTimelineProps = {
   variant?: WhatsNextTimelineVariant;
   /**
    * `card` — bordered panel with inner padding (e.g. `/payment/default`).
-   * `flat` — rail only: aligns with parent `px-5` (e.g. `WhatsNextTimelineBottomSheet` header).
+   * `flat` — rail only: aligns with parent `px-5`.
    */
   surface?: WhatsNextTimelineSurface;
   /**
@@ -58,7 +58,7 @@ function timelineStepTitleClassName(status: TimelineStepStatus) {
 const TIMELINE_STEP_DESCRIPTION_CLASS =
   "mt-1 text-xs font-normal leading-[18px] text-[#757575]";
 
-/** Completed / active connector — matches `LoanProcessingWhatsNext` main rail. */
+/** Completed / active connector. */
 const CONNECTOR_ACTIVE = "#138808";
 
 type LineSeg = { top: number; height: number };
@@ -210,8 +210,8 @@ export function WhatsNextTimeline({
 
   const sectionClassName =
     variant === "compact"
-      ? "rounded-2xl border border-[#e8e8e8] bg-white p-4"
-      : "rounded-2xl border border-[#e8e8e8] bg-white px-5 py-6 shadow-[0_2px_8px_-2px_rgba(54,53,76,0.06)]";
+      ? "rounded-2xl bg-white card-elevated p-4"
+      : "rounded-2xl bg-white card-elevated px-5 py-6";
   const rowGapClass = variant === "compact" ? "gap-y-3" : "gap-y-4";
 
   const timelineRail = (

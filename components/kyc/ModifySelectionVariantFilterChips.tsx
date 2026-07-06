@@ -35,7 +35,7 @@ function FilterChip({
       onClick={onSelect}
       aria-pressed={selected}
       className={cn(
-        "inline-flex h-7 shrink-0 items-center gap-1 rounded-[32px] border px-[7px] text-xs font-medium leading-[18px] text-[#121212] transition-colors focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/20 focus-visible:ring-offset-2",
+        "inline-flex h-7 shrink-0 items-center gap-1 rounded-[32px] border px-2 text-xs font-medium leading-[18px] text-[#121212] transition-colors focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/20 focus-visible:ring-offset-2",
         selected
           ? "border-[#121212] bg-[#f3f3f3] pr-1"
           : "border-[#e8e8e8] bg-white hover:bg-[#fafafa]",

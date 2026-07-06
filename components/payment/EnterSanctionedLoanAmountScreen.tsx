@@ -18,7 +18,7 @@ import {
   SLIDER_STEP,
 } from "@/components/payment/loan-amount-demo-constants";
 import { DisbursementAmountCollectionBottomSheet } from "@/components/payment/DisbursementAmountCollectionBottomSheet";
-import { BOOKING_LOCK_AMOUNT_INR } from "@/lib/paymentUrls";
+import { BOOKING_LOCK_AMOUNT_INR, buildDownPaymentCheckoutHref } from "@/lib/paymentUrls";
 
 /** Carried on `/payment/pay-down-payment` → `/payment` so the chain matches ACKO finance `?bank=` wiring. */
 const SELF_FINANCE_BANK_QUERY = "self_finance";
@@ -71,16 +71,19 @@ export function EnterSanctionedLoanAmountScreen() {
   const totalDownPaymentInr = ON_ROAD_PRICE_INR - loanAmount - BOOKING_LOCK_AMOUNT_INR;
   const carDownPaymentPortionInr = Math.max(0, totalDownPaymentInr - DOWN_PAYMENT_INSURANCE_INR);
 
+  /** Straight to checkout — this screen already shows the full split. */
   const navigateToPayment = useCallback(() => {
-    const q = new URLSearchParams();
-    q.set("bank", SELF_FINANCE_BANK_QUERY);
-    q.set("loan_amount", String(loanAmount));
-    q.set("down_payment", String(totalDownPaymentInr));
-    router.push(`/payment/pay-down-payment?${q.toString()}`);
-  }, [router, loanAmount, totalDownPaymentInr]);
+    // Net cash due now — the price identity already excludes lock + insurance.
+    router.push(
+      buildDownPaymentCheckoutHref(
+        SELF_FINANCE_BANK_QUERY,
+        String(loanAmount),
+        carDownPaymentPortionInr,
+      ),
+    );
+  }, [router, loanAmount, carDownPaymentPortionInr]);
 
   useEffect(() => {
-    router.prefetch("/payment/pay-down-payment");
     router.prefetch("/payment");
   }, [router]);
 
@@ -94,7 +97,7 @@ export function EnterSanctionedLoanAmountScreen() {
   }, [disbursementPrefill]);
 
   return (
-    <div className="flex min-h-dvh flex-col bg-white font-sans">
+    <div className="flex min-h-dvh flex-col bg-[#F7FAFF] font-sans">
       <KycTopNavHeader endSlot={<GetHelpPillButton />} />
 
       <main className="mx-auto flex min-h-0 w-full max-w-[640px] flex-1 flex-col px-5 pb-[calc(7rem+env(safe-area-inset-bottom))] pt-2">
@@ -107,7 +110,7 @@ export function EnterSanctionedLoanAmountScreen() {
         </h1>
 
         <div
-          className="payment-success-stagger mx-auto mt-6 w-full overflow-hidden rounded-[16px] border border-[#e8e8e8]"
+          className="payment-success-stagger mx-auto mt-6 w-full overflow-hidden rounded-[16px] bg-white card-elevated"
           style={{ animationDelay: `${STAGGER_CARD_MS}ms` }}
         >
           <div className="bg-white px-4 pb-4 pt-4">
@@ -160,10 +163,10 @@ export function EnterSanctionedLoanAmountScreen() {
 
             <div className="flex items-start justify-between gap-3">
               <span className="min-w-0 max-w-[196px] text-sm font-normal leading-5 text-[#121212]">
-                Booking amount paid
+                Price lock — paid
               </span>
               <span className="w-20 shrink-0 text-right text-sm font-medium leading-5 text-[#121212] tabular-nums">
-                {formatInr(BOOKING_LOCK_AMOUNT_INR)}
+                − {formatInr(BOOKING_LOCK_AMOUNT_INR)}
               </span>
             </div>
 
@@ -180,7 +183,7 @@ export function EnterSanctionedLoanAmountScreen() {
                 className="min-w-[80px] flex-1 text-right text-sm font-medium leading-5 text-[#121212] tabular-nums"
                 aria-labelledby="sanctioned-loan-amount-label"
               >
-                {formatInr(loanAmount)}
+                − {formatInr(loanAmount)}
               </span>
             </div>
             <button
@@ -202,22 +205,31 @@ export function EnterSanctionedLoanAmountScreen() {
             </button>
           </div>
 
+          <div className="flex min-h-12 items-center justify-between border-t border-[#e8e8e8] px-4 py-3">
+            <span className="text-sm font-normal leading-5 text-[#121212]">
+              Insurance — later, before delivery
+            </span>
+            <span className="min-w-[80px] text-right text-sm font-medium leading-5 text-[#121212] tabular-nums">
+              − {formatInr(DOWN_PAYMENT_INSURANCE_INR)}
+            </span>
+          </div>
+
           <div className="flex h-16 min-h-16 items-center justify-between border-x-0 border-b-0 border-t border-[#e3f0e5] bg-gradient-to-b from-white to-[#e7ffee] px-4">
-            <span className="text-sm font-medium leading-5 text-[#121212]">Down payment amount</span>
+            <span className="text-sm font-medium leading-5 text-[#121212]">Your down payment — due now</span>
             <span className="min-w-[80px] text-right text-base font-semibold leading-6 text-[#121212] tabular-nums">
-              {formatInr(totalDownPaymentInr)}
+              {formatInr(carDownPaymentPortionInr)}
             </span>
           </div>
         </div>
 
         <div
-          className="payment-success-stagger mx-auto mt-4 min-h-[138px] w-full rounded-[16px] border border-[#ffe380] bg-[#fff7e5] px-[15px] py-3"
+          className="payment-success-stagger mx-auto mt-4 min-h-[138px] w-full rounded-[16px] border border-[#ffe380] bg-[#fff7e5] px-4 py-3"
           style={{ animationDelay: `${STAGGER_INFO_MS}ms` }}
           role="region"
           aria-label="Down payment parts"
         >
           <p className="text-xs font-normal leading-[18px] text-[#121212]">
-            Your down payment has two parts -
+            Two things to know —
           </p>
           <ul className="mt-2 space-y-2">
             <li className="flex gap-2">
@@ -232,11 +244,11 @@ export function EnterSanctionedLoanAmountScreen() {
                 />
               </span>
               <p className="max-w-[260px] text-xs leading-[18px] text-[#121212]">
-                Pay the car down payment of{" "}
+                Pay your down payment of{" "}
                 <span className="font-semibold">
                   {formatInr(carDownPaymentPortionInr)} by {CAR_DOWN_PAYMENT_DUE_LABEL}
                 </span>{" "}
-                to keep your booking active.
+                — your reservation holds until then.
               </p>
             </li>
             <li className="flex gap-2">
@@ -251,11 +263,11 @@ export function EnterSanctionedLoanAmountScreen() {
                 />
               </span>
               <p className="max-w-[260px] text-xs leading-[18px] text-[#121212]">
-                Pay{" "}
+                Insurance of{" "}
                 <span className="font-semibold">
-                  {formatInr(DOWN_PAYMENT_INSURANCE_INR)} insurance amount
+                  {formatInr(DOWN_PAYMENT_INSURANCE_INR)} is separate
                 </span>{" "}
-                after your bank disburses the loan.
+                — pay it just before delivery, for RTO registration.
               </p>
             </li>
           </ul>

@@ -1,5 +1,3 @@
-import { BASE_PATH } from "@/lib/site-config";
-
 /**
  * Canonical post-booking paths (no `basePath` prefix).
  * Use for `href`, `router.push`, and milestone rules — not for static assets.
@@ -60,19 +58,11 @@ const DELIVERY_PATH = /^\/kyc\/car-delivery-/;
 const PAYMENT_PATH = /^\/payment\//;
 
 /**
- * Strip GitHub Pages `basePath` and trailing slashes so route rules match
- * `trailingSlash: true` URLs (e.g. `/kyc/` → `/kyc`).
+ * Strip trailing slashes so route rules match `trailingSlash: true` URLs
+ * (e.g. `/kyc/` → `/kyc`).
  */
 export function normalizeAppPathname(pathname: string): string {
   let path = pathname || "/";
-
-  if (BASE_PATH && BASE_PATH !== "/") {
-    if (path === BASE_PATH || path === `${BASE_PATH}/`) {
-      path = "/";
-    } else if (path.startsWith(`${BASE_PATH}/`)) {
-      path = path.slice(BASE_PATH.length) || "/";
-    }
-  }
 
   if (path.length > 1 && path.endsWith("/")) {
     path = path.slice(0, -1);

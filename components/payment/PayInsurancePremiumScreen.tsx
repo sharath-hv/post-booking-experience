@@ -5,18 +5,16 @@ import { useSearchParams } from "next/navigation";
 
 import { KycBookingProcessingScreen } from "@/components/kyc/KycBookingProcessingScreen";
 import { KYC_ASSETS } from "@/components/kyc/kyc-assets";
-import { LoanProcessingWhatsNext } from "@/components/payment/LoanProcessingWhatsNext";
 import { FULL_PAYMENT_INSURANCE_INR } from "@/components/payment/loan-amount-demo-constants";
-import { ZeroDepInsuranceCoverageCard } from "@/components/payment/ZeroDepInsuranceCoverageCard";
+import { ShieldPolicyCard } from "@/components/payment/ShieldPolicyCard";
 import {
   buildInsurancePremiumCheckoutHref,
-  FULL_PAYMENT_BANK_ID,
   type InsuranceJourneyQuery,
 } from "@/lib/paymentUrls";
 
-const HEADLINE = "Just the insurance left";
+const HEADLINE = "Your car's nearly ready — one last payment.";
 const SUBLINE =
-  "Once you pay, we'll get your policy ready. Your car is covered from day one.";
+  "The RTO won't register a car without an active policy, so insurance is the final gate before delivery. Pay and your policy is issued on the spot — insurance is us, after all.";
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -40,28 +38,9 @@ export function PayInsurancePremiumScreen() {
     };
   }, [searchParams]);
 
-  const isFullPayment = journeyParams.bank === FULL_PAYMENT_BANK_ID;
-  const isSelfFinance = journeyParams.bank === "self_finance";
-
   const nextHref = useMemo(
     () => buildInsurancePremiumCheckoutHref(FULL_PAYMENT_INSURANCE_INR, journeyParams),
     [journeyParams],
-  );
-
-  const heroSummaryCard = useMemo(
-    () => <ZeroDepInsuranceCoverageCard premiumAmountInr={FULL_PAYMENT_INSURANCE_INR} />,
-    [],
-  );
-
-  const whatsNextCard = useMemo(
-    () => (
-      <LoanProcessingWhatsNext
-        variant="insurance_premium_due"
-        fullPaymentJourney={isFullPayment}
-        selfFinanceJourney={isSelfFinance}
-      />
-    ),
-    [isFullPayment, isSelfFinance],
   );
 
   return (
@@ -72,8 +51,9 @@ export function PayInsurancePremiumScreen() {
       nextHref={nextHref}
       prefetchHref={nextHref}
       nextCtaLabel={`Pay ${formatInr(FULL_PAYMENT_INSURANCE_INR)}`}
-      heroSummaryCard={heroSummaryCard}
-      whatsNextCard={whatsNextCard}
+      heroSummaryCard={<ShieldPolicyCard mode="quote" />}
+      callLabel="Price questions? I can call you"
+      manageBookingShowVehicleIdentification
     />
   );
 }

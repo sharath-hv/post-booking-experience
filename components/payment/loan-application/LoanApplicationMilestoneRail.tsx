@@ -124,7 +124,7 @@ export function LoanApplicationMilestoneRail({ currentRoute }: LoanApplicationMi
       aria-label="Loan application progress"
     >
       <div
-        className="pointer-events-none absolute top-[10px] h-px"
+        className="pointer-events-none absolute top-2.5 h-px"
         aria-hidden
         style={{
           left: connectorGrey.left,
@@ -133,7 +133,7 @@ export function LoanApplicationMilestoneRail({ currentRoute }: LoanApplicationMi
         }}
       />
       <div
-        className="pointer-events-none absolute top-[10px] h-px"
+        className="pointer-events-none absolute top-2.5 h-px"
         aria-hidden
         style={{
           left: connectorGreen.left,

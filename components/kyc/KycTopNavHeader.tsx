@@ -66,16 +66,19 @@ export function KycTopNavHeader({
   return (
     <header
       className={cn(
-        "sticky top-0 mx-auto flex h-14 w-full max-w-[640px] shrink-0 items-center justify-between gap-2 pl-[14px] pr-5",
-        transparent
-          ? cn(
-              "z-20 transition-[background-color] duration-200 ease-out",
-              solidOnScroll ? "bg-white" : "bg-transparent"
-            )
-          : "z-10 bg-[#FFFFFF]",
+        "sticky top-0 mx-auto flex h-14 w-full max-w-[640px] shrink-0 items-center justify-between gap-2 pl-3.5 pr-5",
+        transparent ? "z-20" : "z-10",
         className
       )}
     >
+      {/* Surface fades into the content below — no solid edge while scrolling. */}
+      <span
+        aria-hidden
+        className={cn(
+          "pointer-events-none absolute inset-x-0 top-0 -z-[1] h-[84px] bg-[linear-gradient(to_bottom,#F7FAFF_50%,rgba(247,250,255,0)_100%)] transition-opacity duration-200 ease-out",
+          transparent && !solidOnScroll ? "opacity-0" : "opacity-100"
+        )}
+      />
       <div
         className={cn(
           "flex min-h-0 min-w-0 flex-1 items-center",

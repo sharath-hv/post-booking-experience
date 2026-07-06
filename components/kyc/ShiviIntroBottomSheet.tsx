@@ -4,9 +4,10 @@ import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import shiviAvatar from "@/assets/Shivi small.png";
+import { BOTTOM_SHEET_OVERLAY_Z_CLASS } from "@/components/ui/bottom-sheet-layout";
 import { ShiviIntroCoachmark } from "@/components/kyc/ShiviIntroCoachmark";
 
-/** Parity with `ManageBookingBottomSheet` / `WhatsNextTimelineBottomSheet`. */
+/** Parity with `ManageBookingBottomSheet`. */
 const SHEET_TRANSITION_MS = 280;
 
 const USER_NAME = "Sharath";
@@ -69,7 +70,7 @@ export function ShiviIntroBottomSheet({ open, onClose }: ShiviIntroBottomSheetPr
   if (!mounted) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex flex-col">
+    <div className={`fixed inset-0 ${BOTTOM_SHEET_OVERLAY_Z_CLASS} flex flex-col`}>
       <div
         className={`absolute inset-0 bg-black/90 transition-opacity duration-[280ms] ease-out motion-reduce:opacity-100 motion-reduce:transition-none ${
           animateIn ? "opacity-100" : "opacity-0"

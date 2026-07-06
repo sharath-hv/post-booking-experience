@@ -73,7 +73,7 @@ export function ModifySelectionColourScreen() {
   );
 
   return (
-    <div className="min-h-dvh bg-white font-sans">
+    <div className="min-h-dvh bg-[#F7FAFF] font-sans">
       <KycTopNavHeader />
 
       <main className="mx-auto flex w-full max-w-[640px] flex-1 flex-col px-5 pb-[calc(7rem+env(safe-area-inset-bottom))] pt-2">
@@ -85,7 +85,7 @@ export function ModifySelectionColourScreen() {
         </h1>
 
         <section
-          className="payment-success-stagger mb-[24px] mt-5"
+          className="payment-success-stagger mb-6 mt-5"
           style={{ animationDelay: `${STAGGER_CAR_SUMMARY_MS}ms` }}
           aria-labelledby="modify-selection-current-selection-heading"
         >

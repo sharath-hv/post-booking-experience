@@ -54,9 +54,9 @@ export function CancelBookingSuccessScreen() {
   }, [router]);
 
   return (
-    <div className="relative flex min-h-dvh flex-col overflow-hidden bg-white font-sans">
+    <div className="relative flex min-h-dvh flex-col overflow-hidden bg-[#F7FAFF] font-sans">
       <div
-        className="pointer-events-none absolute inset-x-0 top-0 mx-auto h-[240px] w-full max-w-[640px] bg-gradient-to-b from-[#f5f5f5] via-white/80 to-transparent"
+        className="pointer-events-none absolute inset-x-0 top-0 mx-auto h-[240px] w-full max-w-[640px] bg-[linear-gradient(to_bottom,#f5f5f5,rgba(255,255,255,0.8),rgba(255,255,255,0))]"
         aria-hidden
       />
 
@@ -103,7 +103,7 @@ export function CancelBookingSuccessScreen() {
           </div>
 
           <div
-            className={`mt-6 flex w-full items-center gap-3 rounded-2xl border border-[#E8E8E8] bg-white px-3 py-3 text-left transition-opacity ${HERO_FADE_DURATION_CLASS} ease-out ${
+            className={`mt-6 flex w-full items-center gap-3 rounded-2xl bg-white card-elevated px-3 py-3 text-left transition-opacity ${HERO_FADE_DURATION_CLASS} ease-out ${
               showSubline ? "opacity-100" : "opacity-0"
             }`}
             aria-hidden={!showSubline}
