@@ -95,7 +95,7 @@ export function ModifySelectionReviewSelectionCard({
           }}
           aria-hidden
         />
-        <div className="absolute left-1/2 top-[26px] h-[102px] w-[180px] -translate-x-1/2">
+        <div className="absolute left-1/2 top-6 h-[102px] w-[180px] -translate-x-1/2">
           <div className="relative mx-auto h-full w-[150px]">
             <Image
               src={getModifySelectionCarCutoutForColour(colourId)}

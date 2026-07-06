@@ -1,6 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState, type ReactNode } from "react";
+
+import phoneIcon from "@/assets/Phone.svg";
 
 import { ConciergeReplies, type ConciergeReply } from "@/components/concierge/ConciergeReplies";
 import {
@@ -307,7 +310,7 @@ export function ConciergeTurnShell({
   const hasFooter = Boolean(replies?.length || timeSkip || footnote || callLabel || footerExtra);
 
   return (
-    <div className="relative min-h-dvh overflow-x-clip bg-[#f1f0f5]">
+    <div className="relative min-h-dvh overflow-x-clip bg-[#F7FAFF]">
       <AuroraLightLayer />
 
       {/* Floats above both layers; morphs expand → close while the manage layer is up. */}
@@ -401,7 +404,7 @@ export function ConciergeTurnShell({
             manage.shown && RECEDE_ACTIVE
           )}
         >
-          <div className="mx-auto w-full max-w-[640px] bg-[linear-gradient(to_top,#f1f0f5_55%,rgba(241,240,245,0))] px-5 pb-[max(2rem,env(safe-area-inset-bottom))] pt-12">
+          <div className="mx-auto w-full max-w-[640px] bg-[linear-gradient(to_top,#F7FAFF_55%,rgba(247,250,255,0))] px-5 pb-[max(2rem,env(safe-area-inset-bottom))] pt-12">
             {footnote && !footnoteInline ? (
               <div className="mb-3">
                 <ShimmerInfoCard icon="clock">{footnote}</ShimmerInfoCard>
@@ -417,15 +420,7 @@ export function ConciergeTurnShell({
                   replies?.length ? "mt-2" : undefined
                 )}
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden>
-                  <path
-                    d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
+                <Image src={phoneIcon} alt="" width={20} height={20} className="shrink-0" unoptimized aria-hidden />
                 {callLabel}
               </button>
             ) : null}

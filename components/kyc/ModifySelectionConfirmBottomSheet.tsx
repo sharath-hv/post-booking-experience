@@ -136,7 +136,7 @@ export function ModifySelectionConfirmBottomSheet({
 
               <h2
                 id={titleId}
-                className={`mt-[24px] ${bottomSheetTitleWidthWithIllustration} text-left text-[20px] font-semibold leading-[1.35] tracking-[-0.1px] text-[#121212]`}
+                className={`mt-6 ${bottomSheetTitleWidthWithIllustration} text-left text-[20px] font-semibold leading-[1.35] tracking-[-0.1px] text-[#121212]`}
               >
                 {header}
               </h2>

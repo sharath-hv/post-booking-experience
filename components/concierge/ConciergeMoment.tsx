@@ -115,8 +115,8 @@ export function ConciergeMoment({ moment }: ConciergeMomentProps) {
         const planItems: PlanItem[] = [
           {
             icon: "documents",
-            title: "Share your PAN & Aadhaar",
-            detail: "Two minutes, right now — I file everything else.",
+            title: "A quick paperwork step",
+            detail: "Confirm a couple of documents. Two minutes.",
           },
           {
             icon: "car",

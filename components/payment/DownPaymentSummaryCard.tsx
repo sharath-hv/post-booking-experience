@@ -55,7 +55,7 @@ export function DownPaymentSummaryCard({
       className="w-full rounded-xl bg-white card-elevated px-3 py-3 text-left"
       aria-label={ariaLabel}
     >
-      <dl className="m-0 flex flex-col gap-[12px]">
+      <dl className="m-0 flex flex-col gap-3">
         <div className="flex items-center justify-between gap-3">
           <dt className="text-xs font-normal leading-[18px] text-[#121212]">
             {totalLabel}

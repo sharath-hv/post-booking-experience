@@ -97,7 +97,7 @@ export function EnterSanctionedLoanAmountScreen() {
   }, [disbursementPrefill]);
 
   return (
-    <div className="flex min-h-dvh flex-col bg-[#f1f0f5] font-sans">
+    <div className="flex min-h-dvh flex-col bg-[#F7FAFF] font-sans">
       <KycTopNavHeader endSlot={<GetHelpPillButton />} />
 
       <main className="mx-auto flex min-h-0 w-full max-w-[640px] flex-1 flex-col px-5 pb-[calc(7rem+env(safe-area-inset-bottom))] pt-2">
@@ -223,7 +223,7 @@ export function EnterSanctionedLoanAmountScreen() {
         </div>
 
         <div
-          className="payment-success-stagger mx-auto mt-4 min-h-[138px] w-full rounded-[16px] border border-[#ffe380] bg-[#fff7e5] px-[15px] py-3"
+          className="payment-success-stagger mx-auto mt-4 min-h-[138px] w-full rounded-[16px] border border-[#ffe380] bg-[#fff7e5] px-4 py-3"
           style={{ animationDelay: `${STAGGER_INFO_MS}ms` }}
           role="region"
           aria-label="Down payment parts"

@@ -1,7 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
+
+import invoiceIcon from "@/assets/Invoice.svg";
 
 import { PlanList } from "@/components/concierge/artifacts";
 import { DEMO_BOOKING_ID } from "@/components/kyc/booking-car-card-content";
@@ -33,20 +36,15 @@ export type ManageBookingZoomOverlayProps = {
 
 function ReceiptGlyph() {
   return (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
+    <Image
+      src={invoiceIcon}
+      alt=""
+      width={20}
+      height={20}
+      className="shrink-0"
+      unoptimized
       aria-hidden
-    >
-      <path d="M6 3h12v18l-2-1.4L14 21l-2-1.4L10 21l-2-1.4L6 21V3z" />
-      <path d="M9.5 8h5M9.5 11.5h5" />
-    </svg>
+    />
   );
 }
 
@@ -113,7 +111,7 @@ export function ManageBookingZoomOverlay({
         <div
           aria-hidden
           className={cn(
-            "absolute inset-0 bg-[#f1f0f5]/45 transition-opacity duration-[500ms]",
+            "absolute inset-0 bg-[#F7FAFF]/45 transition-opacity duration-[500ms]",
             shown ? "opacity-100" : "opacity-0"
           )}
         />

@@ -132,7 +132,7 @@ export function FullPaymentConfirmBottomSheet({
 
             <h2
               id="full-payment-things-to-know-title"
-              className={`mt-[24px] ${bottomSheetTitleWidthWithIllustration} text-left text-[20px] font-semibold leading-[1.35] tracking-[-0.1px] text-[#121212]`}
+              className={`mt-6 ${bottomSheetTitleWidthWithIllustration} text-left text-[20px] font-semibold leading-[1.35] tracking-[-0.1px] text-[#121212]`}
             >
               Things to know before you continue!
             </h2>

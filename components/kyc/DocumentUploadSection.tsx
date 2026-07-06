@@ -58,7 +58,7 @@ function UploadFileButton({ onClick }: { onClick: () => void }) {
 
 function UploadedFileRow({ name, onRemove }: { name: string; onRemove: () => void }) {
   return (
-    <div className="relative flex h-12 items-center gap-2 rounded-lg border border-dashed border-[#e8e8e8] bg-[#f5f5f5] px-[11.5px]">
+    <div className="relative flex h-12 items-center gap-2 rounded-lg border border-dashed border-[#e8e8e8] bg-[#f5f5f5] px-3">
       <UploadSuccessBadge />
       <span className="min-w-0 flex-1 truncate text-sm leading-5 text-[#121212]">{name}</span>
       <button
@@ -87,7 +87,7 @@ export function DocumentUploadSection({
   const handleAddMore = onAddMoreClick ?? onUploadClick;
 
   return (
-    <section className="rounded-2xl bg-white card-elevated px-[15px] pb-[15px] pt-[15px]">
+    <section className="rounded-2xl bg-white card-elevated p-4">
       <p className={DOCUMENT_UPLOAD_CARD_TITLE_CLASS}>{title}</p>
       {description ? (
         <p className="mt-1 w-full text-xs leading-[18px] text-[#757575]">{description}</p>

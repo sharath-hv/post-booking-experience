@@ -159,7 +159,7 @@ export function LoanSubmitConfirmBottomSheet({
 
             <h2
               id="loan-before-proceed-title"
-              className={`mt-[24px] ${bottomSheetTitleWidthWithIllustration} text-left text-[20px] font-semibold leading-[1.35] tracking-[-0.1px] text-[#121212]`}
+              className={`mt-6 ${bottomSheetTitleWidthWithIllustration} text-left text-[20px] font-semibold leading-[1.35] tracking-[-0.1px] text-[#121212]`}
             >
               Things to know before you continue!
             </h2>

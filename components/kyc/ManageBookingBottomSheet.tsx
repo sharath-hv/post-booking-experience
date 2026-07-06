@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
@@ -54,7 +54,7 @@ import { cn } from "@/lib/utils";
 const SHEET_TRANSITION_MS = 280;
 
 type ModifyBookingActionRowProps = {
-  iconSrc: string;
+  iconSrc: StaticImageData;
   title: string;
   description: string;
   onClick?: () => void;
@@ -74,20 +74,18 @@ function ModifyBookingActionRow({
       disabled={disabled}
       onClick={disabled ? undefined : onClick}
       className={cn(
-        "flex w-full items-start gap-4 px-[15px] py-[15px] text-left transition-colors",
+        "flex w-full items-start gap-3.5 px-4 py-4 text-left transition-colors",
         disabled
           ? "cursor-not-allowed opacity-60"
           : "hover:bg-[#fafafa] active:bg-[#f5f5f5]",
       )}
     >
-      <span className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-[#f5f5f5]">
-        <span className="relative h-6 w-6 shrink-0">
-          <Image src={iconSrc} alt="" fill className="object-contain" unoptimized sizes="24px" />
-        </span>
+      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#f5f5f5]">
+        <Image src={iconSrc} alt="" width={20} height={20} className="shrink-0" unoptimized aria-hidden />
       </span>
       <span className="min-w-0 flex-1 pt-0.5">
         <span className="block text-sm font-medium leading-5 text-[#121212]">{title}</span>
-        <span className="mt-1 block text-xs leading-[18px] text-[#4b4b4b]">{description}</span>
+        <span className="mt-1 block text-xs leading-[18px] text-[#757575]">{description}</span>
       </span>
       <span className="relative mt-0.5 h-5 w-5 shrink-0">
         <Image

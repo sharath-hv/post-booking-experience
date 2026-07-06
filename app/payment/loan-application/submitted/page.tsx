@@ -5,7 +5,7 @@ import { CelebrationPageTransition } from "@/components/ui/page-transition";
 
 export default function LoanApplicationSubmittedPage() {
   return (
-    <Suspense fallback={<div className="min-h-dvh bg-[#f1f0f5]" aria-hidden />}>
+    <Suspense fallback={<div className="min-h-dvh bg-[#F7FAFF]" aria-hidden />}>
       <CelebrationPageTransition>
         <LoanApplicationSubmittedSuccessScreen />
       </CelebrationPageTransition>

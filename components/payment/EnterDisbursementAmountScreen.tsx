@@ -118,7 +118,7 @@ export function EnterDisbursementAmountScreen() {
   }, [router]);
 
   return (
-    <div className="min-h-dvh bg-[#f1f0f5] font-sans">
+    <div className="min-h-dvh bg-[#F7FAFF] font-sans">
       <KycTopNavHeader endSlot={<GetHelpPillButton />} />
 
       <main className="mx-auto w-full max-w-[640px] px-5 pb-[calc(7rem+env(safe-area-inset-bottom))] pt-2">
@@ -195,7 +195,7 @@ export function EnterDisbursementAmountScreen() {
           style={{ animationDelay: `${STAGGER_SUMMARY_MS}ms` }}
           aria-label="Down payment amount and split"
         >
-          <div className="flex gap-3 px-[15px] pb-3 pt-[15px]">
+          <div className="flex gap-3 px-4 pb-3 pt-4">
             <div
               className="relative flex size-12 shrink-0 items-center justify-center rounded-lg bg-[#e4f6e7]"
               aria-hidden
@@ -219,7 +219,7 @@ export function EnterDisbursementAmountScreen() {
 
           <hr className="border-0 border-t border-[#d5e5d8]" />
 
-          <div className="px-[15px] pb-4 pt-3">
+          <div className="px-4 pb-4 pt-3">
             <p className="text-xs font-normal leading-[18px] text-[#4b4b4b]">
               Insurance is separate — it is not part of your down payment
             </p>

@@ -136,7 +136,7 @@ export function BankTransferUtrConfirmBottomSheet({
             </div>
             <h2
               id="bank-transfer-confirm-title"
-              className={`mt-[24px] ${bottomSheetTitleWidthWithIllustration} text-left text-[20px] font-semibold leading-[28px] tracking-[-0.12px] text-[#121212]`}
+              className={`mt-6 ${bottomSheetTitleWidthWithIllustration} text-left text-[20px] font-semibold leading-[28px] tracking-[-0.12px] text-[#121212]`}
             >
               Confirm bank transfer
             </h2>

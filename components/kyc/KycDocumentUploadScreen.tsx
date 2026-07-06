@@ -68,7 +68,7 @@ export function KycDocumentUploadScreen() {
   );
 
   return (
-    <div className="min-h-dvh bg-[#f1f0f5] font-sans">
+    <div className="min-h-dvh bg-[#F7FAFF] font-sans">
       <KycTopNavHeader />
 
       <main className="mx-auto w-full max-w-[640px] px-5 pb-32 pt-2">

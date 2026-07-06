@@ -13,7 +13,7 @@ export const SUCCESS_SCREEN_HEADLINE_SUBTEXT_GAP_CLASS = "gap-2";
 export const HERO_ACTION_HEADLINE_SUBLINE_GAP_CLASS = "gap-4";
 
 /** Celebration Lottie (104×104) bottom → headline block — 8px. */
-export const CELEBRATION_LOTTIE_TO_HEADLINE_MT = "mt-[8px]";
+export const CELEBRATION_LOTTIE_TO_HEADLINE_MT = "mt-2";
 
 /**
  * Processing hero illustration (80×80) bottom → copy block — 32px.

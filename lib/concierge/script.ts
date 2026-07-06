@@ -77,18 +77,18 @@ export const VERIFY_IDENTITY_WORDS: TurnWords = {
 
 /** Arrival lead once the payment settles — close in length so the headline doesn't reflow. */
 export const ARRIVAL_LEAD_PAID =
-  "Hi Sharath, I'm Shivi — your payment's in and your price is locked.";
+  "Hi Sharath, I'm Shivi. Your payment is in and your price is locked.";
 
 const EXPRESS_SCRIPT: Record<ConciergeMomentId, TurnWords> = {
   arrival: {
     says: [
       "Hi Sharath, I'm Shivi — your payment is going through right now.",
-      "Only one thing now stands between you and a confirmed delivery date — your PAN and Aadhaar. It's two minutes, and it's best done right now, while I'm on it.",
+      "You're almost there. One short paperwork step comes next, then I can lock in your delivery date.",
       "Here's how the next few days look:",
     ],
-    replyLabel: "Let's get the paperwork done",
-    replyEcho: "Let's get the paperwork done",
-    footnote: "Do this now — your price lock and delivery date ride on it",
+    replyLabel: "Let's do the paper work",
+    replyEcho: "Let's do the paper work",
+    footnote: "Worth doing now, so your price lock and delivery date hold.",
   },
 
   documentsReceived: {
@@ -198,7 +198,7 @@ const STANDARD_OVERRIDES: Partial<Record<ConciergeMomentId, Partial<TurnWords>>>
   arrival: {
     says: [
       "Hi Sharath, I'm Shivi — your payment is going through right now.",
-      "Only one thing now stands between you and a confirmed delivery date — your PAN and Aadhaar. It's two minutes, and it's best done right now, while I'm on it.",
+      "You're almost there. One short paperwork step comes next, then I can lock in your delivery date.",
       "Here's how the next few weeks look:",
     ],
   },

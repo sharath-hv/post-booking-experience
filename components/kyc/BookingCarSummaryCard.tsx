@@ -55,7 +55,7 @@ function BookingCarSummaryCardVisualStage({
         ) : null}
       </div>
 
-      <div className="absolute left-1/2 top-[30px] z-[2] h-[85px] w-[150px] -translate-x-1/2 overflow-hidden">
+      <div className="absolute left-1/2 top-8 z-[2] h-[85px] w-[150px] -translate-x-1/2 overflow-hidden">
         <div className="relative mx-auto h-full w-full max-w-[150px]">
           <Image
             src={carCutoutSrc}

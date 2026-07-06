@@ -69,7 +69,7 @@ export function QuoteScreen() {
   );
 
   return (
-    <div className="relative min-h-dvh bg-[#f1f0f5] pb-[140px]">
+    <div className="relative min-h-dvh bg-[#F7FAFF] pb-[140px]">
       {/* Floating flow menu — sits above header / content */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-30 mx-auto max-w-[640px] px-5 pt-4">
         <div className="pointer-events-auto">

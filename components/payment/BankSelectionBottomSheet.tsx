@@ -165,7 +165,7 @@ export function BankSelectionBottomSheet({
                   type="button"
                   onClick={() => setSelectedId(bank.id)}
                   aria-pressed={selected}
-                  className={`relative flex min-h-16 w-full shrink-0 items-start gap-3 rounded-xl border px-[11px] py-3 pr-10 text-left transition-colors ${
+                  className={`relative flex min-h-16 w-full shrink-0 items-start gap-3 rounded-xl border px-3 py-3 pr-10 text-left transition-colors ${
                     selected ? "border-[#121212] bg-[#F5F5F5]" : "border-[#e8e8e8] bg-white"
                   }`}
                 >

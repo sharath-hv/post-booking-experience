@@ -310,7 +310,7 @@ function MockRazorpayPaymentPageContent() {
   if (phase === "processing") {
     return (
       <DefaultPageTransition>
-        <div className="fixed inset-0 z-50 flex min-h-dvh flex-col items-center justify-center bg-[#f1f0f5] font-sans">
+        <div className="fixed inset-0 z-50 flex min-h-dvh flex-col items-center justify-center bg-[#F7FAFF] font-sans">
           <div
             className="h-12 w-12 animate-spin rounded-full border-[3px] border-[#e6e8eb] border-t-[#3395ff]"
             aria-hidden
@@ -324,7 +324,7 @@ function MockRazorpayPaymentPageContent() {
 
   return (
     <DefaultPageTransition>
-      <div className="min-h-dvh bg-[#f1f0f5] font-sans">
+      <div className="min-h-dvh bg-[#F7FAFF] font-sans">
         <KycTopNavHeader title="Checkout" />
 
         <main className="mx-auto w-full px-4 pb-32 pt-4">

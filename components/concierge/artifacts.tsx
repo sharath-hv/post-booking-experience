@@ -4,6 +4,10 @@ import Image, { type StaticImageData } from "next/image";
 import type { ReactNode } from "react";
 
 import cretaCutout from "@/assets/Hyundai Creta.png";
+import carIcon from "@/assets/Car.svg";
+import identityIcon from "@/assets/Identity.svg";
+import moneyRoundIcon from "@/assets/Money round.svg";
+import newCarIcon from "@/assets/New car.svg";
 import { cn } from "@/lib/utils";
 
 function formatInr(amount: number) {
@@ -105,54 +109,26 @@ export type PlanItem = {
   status?: "done" | "now" | "todo";
 };
 
-const PLAN_ICON_PATHS: Record<PlanTimelineIcon, ReactNode> = {
-  documents: (
-    <>
-      <rect x="3" y="5" width="18" height="14" rx="2.5" />
-      <circle cx="8.5" cy="10.4" r="1.9" />
-      <path d="M5.6 15.8c.6-1.4 1.7-2.1 2.9-2.1s2.3.7 2.9 2.1" />
-      <path d="M14.5 10h3.5M14.5 13.5h3.5" />
-    </>
-  ),
-  car: (
-    <>
-      <path d="M4.5 16.5V13l1.9-4.3a2 2 0 0 1 1.8-1.2h7.6a2 2 0 0 1 1.8 1.2L19.5 13v3.5" />
-      <path d="M4.5 13h15" />
-      <circle cx="8" cy="16.5" r="1.6" />
-      <circle cx="16" cy="16.5" r="1.6" />
-    </>
-  ),
-  money: (
-    <>
-      <path d="M6.5 4h11M6.5 8.6h11M6.5 13.2h3.2" />
-      <path d="M9.7 13.2c6 0 6-9.2 0-9.2" />
-      <path d="m6.5 13.2 7.8 7.3" />
-    </>
-  ),
-  delivery: (
-    <>
-      <path d="m3.5 10.8 8.5-7 8.5 7" />
-      <path d="M5.5 9.2V20h13V9.2" />
-      <path d="M10 20v-5.5h4V20" />
-    </>
-  ),
+const PLAN_ICON_ASSETS: Partial<Record<PlanTimelineIcon, StaticImageData>> = {
+  documents: identityIcon,
+  car: carIcon,
+  money: moneyRoundIcon,
+  delivery: newCarIcon,
 };
 
-function PlanTimelineGlyph({ name }: { name: PlanTimelineIcon }) {
+function PlanTimelineGlyph({ name, className }: { name: PlanTimelineIcon; className?: string }) {
+  const asset = PLAN_ICON_ASSETS[name];
+  if (!asset) return null;
   return (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
+    <Image
+      src={asset}
+      alt=""
+      width={20}
+      height={20}
+      className={cn("shrink-0", className)}
+      unoptimized
       aria-hidden
-    >
-      {PLAN_ICON_PATHS[name]}
-    </svg>
+    />
   );
 }
 
@@ -173,19 +149,19 @@ export function PlanList({ items }: PlanListProps) {
         const isDone = status === "done";
         const isLast = idx === items.length - 1;
         return (
-          <li key={item.title} className="flex gap-3.5">
-            <span className="flex shrink-0 flex-col items-center">
+          <li key={item.title} className="flex items-start gap-3.5">
+            <span className="flex self-stretch shrink-0 flex-col items-center">
               <span
                 className={cn(
                   "flex h-9 w-9 shrink-0 items-center justify-center rounded-full",
                   isNow
-                    ? "bg-[#5920c5] text-white ring-4 ring-[#efe9fb]"
+                    ? "mt-5 bg-[#5920c5] text-white ring-4 ring-[#efe9fb]"
                     : isDone
                       ? "bg-[#e7f6ee] text-[#0fa457]"
                       : "bg-[#f5f5f5] text-[#8f8e92]"
                 )}
               >
-                <PlanTimelineGlyph name={item.icon} />
+                <PlanTimelineGlyph name={item.icon} className={isNow ? "brightness-0 invert" : undefined} />
               </span>
               {!isLast ? (
                 <span
@@ -201,14 +177,14 @@ export function PlanList({ items }: PlanListProps) {
                 />
               ) : null}
             </span>
-            <div className={cn("min-w-0", isNow ? "pt-0.5" : "pt-[7px]", !isLast && "pb-6")}>
+            <div className={cn("min-w-0", isNow && "pt-0.5", !isLast && "pb-6")}>
               {isNow ? (
                 <p className="mb-1 text-[10px] font-semibold uppercase leading-4 tracking-[0.08em] text-[#5920c5]">
                   Now
                 </p>
               ) : null}
               <div className="flex items-center gap-1.5">
-                <p className="text-sm font-semibold leading-5 text-[#121212]">{item.title}</p>
+                <p className="text-sm font-medium leading-5 text-[#121212]">{item.title}</p>
                 {isDone ? (
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden className="shrink-0">
                     <path

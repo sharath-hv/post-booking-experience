@@ -100,7 +100,7 @@ export function KycVerificationInProgressScreen({
   }, [router, nextHref]);
 
   return (
-    <div className="flex min-h-dvh flex-col bg-[#f1f0f5] font-sans">
+    <div className="flex min-h-dvh flex-col bg-[#F7FAFF] font-sans">
       <div className="mx-auto flex w-full max-w-[640px] flex-1 flex-col">
         <div
           className={`kyc-pending-hero-card relative isolate mx-auto flex min-h-0 w-full flex-1 flex-col ${HERO_MIN_HEIGHT}`}

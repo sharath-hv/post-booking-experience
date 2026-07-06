@@ -112,7 +112,7 @@ export function ChooseModifyBookingScreen() {
   }, [router, selectedOption.continuePath]);
 
   return (
-    <div className="min-h-dvh bg-[#f1f0f5] font-sans">
+    <div className="min-h-dvh bg-[#F7FAFF] font-sans">
       <KycTopNavHeader endSlot={<GetHelpPillButton />} />
 
       <main className="mx-auto w-full max-w-[640px] px-5 pb-[calc(7rem+env(safe-area-inset-bottom))] pt-2">

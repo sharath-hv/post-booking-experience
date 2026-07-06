@@ -140,7 +140,7 @@ export function BookingCelebrationSuccessScreen({
   }, [showHeader, onHeadlineReveal]);
 
   return (
-    <div className="relative flex h-dvh flex-col overflow-hidden bg-[#f1f0f5] font-sans">
+    <div className="relative flex h-dvh flex-col overflow-hidden bg-[#F7FAFF] font-sans">
       <div
         className="pointer-events-none absolute inset-x-0 top-0 h-[50%] bg-[linear-gradient(to_bottom,rgba(232,248,239,0.9),rgba(244,251,247,0.4),rgba(244,251,247,0))] transition-opacity duration-700"
         aria-hidden
@@ -214,7 +214,7 @@ export function BookingCelebrationSuccessScreen({
                     />
                   </div>
 
-                  <div className="absolute left-1/2 top-[30px] h-[102px] w-[180px] -translate-x-1/2 overflow-hidden">
+                  <div className="absolute left-1/2 top-8 h-[102px] w-[180px] -translate-x-1/2 overflow-hidden">
                     <div className="relative mx-auto h-full w-full max-w-[180px]">
                       <Image
                         src={BOOKING_CONFIRMED_ASSETS.carCutout}

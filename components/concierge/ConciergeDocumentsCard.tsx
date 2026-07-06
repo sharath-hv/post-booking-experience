@@ -1,11 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import { useCallback, useState } from "react";
 
 import { KycUploadSourceBottomSheet } from "@/components/kyc/KycUploadSourceBottomSheet";
 import {
-  KYC_UPLOAD_DIGILOCKER_LOGO,
   type KycDocumentKind,
   type KycUploadSource,
 } from "@/components/kyc/kyc-upload-content";
@@ -167,68 +165,11 @@ export function ConciergeDocumentsCard({
   return (
     <>
       {/* Pre-action caveat — must be read before files are picked, so it sits above the card. */}
-      <ShimmerInfoCard lead="Quick check:">
-        the name should match on both documents, and the Aadhaar address should be in Bengaluru
-        — where your car gets registered.
+      <ShimmerInfoCard icon="clock">
+        Quick check: the name should match on both documents, and the Aadhaar address should be in Bengaluru — where your car gets registered.
       </ShimmerInfoCard>
 
       <div className="overflow-hidden rounded-2xl bg-white card-elevated">
-        <button
-          type="button"
-          onClick={handleDigilockerFetchAll}
-          className={cn(
-            "flex w-full items-center gap-3 bg-[#f9f6ff] px-4 py-3.5 text-left transition-colors",
-            "hover:bg-[#f3edfd] active:bg-[#efe9fb]"
-          )}
-        >
-          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white">
-            <span className="relative h-6 w-6">
-              <Image
-                src={KYC_UPLOAD_DIGILOCKER_LOGO}
-                alt=""
-                fill
-                className="object-contain"
-                unoptimized
-                sizes="24px"
-              />
-            </span>
-          </span>
-          <span className="min-w-0 flex-1">
-            <span className="flex items-center gap-1.5">
-              <span className="text-sm font-semibold leading-5 text-[#121212]">
-                Fetch from DigiLocker
-              </span>
-              {allDone ? (
-                <CheckBadge />
-              ) : (
-                <span className="shrink-0 rounded-full bg-[#efe9fb] px-1.5 py-0.5 text-[10px] font-semibold uppercase leading-3 tracking-[0.06em] text-[#5920c5]">
-                  Fastest
-                </span>
-              )}
-            </span>
-            <span className="mt-0.5 block text-xs leading-[18px] text-[#757575]">
-              Both documents in one tap — no photos needed
-            </span>
-          </span>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden className="shrink-0 text-[#5920c5]">
-            <path
-              d="M9 6l6 6-6 6"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </button>
-
-        <div className="flex items-center gap-3 px-4 pb-1 pt-3" aria-hidden>
-          <span className="h-px flex-1 bg-[#efefef]" />
-          <span className="text-[10px] font-medium uppercase leading-4 tracking-[0.08em] text-[#a3a2a7]">
-            or add them yourself
-          </span>
-          <span className="h-px flex-1 bg-[#efefef]" />
-        </div>
-
         <DocumentRow
           title="Aadhaar card"
           hint="Front and back, clear photos"

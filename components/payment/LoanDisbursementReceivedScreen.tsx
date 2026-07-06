@@ -112,7 +112,7 @@ export function LoanDisbursementReceivedScreen({
   }, [showAmountCard]);
 
   return (
-    <div className="relative min-h-dvh overflow-hidden bg-[#f1f0f5] font-sans shadow-[0_-4px_8px_-2px_rgba(54,53,76,0.06)]">
+    <div className="relative min-h-dvh overflow-hidden bg-[#F7FAFF] font-sans shadow-[0_-4px_8px_-2px_rgba(54,53,76,0.06)]">
       <div
         className="pointer-events-none absolute inset-x-0 top-0 h-[50%] bg-[linear-gradient(to_bottom,rgba(232,248,239,0.9),rgba(244,251,247,0.4),rgba(244,251,247,0))] transition-opacity duration-700"
         aria-hidden

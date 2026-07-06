@@ -74,7 +74,7 @@ export function ConciergeReplies({ replies, className }: ConciergeRepliesProps) 
           className={
             reply.kind === "soft"
               ? "reply-soft-cta"
-              : "primary-cta disabled:cursor-not-allowed disabled:bg-[#a0a0a0] disabled:opacity-100 disabled:hover:bg-[#a0a0a0]"
+              : "primary-cta"
           }
         >
           {reply.label}

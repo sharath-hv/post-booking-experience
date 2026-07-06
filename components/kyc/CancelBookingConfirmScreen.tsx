@@ -65,7 +65,7 @@ export function CancelBookingConfirmScreen() {
   );
 
   return (
-    <div className="relative min-h-dvh bg-[#f1f0f5] font-sans">
+    <div className="relative min-h-dvh bg-[#F7FAFF] font-sans">
       <div className="relative z-10 mx-auto flex w-full max-w-[640px] flex-1 flex-col">
         <KycTopNavHeader onBack={onGoBack} transparent />
 

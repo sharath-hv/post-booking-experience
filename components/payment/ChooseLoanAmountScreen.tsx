@@ -156,10 +156,10 @@ export function ChooseLoanAmountScreen() {
     sliderSpan > 0 ? ((loanAmount - MIN_LOAN_INR) / sliderSpan) * 100 : 0;
 
   return (
-    <div className="min-h-dvh bg-[#f1f0f5] font-sans">
+    <div className="min-h-dvh bg-[#F7FAFF] font-sans">
       <KycTopNavHeader endSlot={<GetHelpPillButton />} />
 
-      <main className="mx-auto w-full max-w-[640px] px-5 pb-[calc(7rem+env(safe-area-inset-bottom))] pt-[8px]">
+      <main className="mx-auto w-full max-w-[640px] px-5 pb-[calc(7rem+env(safe-area-inset-bottom))] pt-2">
         <h1
           className="payment-success-stagger text-2xl font-semibold leading-8 tracking-[-0.1px] text-[#121212]"
           style={{ animationDelay: `${STAGGER_TITLE_MS}ms` }}
@@ -273,7 +273,7 @@ export function ChooseLoanAmountScreen() {
           style={{ animationDelay: `${STAGGER_SUMMARY_CARD_MS}ms` }}
           aria-label="Down payment amount and split"
         >
-          <div className="flex gap-3 px-[15px] pb-3 pt-[15px]">
+          <div className="flex gap-3 px-4 pb-3 pt-4">
             <div
               className="relative flex size-12 shrink-0 items-center justify-center rounded-lg bg-[#e4f6e7]"
               aria-hidden
@@ -297,7 +297,7 @@ export function ChooseLoanAmountScreen() {
 
           <hr className="border-0 border-t border-[#d5e5d8]" />
 
-          <div className="px-[15px] pb-4 pt-3">
+          <div className="px-4 pb-4 pt-3">
             <p className="text-xs font-normal leading-[18px] text-[#4b4b4b]">
               Your down payment is split into two parts
             </p>

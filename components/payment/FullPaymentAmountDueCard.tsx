@@ -107,7 +107,7 @@ export function FullPaymentAmountDueCard({
       className="w-full rounded-xl bg-white card-elevated px-3 py-3 text-left"
       aria-label="Amount to pay"
     >
-      <div className="flex flex-col gap-[12px]">
+      <div className="flex flex-col gap-3">
         <AmountRow
           label="Amount for your new car"
           amountInr={carAmountInr}
