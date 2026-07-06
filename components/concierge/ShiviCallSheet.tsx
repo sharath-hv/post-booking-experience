@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 import { KYC_ASSETS } from "@/components/kyc/kyc-assets";
+import { BOTTOM_SHEET_OVERLAY_Z_CLASS } from "@/components/ui/bottom-sheet-layout";
 import { BottomSheetPortal } from "@/components/ui/BottomSheetPortal";
 
 /** Parity with the other bottom sheets. */
@@ -65,7 +66,7 @@ export function ShiviCallSheet({ open, onClose }: ShiviCallSheetProps) {
 
   return (
     <BottomSheetPortal>
-      <div className="fixed inset-0 z-[100] flex flex-col">
+      <div className={`fixed inset-0 ${BOTTOM_SHEET_OVERLAY_Z_CLASS} flex flex-col`}>
         <button
           type="button"
           aria-label="Close"

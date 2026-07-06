@@ -1,17 +1,23 @@
 import type { CSSProperties, ReactNode } from "react";
 
+import infoIcon from "@/assets/Info.svg";
 import warningIcon from "@/assets/Warning.svg";
 
 import { cn } from "@/lib/utils";
 
-type ShimmerInfoIcon = "alert" | "clock";
+type ShimmerInfoIcon = "alert" | "clock" | "info";
 
 const WARNING_ICON_MASK_STYLE = {
   maskImage: `url(${warningIcon.src})`,
   WebkitMaskImage: `url(${warningIcon.src})`,
 } satisfies CSSProperties;
 
-const ICON_PATHS: Record<Exclude<ShimmerInfoIcon, "alert">, ReactNode> = {
+const INFO_ICON_MASK_STYLE = {
+  maskImage: `url(${infoIcon.src})`,
+  WebkitMaskImage: `url(${infoIcon.src})`,
+} satisfies CSSProperties;
+
+const ICON_PATHS: Record<"clock", ReactNode> = {
   clock: (
     <>
       <circle cx="12" cy="12" r="8.5" stroke="currentColor" strokeWidth="2" />
@@ -27,7 +33,7 @@ const ICON_PATHS: Record<Exclude<ShimmerInfoIcon, "alert">, ReactNode> = {
 };
 
 export type ShimmerInfoCardProps = {
-  /** `alert` for caveats/checks, `clock` for deadlines/expectations. */
+  /** `alert` for caveats/checks, `clock` for deadlines/expectations, `info` for general information. */
   icon?: ShimmerInfoIcon;
   /** Bold scent-word prefix, e.g. “Quick check:”. */
   lead?: string;
@@ -44,15 +50,21 @@ export function ShimmerInfoCard({ icon = "alert", lead, children, className }: S
   return (
     <div
       className={cn(
-        "next-step-shimmer flex items-start gap-2.5 rounded-xl border border-[#f3e0b6] bg-[linear-gradient(180deg,rgba(255,247,229,1)_0%,rgba(255,255,255,0.5)_100%)] p-3",
+        "next-step-shimmer flex items-center gap-2.5 rounded-2xl border border-[#f3e0b6] bg-[linear-gradient(180deg,rgba(255,247,229,1)_0%,rgba(255,255,255,0.8)_100%)] p-3",
         className
       )}
     >
       {icon === "alert" ? (
         <span
           aria-hidden
-          className="mt-px h-4 w-4 shrink-0 bg-[#D16900] [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center] [-webkit-mask-size:contain] [-webkit-mask-repeat:no-repeat] [-webkit-mask-position:center]"
+          className="h-4 w-4 shrink-0 bg-[#D16900] [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center] [-webkit-mask-size:contain] [-webkit-mask-repeat:no-repeat] [-webkit-mask-position:center]"
           style={WARNING_ICON_MASK_STYLE}
+        />
+      ) : icon === "info" ? (
+        <span
+          aria-hidden
+          className="h-5 w-5 shrink-0 bg-[#7a5410] [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center] [-webkit-mask-size:contain] [-webkit-mask-repeat:no-repeat] [-webkit-mask-position:center]"
+          style={INFO_ICON_MASK_STYLE}
         />
       ) : (
         <svg
@@ -61,7 +73,7 @@ export function ShimmerInfoCard({ icon = "alert", lead, children, className }: S
           viewBox="0 0 24 24"
           fill="none"
           aria-hidden
-          className="mt-px shrink-0 text-[#a76406]"
+          className="shrink-0 text-[#a76406]"
         >
           {ICON_PATHS[icon]}
         </svg>

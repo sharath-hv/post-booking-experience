@@ -8,7 +8,6 @@ import {
   type KycUploadSource,
 } from "@/components/kyc/kyc-upload-content";
 import {
-  appendKycDigilockerPanAadhaarUploads,
   appendKycMockUpload,
 } from "@/lib/kyc-mock-upload";
 import type { KycUploadsState } from "@/lib/kyc-upload-state";
@@ -115,9 +114,8 @@ function DocumentRow({ title, hint, files, allowMultiple, onUpload, onRemove }: 
 }
 
 /**
- * The documents handover, as one card: DigiLocker (both documents, one tap)
- * leads; manual upload rows follow. Caveats and privacy live below as quiet
- * captions instead of standalone cards.
+ * The documents handover as one card — manual upload rows with caveats and
+ * privacy as quiet captions below.
  */
 export function ConciergeDocumentsCard({
   uploads,
@@ -132,22 +130,14 @@ export function ConciergeDocumentsCard({
     setSourceSheetOpen(true);
   }, []);
 
-  const handleDigilockerFetchAll = useCallback(() => {
-    onUploadsChange(appendKycDigilockerPanAadhaarUploads(uploads, mockUploadCounterRef));
-  }, [mockUploadCounterRef, onUploadsChange, uploads]);
-
   const handleMockUpload = useCallback(
     (source: KycUploadSource) => {
-      if (source === "digilocker") {
-        handleDigilockerFetchAll();
-        return;
-      }
       if (activeDocument == null) return;
       onUploadsChange(
         appendKycMockUpload(uploads, activeDocument, source, mockUploadCounterRef),
       );
     },
-    [activeDocument, handleDigilockerFetchAll, mockUploadCounterRef, onUploadsChange, uploads],
+    [activeDocument, mockUploadCounterRef, onUploadsChange, uploads],
   );
 
   const handleRemove = useCallback(
@@ -165,11 +155,11 @@ export function ConciergeDocumentsCard({
   return (
     <>
       {/* Pre-action caveat — must be read before files are picked, so it sits above the card. */}
-      <ShimmerInfoCard icon="clock">
-        Quick check: the name should match on both documents, and the Aadhaar address should be in Bengaluru — where your car gets registered.
+      <ShimmerInfoCard icon="info" lead="Quick check:">
+        the name should match on both documents, and the Aadhaar address should be in Bengaluru — where your car gets registered.
       </ShimmerInfoCard>
 
-      <div className="overflow-hidden rounded-2xl bg-white card-elevated">
+      <div className="mt-4 overflow-hidden rounded-2xl bg-white card-elevated">
         <DocumentRow
           title="Aadhaar card"
           hint="Front and back, clear photos"
@@ -188,7 +178,7 @@ export function ConciergeDocumentsCard({
         />
       </div>
 
-      <div className="px-1">
+      <div className="mt-3 px-1">
         <p className="flex items-start gap-2 text-xs leading-[18px] text-[#757575]">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden className="mt-0.5 shrink-0">
             <rect x="5" y="10.5" width="14" height="9.5" rx="2" stroke="currentColor" strokeWidth="1.8" />
@@ -207,6 +197,7 @@ export function ConciergeDocumentsCard({
         open={sourceSheetOpen}
         onClose={() => setSourceSheetOpen(false)}
         onSelect={handleMockUpload}
+        includeDigilocker={false}
       />
     </>
   );

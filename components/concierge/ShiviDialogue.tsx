@@ -113,8 +113,13 @@ export function ShiviDialogue({
             priority
           />
         </span>
-        <span className="text-sm font-medium leading-5 text-[#121212]">Shivi</span>
-        <span className="text-xs leading-4 text-[#8f8e92]">ACKO Drive</span>
+        <div className="flex items-center gap-1.5">
+          <span className="text-sm font-medium leading-5 text-[#121212]">Shivi</span>
+          <span aria-hidden className="text-xs leading-4 text-[#757575]">
+            ·
+          </span>
+          <span className="text-xs leading-4 text-[#757575]">ACKO Drive</span>
+        </div>
       </div>
 
       <div className="mt-4 flex flex-col gap-3">

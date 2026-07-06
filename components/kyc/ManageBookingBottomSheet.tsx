@@ -18,6 +18,7 @@ import { BottomSheetCloseIcon } from "@/components/ui/BottomSheetCloseIcon";
 import { BottomSheetPortal } from "@/components/ui/BottomSheetPortal";
 import {
   BOTTOM_SHEET_MAX_HEIGHT_CLASS,
+  BOTTOM_SHEET_OVERLAY_Z_CLASS,
   BOTTOM_SHEET_SCROLL_BODY_CLASS,
   BOTTOM_SHEET_SCROLL_PANEL_CLASS,
 } from "@/components/ui/bottom-sheet-layout";
@@ -453,7 +454,7 @@ function ManageBookingBottomSheetInner({
 
   return (
     <BottomSheetPortal>
-      <div className="fixed inset-0 z-[100]">
+      <div className={`fixed inset-0 ${BOTTOM_SHEET_OVERLAY_Z_CLASS}`}>
       <button
         type="button"
         className={`absolute inset-0 bg-black/90 transition-opacity duration-[280ms] ease-out motion-reduce:opacity-100 motion-reduce:transition-none ${

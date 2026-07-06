@@ -5,6 +5,7 @@ import { useCallback, useEffect, useId, useRef, useState } from "react";
 
 import checkboxSelected from "@/assets/Checkbox selected.svg";
 import checkboxUnselected from "@/assets/Checkbox unselected.svg";
+import { BOTTOM_SHEET_OVERLAY_Z_CLASS } from "@/components/ui/bottom-sheet-layout";
 import { BottomSheetCloseIcon } from "@/components/ui/BottomSheetCloseIcon";
 import { BottomSheetPortal } from "@/components/ui/BottomSheetPortal";
 import {
@@ -123,7 +124,7 @@ export function CancelBookingReasonBottomSheet({
 
   return (
     <BottomSheetPortal>
-      <div className="fixed inset-0 z-[100]">
+      <div className={`fixed inset-0 ${BOTTOM_SHEET_OVERLAY_Z_CLASS}`}>
         <button
           type="button"
           className={`absolute inset-0 bg-black/90 transition-opacity duration-[280ms] ease-out motion-reduce:opacity-100 motion-reduce:transition-none ${

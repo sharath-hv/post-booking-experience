@@ -367,7 +367,7 @@ export function ConciergeTurnShell({
         />
 
         {contentShown && (artifact || children) ? (
-          <div className="kyc-stagger mt-7 flex flex-col gap-4">
+          <div className="kyc-stagger mt-6 flex flex-col gap-2">
             {artifact}
             {children}
           </div>
@@ -388,7 +388,7 @@ export function ConciergeTurnShell({
 
         {footnote && footnoteInline && ready ? (
           <div className="kyc-stagger mt-4">
-            <ShimmerInfoCard icon="clock">{footnote}</ShimmerInfoCard>
+            <ShimmerInfoCard icon="info">{footnote}</ShimmerInfoCard>
           </div>
         ) : null}
       </main>
@@ -407,7 +407,7 @@ export function ConciergeTurnShell({
           <div className="mx-auto w-full max-w-[640px] bg-[linear-gradient(to_top,#F7FAFF_55%,rgba(247,250,255,0))] px-5 pb-[max(2rem,env(safe-area-inset-bottom))] pt-12">
             {footnote && !footnoteInline ? (
               <div className="mb-3">
-                <ShimmerInfoCard icon="clock">{footnote}</ShimmerInfoCard>
+                <ShimmerInfoCard icon="info">{footnote}</ShimmerInfoCard>
               </div>
             ) : null}
             {replies?.length ? <ConciergeReplies replies={replies} /> : null}

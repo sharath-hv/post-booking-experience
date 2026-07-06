@@ -101,7 +101,7 @@ const EXPRESS_SCRIPT: Record<ConciergeMomentId, TurnWords> = {
       "Matching your Aadhaar details…",
       "Cross-checking name and address…",
     ],
-    workingDoneLabel: "Verified ✓ — your purchase is officially open",
+    workingDoneLabel: "Verified — your purchase is officially open",
     replyLabel: "Great — what's next?",
     replyEcho: "Great — what's next?",
     callLabel: "Questions? I can call you",
