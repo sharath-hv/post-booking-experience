@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { Fragment, useEffect, useRef, useState, type ReactNode } from "react";
 
-import { KYC_ASSETS } from "@/components/kyc/kyc-assets";
+import shiviAvatar from "@/assets/Shivi small.png";
 import { WordByWordLine } from "@/components/payment/WordByWordLine";
 import { instantRevealEnabled } from "@/lib/concierge/instant";
 import { cn } from "@/lib/utils";
@@ -110,7 +110,7 @@ export function ShiviDialogue({
       >
         <span className="relative h-8 w-8 shrink-0 overflow-hidden rounded-full bg-[#f5f5f5]">
           <Image
-            src={KYC_ASSETS.avatarSmall}
+            src={shiviAvatar}
             alt=""
             fill
             className="object-cover"

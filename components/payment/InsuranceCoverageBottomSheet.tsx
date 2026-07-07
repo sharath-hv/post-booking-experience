@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { KYC_ASSETS } from "@/components/kyc/kyc-assets";
+import shiviAvatar from "@/assets/Shivi small.png";
 import {
   INSURANCE_CLAIMS_LINE,
   INSURANCE_COVERAGE_ITEMS,
@@ -60,7 +60,7 @@ function ShiviLine({ text }: { text: string }) {
   return (
     <div className="flex items-center gap-3">
       <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full bg-[#f5f5f5]">
-        <Image src={KYC_ASSETS.avatarSmall} alt="" fill className="object-cover" unoptimized sizes="36px" />
+        <Image src={shiviAvatar} alt="" fill className="object-cover" unoptimized sizes="36px" />
       </span>
       <p className="min-w-0 text-sm leading-5 text-[#121212]">{text}</p>
     </div>

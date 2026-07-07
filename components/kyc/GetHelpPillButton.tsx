@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-import { KYC_ASSETS } from "@/components/kyc/kyc-assets";
+import shiviAvatar from "@/assets/Shivi small.png";
 import { cn } from "@/lib/utils";
 
 type GetHelpPillButtonProps = {
@@ -45,7 +45,7 @@ export function GetHelpPillButton({
         aria-hidden
       >
         <Image
-          src={KYC_ASSETS.avatarSmall}
+          src={shiviAvatar}
           alt=""
           fill
           className="object-cover"

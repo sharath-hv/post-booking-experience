@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
-import { KYC_ASSETS } from "@/components/kyc/kyc-assets";
+import shiviAvatar from "@/assets/Shivi small.png";
 import { BOTTOM_SHEET_OVERLAY_Z_CLASS } from "@/components/ui/bottom-sheet-layout";
 import { BottomSheetPortal } from "@/components/ui/BottomSheetPortal";
 
@@ -86,7 +86,7 @@ export function ShiviCallSheet({ open, onClose }: ShiviCallSheetProps) {
           <div className="flex flex-col items-center px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-6 text-center">
             <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full bg-[#f5f5f5]">
               <Image
-                src={KYC_ASSETS.avatarSmall}
+                src={shiviAvatar}
                 alt=""
                 fill
                 className="object-cover"
