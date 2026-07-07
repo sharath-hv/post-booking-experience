@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 
@@ -61,6 +62,14 @@ export type ConciergeMomentProps = {
  * routes, demo time-skips) for the shell.
  */
 export function ConciergeMoment({ moment }: ConciergeMomentProps) {
+  return (
+    <Suspense>
+      <ConciergeMomentInner moment={moment} />
+    </Suspense>
+  );
+}
+
+function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [flow, setFlow] = useState<ExperienceFlow>(DEFAULT_EXPERIENCE_FLOW);

@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+
 import { LoanDealerDownPaymentConfirmedScreen } from "@/components/payment/LoanDealerDownPaymentConfirmedScreen";
 
 /**
@@ -5,5 +7,9 @@ import { LoanDealerDownPaymentConfirmedScreen } from "@/components/payment/LoanD
  * Sits between /payment/loan-sanctioned and /payment/loan-disbursement-received.
  */
 export default function DownPaymentDealerConfirmedPage() {
-  return <LoanDealerDownPaymentConfirmedScreen />;
+  return (
+    <Suspense fallback={null}>
+      <LoanDealerDownPaymentConfirmedScreen />
+    </Suspense>
+  );
 }
