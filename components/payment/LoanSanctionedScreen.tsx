@@ -3,23 +3,16 @@
 import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 
-import { CarPriceBreakupCard } from "@/components/concierge/artifacts";
+import { AmountReceivedCard, NextStepCard } from "@/components/concierge/artifacts";
+import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
 import { bankForQueryParam } from "@/components/payment/acko-drive-finance-bank";
-import { KycBookingProcessingScreen } from "@/components/kyc/KycBookingProcessingScreen";
 import {
   ACKO_LOAN_DOWN_PAYMENT_INR,
   BANK_DISBURSEMENT_INR,
   BOOKING_AMOUNT_PAID_INR,
-  FULL_PAYMENT_INSURANCE_INR,
-  ON_ROAD_PRICE_INR,
 } from "@/components/payment/loan-amount-demo-constants";
-import { buildDownPaymentCheckoutHref } from "@/lib/paymentUrls";
 
-const LOAN_SANCTIONED_HEADLINE = "Your loan is approved, Sharath!";
-
-/** Urgency line above the CTA — consequence, not a deadline to procrastinate against. */
-const CTA_WARNING_LINE =
-  "Delivery prep starts the moment this lands — every day here moves your delivery date";
+const DEALER_NAME = "Advaith Hyundai";
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -30,52 +23,55 @@ function formatInr(amount: number) {
 }
 
 /**
- * Loan sanctioned — the bank's disbursement is the bank's decision (no slider);
- * the down payment is DERIVED from the price identity and shown in full. This is
- * the one place the split appears — the CTA goes straight to checkout.
+ * Loan approved — Shivi notifies the user, explains the dealer-call down-payment
+ * flow, and waits for the user to confirm the payment is arranged before
+ * instructing the bank to disburse.
  */
 export function LoanSanctionedScreen() {
   const searchParams = useSearchParams();
   const bankId = searchParams.get("bank");
   const bank = useMemo(() => bankForQueryParam(bankId), [bankId]);
 
-  const subline = useMemo(
-    () =>
-      `${bank.name} will disburse ${formatInr(BANK_DISBURSEMENT_INR)} straight to the dealer. With your ${formatInr(BOOKING_AMOUNT_PAID_INR)} already in and insurance saved for just before delivery, your down payment works out to ${formatInr(ACKO_LOAN_DOWN_PAYMENT_INR)} — here's the whole picture.`,
+  const says = useMemo(
+    () => [
+      "Your loan is approved, Sharath.",
+      `${bank.name} has sanctioned ${formatInr(BANK_DISBURSEMENT_INR)}. ${DEALER_NAME} will call you to arrange the down payment — pay it directly to them based on what's discussed on that call.`,
+      `Once they confirm receipt, I'll instruct ${bank.name} to release the funds to the dealer.`,
+    ],
     [bank.name],
   );
 
-  const nextHref = useMemo(
-    () =>
-      buildDownPaymentCheckoutHref(
-        bankId,
-        String(BANK_DISBURSEMENT_INR),
-        ACKO_LOAN_DOWN_PAYMENT_INR,
-      ),
-    [bankId],
-  );
+  const dealerConfirmedHref = useMemo(() => {
+    const params = new URLSearchParams();
+    if (bankId) params.set("bank", bankId);
+    params.set("loan_amount", String(BANK_DISBURSEMENT_INR));
+    return `/payment/down-payment-dealer-confirmed?${params.toString()}`;
+  }, [bankId]);
 
   return (
-    <KycBookingProcessingScreen
-      headline={LOAN_SANCTIONED_HEADLINE}
-      subline={subline}
-      heroSummaryCard={
-        <CarPriceBreakupCard
-          totalInr={ON_ROAD_PRICE_INR}
-          bookingPaidInr={BOOKING_AMOUNT_PAID_INR}
-          disbursementLabel={`${bank.name} disburses`}
-          disbursementInr={BANK_DISBURSEMENT_INR}
-          insuranceInr={FULL_PAYMENT_INSURANCE_INR}
-          dueLabel="Your down payment — due now"
-          dueInr={ACKO_LOAN_DOWN_PAYMENT_INR}
-        />
+    <ConciergeTurnShell
+      says={says}
+      artifact={
+        <div className="flex flex-col gap-5">
+          <NextStepCard
+            title={`Watch for ${DEALER_NAME}'s call`}
+            body="They'll walk you through the down payment — pay it directly to them."
+          />
+          <AmountReceivedCard
+            amountInr={BANK_DISBURSEMENT_INR}
+            title={`Approved by ${bank.name}`}
+            rows={[
+              { label: "Disburses to", value: DEALER_NAME },
+              { label: "Your down payment", value: formatInr(ACKO_LOAN_DOWN_PAYMENT_INR) },
+              { label: "Price lock — already paid", value: formatInr(BOOKING_AMOUNT_PAID_INR) },
+            ]}
+            note={`${bank.name} releases funds to ${DEALER_NAME} once they confirm the down payment.`}
+          />
+        </div>
       }
-      nextHref={nextHref}
-      prefetchHref={nextHref}
-      nextCtaLabel={`Pay down payment ${formatInr(ACKO_LOAN_DOWN_PAYMENT_INR)}`}
-      ctaWarningLine={CTA_WARNING_LINE}
-      callLabel="Questions on the split? I can call you"
-      manageBookingShowVehicleIdentification
+      timeSkip={{ label: "After the dealer's call · demo", href: dealerConfirmedHref }}
+      callLabel="Questions on the loan? I can call you"
+      showMenu
     />
   );
 }

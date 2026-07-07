@@ -27,6 +27,8 @@ export const JOURNEY_PATHS = {
     default: "/payment/default",
     choose: "/payment/choose",
     payDownPayment: "/payment/pay-down-payment",
+    dealerDownPaymentConfirmed: "/payment/down-payment-dealer-confirmed",
+    loanDisbursementReceived: "/payment/loan-disbursement-received",
   },
 } as const;
 

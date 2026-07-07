@@ -321,7 +321,7 @@ export function ConciergeTurnShell({
   const hasFooter = Boolean(replies?.length || timeSkip || footnote || callLabel || footerExtra);
 
   return (
-    <div className="relative min-h-dvh overflow-x-clip bg-[#F7FAFF]">
+    <div className="relative min-h-dvh overflow-x-clip bg-[#F1F5FD]">
       <AuroraLightLayer />
 
       {/* Floats above both layers; morphs expand → close while the manage layer is up. */}
@@ -423,7 +423,7 @@ export function ConciergeTurnShell({
             manage.shown && RECEDE_ACTIVE
           )}
         >
-          <div className="mx-auto w-full max-w-[640px] bg-[linear-gradient(to_top,#F7FAFF_55%,rgba(247,250,255,0))] px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-12">
+          <div className="mx-auto w-full max-w-[640px] bg-[linear-gradient(to_top,#F1F5FD_55%,rgba(241,245,253,0))] px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-12">
             {footnote && !footnoteInline ? (
               <div className="mb-3 mt-3">
                 <ShimmerInfoCard icon="info" lead={footnoteLead}>{footnote}</ShimmerInfoCard>

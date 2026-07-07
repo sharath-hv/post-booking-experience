@@ -36,7 +36,7 @@ export function LoanBookingProcessingScreen() {
       headline={LOAN_PROCESSING_HEADLINE}
       subline={subline}
       heroSummaryCard={
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-5">
           <NextStepCard
             title={`Pick up ${bank.name}'s call`}
             body="A bank representative will call within 2 business days to confirm a few details — share the OTP they ask for."

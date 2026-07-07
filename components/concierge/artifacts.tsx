@@ -60,7 +60,7 @@ export function AmountReceivedCard({
       <div className="flex items-center gap-3 px-4 py-4">
         <span
           className={cn(
-            "flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-colors duration-300",
+            "flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition-colors duration-300",
             processing ? "bg-[#fff7e5]" : "bg-[#e7f6ee]"
           )}
         >

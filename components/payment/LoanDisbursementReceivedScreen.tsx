@@ -16,7 +16,7 @@ import { buildPayInsurancePremiumHref } from "@/lib/paymentUrls";
 
 const HEADLINE = "Loan disbursed, Sharath!";
 const SUBLINE =
-  "The bank's money has reached the dealer — I checked. Delivery prep starts now; nothing is due from you until just before delivery.";
+  "The bank has sent the funds to Advaith Hyundai — I confirmed it. Delivery prep starts now; nothing is due from you until just before delivery.";
 
 /** After header + subtext, delay before disbursed amount card (step 3). */
 const CARD_AFTER_HEADER_MS = 420;
