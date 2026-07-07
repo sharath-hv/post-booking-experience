@@ -1,6 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+
+import warningAmberIcon from "@/assets/Warning amber.svg";
 
 import { instantRevealEnabled } from "@/lib/concierge/instant";
 import { cn } from "@/lib/utils";
@@ -11,8 +14,8 @@ const LINE_ACTIVE_MS = 1500;
 function SpinnerIcon() {
   return (
     <svg
-      width="18"
-      height="18"
+      width="20"
+      height="20"
       viewBox="0 0 24 24"
       fill="none"
       aria-hidden
@@ -31,7 +34,7 @@ function SpinnerIcon() {
 
 function DoneTickIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden className="shrink-0">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden className="shrink-0">
       <circle cx="12" cy="12" r="9" fill="#0fa457" />
       <path
         d="M8.4 12.2l2.4 2.4 4.8-5"
@@ -46,7 +49,7 @@ function DoneTickIcon() {
 
 function QueuedIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden className="shrink-0">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden className="shrink-0">
       <circle
         cx="12"
         cy="12"
@@ -61,12 +64,14 @@ function QueuedIcon() {
 
 function ClockIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden className="shrink-0">
-      <circle cx="12" cy="12" r="8.5" stroke="#8f8e92" strokeWidth="2" />
+    <svg width="20" height="20" viewBox="0 0 16 16" fill="none" aria-hidden className="shrink-0">
       <path
-        d="M12 7.5V12l3 2"
-        stroke="#8f8e92"
-        strokeWidth="2"
+        d="M8 14C11.3137 14 14 11.3137 14 8C14 4.68629 11.3137 2 8 2C4.68629 2 2 4.68629 2 8C2 11.3137 4.68629 14 8 14Z"
+        stroke="#4B4B4B"
+      />
+      <path
+        d="M8 5.60156V8.00156L9.2 9.20156"
+        stroke="#4B4B4B"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -74,7 +79,22 @@ function ClockIcon() {
   );
 }
 
+function WarningIcon() {
+  return (
+    <Image
+      src={warningAmberIcon}
+      alt=""
+      width={20}
+      height={20}
+      className="shrink-0"
+      unoptimized
+      aria-hidden
+    />
+  );
+}
+
 export type WorkingNarrationMode = "live" | "ongoing";
+export type WorkingNarrationDoneTone = "success" | "warning";
 
 export type WorkingNarrationProps = {
   /** Activity lines, narrated in Shivi's voice. */
@@ -89,6 +109,8 @@ export type WorkingNarrationProps = {
   mode?: WorkingNarrationMode;
   /** Summary row after every line is done — live mode only. */
   doneLabel?: string;
+  /** Colour + icon for `doneLabel` — defaults to success green. */
+  doneTone?: WorkingNarrationDoneTone;
   /** Expectation row (clock icon) — ongoing mode, e.g. “Expect news by tomorrow morning”. */
   etaLabel?: string;
   /** Ongoing mode — lines before this index render done (e.g. “request placed” already happened). */
@@ -108,6 +130,7 @@ export function WorkingNarration({
   lines,
   mode = "live",
   doneLabel,
+  doneTone = "success",
   etaLabel,
   ongoingDoneCount = 0,
   startWhen = true,
@@ -171,7 +194,7 @@ export function WorkingNarration({
       role="status"
       aria-live="polite"
     >
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-4">
         {lines.map((line, idx) => {
           if (mode === "live" && idx > activeIndex) return null;
           const done = mode === "live" ? idx < activeIndex : idx < ongoingDoneCount;
@@ -192,14 +215,21 @@ export function WorkingNarration({
         })}
         {allDone && doneLabel ? (
           <div className="kyc-stagger mt-0.5 flex items-center gap-2.5 border-t border-dashed border-[#e8e8e8] pt-3">
-            <DoneTickIcon />
-            <span className="text-sm font-medium leading-5 text-[#0c7a42]">{doneLabel}</span>
+            {doneTone === "warning" ? <WarningIcon /> : <DoneTickIcon />}
+            <span
+              className={cn(
+                "text-sm font-medium leading-5",
+                doneTone === "warning" ? "text-[#D16900]" : "text-[#0c7a42]"
+              )}
+            >
+              {doneLabel}
+            </span>
           </div>
         ) : null}
         {mode === "ongoing" && etaLabel ? (
           <div className="kyc-stagger mt-0.5 flex items-center gap-2.5 border-t border-dashed border-[#e8e8e8] pt-3">
             <ClockIcon />
-            <span className="text-sm font-medium leading-5 text-[#4b4b4b]">{etaLabel}</span>
+            <span className="text-sm font-medium leading-5 text-[#121212]">{etaLabel}</span>
           </div>
         ) : null}
       </div>

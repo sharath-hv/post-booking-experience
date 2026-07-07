@@ -31,6 +31,8 @@ export type KycTopNavHeaderProps = {
   endSlot?: ReactNode;
   /** No solid fill — use over gradients/animations; stays above layers via z-index. */
   transparent?: boolean;
+  /** White controls on dark hero backgrounds (loan application header). */
+  inverted?: boolean;
   /** Override default `router.back()` for the back chevron. */
   onBack?: () => void;
   className?: string;
@@ -45,6 +47,7 @@ export function KycTopNavHeader({
   afterBack,
   endSlot,
   transparent = false,
+  inverted = false,
   onBack,
   className,
 }: KycTopNavHeaderProps = {}) {
@@ -52,7 +55,7 @@ export function KycTopNavHeader({
   const [solidOnScroll, setSolidOnScroll] = useState(false);
 
   useEffect(() => {
-    if (!transparent) {
+    if (!transparent || inverted) {
       return;
     }
     const onScroll = () => {
@@ -61,24 +64,25 @@ export function KycTopNavHeader({
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, [transparent]);
+  }, [transparent, inverted]);
 
   return (
     <header
       className={cn(
         "sticky top-0 mx-auto flex h-14 w-full max-w-[640px] shrink-0 items-center justify-between gap-2 pl-3.5 pr-5",
-        transparent ? "z-20" : "z-10",
+        transparent || inverted ? "z-20" : "z-10",
         className
       )}
     >
-      {/* Surface fades into the content below — no solid edge while scrolling. */}
-      <span
-        aria-hidden
-        className={cn(
-          "pointer-events-none absolute inset-x-0 top-0 -z-[1] h-[84px] bg-[linear-gradient(to_bottom,#F7FAFF_50%,rgba(247,250,255,0)_100%)] transition-opacity duration-200 ease-out",
-          transparent && !solidOnScroll ? "opacity-0" : "opacity-100"
-        )}
-      />
+      {!inverted ? (
+        <span
+          aria-hidden
+          className={cn(
+            "pointer-events-none absolute inset-x-0 top-0 -z-[1] h-[84px] bg-[linear-gradient(to_bottom,#F7FAFF_50%,rgba(247,250,255,0)_100%)] transition-opacity duration-200 ease-out",
+            transparent && !solidOnScroll ? "opacity-0" : "opacity-100"
+          )}
+        />
+      ) : null}
       <div
         className={cn(
           "flex min-h-0 min-w-0 flex-1 items-center",
@@ -88,7 +92,12 @@ export function KycTopNavHeader({
         <button
           type="button"
           onClick={() => (onBack != null ? onBack() : router.back())}
-          className="cta-ghost -ml-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-[#121212] focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/20 focus-visible:ring-offset-2"
+          className={cn(
+            "cta-ghost -ml-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg focus-visible:outline focus-visible:ring-2 focus-visible:ring-offset-2",
+            inverted
+              ? "text-white focus-visible:ring-white/30"
+              : "text-[#121212] focus-visible:ring-[#121212]/20"
+          )}
           aria-label="Go back"
         >
           <BackChevron />
@@ -97,7 +106,14 @@ export function KycTopNavHeader({
           <div className="flex min-h-0 min-w-0 flex-1 items-center">{afterBack}</div>
         ) : null}
         {title ? (
-          <h1 className="min-w-0 truncate text-base font-semibold leading-6 text-[#121212]">{title}</h1>
+          <h1
+            className={cn(
+              "min-w-0 truncate text-base font-semibold leading-6",
+              inverted ? "text-white" : "text-[#121212]"
+            )}
+          >
+            {title}
+          </h1>
         ) : null}
       </div>
       {endSlot ? <div className="flex shrink-0 items-center">{endSlot}</div> : null}

@@ -47,10 +47,27 @@ const STAGGER_OPTION_STEP_MS = 115;
 type PaymentOptionId = "acko_drive" | "self_finance" | "full_payment";
 
 function RadioIndicator({ selected }: { selected: boolean }) {
-  const src = selected ? PAYMENT_CHOOSE_ASSETS.radioOn : PAYMENT_CHOOSE_ASSETS.radioOff;
+  if (!selected) {
+    return (
+      <span className="relative h-4 w-4 shrink-0" aria-hidden>
+        <Image
+          src={PAYMENT_CHOOSE_ASSETS.radioOff}
+          alt=""
+          fill
+          className="object-contain"
+          unoptimized
+          sizes="16px"
+        />
+      </span>
+    );
+  }
+
   return (
     <span className="relative h-4 w-4 shrink-0" aria-hidden>
-      <Image src={src} alt="" fill className="object-contain" unoptimized sizes="16px" />
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="h-4 w-4">
+        <circle cx="8" cy="8" r="7.4" stroke="#5920C5" strokeWidth="1.2" />
+        <circle cx="8" cy="8" r="4" fill="#5920C5" />
+      </svg>
     </span>
   );
 }
@@ -197,14 +214,16 @@ function OptionCard({
             sizes="40px"
           />
         </div>
-        {/* Uniform two-line lockup (title, chip) so every card's header is the same height. */}
+        {/* Uniform two-line lockup (chip, title) so every card's header is the same height. */}
         <div className="min-w-0 flex-1">
-          <p className="text-base font-semibold leading-6 text-[#121212]">{title}</p>
           {chip ? (
-            <span className="mt-1 inline-flex rounded-full bg-[#efe9fb] px-2 py-0.5 text-[10px] font-semibold uppercase leading-4 tracking-[0.06em] text-[#5920c5]">
+            <span className="inline-flex rounded-full bg-[#efe9fb] px-2 py-0.5 text-[10px] font-semibold uppercase leading-4 tracking-[0.06em] text-[#5920c5]">
               {chip}
             </span>
           ) : null}
+          <p className={`text-base font-semibold leading-6 text-[#121212]${chip ? " mt-1" : ""}`}>
+            {title}
+          </p>
         </div>
         <span className="mt-1 flex shrink-0">
           <RadioIndicator selected={selected} />
@@ -213,12 +232,14 @@ function OptionCard({
 
       <p className="mt-2.5 text-[13px] leading-[19px] text-[#4b4b4b]">{blurb}</p>
 
-      <div className="mt-3 flex">
+      <div className="mt-3 flex w-full">
         {stats.map((stat, idx) => (
           <div
             key={stat.caption}
             className={
-              idx > 0 ? "ml-4 min-w-0 border-l border-[#ececec] pl-4" : "min-w-0"
+              idx === 0
+                ? "min-w-0 flex-1 pr-4"
+                : "min-w-0 flex-1 border-l border-[#ececec] pl-4"
             }
           >
             <p className="text-sm font-semibold leading-5 text-[#121212] tabular-nums">
@@ -304,7 +325,7 @@ export function ChoosePaymentOptionsScreen() {
           "Pick what suits you — I'll make any of these painless.",
         ]}
         artifact={
-          <>
+          <div className="flex w-full flex-col gap-4">
             <div className="payment-success-stagger w-full">
               <OptionCard
                 id="acko_drive"
@@ -315,8 +336,8 @@ export function ChoosePaymentOptionsScreen() {
                 chip="Easiest"
                 blurb="You pick the bank, I run the entire loan — at rates I've already pushed down for you."
                 stats={[
-                  { value: "~2 days", caption: "to approval" },
-                  { value: `${formatInr(ACKO_EMI_FROM_INR)}/mo`, caption: "EMI from" },
+                  { value: "~2 days", caption: "approval time" },
+                  { value: formatInr(ACKO_EMI_FROM_INR), caption: "estimated monthly EMI" },
                 ]}
                 flow={[
                   "You pick the bank",
@@ -377,7 +398,7 @@ export function ChoosePaymentOptionsScreen() {
                 ]}
               />
             </div>
-          </>
+          </div>
         }
         replies={[{ label: ctaLabel, onClick: onContinue, echo: null }]}
         footnote="Your delivery date locks in once the money plan is set — best done now"

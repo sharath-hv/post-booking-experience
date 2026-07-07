@@ -3,8 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { KycVerificationCancelledScreen } from "@/components/kyc/KycVerificationCancelledScreen";
-import { KycVerificationFailedScreen } from "@/components/kyc/KycVerificationFailedScreen";
+import { ConciergeVerificationFailedScreen } from "@/components/concierge/ConciergeVerificationFailedScreen";
+import { ConciergeVerificationCancelledScreen } from "@/components/concierge/ConciergeVerificationCancelledScreen";
 import { hasExhaustedKycVerificationRetries } from "@/lib/kyc-verification-attempts";
 import {
   isVerificationFailedFlow,
@@ -31,8 +31,8 @@ export function KycVerificationFailedPageClient() {
   if (!ready) return null;
 
   if (exhausted) {
-    return <KycVerificationCancelledScreen />;
+    return <ConciergeVerificationCancelledScreen />;
   }
 
-  return <KycVerificationFailedScreen />;
+  return <ConciergeVerificationFailedScreen />;
 }

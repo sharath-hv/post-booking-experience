@@ -1,9 +1,9 @@
-export const LOAN_APPLICATION_HERO_GRADIENT_STYLE = {
-  backgroundImage: "linear-gradient(114.23deg, #f1ffe8 0%, #e4fafa 100%)",
-} as const;
+/** Dark green hero — [Figma 2841:8477](https://www.figma.com/design/nW5SWmJdxxsCEDlqBN7C0L/Post-booking-experience?node-id=2841-8477). */
+export const LOAN_APPLICATION_HEADER_CLASS =
+  "relative shrink-0 bg-gradient-to-b from-[#044328] to-[#022717] text-white";
 
-/** Gradient extends 20px below the milestone rail. */
-export const LOAN_APPLICATION_HERO_MILESTONE_CLASS = "w-full shrink-0 pt-1 pb-5";
+/** Milestone rail sits below the 56px nav bar. */
+export const LOAN_APPLICATION_HERO_MILESTONE_CLASS = "w-full shrink-0 pb-4 pt-1";
 
 /** Page title starts 24px below where the hero gradient ends. */
 export const LOAN_APPLICATION_PAGE_TITLE_CLASS =

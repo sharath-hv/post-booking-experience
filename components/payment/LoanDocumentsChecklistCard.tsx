@@ -85,7 +85,7 @@ function DocTile({ icon, label }: DocItem) {
   return (
     <li className="flex items-center gap-2.5 rounded-xl border border-[#ececec] bg-white px-3 py-2.5">
       <span
-        className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-[#f5f5f5] text-[#4b4b4b]"
+        className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#f5f5f5] text-[#4b4b4b]"
         aria-hidden
       >
         <svg

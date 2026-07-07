@@ -16,6 +16,7 @@ import { TimeSkipChip } from "@/components/concierge/TimeSkipChip";
 import { UserEchoChip } from "@/components/concierge/UserEchoChip";
 import {
   WorkingNarration,
+  type WorkingNarrationDoneTone,
   type WorkingNarrationMode,
 } from "@/components/concierge/WorkingNarration";
 import { KycTopNavHeader } from "@/components/kyc/KycTopNavHeader";
@@ -35,10 +36,14 @@ const DIALOGUE_TO_CONTENT_MS = 220;
 export type ConciergeTurn = {
   /** Conversation date divider — e.g. “Day 2 · Tuesday”. */
   dayStamp?: string;
+  /** Rendered between the echo chip and Shivi’s words (e.g. a tab switcher). */
+  beforeDialogue?: ReactNode;
   /** Shivi's lines, in speaking order. */
   says: readonly string[];
   /** Lands between her lead line and the rest — the live event she's narrating (e.g. a payment settling). */
   afterLead?: ReactNode;
+  /** Continues the last body line — same voice, left-aligned (e.g. banking partner row). */
+  afterBody?: ReactNode;
   /** What she hands you — card(s) below her words. */
   artifact?: ReactNode;
   /** Her visible activity for working turns. */
@@ -47,6 +52,7 @@ export type ConciergeTurn = {
     /** `ongoing` for real-world waits that must not pretend to finish in-session. */
     mode?: WorkingNarrationMode;
     doneLabel?: string;
+    doneTone?: WorkingNarrationDoneTone;
     etaLabel?: string;
     /** Ongoing mode — lines before this index render done. */
     doneCount?: number;
@@ -59,6 +65,8 @@ export type ConciergeTurn = {
   altTimeSkip?: { label: string; href: string };
   /** Orange commitment line above the footer (deadlines, expectations). */
   footnote?: string;
+  /** Semibold prefix for the footnote card. */
+  footnoteLead?: string;
   /** Render the footnote inline after the turn's content instead of fixed above the CTA. */
   footnoteInline?: boolean;
   /**
@@ -245,14 +253,17 @@ function ExpandContractButton({ open, onClick }: { open: boolean; onClick: () =>
  */
 export function ConciergeTurnShell({
   dayStamp,
+  beforeDialogue,
   says,
   afterLead,
+  afterBody,
   artifact,
   working,
   replies,
   timeSkip,
   altTimeSkip,
   footnote,
+  footnoteLead,
   footnoteInline = false,
   dateHolder,
   callLabel,
@@ -359,36 +370,44 @@ export function ConciergeTurnShell({
 
         {echo ? <UserEchoChip text={echo} className="mb-6" /> : null}
 
+        {beforeDialogue ? <div className="mb-6">{beforeDialogue}</div> : null}
+
         <ShiviDialogue
           lines={says}
           afterLead={afterLead}
+          afterBody={afterBody}
           startWhen={dialogueStarted}
           onComplete={() => setDialogueDone(true)}
         />
 
         {contentShown && (artifact || children) ? (
-          <div className="kyc-stagger mt-6 flex flex-col gap-2">
+          <div className="kyc-stagger mt-8 flex flex-col gap-2">
             {artifact}
             {children}
           </div>
         ) : null}
 
-        {working ? (
-          <WorkingNarration
-            lines={working.lines}
-            mode={working.mode}
-            doneLabel={working.doneLabel}
-            etaLabel={working.etaLabel}
-            ongoingDoneCount={working.doneCount}
-            startWhen={contentShown}
-            onAllDone={() => setReady(true)}
-            className="mt-7"
-          />
-        ) : null}
-
-        {footnote && footnoteInline && ready ? (
-          <div className="kyc-stagger mt-4">
-            <ShimmerInfoCard icon="info">{footnote}</ShimmerInfoCard>
+        {working || (footnote && footnoteInline && ready) ? (
+          <div className="mt-8 flex flex-col gap-6">
+            {working ? (
+              <WorkingNarration
+                lines={working.lines}
+                mode={working.mode}
+                doneLabel={working.doneLabel}
+                doneTone={working.doneTone}
+                etaLabel={working.etaLabel}
+                ongoingDoneCount={working.doneCount}
+                startWhen={contentShown}
+                onAllDone={() => setReady(true)}
+              />
+            ) : null}
+            {footnote && footnoteInline && ready ? (
+              <div className="kyc-stagger">
+                <ShimmerInfoCard icon="info" lead={footnoteLead}>
+                  {footnote}
+                </ShimmerInfoCard>
+              </div>
+            ) : null}
           </div>
         ) : null}
       </main>
@@ -404,10 +423,10 @@ export function ConciergeTurnShell({
             manage.shown && RECEDE_ACTIVE
           )}
         >
-          <div className="mx-auto w-full max-w-[640px] bg-[linear-gradient(to_top,#F7FAFF_55%,rgba(247,250,255,0))] px-5 pb-[max(2rem,env(safe-area-inset-bottom))] pt-12">
+          <div className="mx-auto w-full max-w-[640px] bg-[linear-gradient(to_top,#F7FAFF_55%,rgba(247,250,255,0))] px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-12">
             {footnote && !footnoteInline ? (
-              <div className="mb-3">
-                <ShimmerInfoCard icon="info">{footnote}</ShimmerInfoCard>
+              <div className="mb-3 mt-3">
+                <ShimmerInfoCard icon="info" lead={footnoteLead}>{footnote}</ShimmerInfoCard>
               </div>
             ) : null}
             {replies?.length ? <ConciergeReplies replies={replies} /> : null}
@@ -416,8 +435,8 @@ export function ConciergeTurnShell({
                 type="button"
                 onClick={() => setCallSheetOpen(true)}
                 className={cn(
-                  "mx-auto flex h-9 items-center justify-center gap-1.5 px-3 text-sm font-medium text-[#4b4b4b] underline decoration-[#c2c2c2] underline-offset-4 transition-colors hover:text-[#121212]",
-                  replies?.length ? "mt-2" : undefined
+                  "flex h-9 w-full items-center justify-center gap-2 px-3 text-sm font-medium text-[#4b4b4b] underline decoration-[#c2c2c2] underline-offset-4 transition-colors hover:text-[#121212]",
+                  replies?.length ? "mt-3" : undefined
                 )}
               >
                 <Image src={phoneIcon} alt="" width={20} height={20} className="shrink-0" unoptimized aria-hidden />

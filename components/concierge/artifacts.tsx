@@ -1,14 +1,28 @@
 "use client";
 
 import Image, { type StaticImageData } from "next/image";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 import cretaCutout from "@/assets/Hyundai Creta.png";
 import carIcon from "@/assets/Car.svg";
 import identityIcon from "@/assets/Identity.svg";
 import moneyRoundIcon from "@/assets/Money round.svg";
 import newCarIcon from "@/assets/New car.svg";
+import phoneIcon from "@/assets/Phone.svg";
+import tickIcon from "@/assets/tick.svg";
+import timeIcon from "@/assets/Time.svg";
+import { ShimmerInfoCard } from "@/components/ui/ShimmerInfoCard";
 import { cn } from "@/lib/utils";
+
+const TIME_ICON_MASK_STYLE = {
+  maskImage: `url(${timeIcon.src})`,
+  WebkitMaskImage: `url(${timeIcon.src})`,
+} satisfies CSSProperties;
+
+const TICK_ICON_MASK_STYLE = {
+  maskImage: `url(${tickIcon.src})`,
+  WebkitMaskImage: `url(${tickIcon.src})`,
+} satisfies CSSProperties;
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -218,20 +232,12 @@ export function PlanList({ items }: PlanListProps) {
 /* ----------------------------------------------------------------------- */
 
 export type NoteCalloutProps = {
-  iconSrc: string | StaticImageData;
   children: React.ReactNode;
 };
 
-/** Aside in the existing hero info-callout style. */
-export function NoteCallout({ iconSrc, children }: NoteCalloutProps) {
-  return (
-    <div className="flex items-start gap-3 rounded-2xl bg-white card-elevated px-3 py-3 text-left">
-      <span className="relative h-5 w-5 shrink-0">
-        <Image src={iconSrc} alt="" fill className="object-contain" unoptimized sizes="20px" />
-      </span>
-      <p className="text-xs leading-[18px] text-[#121212]">{children}</p>
-    </div>
-  );
+/** Aside in the shimmer info-callout style (matches “A quick heads-up”). */
+export function NoteCallout({ children }: NoteCalloutProps) {
+  return <ShimmerInfoCard icon="info">{children}</ShimmerInfoCard>;
 }
 
 /* ----------------------------------------------------------------------- */
@@ -337,8 +343,6 @@ export function CarPriceBreakupCard({
 /* ----------------------------------------------------------------------- */
 
 export type NextStepCardProps = {
-  /** Eyebrow label (default “Now” — matches the plan timeline's live step). */
-  eyebrow?: string;
   /** Tight imperative — e.g. “Pick up Advaith Hyundai's call”. */
   title: string;
   body: string;
@@ -347,37 +351,29 @@ export type NextStepCardProps = {
 };
 
 /**
- * The user's single pending action. Action grammar: purple outline +
- * purple-to-transparent gradient (info cards stay plain white; amber is for
- * caveats), with a slow radar pulse on the node — something is coming for
- * you. Stakes go in a ShimmerInfoCard next to it, not in here.
+ * The user's single pending action. Action grammar: elevated white card with a
+ * slow radar pulse on the node — something is coming for you. Stakes go in a
+ * ShimmerInfoCard next to it, not in here.
  */
-export function NextStepCard({ eyebrow = "Now", title, body, etaLabel }: NextStepCardProps) {
+export function NextStepCard({ title, body, etaLabel }: NextStepCardProps) {
   return (
-    <div className="rounded-2xl border border-[#e3d9fa] bg-[linear-gradient(to_bottom,#f4eefe,rgba(244,238,254,0))] px-4 py-4">
-      <p className="text-[10px] font-semibold uppercase leading-4 tracking-[0.08em] text-[#5920c5]">
-        {eyebrow}
-      </p>
-      <div className="mt-3 flex items-start gap-3.5">
-        <span className="relative flex h-11 w-11 shrink-0 items-center justify-center">
+    <div className="rounded-2xl bg-white card-elevated px-4 py-4">
+      <div className="flex items-start gap-3.5">
+        <span className="relative flex h-9 w-9 shrink-0 items-center justify-center">
           <span
             aria-hidden
             className="absolute inset-0 animate-ping rounded-full bg-[#5920c5]/25 [animation-duration:2.4s] motion-reduce:hidden"
           />
-          <span className="relative flex h-11 w-11 items-center justify-center rounded-full bg-[#5920c5] text-white ring-4 ring-[#efe9fb]">
-            <svg
-              width="22"
-              height="22"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+          <span className="relative flex h-9 w-9 items-center justify-center rounded-full bg-[#5920c5] text-white ring-4 ring-[#efe9fb]">
+            <Image
+              src={phoneIcon}
+              alt=""
+              width={20}
+              height={20}
+              className="shrink-0 brightness-0 invert"
+              unoptimized
               aria-hidden
-            >
-              <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z" />
-            </svg>
+            />
           </span>
         </span>
         <div className="min-w-0">
@@ -386,25 +382,13 @@ export function NextStepCard({ eyebrow = "Now", title, body, etaLabel }: NextSte
         </div>
       </div>
       {etaLabel ? (
-        <div className="mt-3.5 flex items-center gap-2 border-t border-dashed border-[#e3d9fa] pt-3">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
+        <div className="mt-3.5 flex items-center gap-2 border-t border-dashed border-[#f0f0f0] pt-3">
+          <span
             aria-hidden
-            className="shrink-0"
-          >
-            <circle cx="12" cy="12" r="8.5" stroke="#5920c5" strokeWidth="2" />
-            <path
-              d="M12 7.5V12l3 2"
-              stroke="#5920c5"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          <span className="text-xs font-medium leading-[18px] text-[#5920c5]">{etaLabel}</span>
+            className="h-5 w-5 shrink-0 bg-[#121212] [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center] [-webkit-mask-size:contain] [-webkit-mask-repeat:no-repeat] [-webkit-mask-position:center]"
+            style={TIME_ICON_MASK_STYLE}
+          />
+          <span className="text-xs font-medium leading-[18px] text-[#121212]">{etaLabel}</span>
         </div>
       ) : null}
     </div>
@@ -427,12 +411,16 @@ export type CarSummaryCardLiteProps = {
   dealerDetail?: string;
   /** `dealer` leads with the dealer (e.g. “found it” — the dealer is the news). */
   hero?: "car" | "dealer";
-  /** Green status chip beside the title — e.g. “Locked to you ✓”. */
+  /** Green status chip at card top — e.g. “Locked to you ✓”. */
   statusChip?: string;
   /** Post-allocation identity — the exact unit. */
   engineNo?: string;
   chassisNo?: string;
 };
+
+function statusChipLabel(chip: string) {
+  return chip.replace(/\s*✓\s*$/, "").trim();
+}
 
 /** Compact car card — her find, your car. */
 export function CarSummaryCardLite({
@@ -453,35 +441,23 @@ export function CarSummaryCardLite({
     <div className="overflow-hidden rounded-2xl bg-white card-elevated">
       {dealerLeads ? (
         <>
-          <div className="flex items-center gap-3 px-4 py-3.5">
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#f5f5f5] text-[#75747a]">
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden
-              >
-                <path d="M4 9.5 5.5 4.5h13L20 9.5" />
-                <path d="M5 9.5V19.5h14V9.5" />
-                <path d="M10 19.5v-5h4v5" />
-              </svg>
-            </span>
+          <div className="flex items-start gap-3 px-4 py-3.5">
             <div className="min-w-0 flex-1">
-              <p className="text-base font-semibold leading-6 text-[#121212]">{dealerName}</p>
+              <p className="text-sm font-medium leading-5 text-[#121212]">{dealerName}</p>
               {dealerDetail ? (
                 <p className="mt-0.5 text-xs leading-[18px] text-[#757575]">{dealerDetail}</p>
               ) : null}
             </div>
-            <span className="shrink-0 rounded-full bg-[#e7f6ee] px-2.5 py-1 text-[11px] font-medium leading-4 text-[#0c7a42]">
-              Reserved ✓
+            <span className="inline-flex h-6 w-fit shrink-0 items-center gap-1 rounded-full bg-[#e7f6ee] px-2 text-[11px] font-medium leading-4 text-[#0c7a42]">
+              <span
+                aria-hidden
+                className="h-5 w-5 shrink-0 bg-[#0c7a42] [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center] [-webkit-mask-size:contain] [-webkit-mask-repeat:no-repeat] [-webkit-mask-position:center]"
+                style={TICK_ICON_MASK_STYLE}
+              />
+              Reserved
             </span>
           </div>
-          <div className="flex items-center gap-3 border-t border-[#f0f0f0] bg-[#fafafa] px-4 py-3">
+          <div className="flex items-center gap-3 border-t border-[#f0f0f0] bg-white px-4 py-3">
             <div className="relative h-[48px] w-[84px] shrink-0">
               <Image
                 src={cretaCutout}
@@ -499,50 +475,46 @@ export function CarSummaryCardLite({
               </p>
             </div>
           </div>
-          {deliveryLine ? (
-            <div
-              className={cn(
-                "flex items-center justify-center gap-1.5 border-t border-[#efe9fb] bg-[#f9f6ff] px-4 py-2",
-                deliveryLineClassName
-              )}
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden className="shrink-0">
-                <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z" fill="currentColor" />
-              </svg>
-              <span className="text-xs font-medium leading-[18px]">{deliveryLine}</span>
-            </div>
-          ) : null}
         </>
       ) : (
         <>
-          <div className="flex items-center gap-3 px-4 py-3.5">
-            <div className="min-w-0 flex-1">
-              <div className="flex flex-wrap items-center gap-2">
+          <div
+            className={cn(
+              "flex flex-col px-4",
+              statusChip ? "gap-1 pt-3.5 pb-3.5" : "gap-3 py-3.5"
+            )}
+          >
+            {statusChip ? (
+              <span className="inline-flex h-6 w-fit items-center gap-1 rounded-full bg-[#e7f6ee] px-2 py-1 text-[11px] font-medium leading-4 text-[#0c7a42]">
+                <span
+                  aria-hidden
+                  className="h-5 w-5 shrink-0 bg-[#0c7a42] [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center] [-webkit-mask-size:contain] [-webkit-mask-repeat:no-repeat] [-webkit-mask-position:center]"
+                  style={TICK_ICON_MASK_STYLE}
+                />
+                {statusChipLabel(statusChip)}
+              </span>
+            ) : null}
+            <div className="flex items-center gap-3">
+              <div className="min-w-0 flex-1">
                 <p className="text-base font-semibold leading-6 text-[#121212]">{title}</p>
-                {statusChip ? (
-                  <span className="shrink-0 rounded-full bg-[#e7f6ee] px-2.5 py-1 text-[11px] font-medium leading-4 text-[#0c7a42]">
-                    {statusChip}
-                  </span>
-                ) : null}
+                <p className="mt-0.5 text-xs leading-[18px] text-[#757575]">
+                  {variant} · {colour}
+                </p>
               </div>
-              <p className="mt-0.5 text-xs leading-[18px] text-[#757575]">
-                {variant} · {colour}
-              </p>
-            </div>
-            <div className="relative h-[64px] w-[110px] shrink-0">
-              <Image
-                src={cretaCutout}
-                alt={title}
-                fill
-                className="object-contain"
-                unoptimized
-                sizes="110px"
-              />
+              <div className="relative h-[64px] w-[110px] shrink-0">
+                <Image
+                  src={cretaCutout}
+                  alt={title}
+                  fill
+                  className="object-contain"
+                  unoptimized
+                  sizes="110px"
+                />
+              </div>
             </div>
           </div>
           {dealerName ? (
             <div className="flex flex-wrap items-baseline gap-x-1.5 border-t border-dashed border-[#ececec] px-4 py-2.5">
-              <span className="text-xs leading-[18px] text-[#757575]">With</span>
               <span className="text-sm font-medium leading-5 text-[#121212]">{dealerName}</span>
               {dealerDetail ? (
                 <span className="text-xs leading-[18px] text-[#757575]">· {dealerDetail}</span>
@@ -571,7 +543,7 @@ export function CarSummaryCardLite({
           ) : null}
         </div>
       ) : null}
-      {!dealerLeads && deliveryLine ? (
+      {deliveryLine ? (
         <div
           className={cn(
             "flex items-center justify-center gap-1.5 border-t border-[#efe9fb] bg-[#f9f6ff] px-4 py-2",

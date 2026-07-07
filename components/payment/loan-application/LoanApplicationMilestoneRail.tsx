@@ -12,8 +12,12 @@ import {
   type LoanApplicationRoute,
 } from "@/lib/loan-application-content";
 
-const CONNECTOR_ACTIVE = "#138808";
-const CONNECTOR_INACTIVE = "#e8e8e8";
+const CONNECTOR_ACTIVE_LIGHT = "#138808";
+const CONNECTOR_INACTIVE_LIGHT = "#e8e8e8";
+const CONNECTOR_ACTIVE_DARK = "#ffffff";
+const CONNECTOR_INACTIVE_DARK = "rgba(255,255,255,0.28)";
+/** Opaque fill so connector lines do not show through hollow step rings. */
+const MILESTONE_ICON_FILL_DARK = "#044328";
 
 type LineSeg = { left: number; width: number };
 
@@ -31,15 +35,71 @@ function milestoneStatus(
   return "next";
 }
 
-function MilestoneIcon({ status }: { status: TimelineStepStatus }) {
+function MilestoneIcon({
+  status,
+  theme,
+}: {
+  status: TimelineStepStatus;
+  theme: "light" | "dark";
+}) {
+  const label =
+    status === "done" ? "Done" : status === "in_progress" ? "In progress" : "Up next";
+
+  if (theme === "dark") {
+    return (
+      <span className="relative flex h-5 w-5 shrink-0 items-center justify-center" title={label}>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
+          {status === "done" ? (
+            <>
+              <circle
+                cx="12"
+                cy="12"
+                r="9"
+                fill={MILESTONE_ICON_FILL_DARK}
+                stroke="white"
+                strokeWidth="1.33"
+              />
+              <path
+                d="M8.25 12.25 10.75 14.75 15.75 9.75"
+                stroke="white"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </>
+          ) : status === "in_progress" ? (
+            <>
+              <circle
+                cx="12"
+                cy="12"
+                r="9"
+                fill={MILESTONE_ICON_FILL_DARK}
+                stroke="white"
+                strokeWidth="1.33"
+              />
+              <circle cx="12" cy="12" r="4" fill="white" />
+            </>
+          ) : (
+            <circle
+              cx="12"
+              cy="12"
+              r="9"
+              fill={MILESTONE_ICON_FILL_DARK}
+              stroke="white"
+              strokeWidth="1.33"
+            />
+          )}
+        </svg>
+      </span>
+    );
+  }
+
   const src =
     status === "done"
       ? KYC_ASSETS.timelineDone
       : status === "in_progress"
         ? KYC_ASSETS.timelineInProgress
         : KYC_ASSETS.timelineNext;
-  const label =
-    status === "done" ? "Done" : status === "in_progress" ? "In progress" : "Up next";
 
   return (
     <span className="relative flex h-5 w-5 shrink-0 items-center justify-center" title={label}>
@@ -50,13 +110,21 @@ function MilestoneIcon({ status }: { status: TimelineStepStatus }) {
 
 type LoanApplicationMilestoneRailProps = {
   currentRoute: LoanApplicationRoute;
+  theme?: "light" | "dark";
 };
 
 /**
  * Horizontal milestone rail — same done / in-progress / next logic as delivery timeline.
  */
-export function LoanApplicationMilestoneRail({ currentRoute }: LoanApplicationMilestoneRailProps) {
+export function LoanApplicationMilestoneRail({
+  currentRoute,
+  theme = "light",
+}: LoanApplicationMilestoneRailProps) {
   const activeMilestone = routeToMilestone(currentRoute);
+  const connectorActive =
+    theme === "dark" ? CONNECTOR_ACTIVE_DARK : CONNECTOR_ACTIVE_LIGHT;
+  const connectorInactive =
+    theme === "dark" ? CONNECTOR_INACTIVE_DARK : CONNECTOR_INACTIVE_LIGHT;
   const railRef = useRef<HTMLDivElement>(null);
   const iconRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [connectorGreen, setConnectorGreen] = useState<LineSeg>(EMPTY_LINE);
@@ -129,7 +197,7 @@ export function LoanApplicationMilestoneRail({ currentRoute }: LoanApplicationMi
         style={{
           left: connectorGrey.left,
           width: connectorGrey.width,
-          backgroundColor: CONNECTOR_INACTIVE,
+          backgroundColor: connectorInactive,
         }}
       />
       <div
@@ -138,7 +206,7 @@ export function LoanApplicationMilestoneRail({ currentRoute }: LoanApplicationMi
         style={{
           left: connectorGreen.left,
           width: connectorGreen.width,
-          backgroundColor: CONNECTOR_ACTIVE,
+          backgroundColor: connectorActive,
         }}
       />
 
@@ -155,15 +223,19 @@ export function LoanApplicationMilestoneRail({ currentRoute }: LoanApplicationMi
                 ref={(el) => {
                   iconRefs.current[index] = el;
                 }}
-                className="flex h-5 w-5 shrink-0 items-center justify-center"
+                className="relative z-10 flex h-5 w-5 shrink-0 items-center justify-center"
               >
-                <MilestoneIcon status={status} />
+                <MilestoneIcon status={status} theme={theme} />
               </div>
               <span
                 className={`w-full text-center text-[10px] leading-[14px] whitespace-nowrap ${
                   status === "in_progress"
-                    ? "font-medium text-[#121212]"
-                    : "font-normal text-[#757575]"
+                    ? theme === "dark"
+                      ? "font-medium text-white"
+                      : "font-medium text-[#121212]"
+                    : theme === "dark"
+                      ? "font-normal text-[#a6a6a6]"
+                      : "font-normal text-[#757575]"
                 }`}
               >
                 {milestone.label}

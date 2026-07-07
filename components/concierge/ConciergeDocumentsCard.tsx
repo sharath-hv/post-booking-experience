@@ -19,6 +19,8 @@ type ConciergeDocumentsCardProps = {
   onUploadsChange: (next: KycUploadsState) => void;
   /** Persists mock filename index with parent session state. */
   mockUploadCounterRef: React.MutableRefObject<number>;
+  /** Restrict to specific doc kinds — for re-upload flows where only one doc needs fixing. */
+  onlyDocs?: readonly KycDocumentKind[];
 };
 
 function CheckBadge() {
@@ -67,11 +69,12 @@ type DocumentRowProps = {
   hint: string;
   files: { id: string; name: string }[];
   allowMultiple?: boolean;
+  uploadLabel?: string;
   onUpload: () => void;
   onRemove: (fileId: string) => void;
 };
 
-function DocumentRow({ title, hint, files, allowMultiple, onUpload, onRemove }: DocumentRowProps) {
+function DocumentRow({ title, hint, files, allowMultiple, uploadLabel = "Upload", onUpload, onRemove }: DocumentRowProps) {
   const hasFiles = files.length > 0;
   return (
     <div className="px-4 py-3.5">
@@ -89,7 +92,7 @@ function DocumentRow({ title, hint, files, allowMultiple, onUpload, onRemove }: 
             onClick={onUpload}
             className="cta-ghost flex h-9 shrink-0 items-center justify-center rounded-[10px] border border-[#121212] px-4 text-sm font-medium leading-5 text-[#121212]"
           >
-            Upload
+            {uploadLabel}
           </button>
         ) : null}
       </div>
@@ -121,6 +124,7 @@ export function ConciergeDocumentsCard({
   uploads,
   onUploadsChange,
   mockUploadCounterRef,
+  onlyDocs,
 }: ConciergeDocumentsCardProps) {
   const [sourceSheetOpen, setSourceSheetOpen] = useState(false);
   const [activeDocument, setActiveDocument] = useState<KycDocumentKind | null>(null);
@@ -150,48 +154,61 @@ export function ConciergeDocumentsCard({
     [onUploadsChange, uploads],
   );
 
-  const allDone = uploads.aadhaar.length > 0 && uploads.pan.length > 0;
+  const showAadhaar = onlyDocs == null || onlyDocs.includes("aadhaar");
+  const showPan = onlyDocs == null || onlyDocs.includes("pan");
+  const showBothRows = showAadhaar && showPan;
 
   return (
     <>
-      {/* Pre-action caveat — must be read before files are picked, so it sits above the card. */}
-      <ShimmerInfoCard icon="info" lead="Quick check:">
-        the name should match on both documents, and the Aadhaar address should be in Bengaluru — where your car gets registered.
-      </ShimmerInfoCard>
+      {/* Pre-action caveat — only for the initial upload (both docs, no prior context).
+          Re-upload turns already have Shivi's explanation above, so suppress it. */}
+      {onlyDocs == null ? (
+        <ShimmerInfoCard icon="info" lead="Quick check:">
+          the name should match on both documents, and the Aadhaar address should be in Bengaluru — where your car gets registered.
+        </ShimmerInfoCard>
+      ) : null}
 
-      <div className="mt-4 overflow-hidden rounded-2xl bg-white card-elevated">
-        <DocumentRow
-          title="Aadhaar card"
-          hint="Front and back, clear photos"
-          files={uploads.aadhaar}
-          allowMultiple
-          onUpload={() => openSourceSheet("aadhaar")}
-          onRemove={(fileId) => handleRemove("aadhaar", fileId)}
-        />
-        <hr className="mx-4 border-0 border-t border-dashed border-[#ececec]" />
-        <DocumentRow
-          title="PAN card"
-          hint="One clear photo"
-          files={uploads.pan}
-          onUpload={() => openSourceSheet("pan")}
-          onRemove={(fileId) => handleRemove("pan", fileId)}
-        />
+      <div className={cn("overflow-hidden rounded-2xl bg-white card-elevated", onlyDocs == null ? "mt-4" : undefined)}>
+        {showAadhaar ? (
+          <DocumentRow
+            title="Aadhaar card"
+            hint="Front and back, clear photos"
+            files={uploads.aadhaar}
+            allowMultiple
+            uploadLabel={onlyDocs != null ? "Re-upload" : "Upload"}
+            onUpload={() => openSourceSheet("aadhaar")}
+            onRemove={(fileId) => handleRemove("aadhaar", fileId)}
+          />
+        ) : null}
+        {showBothRows ? <hr className="mx-4 border-0 border-t border-dashed border-[#ececec]" /> : null}
+        {showPan ? (
+          <DocumentRow
+            title="PAN card"
+            hint="One clear photo"
+            files={uploads.pan}
+            uploadLabel={onlyDocs != null ? "Re-upload" : "Upload"}
+            onUpload={() => openSourceSheet("pan")}
+            onRemove={(fileId) => handleRemove("pan", fileId)}
+          />
+        ) : null}
       </div>
 
-      <div className="mt-3 px-1">
-        <p className="flex items-start gap-2 text-xs leading-[18px] text-[#757575]">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden className="mt-0.5 shrink-0">
-            <rect x="5" y="10.5" width="14" height="9.5" rx="2" stroke="currentColor" strokeWidth="1.8" />
-            <path
-              d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-            />
-          </svg>
-          Encrypted, and used only for this purchase — nobody else sees them.
-        </p>
-      </div>
+      {onlyDocs == null ? (
+        <div className="mt-3 px-1">
+          <p className="flex items-start gap-2 text-xs leading-[18px] text-[#757575]">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden className="mt-0.5 shrink-0">
+              <rect x="5" y="10.5" width="14" height="9.5" rx="2" stroke="currentColor" strokeWidth="1.8" />
+              <path
+                d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+              />
+            </svg>
+            Encrypted, and used only for this purchase — nobody else sees them.
+          </p>
+        </div>
+      ) : null}
 
       <KycUploadSourceBottomSheet
         open={sourceSheetOpen}

@@ -56,6 +56,8 @@ export type TurnWords = {
   timeSkipLabel?: string;
   /** Orange commitment line (deadlines, expectations). */
   footnote?: string;
+  /** Semibold prefix for the footnote card, e.g. “A quick heads-up:”. */
+  footnoteLead?: string;
   /** Contextual call affordance under the replies. */
   callLabel?: string;
 };
@@ -67,8 +69,8 @@ export type TurnWords = {
  */
 export const VERIFY_IDENTITY_WORDS: TurnWords = {
   says: [
-    "PAN and Aadhaar — that's all I need.",
-    "They're what your invoice and RTO registration run on. Add them below, and I'll handle everything else from there.",
+    "Just two documents, Sharath: your PAN and Aadhaar.",
+    "These are what your invoice and registration are issued against. Add them below and I'll take care of the rest.",
   ],
   replyLabel: "Here are my documents",
   replyEcho: "Documents sent",
@@ -93,17 +95,17 @@ const EXPRESS_SCRIPT: Record<ConciergeMomentId, TurnWords> = {
 
   documentsReceived: {
     says: [
-      "Got them — verifying right now.",
-      "No queues for this — I read and match them in seconds. Watch.",
+      "Got your documents, Sharath. I'm verifying them now.",
+      "This won't take long.",
     ],
     workingLines: [
-      "Reading your PAN…",
-      "Matching your Aadhaar details…",
-      "Cross-checking name and address…",
+      "Reading your PAN",
+      "Matching your Aadhaar details",
+      "Checking your name and address",
     ],
-    workingDoneLabel: "Verified — your purchase is officially open",
-    replyLabel: "Great — what's next?",
-    replyEcho: "Great — what's next?",
+    workingDoneLabel: "Verified. Your purchase is now open in your name.",
+    replyLabel: "What's next?",
+    replyEcho: "What's next?",
     callLabel: "Questions? I can call you",
   },
 
@@ -119,26 +121,28 @@ const EXPRESS_SCRIPT: Record<ConciergeMomentId, TurnWords> = {
 
   dealerSearch: {
     says: [
-      "That's the paperwork done, Sharath ✓",
-      "Straight to my favourite part — I've already pinged dealers for your exact Creta, 1.5 X-Line AT in Starry Night. Dealers take a few hours to confirm stock, so this runs overnight. Sleep on it; I won't.",
+      "That's the paperwork done, Sharath.",
+      "Now I'm reaching out to dealers for your exact Creta, the 1.5 X-Line AT in Starry Night. They usually take a few hours to confirm stock, so this runs overnight. I'll let you know the moment I hear back.",
     ],
     workingLines: [
-      "Reaching out to Hyundai dealers around Bengaluru…",
-      "Confirm stock for 1.5 X-Line AT · Starry Night",
-      "Compare who can deliver soonest",
+      "Reaching out to Hyundai dealers near you",
+      "Checking stock for your 1.5 X-Line AT in Starry Night",
+      "Finding who can deliver soonest",
     ],
     workingMode: "ongoing",
-    workingEtaLabel: "Expect news from me by tomorrow morning",
+    workingEtaLabel: "I'll have news by tomorrow morning",
     timeSkipLabel: "Next morning",
     callLabel: "Can't sleep on it? I can call you",
+    footnoteLead: "A quick heads-up:",
     footnote:
-      "As promised, a heads-up: changes and cancellation are free until I lock a dealer — after that, a change costs ₹5,000 and cancelling holds back 50% of what you've paid",
+      "Changes and cancellation are free until I lock in a dealer. After that, a change costs ₹5,000 and cancelling holds back half of what you've paid.",
   },
 
   dealerFound: {
     says: [
-      "Morning, Sharath — found it.",
-      "Three dealers came back overnight; Advaith Hyundai can move the fastest, so I've reserved your Creta with them. They'll call you today — an OTP will land on your phone, you read it back to them, and the car is locked to you.",
+      "Morning, Sharath. I found your exact car.",
+      "Three dealers came back, and Advaith Hyundai can deliver soonest, so I've reserved a fresh Creta for you with them. Its engine and chassis numbers are below.",
+      "They'll call you today, and a one-time code on your phone confirms it's yours.",
     ],
     timeSkipLabel: "After the dealer's call",
     callLabel: "Questions? I can call you",
@@ -146,11 +150,11 @@ const EXPRESS_SCRIPT: Record<ConciergeMomentId, TurnWords> = {
 
   carReserved: {
     says: [
-      "OTP confirmed — your Creta is locked to you.",
-      "Advaith Hyundai matched your OTP on the Hyundai portal, so the reservation is now a lock. Next they assign your exact unit — a specific car with its own engine and chassis number. I'm pushing for the freshest stock in their yard.",
+      "Your code checked out, Sharath. This Creta is yours.",
+      "Its engine and chassis numbers are on the card below. Next, let's sort the payment — the last big thing between you and your delivery date.",
     ],
-    replyLabel: "Sounds good, go on",
-    replyEcho: "Sounds good, go on",
+    replyLabel: "Start the payment",
+    replyEcho: "Let's start the payment",
   },
 
   allocationPending: {
@@ -181,12 +185,12 @@ const EXPRESS_SCRIPT: Record<ConciergeMomentId, TurnWords> = {
 
   moneyIntro: {
     says: [
-      "Morning, Sharath — one big thing left: the money.",
-      "₹13,63,780 remains on your Creta. You can finance it through me — I've pre-negotiated rates with five banks — or sort it your own way. Either way, I make it painless.",
+      "Morning, Sharath. Let's sort out the payment.",
+      "₹13,63,780 is left to pay on your Creta. You can finance it through me, at rates I've already negotiated with five banks, or arrange it yourself. Whichever you prefer.",
     ],
     replyLabel: "Show me my options",
     replyEcho: "Show me my options",
-    footnote: "Delivery on 10 Jun holds only once payment is set up — every day here moves it a day",
+    footnote: "Your 10 Jun delivery holds once payment is set up. Every day this waits moves it back.",
     callLabel: "Rather talk it through? I can call you",
   },
 };
@@ -218,8 +222,8 @@ const STANDARD_OVERRIDES: Partial<Record<ConciergeMomentId, Partial<TurnWords>>>
   },
   carReserved: {
     says: [
-      "OTP confirmed — your Creta is locked to you.",
-      "Advaith Hyundai matched your OTP on the Hyundai portal, so the reservation is now a lock. Next they assign your exact unit — on the standard timeline that takes a few days, and I'll nudge them along.",
+      "Your code checked out, Sharath. This Creta is yours.",
+      "Its engine and chassis numbers are on the card below. Next, let's sort the payment — the last big thing between you and your delivery date.",
     ],
   },
   allocationPending: {
@@ -238,10 +242,10 @@ const STANDARD_OVERRIDES: Partial<Record<ConciergeMomentId, Partial<TurnWords>>>
   },
   moneyIntro: {
     says: [
-      "Welcome back, Sharath — one big thing left: the money.",
-      "₹13,63,780 remains on your Creta. You can finance it through me — I've pre-negotiated rates with five banks — or sort it your own way. Either way, I make it painless.",
+      "Welcome back, Sharath. Let's sort out the payment.",
+      "₹13,63,780 is left to pay on your Creta. You can finance it through me, at rates I've already negotiated with five banks, or arrange it yourself. Whichever you prefer.",
     ],
-    footnote: "Delivery by 25 Oct holds only once payment is set up — delays here push it out",
+    footnote: "Your 25 Oct delivery holds once payment is set up. Delays here push it back.",
   },
 };
 

@@ -24,6 +24,8 @@ export type ShiviDialogueProps = {
   lines: readonly string[];
   /** Lands between the lead and the body lines once the lead is spoken (e.g. a live receipt). */
   afterLead?: ReactNode;
+  /** Continues the last body line once it has been spoken. */
+  afterBody?: ReactNode;
   /** Gate the reveal (e.g. wait for the user's echo chip to land). */
   startWhen?: boolean;
   /** Fires once after the last line has fully revealed. */
@@ -39,6 +41,7 @@ export type ShiviDialogueProps = {
 export function ShiviDialogue({
   lines,
   afterLead,
+  afterBody,
   startWhen = true,
   onComplete,
   className,
@@ -93,6 +96,9 @@ export function ShiviDialogue({
   };
 
   const slotVisible = afterLead != null && (leadDone || (skipAnimation && activeLines > 0));
+  const afterBodyVisible =
+    afterBody != null &&
+    (skipAnimation ? activeLines >= lines.length : doneLines >= lines.length);
 
   return (
     <div className={cn("flex flex-col", className)}>
@@ -151,6 +157,7 @@ export function ShiviDialogue({
             </Fragment>
           );
         })}
+        {afterBodyVisible ? <div className="kyc-stagger">{afterBody}</div> : null}
       </div>
     </div>
   );

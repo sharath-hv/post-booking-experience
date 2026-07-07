@@ -4,7 +4,6 @@ import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 
 import { NextStepCard } from "@/components/concierge/artifacts";
-import { ShimmerInfoCard } from "@/components/ui/ShimmerInfoCard";
 import { bankForQueryParam } from "@/components/payment/acko-drive-finance-bank";
 import { KycBookingProcessingScreen } from "@/components/kyc/KycBookingProcessingScreen";
 
@@ -28,7 +27,7 @@ export function LoanBookingProcessingScreen() {
   const nextHref = loanSanctionedHref(bankId);
   const subline = useMemo(
     () =>
-      `${bank.name} usually takes 2–3 business days to review. I'll chase them and message you the moment there's news. And if you're rethinking the bank or the amount — you get one free switch; just call me.`,
+      `${bank.name} usually takes 2–3 business days to review. I'll chase them and message you the moment there's news.`,
     [bank.name],
   );
 
@@ -40,12 +39,8 @@ export function LoanBookingProcessingScreen() {
         <div className="flex flex-col gap-4">
           <NextStepCard
             title={`Pick up ${bank.name}'s call`}
-            body="A bank representative will call to confirm a few details — share the OTP they ask for."
-            etaLabel="Expected within 2 business days"
+            body="A bank representative will call within 2 business days to confirm a few details — share the OTP they ask for."
           />
-          <ShimmerInfoCard icon="alert">
-            Missed calls push the approval — and your delivery — out.
-          </ShimmerInfoCard>
         </div>
       }
       nextHref={nextHref}

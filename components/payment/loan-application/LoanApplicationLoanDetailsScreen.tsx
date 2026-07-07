@@ -146,7 +146,7 @@ export function LoanApplicationLoanDetailsScreen() {
             <label htmlFor="loan-amount-input" className="sr-only">
               Loan amount in rupees
             </label>
-            <div className="flex h-12 w-full items-center rounded-lg bg-white card-elevated px-4">
+            <div className="flex h-12 w-full items-center rounded-lg border border-[#e8e8e8] bg-white px-4">
               <span
                 className={`shrink-0 ${LOAN_APPLICATION_CONTROL_TEXT_CLASS} text-[#040222]`}
                 aria-hidden

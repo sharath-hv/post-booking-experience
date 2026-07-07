@@ -50,7 +50,7 @@ export function ShimmerInfoCard({ icon = "alert", lead, children, className }: S
   return (
     <div
       className={cn(
-        "next-step-shimmer flex items-center gap-2.5 rounded-2xl border border-[#f3e0b6] bg-[linear-gradient(180deg,rgba(255,247,229,1)_0%,rgba(255,255,255,0.8)_100%)] p-3",
+        "next-step-shimmer flex h-fit items-center gap-2.5 rounded-2xl border border-[#f3e0b6] bg-[linear-gradient(180deg,rgba(255,247,229,1)_0%,rgba(255,255,255,0.8)_100%)] p-3",
         className
       )}
     >

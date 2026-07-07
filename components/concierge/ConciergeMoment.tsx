@@ -1,9 +1,7 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
-
-import infoIcon from "@/assets/Info.svg";
 
 import {
   AmountReceivedCard,
@@ -24,7 +22,6 @@ import {
   DEMO_VEHICLE_ENGINE_NO,
 } from "@/components/kyc/demo-vehicle-identification";
 import { PaymentSummaryCard } from "@/components/payment/PaymentSummaryCard";
-import { ShimmerInfoCard } from "@/components/ui/ShimmerInfoCard";
 import { readActiveBookingSnapshot } from "@/lib/active-booking-snapshot";
 import { ARRIVAL_LEAD_PAID, getTurnWords, type ConciergeMomentId } from "@/lib/concierge/script";
 import {
@@ -38,7 +35,13 @@ import {
   getBookingDeliveryTextClass,
 } from "@/lib/experience-flow-content";
 import { JOURNEY_PATHS } from "@/lib/journey-routes";
-import { recordKycVerificationFailure } from "@/lib/kyc-verification-attempts";
+import {
+  recordKycVerificationFailure,
+  resetKycVerificationFailureCount,
+} from "@/lib/kyc-verification-attempts";
+import {
+  resolveKycVerificationFailureReason,
+} from "@/components/kyc/kyc-verification-failed-content";
 import {
   getKycVerificationNextHref,
   KYC_VERIFICATION_FAILED_HREF,
@@ -59,6 +62,7 @@ export type ConciergeMomentProps = {
  */
 export function ConciergeMoment({ moment }: ConciergeMomentProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [flow, setFlow] = useState<ExperienceFlow>(DEFAULT_EXPERIENCE_FLOW);
   const [flowReady, setFlowReady] = useState(false);
   /** Arrival only — the price-lock payment settles while Shivi talks. */
@@ -92,6 +96,7 @@ export function ConciergeMoment({ moment }: ConciergeMomentProps) {
       dayStamp: words.dayStamp,
       says: words.says,
       footnote: words.footnote,
+      footnoteLead: words.footnoteLead,
       callLabel: words.callLabel,
     };
 
@@ -153,17 +158,50 @@ export function ConciergeMoment({ moment }: ConciergeMomentProps) {
       case "documentsReceived": {
         // OCR verifies in-session — no queue screen. Failure surfaces right here;
         // the cancel-no-charges demo still parks on the holding turn.
+        // Reset the retry counter on every fresh submission so demo reruns don't
+        // accidentally exhaust retries from a previous session.
+        resetKycVerificationFailureCount();
         const failed = getKycVerificationNextHref() === KYC_VERIFICATION_FAILED_HREF;
+
+        // Tailor dialogue + working lines to whichever doc(s) were (re-)submitted.
+        const reuploadReason = resolveKycVerificationFailureReason(searchParams.get("reason"));
+        const reuploadSays: Record<typeof reuploadReason, readonly string[]> = {
+          pan_not_clear:      ["Got your PAN, Sharath. Running it through now.", "This won't take long."],
+          aadhaar_not_clear:  ["Got your Aadhaar, Sharath. Running it through now.", "This won't take long."],
+          address_mismatch:   ["Got your Aadhaar, Sharath. Checking the address details now.", "This won't take long."],
+          name_mismatch:      ["Got both documents, Sharath. Checking the names match now.", "This won't take long."],
+          image_not_clear:    ["Got your documents, Sharath. I'm verifying them now.", "This won't take long."],
+        };
+        const reuploadWorkingLines: Record<typeof reuploadReason, readonly string[]> = {
+          pan_not_clear:      ["Reading your PAN", "Checking your name"],
+          aadhaar_not_clear:  ["Reading your Aadhaar", "Checking your name and address"],
+          address_mismatch:   ["Reading your Aadhaar", "Checking your address details"],
+          name_mismatch:      ["Reading your PAN", "Matching your Aadhaar details", "Checking your name and address"],
+          image_not_clear:    ["Reading your PAN", "Matching your Aadhaar details", "Checking your name and address"],
+        };
+        // If ?reason= is present it's a re-upload — always treat as success (the fix worked).
+        const isReupload = searchParams.has("reason");
+        const overrideSays = isReupload ? reuploadSays[reuploadReason] : undefined;
+        const overrideLines = isReupload ? reuploadWorkingLines[reuploadReason] : undefined;
         const nextHref = isCancelNoChargesFlow(flow)
           ? JOURNEY_PATHS.kyc.verificationInProgress
           : JOURNEY_PATHS.kyc.processing;
+        const workingWithOverride = working && overrideLines
+          ? { ...working, lines: overrideLines }
+          : working;
+
         return {
           ...base,
+          ...(overrideSays ? { says: overrideSays } : {}),
           working:
-            working && failed
-              ? { ...working, doneLabel: "Hmm — one detail needs a second look" }
-              : working,
-          replies: failed
+            workingWithOverride && failed && !isReupload
+              ? {
+                  ...workingWithOverride,
+                  doneLabel: "One detail needs a second look",
+                  doneTone: "warning",
+                }
+              : workingWithOverride,
+          replies: failed && !isReupload
             ? [
                 {
                   label: "Show me what's wrong",
@@ -184,7 +222,7 @@ export function ConciergeMoment({ moment }: ConciergeMomentProps) {
         return {
           ...base,
           artifact: (
-            <NoteCallout iconSrc={infoIcon}>
+            <NoteCallout>
               Nothing needed from you right now — I&apos;ll message you the moment there&apos;s
               news.
             </NoteCallout>
@@ -223,7 +261,7 @@ export function ConciergeMoment({ moment }: ConciergeMomentProps) {
           // No reply buttons here, but the date is in the user's hands — the call is the action.
           dateHolder: "you",
           artifact: (
-            <>
+            <div className="flex flex-col gap-5">
               <CarSummaryCardLite
                 hero="dealer"
                 title={car.title}
@@ -233,21 +271,22 @@ export function ConciergeMoment({ moment }: ConciergeMomentProps) {
                 deliveryLineClassName={deliveryLineClass}
                 dealerName={DEALER_NAME}
                 dealerDetail={DEALER_DETAIL}
+                engineNo={DEMO_VEHICLE_ENGINE_NO}
+                chassisNo={DEMO_VEHICLE_CHASSIS_NO}
               />
               <NextStepCard
                 title={`Pick up ${DEALER_NAME}'s call`}
-                body="An OTP will land on your phone — read it back to them to lock the car."
+                body="They'll read out a one-time code that registers the car to you on Hyundai's system, share it back and the Creta is locked in your name."
                 etaLabel="Expected today, before 6:00 PM"
               />
-              <ShimmerInfoCard icon="alert">
-                If the call slips, your reservation — and your {deliveryDate} delivery — can
-                slip with it.
-              </ShimmerInfoCard>
+              <NoteCallout>
+                If you miss the call, your reservation and your {deliveryDate} delivery could slip.
+              </NoteCallout>
               <p className="px-1 text-xs leading-[18px] text-[#757575]">
-                Second thoughts? One change costs ₹5,000; cancelling holds back 50% of what
-                you&apos;ve paid — both live in the ⋮ menu up top.
+                <span className="font-semibold">Having second thoughts?</span> A change costs ₹5,000 and
+                cancelling holds back half of what you&apos;ve paid. Both are in the menu up top.
               </p>
-            </>
+            </div>
           ),
           timeSkip: words.timeSkipLabel
             ? { label: words.timeSkipLabel, href: JOURNEY_PATHS.kyc.bookingConfirmed }
@@ -263,14 +302,16 @@ export function ConciergeMoment({ moment }: ConciergeMomentProps) {
               title={car.title}
               variant={car.variant}
               colour={car.colour}
-              statusChip="Locked to you ✓"
+              statusChip="Yours ✓"
               deliveryLine={deliveryLine}
               deliveryLineClassName={deliveryLineClass}
               dealerName={DEALER_NAME}
               dealerDetail={DEALER_DETAIL}
+              engineNo={DEMO_VEHICLE_ENGINE_NO}
+              chassisNo={DEMO_VEHICLE_CHASSIS_NO}
             />
           ),
-          replies: primaryReply(JOURNEY_PATHS.carAllocation.pending),
+          replies: primaryReply(JOURNEY_PATHS.payment.default),
         };
 
       case "allocationPending":

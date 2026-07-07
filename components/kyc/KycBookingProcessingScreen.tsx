@@ -112,7 +112,6 @@ export function KycBookingProcessingScreen({
 
   const artifact = (
     <>
-      {belowHeadline}
       {infoBox != null || sublineLine2 ? (
         <div className="flex items-center gap-3 rounded-2xl bg-white card-elevated px-3 py-3 text-left">
           <span className="relative h-5 w-5 shrink-0">
@@ -134,6 +133,7 @@ export function KycBookingProcessingScreen({
     <ConciergeTurnShell
       dayStamp={dayStamp}
       says={says}
+      afterBody={belowHeadline}
       artifact={artifact}
       replies={replies}
       timeSkip={timeSkip}
