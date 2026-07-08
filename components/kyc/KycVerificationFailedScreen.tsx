@@ -146,7 +146,7 @@ export function KycVerificationFailedScreen() {
                 className="h-20 w-20 object-contain"
                 priority
                 unoptimized
-                onLoadingComplete={() => setHeroArtReady(true)}
+                onLoad={() => setHeroArtReady(true)}
               />
             </div>
 

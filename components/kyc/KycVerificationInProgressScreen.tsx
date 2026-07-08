@@ -125,7 +125,7 @@ export function KycVerificationInProgressScreen({
                 className="h-20 w-20"
                 priority
                 unoptimized
-                onLoadingComplete={() => setHeroArtReady(true)}
+                onLoad={() => setHeroArtReady(true)}
               />
             </div>
 
