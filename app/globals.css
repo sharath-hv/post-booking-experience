@@ -90,6 +90,8 @@
   --color-brand: #6841e6;
   --color-brand-hover: #582fd2;
   --color-brand-subtle: #eaeafd;
+  /** Text link / tertiary CTA — inline actions, “know more”, sheet triggers */
+  --color-link: #1b73e8;
   --color-success: #16a34a;
   --color-success-subtle: #dcfce7;
   --color-warning-bg: #fef9c3;
@@ -112,7 +114,7 @@
   --quote-text-tertiary: #757575;
   --quote-green: #0fa457;
   --quote-red: #d83d37;
-  --quote-link: #1b73e8;
+  --quote-link: var(--color-link);
   --quote-purple-tint: #efe9fb;
   --quote-purple-text: #451999;
   --quote-info-bg: #f9f6ff;
@@ -407,7 +409,6 @@ body {
   cursor: pointer;
   transition:
     background-color 0.15s ease,
-    opacity 0.15s ease,
     transform 0.12s ease;
 }
 .primary-cta:hover {
@@ -419,8 +420,9 @@ body {
 }
 .primary-cta:disabled {
   cursor: not-allowed;
-  background-color: #a0a0a0;
-  opacity: 1;
+  background-color: #a0a0a0 !important;
+  opacity: 1 !important;
+  color: #ffffff !important;
 }
 
 /* Demo journey “Next” — outline only; same #121212 as primary fill (GitHub Pages) */
@@ -457,6 +459,34 @@ body {
 .demo-nav-cta:disabled {
   cursor: not-allowed;
   opacity: 0.5;
+}
+
+/* Tertiary CTA — compact hyperlink for card footers and inline actions */
+.tertiary-cta {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  border: none;
+  background: transparent;
+  padding: 0;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  color: var(--color-link);
+  font-family: inherit;
+  cursor: pointer;
+  text-underline-offset: 2px;
+  transition: opacity 0.15s ease;
+}
+.tertiary-cta:hover {
+  text-decoration: underline;
+}
+.tertiary-cta:active {
+  opacity: 0.85;
+}
+.tertiary-cta:focus-visible {
+  outline: 2px solid rgb(27 115 232 / 0.25);
+  outline-offset: 2px;
 }
 
 /* Ghost / icon actions — back, close (light surfaces) */

@@ -50,14 +50,7 @@ function DoneTickIcon() {
 function QueuedIcon() {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden className="shrink-0">
-      <circle
-        cx="12"
-        cy="12"
-        r="8.5"
-        stroke="#c2c2c2"
-        strokeWidth="2"
-        strokeDasharray="3.2 3.6"
-      />
+      <circle cx="12" cy="12" r="8.5" stroke="#c2c2c2" strokeWidth="1" />
     </svg>
   );
 }

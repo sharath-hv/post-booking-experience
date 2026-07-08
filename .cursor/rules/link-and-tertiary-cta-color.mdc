@@ -1,0 +1,32 @@
+---
+description: Text link and tertiary CTA color (#1B73E8)
+globs: **/*.{tsx,css}
+alwaysApply: false
+---
+
+# Text link & tertiary CTA color
+
+Inline text buttons and hyperlink-style actions use **`#1B73E8`** (`--color-link` in `app/globals.css`).
+
+## When to use
+
+- `tertiary-cta` class (card footers, “walk me through…”, “What’s covered”)
+- Inline text links below cards or in copy rows
+- Focus rings on link buttons: `focus-visible:ring-[#1b73e8]/25` or `/30`
+
+## Implementation
+
+```tsx
+// ✅ GOOD — shared class (14px / #1B73E8 via --color-link)
+<button type="button" className="tertiary-cta">…</button>
+
+// ✅ GOOD — token / variable
+className="text-[var(--color-link)]"
+className="text-[#1b73e8]"
+
+// ❌ BAD — old blue-600 / tailwind blue
+className="text-blue-600"
+color: #2563eb;
+```
+
+Prefer `tertiary-cta` or `var(--color-link)` over hardcoding when adding new link actions.

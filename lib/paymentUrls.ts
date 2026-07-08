@@ -205,6 +205,7 @@ export function buildCarDeliveryInsurancePrepHref(params?: InsuranceJourneyQuery
     q.set("bank", bank);
   }
   if (params?.loanAmount) q.set("loan_amount", params.loanAmount);
+  if (params?.tenure) q.set("tenure", params.tenure);
   const qs = q.toString();
   return qs ? `/payment/car-delivery-insurance-prep?${qs}` : "/payment/car-delivery-insurance-prep";
 }

@@ -33,6 +33,7 @@ function InsurancePremiumSuccessInner() {
       nextHref: buildCarDeliveryInsurancePrepHref({
         bank: searchParams.get("bank"),
         loanAmount: searchParams.get("loan_amount"),
+        tenure: searchParams.get("tenure"),
       }),
     };
   }, [searchParams]);

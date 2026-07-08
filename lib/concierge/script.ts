@@ -77,14 +77,14 @@ export const VERIFY_IDENTITY_WORDS: TurnWords = {
   callLabel: "Stuck? I can call you",
 };
 
-/** Arrival lead once the payment settles — close in length so the headline doesn't reflow. */
+/** Arrival lead — identical before and after payment so the headline never reflows. */
 export const ARRIVAL_LEAD_PAID =
   "Hi Sharath, I'm Shivi. Your payment is in and your price is locked.";
 
 const EXPRESS_SCRIPT: Record<ConciergeMomentId, TurnWords> = {
   arrival: {
     says: [
-      "Hi Sharath, I'm Shivi — your payment is going through right now.",
+      "Hi Sharath, I'm Shivi. Your payment is in and your price is locked.",
       "You're almost there. One short paperwork step comes next, then I can lock in your delivery date.",
       "Here's how the next few days look:",
     ],
@@ -201,7 +201,7 @@ const EXPRESS_SCRIPT: Record<ConciergeMomentId, TurnWords> = {
 const STANDARD_OVERRIDES: Partial<Record<ConciergeMomentId, Partial<TurnWords>>> = {
   arrival: {
     says: [
-      "Hi Sharath, I'm Shivi — your payment is going through right now.",
+      "Hi Sharath, I'm Shivi. Your payment is in and your price is locked.",
       "You're almost there. One short paperwork step comes next, then I can lock in your delivery date.",
       "Here's how the next few weeks look:",
     ],

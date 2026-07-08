@@ -11,6 +11,8 @@ import {
   INSURANCE_COVER_HERO,
   INSURANCE_POLICY_NUMBER,
   INSURANCE_PREMIUM_INR,
+  INSURANCE_TENURE_OPTIONS,
+  type InsuranceTenureId,
 } from "@/components/payment/insurance-coverage-content";
 
 function formatInr(amount: number) {
@@ -44,6 +46,8 @@ function ShieldWatermark() {
 export type ShieldPolicyCardProps = {
   /** `quote` — before the premium is paid (price, savings). `active` — the owned policy. */
   mode: "quote" | "active";
+  /** Selected tenure — determines cover durations shown in active mode. Defaults to `"1+3"`. */
+  tenure?: InsuranceTenureId;
 };
 
 /**
@@ -54,9 +58,12 @@ export type ShieldPolicyCardProps = {
  * contradiction; IDV gets its own explained row below. Same component for
  * both moments so the card “becomes yours” after payment.
  */
-export function ShieldPolicyCard({ mode }: ShieldPolicyCardProps) {
+export function ShieldPolicyCard({ mode, tenure = "1+3" }: ShieldPolicyCardProps) {
   const [sheetOpen, setSheetOpen] = useState(false);
   const isActive = mode === "active";
+  const tenureOption = INSURANCE_TENURE_OPTIONS.find((o) => o.id === tenure) ?? INSURANCE_TENURE_OPTIONS[0];
+  const odYears = tenureOption.ownDamageYears;
+  const tpYears = tenureOption.thirdPartyYears;
 
   return (
     <>
@@ -65,51 +72,49 @@ export function ShieldPolicyCard({ mode }: ShieldPolicyCardProps) {
         aria-label={isActive ? "Your active car insurance policy" : "Car insurance coverage"}
       >
         {/* Hero — soft aurora wash, brand whisper, one number */}
-        <div className="relative overflow-hidden px-5 pb-6 pt-5 [background:radial-gradient(130%_130%_at_0%_0%,#efe8fc_0%,rgba(239,232,252,0)_62%),radial-gradient(110%_110%_at_100%_0%,#fdeff3_0%,rgba(253,239,243,0)_55%)]">
+        <div className="relative overflow-hidden px-5 pb-5 pt-5 [background:radial-gradient(130%_130%_at_0%_0%,#efe8fc_0%,rgba(239,232,252,0)_62%),radial-gradient(110%_110%_at_100%_0%,#fdeff3_0%,rgba(253,239,243,0)_55%)]">
           <ShieldWatermark />
 
-          <div className="relative flex items-center justify-between gap-3">
-            <div className="flex min-w-0 items-center gap-2">
-              <Image
-                src={ackoLogo}
-                alt=""
-                width={18}
-                height={18}
-                className="size-[18px] shrink-0 object-contain"
-                unoptimized
-              />
-              <p className="truncate text-sm font-semibold leading-5 tracking-[-0.1px] text-[#18141f]">
+          <div className="relative flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              {isActive ? (
+                <span className="mb-1.5 inline-flex items-center gap-1.5 rounded-full bg-[#e9f7ef] px-2.5 py-1 text-[10px] font-semibold uppercase leading-3 tracking-[0.06em] text-[#0c7a42]">
+                  <span className="relative flex h-1.5 w-1.5" aria-hidden>
+                    <span className="absolute inset-0 animate-ping rounded-full bg-[#0fa457]/50 [animation-duration:2.4s] motion-reduce:hidden" />
+                    <span className="relative h-1.5 w-1.5 rounded-full bg-[#0fa457]" />
+                  </span>
+                  Active
+                </span>
+              ) : null}
+              <p className="truncate text-base font-semibold leading-6 tracking-[-0.1px] text-[#18141f]">
                 ACKO Drive Shield
               </p>
+              <p className="mt-1 text-xs leading-4 text-[#4b4b4b]">
+                {isActive
+                  ? `${odYears} year Zero depreciation cover for your Creta`
+                  : "Built for your new Creta"}
+              </p>
             </div>
-            {isActive ? (
-              <span className="flex shrink-0 items-center gap-1.5 rounded-full bg-[#e9f7ef] px-2.5 py-1 text-[10px] font-semibold uppercase leading-3 tracking-[0.06em] text-[#0c7a42]">
-                <span className="relative flex h-1.5 w-1.5" aria-hidden>
-                  <span className="absolute inset-0 animate-ping rounded-full bg-[#0fa457]/50 [animation-duration:2.4s] motion-reduce:hidden" />
-                  <span className="relative h-1.5 w-1.5 rounded-full bg-[#0fa457]" />
-                </span>
-                Active
-              </span>
-            ) : (
-              <span className="shrink-0 whitespace-nowrap text-[9px] font-semibold uppercase leading-3 tracking-[0.12em] text-[#b3a6d9]">
-                Only on ACKO Drive
-              </span>
-            )}
+            <div className="flex shrink-0 items-center gap-2">
+              <Image
+                src={ackoLogo}
+                alt="ACKO"
+                width={40}
+                height={40}
+                className="size-10 shrink-0 object-contain"
+                unoptimized
+              />
+            </div>
           </div>
-          <p className="relative mt-1 text-xs leading-[18px] text-[#8d8798]">
-            {isActive
-              ? "Zero depreciation · issued the moment you paid"
-              : "Zero depreciation · built for your new Creta"}
-          </p>
 
           <div className="relative mt-6">
-            <p className="text-[10px] font-semibold uppercase leading-4 tracking-[0.09em] text-[#9a92ad]">
+            <p className="text-[10px] font-medium uppercase leading-4 tracking-[0.09em] text-[#9a92ad]">
               {INSURANCE_COVER_HERO.eyebrow}
             </p>
-            <p className="mt-1 w-fit bg-[linear-gradient(105deg,#251c40_0%,#5920c5_100%)] bg-clip-text text-[32px] font-semibold leading-10 tracking-[-0.5px] text-transparent tabular-nums">
+            <p className="mt-1 w-fit bg-[linear-gradient(105deg,#251c40_0%,#5920c5_100%)] bg-clip-text text-[28px] font-semibold leading-10 tracking-[-0.5px] text-transparent tabular-nums">
               {INSURANCE_COVER_HERO.value}
             </p>
-            <p className="mt-1.5 max-w-[38ch] text-xs leading-[18px] text-[#6f697e]">
+            <p className="mt-1.5 text-xs leading-4 text-[#757575]">
               {INSURANCE_COVER_HERO.caption}
             </p>
           </div>
@@ -136,44 +141,40 @@ export function ShieldPolicyCard({ mode }: ShieldPolicyCardProps) {
                 </svg>
               </span>
               <div className="min-w-0">
-                <p className="text-[13px] font-medium leading-[18px] text-[#1c1727]">{row.title}</p>
-                <p className="mt-0.5 text-xs leading-[17px] text-[#8d8798]">{row.detail}</p>
+                <p className="text-sm font-medium leading-5 text-[#1c1727]">{row.title}</p>
+                <p className="mt-0.5 text-xs leading-4 text-[#757575]">{row.detail}</p>
               </div>
             </div>
           ))}
         </div>
 
         {/* Footer — price (quote) / policy identity (active) + soft action */}
-        <div className="flex items-center justify-between gap-3 border-t border-[#f1eef8] px-5 py-3.5">
+        <div className="flex items-start justify-between gap-3 border-t border-[#f1eef8] px-5 py-3.5">
           {isActive ? (
             <div className="min-w-0">
-              <p className="text-[13px] font-medium leading-[18px] text-[#1c1727] tabular-nums">
+              <p className="text-sm font-medium leading-5 text-[#1c1727] tabular-nums">
                 {INSURANCE_POLICY_NUMBER}
               </p>
-              <p className="mt-0.5 text-xs leading-[17px] text-[#8d8798]">
-                Active from today · zero dep 1 yr · third-party 3 yrs
+              <p className="mt-0.5 text-xs leading-4 text-[#757575]">
+                {`Active from today · Zero Dep ${odYears} yr${odYears > 1 ? "s" : ""} · Third Party ${tpYears} yrs`}
               </p>
             </div>
           ) : (
             <div className="min-w-0">
               <p className="flex flex-wrap items-baseline gap-x-2">
-                <span className="text-[17px] font-semibold leading-6 text-[#18141f] tabular-nums">
+                <span className="text-xl font-semibold leading-7 text-[#18141f] tabular-nums">
                   {formatInr(INSURANCE_PREMIUM_INR)}
                 </span>
-                <span className="text-[13px] leading-5 text-[#b6b1c2] line-through tabular-nums">
+                <span className="text-sm leading-5 text-[#b6b1c2] line-through tabular-nums">
                   {formatInr(INSURANCE_COMPARE_AT_PREMIUM_INR)}
                 </span>
               </p>
-              <p className="mt-0.5 text-xs font-medium leading-[17px] text-[#0c8a4d]">
+              <p className="mt-0.5 text-xs font-medium leading-4 text-[#0c7a42]">
                 You save {formatInr(INSURANCE_COMPARE_AT_PREMIUM_INR - INSURANCE_PREMIUM_INR)}
               </p>
             </div>
           )}
-          <button
-            type="button"
-            onClick={() => setSheetOpen(true)}
-            className="flex h-8 shrink-0 items-center rounded-full bg-[#f3effc] px-3.5 text-xs font-semibold leading-4 text-[#5920c5] transition-[background-color,scale] hover:bg-[#ebe2fa] active:scale-[0.97] focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#5920c5]/25 focus-visible:ring-offset-2"
-          >
+          <button type="button" onClick={() => setSheetOpen(true)} className="tertiary-cta">
             {isActive ? "View policy" : "What's covered"}
           </button>
         </div>
@@ -183,6 +184,7 @@ export function ShieldPolicyCard({ mode }: ShieldPolicyCardProps) {
         open={sheetOpen}
         onClose={() => setSheetOpen(false)}
         mode={mode === "active" ? "owned" : "purchase"}
+        tenure={tenure}
       />
     </>
   );

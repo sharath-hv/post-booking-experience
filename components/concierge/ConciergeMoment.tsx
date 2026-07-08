@@ -272,10 +272,11 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
           artifact: (
             <div className="flex flex-col gap-5">
               <CarSummaryCardLite
-                hero="dealer"
                 title={car.title}
                 variant={car.variant}
                 colour={car.colour}
+                statusChip="Reserved"
+                statusChipVariant="blue"
                 deliveryLine={deliveryLine}
                 deliveryLineClassName={deliveryLineClass}
                 dealerName={DEALER_NAME}

@@ -132,7 +132,7 @@ function MockRazorpayPaymentPageContent() {
     const isFullPayment = searchParams.get("bank") === FULL_PAYMENT_BANK_ID;
     const isInsurancePayment =
       searchParams.get("payment_kind") === INSURANCE_PAYMENT_KIND;
-    const insuranceDue = FULL_PAYMENT_INSURANCE_INR;
+    const insuranceDue = isInsurancePayment && hasDownPaymentParam ? due : FULL_PAYMENT_INSURANCE_INR;
     const isBookingLockCheckout = !hasDownPaymentParam && !isInsurancePayment;
     const bookingLockDue = isBookingLockCheckout
       ? parseBookingLockAmountFromSearchParams(searchParams)
@@ -253,9 +253,10 @@ function MockRazorpayPaymentPageContent() {
     setCheckoutError(null);
 
     if (isInsurancePayment) {
-      pendingSuccessHref.current = buildInsurancePremiumSuccessHref(FULL_PAYMENT_INSURANCE_INR, {
+      pendingSuccessHref.current = buildInsurancePremiumSuccessHref(totalDue, {
         bank: searchParams.get("bank"),
         loanAmount: searchParams.get("loan_amount"),
+        tenure: searchParams.get("tenure"),
       });
       if (PROCESSING_MS <= 0) {
         router.push(pendingSuccessHref.current);

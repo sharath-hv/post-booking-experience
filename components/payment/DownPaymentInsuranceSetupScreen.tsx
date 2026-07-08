@@ -9,7 +9,7 @@ import { bankForQueryParam } from "@/components/payment/acko-drive-finance-bank"
 import { MoneyPlanCard, type MoneyPlanStep } from "@/components/payment/MoneyPlanCard";
 import { useFullPaymentJourney } from "@/components/payment/use-full-payment-journey";
 import { FULL_PAYMENT_INSURANCE_INR } from "@/components/payment/loan-amount-demo-constants";
-import { buildChooseInsuranceTenureHref, buildLoanDisbursementReceivedHref } from "@/lib/paymentUrls";
+import { buildLoanDisbursementReceivedHref, buildPayInsurancePremiumHref } from "@/lib/paymentUrls";
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -127,9 +127,9 @@ export function DownPaymentInsuranceSetupScreen() {
   }, [isFullPayment, bankTransferRef, bank, originalDownPayment]);
 
   const nextHref = isFullPayment
-    ? buildChooseInsuranceTenureHref()
+    ? buildPayInsurancePremiumHref()
     : isSelfFinance
-      ? buildChooseInsuranceTenureHref({
+      ? buildPayInsurancePremiumHref({
           bank: bank ?? "self_finance",
           loanAmount,
         })

@@ -1,25 +1,17 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 
-import shiviAvatar from "@/assets/Shivi small.png";
 import {
-  INSURANCE_CLAIMS_LINE,
-  INSURANCE_COVERAGE_ITEMS,
-  INSURANCE_COVERAGE_SHEET_SUBTITLE,
-  INSURANCE_COVERAGE_SHEET_TITLE,
-  INSURANCE_COVER_HERO,
-  INSURANCE_OWNED_SHEET_SUBTITLE,
-  INSURANCE_OWNED_SHEET_TITLE,
-  INSURANCE_POLICY_FACTS,
-  INSURANCE_TENURE_OPTIONS,
+  INSURANCE_TENURE_COMPARE_BENEFITS,
+  INSURANCE_TENURE_COMPARE_ROWS,
+  INSURANCE_TENURE_COMPARE_SHEET_TITLE,
+  INSURANCE_TENURE_COMPARE_WHAT_YOU_GET,
   type InsuranceCoverageItem,
-  type InsuranceTenureId,
 } from "@/components/payment/insurance-coverage-content";
 import { BottomSheetCloseIcon } from "@/components/ui/BottomSheetCloseIcon";
 import { BottomSheetPortal } from "@/components/ui/BottomSheetPortal";
-import { ShimmerInfoCard } from "@/components/ui/ShimmerInfoCard";
 import {
   BOTTOM_SHEET_BODY_BEFORE_CTA_CLASS,
   BOTTOM_SHEET_CTA_STRIP_TOP_CLASS,
@@ -27,10 +19,21 @@ import {
   BOTTOM_SHEET_OVERLAY_Z_CLASS,
 } from "@/components/ui/bottom-sheet-layout";
 
-/** Enter/exit slide duration — keep in sync with `LoanSubmitConfirmBottomSheet` */
+/** Enter/exit slide duration — keep in sync with `InsuranceCoverageBottomSheet` */
 const SHEET_TRANSITION_MS = 280;
 
-function CoverageDetailRow({ iconSrc, title, description }: InsuranceCoverageItem) {
+function CompareYearCell({ years }: { years: number }) {
+  return (
+    <div className="flex h-9 flex-col justify-center text-center">
+      <p className="text-[#040222]">
+        <span className="text-base font-medium leading-6 tabular-nums">{years}</span>
+        <span className="text-xs leading-[18px]"> year</span>
+      </p>
+    </div>
+  );
+}
+
+function CompareBenefitRow({ iconSrc, title, description }: InsuranceCoverageItem) {
   return (
     <div className="flex gap-3">
       <div className="relative size-14 shrink-0" aria-hidden>
@@ -52,69 +55,77 @@ function CoverageDetailRow({ iconSrc, title, description }: InsuranceCoverageIte
   );
 }
 
-/** Shivi's framing below the sheet title — avatar + one-line copy. */
-function ShiviLine({ text }: { text: string }) {
+function CompareTable() {
   return (
-    <div className="flex items-start gap-3">
-      <span className="relative mt-0.5 h-9 w-9 shrink-0 overflow-hidden rounded-full bg-[#f5f5f5]">
-        <Image src={shiviAvatar} alt="" fill className="object-cover" unoptimized sizes="36px" />
-      </span>
-      <p className="min-w-0 text-sm leading-5 text-[#4b4b4b]">{text}</p>
+    <div className="overflow-hidden rounded-2xl border border-[#e8e8e8]">
+      {/* Use relative positioning so the Extended column gradient can be an absolute overlay */}
+      <div className="relative grid grid-cols-[minmax(0,1.2fr)_100px_100px]">
+        {/* Extended column full-height purple gradient overlay */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-y-0 right-0 w-[100px] bg-[linear-gradient(to_bottom,#f4eefe,rgba(244,238,254,0))]"
+        />
+
+        {/* Header row */}
+        <div className="border-b border-[#e8e8e8] py-3 pl-4">
+          <p className="text-sm font-medium leading-5 text-[#121212]">
+            Coverage
+            <br />
+            type
+          </p>
+        </div>
+        <div className="border-b border-l border-[#e8e8e8] p-3">
+          <p className="text-center text-sm font-medium leading-5 text-[#121212]">
+            Standard
+            <br />
+            cover
+          </p>
+        </div>
+        <div className="relative border-b border-l border-[#e8e8e8] p-3">
+          <p className="text-center text-sm font-semibold leading-5 bg-[linear-gradient(105deg,#251c40_0%,#5920c5_100%)] bg-clip-text text-transparent">
+            Extended
+            <br />
+            Cover
+          </p>
+        </div>
+
+        {/* Data rows */}
+        {INSURANCE_TENURE_COMPARE_ROWS.map((row) => (
+          <Fragment key={row.id}>
+            <div className="flex flex-col justify-center py-3 pl-4 text-xs leading-[18px] text-[#040222]">
+              {row.lines.map((line) => (
+                <p key={line}>{line}</p>
+              ))}
+            </div>
+            <div className="border-l border-[#e8e8e8] px-4 py-3">
+              <CompareYearCell years={row.standardYears} />
+            </div>
+            <div className="relative border-l border-[#e8e8e8] px-4 py-3">
+              <CompareYearCell years={row.extendedYears} />
+            </div>
+          </Fragment>
+        ))}
+      </div>
     </div>
   );
 }
 
-/** The one headline number — IDV with aurora wash and gradient value. */
-function CoverHeroBand() {
-  return (
-    <div className="rounded-2xl border border-[#eceaf4] px-4 py-4 [background:radial-gradient(130%_140%_at_0%_0%,#efe8fc_0%,rgba(239,232,252,0)_65%),radial-gradient(110%_120%_at_100%_0%,#fdeff3_0%,rgba(253,239,243,0)_55%)]">
-      <p className="text-[10px] font-medium uppercase leading-4 tracking-[0.09em] text-[#9a92ad]">
-        {INSURANCE_COVER_HERO.eyebrow}
-      </p>
-      <p className="mt-1 w-fit bg-[linear-gradient(105deg,#251c40_0%,#5920c5_100%)] bg-clip-text text-[26px] font-semibold leading-8 tracking-[-0.4px] text-transparent tabular-nums">
-        {INSURANCE_COVER_HERO.value}
-      </p>
-      <p className="mt-1.5 text-xs leading-[18px] text-[#6f697e]">{INSURANCE_COVER_HERO.caption}</p>
-    </div>
-  );
-}
-
-export type InsuranceCoverageBottomSheetProps = {
+export type InsuranceTenureCompareBottomSheetProps = {
   open: boolean;
   onClose: () => void;
-  /**
-   * `purchase` — pre-payment coverage explainer.
-   * `owned` — post-payment: policy facts and claims, no selling.
-   */
-  mode?: "purchase" | "owned";
-  /** Selected tenure — used in owned mode to show correct cover durations. Defaults to `"1+3"`. */
-  tenure?: InsuranceTenureId;
 };
 
 /**
- * ACKO Drive Shield coverage bottom sheet — IDV card plus four illustrated
- * cover rows, aligned to the 3+3 insurance upsell Figma (node 315:3152).
+ * Standard vs extended tenure compare sheet —
+ * [Figma 322:5666](https://www.figma.com/design/FEPATa8H2Eflz7FZm5LKuL/3-3-insurance-upsell?node-id=322-5666).
  */
-export function InsuranceCoverageBottomSheet({
+export function InsuranceTenureCompareBottomSheet({
   open,
   onClose,
-  mode = "purchase",
-  tenure = "1+3",
-}: InsuranceCoverageBottomSheetProps) {
-  const tenureOption = INSURANCE_TENURE_OPTIONS.find((o) => o.id === tenure) ?? INSURANCE_TENURE_OPTIONS[0];
-  const policyFacts = INSURANCE_POLICY_FACTS.map((fact) => {
-    if (fact.label === "Zero depreciation") {
-      return { ...fact, value: `${tenureOption.ownDamageYears} year${tenureOption.ownDamageYears > 1 ? "s" : ""}` };
-    }
-    if (fact.label === "Third-party cover") {
-      return { ...fact, value: `${tenureOption.thirdPartyYears} years` };
-    }
-    return fact;
-  });
+}: InsuranceTenureCompareBottomSheetProps) {
   const [mounted, setMounted] = useState(false);
   const [animateIn, setAnimateIn] = useState(false);
   const exitTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const owned = mode === "owned";
 
   useEffect(() => {
     if (!open) return;
@@ -177,16 +188,16 @@ export function InsuranceCoverageBottomSheet({
           }`}
           role="dialog"
           aria-modal="true"
-          aria-labelledby="insurance-coverage-sheet-title"
+          aria-labelledby="insurance-tenure-compare-sheet-title"
         >
           <div className="relative flex min-h-0 flex-1 flex-col">
-            <header className="relative z-10 flex shrink-0 flex-col gap-4 bg-white px-5 pb-0 pt-6">
+            <header className="relative z-10 shrink-0 bg-white px-5 pb-0 pt-6">
               <div className="flex items-start justify-between gap-4">
                 <h2
-                  id="insurance-coverage-sheet-title"
+                  id="insurance-tenure-compare-sheet-title"
                   className="min-w-0 flex-1 text-left text-xl font-semibold leading-7 tracking-[-0.1px] text-[#121212]"
                 >
-                  {owned ? INSURANCE_OWNED_SHEET_TITLE : INSURANCE_COVERAGE_SHEET_TITLE}
+                  {INSURANCE_TENURE_COMPARE_SHEET_TITLE}
                 </h2>
                 <button
                   type="button"
@@ -197,9 +208,6 @@ export function InsuranceCoverageBottomSheet({
                   <BottomSheetCloseIcon />
                 </button>
               </div>
-              <ShiviLine
-                text={owned ? INSURANCE_OWNED_SHEET_SUBTITLE : INSURANCE_COVERAGE_SHEET_SUBTITLE}
-              />
               <div
                 aria-hidden
                 className="pointer-events-none absolute inset-x-0 top-full h-6 bg-[linear-gradient(to_bottom,#ffffff,rgba(255,255,255,0))]"
@@ -210,37 +218,18 @@ export function InsuranceCoverageBottomSheet({
               className={`min-h-0 flex-1 overflow-y-auto px-5 pt-6 ${BOTTOM_SHEET_BODY_BEFORE_CTA_CLASS}`}
             >
               <div className="flex flex-col gap-8">
-                {owned ? (
-                  <div className="overflow-hidden rounded-xl border border-[#e8e8e8]">
-                    {policyFacts.map((fact, idx) => (
-                      <div
-                        key={fact.label}
-                        className={`flex items-center justify-between gap-3 bg-white px-4 py-3 ${
-                          idx > 0 ? "border-t border-[#f0f0f0]" : ""
-                        }`}
-                      >
-                        <p className="text-sm leading-5 text-[#4b4b4b]">{fact.label}</p>
-                        <p className="shrink-0 text-sm font-medium leading-5 text-[#121212] tabular-nums">
-                          {fact.value}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                ) : null}
-
-                <CoverHeroBand />
+                <CompareTable />
 
                 <div className="flex flex-col gap-5">
-                  {INSURANCE_COVERAGE_ITEMS.map((item) => (
-                    <CoverageDetailRow key={item.title} {...item} />
-                  ))}
+                  <p className="text-sm font-medium leading-5 text-[#757575]">
+                    {INSURANCE_TENURE_COMPARE_WHAT_YOU_GET}
+                  </p>
+                  <div className="flex flex-col gap-4">
+                    {INSURANCE_TENURE_COMPARE_BENEFITS.map((item) => (
+                      <CompareBenefitRow key={item.title} {...item} />
+                    ))}
+                  </div>
                 </div>
-
-                {owned ? (
-                  <ShimmerInfoCard icon="info">
-                    {INSURANCE_CLAIMS_LINE}
-                  </ShimmerInfoCard>
-                ) : null}
               </div>
             </div>
 
@@ -252,7 +241,7 @@ export function InsuranceCoverageBottomSheet({
                 className="pointer-events-none absolute inset-x-0 bottom-full h-6 bg-[linear-gradient(to_top,#ffffff,rgba(255,255,255,0))]"
               />
               <button type="button" onClick={onClose} className="primary-cta w-full">
-                {owned ? "Got it" : "Okay"}
+                Okay
               </button>
             </div>
           </div>

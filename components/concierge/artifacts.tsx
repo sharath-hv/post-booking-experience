@@ -397,6 +397,8 @@ export type CarSummaryCardLiteProps = {
   hero?: "car" | "dealer";
   /** Green status chip at card top — e.g. “Locked to you ✓”. */
   statusChip?: string;
+  /** Colour of the status chip. Defaults to "green". */
+  statusChipVariant?: "green" | "blue";
   /** Post-allocation identity — the exact unit. */
   engineNo?: string;
   chassisNo?: string;
@@ -417,6 +419,7 @@ export function CarSummaryCardLite({
   dealerDetail,
   hero = "car",
   statusChip,
+  statusChipVariant = "green",
   engineNo,
   chassisNo,
 }: CarSummaryCardLiteProps) {
@@ -469,10 +472,20 @@ export function CarSummaryCardLite({
             )}
           >
             {statusChip ? (
-              <span className="inline-flex h-6 w-fit items-center gap-1 rounded-full bg-[#e7f6ee] px-2 py-1 text-[11px] font-medium leading-4 text-[#0c7a42]">
+              <span
+                className={
+                  statusChipVariant === "blue"
+                    ? "inline-flex h-6 w-fit items-center gap-1 rounded-full bg-[#e8f0fe] px-2 py-1 text-[11px] font-medium leading-4 text-[#1a56db]"
+                    : "inline-flex h-6 w-fit items-center gap-1 rounded-full bg-[#e7f6ee] px-2 py-1 text-[11px] font-medium leading-4 text-[#0c7a42]"
+                }
+              >
                 <span
                   aria-hidden
-                  className="h-5 w-5 shrink-0 bg-[#0c7a42] [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center] [-webkit-mask-size:contain] [-webkit-mask-repeat:no-repeat] [-webkit-mask-position:center]"
+                  className={
+                    statusChipVariant === "blue"
+                      ? "h-5 w-5 shrink-0 bg-[#1a56db] [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center] [-webkit-mask-size:contain] [-webkit-mask-repeat:no-repeat] [-webkit-mask-position:center]"
+                      : "h-5 w-5 shrink-0 bg-[#0c7a42] [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center] [-webkit-mask-size:contain] [-webkit-mask-repeat:no-repeat] [-webkit-mask-position:center]"
+                  }
                   style={TICK_ICON_MASK_STYLE}
                 />
                 {statusChipLabel(statusChip)}
