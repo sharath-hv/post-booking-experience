@@ -61,6 +61,10 @@ export const INSURANCE_PAYMENT_KIND = "insurance";
 export type InsuranceJourneyQuery = {
   bank?: string | null;
   loanAmount?: string | null;
+  /** Selected tenure id — `"1+3"` or `"3+3"`. */
+  tenure?: string | null;
+  /** Premium for the selected tenure, in paise-less INR integer string. */
+  insuranceAmount?: number | null;
 };
 
 function appendInsuranceJourneyQuery(
@@ -73,6 +77,16 @@ function appendInsuranceJourneyQuery(
     q.set("bank", FULL_PAYMENT_BANK_ID);
   }
   if (params?.loanAmount) q.set("loan_amount", params.loanAmount);
+  if (params?.tenure) q.set("tenure", params.tenure);
+  if (params?.insuranceAmount != null) q.set("insurance_amount", String(Math.round(params.insuranceAmount)));
+}
+
+/** Tenure selection step — before pay-insurance-premium. */
+export function buildChooseInsuranceTenureHref(params?: InsuranceJourneyQuery): string {
+  const q = new URLSearchParams();
+  appendInsuranceJourneyQuery(q, params);
+  const qs = q.toString();
+  return qs ? `/payment/choose-insurance-tenure?${qs}` : "/payment/choose-insurance-tenure";
 }
 
 /**

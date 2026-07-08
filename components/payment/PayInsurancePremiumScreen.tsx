@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 
 import { KycBookingProcessingScreen } from "@/components/kyc/KycBookingProcessingScreen";
 import { KYC_ASSETS } from "@/components/kyc/kyc-assets";
-import { FULL_PAYMENT_INSURANCE_INR } from "@/components/payment/loan-amount-demo-constants";
+import { INSURANCE_PREMIUM_INR } from "@/components/payment/insurance-coverage-content";
 import { ShieldPolicyCard } from "@/components/payment/ShieldPolicyCard";
 import {
   buildInsurancePremiumCheckoutHref,
@@ -24,23 +24,37 @@ function formatInr(amount: number) {
   }).format(Math.max(0, Math.round(amount)));
 }
 
+function parseInsuranceAmount(raw: string | null): number {
+  if (!raw) return INSURANCE_PREMIUM_INR;
+  const n = Number(raw);
+  return Number.isFinite(n) && n > 0 ? Math.round(n) : INSURANCE_PREMIUM_INR;
+}
+
 /**
- * Fixed insurance premium before {@link CarDeliveryInsurancePrepScreen}.
- * Full payment, ACKO Drive loan, and self finance — fixed insurance premium before car insurance prep.
+ * Insurance premium payment gate — after tenure selection.
+ * Reads `insurance_amount` from URL (set by ChooseInsuranceTenureScreen);
+ * falls back to the standard 1+3 premium.
  */
 export function PayInsurancePremiumScreen() {
   const searchParams = useSearchParams();
+
+  const insuranceAmountInr = useMemo(
+    () => parseInsuranceAmount(searchParams.get("insurance_amount")),
+    [searchParams],
+  );
 
   const journeyParams = useMemo((): InsuranceJourneyQuery => {
     return {
       bank: searchParams.get("bank"),
       loanAmount: searchParams.get("loan_amount"),
+      tenure: searchParams.get("tenure"),
+      insuranceAmount: insuranceAmountInr,
     };
-  }, [searchParams]);
+  }, [searchParams, insuranceAmountInr]);
 
   const nextHref = useMemo(
-    () => buildInsurancePremiumCheckoutHref(FULL_PAYMENT_INSURANCE_INR, journeyParams),
-    [journeyParams],
+    () => buildInsurancePremiumCheckoutHref(insuranceAmountInr, journeyParams),
+    [insuranceAmountInr, journeyParams],
   );
 
   return (
@@ -50,7 +64,7 @@ export function PayInsurancePremiumScreen() {
       heroIllustrationSrc={KYC_ASSETS.insurancePremiumHero}
       nextHref={nextHref}
       prefetchHref={nextHref}
-      nextCtaLabel={`Pay ${formatInr(FULL_PAYMENT_INSURANCE_INR)}`}
+      nextCtaLabel={`Pay ${formatInr(insuranceAmountInr)}`}
       heroSummaryCard={<ShieldPolicyCard mode="quote" />}
       callLabel="Price questions? I can call you"
       manageBookingShowVehicleIdentification

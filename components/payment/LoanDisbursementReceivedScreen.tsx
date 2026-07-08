@@ -12,7 +12,7 @@ import {
   DEMO_LOAN_DISBURSEMENT_TRANSACTION_ID,
   FULL_PAYMENT_INSURANCE_INR,
 } from "@/components/payment/loan-amount-demo-constants";
-import { buildPayInsurancePremiumHref } from "@/lib/paymentUrls";
+import { buildChooseInsuranceTenureHref } from "@/lib/paymentUrls";
 
 const DEALER_NAME = "Advaith Hyundai";
 
@@ -58,7 +58,7 @@ export function LoanDisbursementReceivedScreen({
   const okayHref = useMemo(
     () =>
       okayHrefProp ??
-      buildPayInsurancePremiumHref({
+      buildChooseInsuranceTenureHref({
         bank: bankId,
         loanAmount: searchParams.get("loan_amount"),
       }),
@@ -68,8 +68,7 @@ export function LoanDisbursementReceivedScreen({
   const says = useMemo(
     () => [
       "Loan disbursed, Sharath.",
-      `I've confirmed the transfer to ${DEALER_NAME}.`,
-      "Delivery prep starts now — nothing more needed from you until just before the car arrives.",
+      `I've confirmed the transfer to ${DEALER_NAME}. Delivery prep starts now, and nothing more is needed from you until just before the car arrives.`,
     ],
     [],
   );

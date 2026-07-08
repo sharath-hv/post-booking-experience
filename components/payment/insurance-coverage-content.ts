@@ -36,6 +36,47 @@ export const INSURANCE_PREMIUM_INR = 37_000;
 export const INSURANCE_COMPARE_AT_PREMIUM_INR = 60_000;
 
 /* ------------------------------------------------------------------------ */
+/* Tenure options                                                              */
+/* ------------------------------------------------------------------------ */
+
+export type InsuranceTenureId = "1+3" | "3+3";
+
+export type InsuranceTenureOption = {
+  id: InsuranceTenureId;
+  label: string;
+  ownDamageYears: number;
+  thirdPartyYears: number;
+  premiumInr: number;
+  compareAtInr: number;
+  /** Short positioning chip — only shown on non-default options. */
+  badge?: string;
+  /** Why this is worth the upgrade — shown below the price when the card is selected. */
+  upgradeBlurb?: string;
+};
+
+/** Standard (default) 1+3 and extended 3+3 cover options. */
+export const INSURANCE_TENURE_OPTIONS: readonly InsuranceTenureOption[] = [
+  {
+    id: "1+3",
+    label: "1 + 3 Years",
+    ownDamageYears: 1,
+    thirdPartyYears: 3,
+    premiumInr: INSURANCE_PREMIUM_INR,
+    compareAtInr: INSURANCE_COMPARE_AT_PREMIUM_INR,
+  },
+  {
+    id: "3+3",
+    label: "3 + 3 Years",
+    ownDamageYears: 3,
+    thirdPartyYears: 3,
+    premiumInr: 52_000,
+    compareAtInr: 85_000,
+    badge: "Extended",
+    upgradeBlurb: "Lock in today's rate for 3 years — no renewal risk, no surprises.",
+  },
+] as const;
+
+/* ------------------------------------------------------------------------ */
 /* IDV — the single biggest number in the policy                              */
 /* ------------------------------------------------------------------------ */
 
