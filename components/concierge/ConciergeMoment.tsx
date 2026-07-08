@@ -285,8 +285,7 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
               />
               <NextStepCard
                 title={`Pick up ${DEALER_NAME}'s call`}
-                body="They'll read out a one-time code that registers the car to you on Hyundai's system, share it back and the Creta is locked in your name."
-                etaLabel="Expected today, before 6:00 PM"
+                body="Share the OTP that you receive — it registers the Creta on Hyundai's system and locks it in your name. Expected today, before 6:00 PM."
               />
               <NoteCallout>
                 If you miss the call, your reservation and your {deliveryDate} delivery could slip.

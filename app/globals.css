@@ -98,7 +98,9 @@
   --color-danger-subtle: #fee2e2;
   --radius-card: 12px;
   --radius-button: 10px;
-  --shadow-card: 0 1px 3px rgb(36 35 36 / 0.06);
+  --shadow-card: 0 1px 2px rgb(18 18 18 / 0.03), 0 4px 14px rgb(18 18 18 / 0.04);
+  --shadow-footer: 0 -4px 6px 0 rgba(54, 53, 76, 0.08);
+  --shadow-sheet: 0 -8px 24px rgba(0, 0, 0, 0.12);
   --page-padding-x: 16px;
   --app-max-width: 640px;
   /* Quote page (Figma — Post-booking experience) */
@@ -479,9 +481,17 @@ body {
 
 /* Elevated white card — replaces hairline outlines on the #F7FAFF page surface */
 .card-elevated {
-  box-shadow:
-    0 1px 2px rgb(18 18 18 / 0.03),
-    0 4px 14px rgb(18 18 18 / 0.04);
+  box-shadow: var(--shadow-card);
+}
+
+/* Sticky/fixed footer bar — upward shadow separating bar from page content */
+.footer-elevated {
+  box-shadow: var(--shadow-footer);
+}
+
+/* Bottom sheet panel — stronger upward shadow for modal surfaces */
+.sheet-elevated {
+  box-shadow: var(--shadow-sheet);
 }
 
 /* KYC pending — hero content column (Figma: Surface-White + elevation shadow) */

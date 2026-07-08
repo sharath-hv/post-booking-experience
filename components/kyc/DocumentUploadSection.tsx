@@ -87,7 +87,7 @@ export function DocumentUploadSection({
   const handleAddMore = onAddMoreClick ?? onUploadClick;
 
   return (
-    <section className="rounded-2xl bg-white card-elevated p-4">
+    <section className="rounded-2xl border border-[#e8e8e8] bg-white p-4">
       <p className={DOCUMENT_UPLOAD_CARD_TITLE_CLASS}>{title}</p>
       {description ? (
         <p className="mt-1 w-full text-xs leading-[18px] text-[#757575]">{description}</p>

@@ -37,6 +37,7 @@ export function LoanApplicationShell({ currentRoute, children }: LoanApplication
         <div className={LOAN_APPLICATION_HEADER_CLASS}>
           <KycTopNavHeader
             inverted
+            noSticky
             onBack={handleBack}
             endSlot={
               <GetHelpPillButton

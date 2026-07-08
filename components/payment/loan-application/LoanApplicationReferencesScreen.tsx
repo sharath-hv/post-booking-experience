@@ -17,7 +17,6 @@ import {
   loanApplicationStaggerAfterCard,
 } from "@/components/payment/loan-application/loan-application-layout";
 import { LoanApplicationPageStagger } from "@/components/payment/loan-application/LoanApplicationPageStagger";
-import { LoanApplicationShell } from "@/components/payment/loan-application/LoanApplicationShell";
 import { useLoanApplicationBank } from "@/components/payment/loan-application/use-loan-application-bank";
 import { useLoanApplicationState } from "@/components/payment/loan-application/use-loan-application-state";
 import { emptyReference, type LoanApplicationReference } from "@/lib/loan-application-state";
@@ -124,7 +123,7 @@ export function LoanApplicationReferencesScreen() {
   }, [bankId, canSubmit, ref1, ref2, router, update]);
 
   return (
-    <LoanApplicationShell currentRoute="references">
+    <>
       <main className={LOAN_APPLICATION_MAIN_CLASS}>
         <LoanApplicationPageStagger delayMs={LOAN_APPLICATION_STAGGER_MS.title}>
           <h1 className={LOAN_APPLICATION_PAGE_TITLE_CLASS}>
@@ -166,6 +165,6 @@ export function LoanApplicationReferencesScreen() {
         disabled={!canSubmit}
         staggerDelayMs={loanApplicationStaggerAfterCard(2)}
       />
-    </LoanApplicationShell>
+    </>
   );
 }

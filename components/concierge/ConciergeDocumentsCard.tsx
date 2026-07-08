@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useCallback, useState } from "react";
 
 import { KycUploadSourceBottomSheet } from "@/components/kyc/KycUploadSourceBottomSheet";
@@ -14,6 +15,9 @@ import type { KycUploadsState } from "@/lib/kyc-upload-state";
 import { ShimmerInfoCard } from "@/components/ui/ShimmerInfoCard";
 import { cn } from "@/lib/utils";
 
+import deleteIcon from "@/assets/Delete.svg";
+import done01Icon from "@/assets/done 01.png";
+
 type ConciergeDocumentsCardProps = {
   uploads: KycUploadsState;
   onUploadsChange: (next: KycUploadsState) => void;
@@ -23,42 +27,28 @@ type ConciergeDocumentsCardProps = {
   onlyDocs?: readonly KycDocumentKind[];
 };
 
-function CheckBadge() {
+function UploadSuccessBadge() {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden className="shrink-0">
-      <circle cx="12" cy="12" r="10" fill="#e7f6ee" />
-      <path
-        d="M7.5 12.2l3 3L16.5 9"
-        stroke="#0fa457"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
+    <span className="relative h-6 w-6 shrink-0">
+      <Image src={done01Icon} alt="" fill className="object-contain" unoptimized sizes="24px" />
+    </span>
   );
 }
 
 function FileChip({ name, onRemove }: { name: string; onRemove: () => void }) {
   return (
-    <div className="flex h-10 items-center gap-2 rounded-lg bg-[#f5f5f5] px-3">
-      <CheckBadge />
-      <span className="min-w-0 flex-1 truncate text-[13px] leading-[18px] text-[#121212]">
-        {name}
-      </span>
+    <div className="relative flex h-12 items-center gap-2 rounded-lg border border-dashed border-[#e8e8e8] bg-[#f5f5f5] px-3">
+      <UploadSuccessBadge />
+      <span className="min-w-0 flex-1 truncate text-sm leading-5 text-[#121212]">{name}</span>
       <button
         type="button"
         onClick={onRemove}
+        className="cta-ghost flex size-5 shrink-0 items-center justify-center rounded focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/20 focus-visible:ring-offset-2"
         aria-label={`Remove ${name}`}
-        className="cta-ghost flex size-6 shrink-0 items-center justify-center rounded text-[#757575]"
       >
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden>
-          <path
-            d="M6 6l12 12M18 6 6 18"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-          />
-        </svg>
+        <span className="relative h-5 w-5">
+          <Image src={deleteIcon} alt="" fill className="object-contain" unoptimized sizes="20px" />
+        </span>
       </button>
     </div>
   );
@@ -82,7 +72,6 @@ function DocumentRow({ title, hint, files, allowMultiple, uploadLabel = "Upload"
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-1.5">
             <p className="text-sm font-semibold leading-5 text-[#121212]">{title}</p>
-            {hasFiles ? <CheckBadge /> : null}
           </div>
           <p className="mt-0.5 text-xs leading-[18px] text-[#757575]">{hint}</p>
         </div>
@@ -97,7 +86,7 @@ function DocumentRow({ title, hint, files, allowMultiple, uploadLabel = "Upload"
         ) : null}
       </div>
       {hasFiles ? (
-        <div className="mt-2.5 flex flex-col gap-2">
+        <div className="mt-2.5 flex flex-col gap-3">
           {files.map((file) => (
             <FileChip key={file.id} name={file.name} onRemove={() => onRemove(file.id)} />
           ))}

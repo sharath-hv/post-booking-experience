@@ -17,7 +17,6 @@ import {
   loanApplicationStaggerAfterCard,
 } from "@/components/payment/loan-application/loan-application-layout";
 import { LoanApplicationPageStagger } from "@/components/payment/loan-application/LoanApplicationPageStagger";
-import { LoanApplicationShell } from "@/components/payment/loan-application/LoanApplicationShell";
 import { useLoanApplicationBank } from "@/components/payment/loan-application/use-loan-application-bank";
 import { useLoanApplicationState } from "@/components/payment/loan-application/use-loan-application-state";
 import type { LoanApplicationOfficialAddress } from "@/lib/loan-application-state";
@@ -104,7 +103,7 @@ export function LoanApplicationPersonalScreen() {
   };
 
   return (
-    <LoanApplicationShell currentRoute="personal">
+    <>
       <main className={LOAN_APPLICATION_MAIN_CLASS}>
         <LoanApplicationPageStagger delayMs={LOAN_APPLICATION_STAGGER_MS.title}>
           <h1 className={LOAN_APPLICATION_PAGE_TITLE_CLASS}>Now a bit about you — the bank insists.</h1>
@@ -230,6 +229,6 @@ export function LoanApplicationPersonalScreen() {
         disabled={!canContinue}
         staggerDelayMs={loanApplicationStaggerAfterCard(2)}
       />
-    </LoanApplicationShell>
+    </>
   );
 }

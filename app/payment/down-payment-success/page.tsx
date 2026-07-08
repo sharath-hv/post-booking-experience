@@ -4,8 +4,6 @@ import { Suspense, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 
 import { DownPaymentInstalmentSuccess } from "@/components/payment/DownPaymentInstalmentSuccess";
-import { CelebrationPageTransition } from "@/components/ui/page-transition";
-
 import {
   buildInsuranceSetupHref,
   buildMarginMoneySlipActionHref,
@@ -87,11 +85,7 @@ function DownPaymentSuccessInner() {
     };
   }, [searchParams]);
 
-  return (
-    <CelebrationPageTransition>
-      <DownPaymentInstalmentSuccess subline={subline} nextHref={nextHref} />
-    </CelebrationPageTransition>
-  );
+  return <DownPaymentInstalmentSuccess subline={subline} nextHref={nextHref} />;
 }
 
 export default function DownPaymentSuccessPage() {

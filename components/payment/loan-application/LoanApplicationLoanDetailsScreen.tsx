@@ -18,7 +18,6 @@ import {
 } from "@/components/payment/loan-application/loan-application-layout";
 import { LoanApplicationPageStagger } from "@/components/payment/loan-application/LoanApplicationPageStagger";
 import { LoanApplicationSegmentChip } from "@/components/payment/loan-application/LoanApplicationSegmentChip";
-import { LoanApplicationShell } from "@/components/payment/loan-application/LoanApplicationShell";
 import { useLoanApplicationBank } from "@/components/payment/loan-application/use-loan-application-bank";
 import { useLoanApplicationState } from "@/components/payment/loan-application/use-loan-application-state";
 import {
@@ -108,7 +107,7 @@ export function LoanApplicationLoanDetailsScreen() {
   }, [bankId, employmentType, isFilled, loanAmountInr, persist, router, tenureMonths, update]);
 
   return (
-    <LoanApplicationShell currentRoute="loan-details">
+    <>
       <main className={LOAN_APPLICATION_MAIN_CLASS}>
         <LoanApplicationPageStagger delayMs={LOAN_APPLICATION_STAGGER_MS.title}>
           <h1 className={LOAN_APPLICATION_PAGE_TITLE_CLASS}>First, the loan itself — how much and how long?</h1>
@@ -206,6 +205,6 @@ export function LoanApplicationLoanDetailsScreen() {
         disabled={!isFilled}
         staggerDelayMs={loanApplicationStaggerAfterCard(4)}
       />
-    </LoanApplicationShell>
+    </>
   );
 }

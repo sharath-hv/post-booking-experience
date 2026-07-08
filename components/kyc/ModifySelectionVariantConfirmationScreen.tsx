@@ -114,7 +114,7 @@ export function ModifySelectionVariantConfirmationScreen() {
         </div>
       </main>
 
-      <div className="fixed bottom-0 left-0 right-0 z-10 pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_6px_0_rgba(54,53,76,0.08)]">
+      <div className="fixed bottom-0 left-0 right-0 z-10 pb-[env(safe-area-inset-bottom)] footer-elevated">
         <div className="mx-auto w-full max-w-[640px] bg-white px-5 py-4">
           <button type="button" onClick={onConfirmChange} className="primary-cta w-full">
             {MODIFY_SELECTION_VARIANT_CONFIRM_CTA}

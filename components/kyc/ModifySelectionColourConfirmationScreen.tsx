@@ -172,7 +172,7 @@ export function ModifySelectionColourConfirmationScreen() {
         </div>
       </main>
 
-      <div className="fixed bottom-0 left-0 right-0 z-10 bg-white pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_4px_0_rgba(54,53,76,0.06)]">
+      <div className="fixed bottom-0 left-0 right-0 z-10 bg-white pb-[env(safe-area-inset-bottom)] footer-elevated">
         <div className="mx-auto flex h-20 w-full max-w-[640px] items-center justify-between gap-3 px-5">
           <div className="min-w-0">
             <p className="text-xs leading-[18px] text-[#757575]">Booking amount</p>

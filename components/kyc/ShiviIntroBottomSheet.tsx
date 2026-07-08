@@ -79,7 +79,7 @@ export function ShiviIntroBottomSheet({ open, onClose }: ShiviIntroBottomSheetPr
       />
       {animateIn ? <ShiviIntroCoachmark /> : null}
       <div
-        className={`relative z-10 mx-auto mt-auto flex w-full max-w-[640px] shrink-0 flex-col overflow-hidden rounded-t-[24px] bg-white shadow-[0_-8px_24px_rgba(0,0,0,0.12)] transition-transform duration-[280ms] ease-out motion-reduce:translate-y-0 motion-reduce:transition-none ${
+        className={`relative z-10 mx-auto mt-auto flex w-full max-w-[640px] shrink-0 flex-col overflow-hidden rounded-t-[24px] bg-white sheet-elevated transition-transform duration-[280ms] ease-out motion-reduce:translate-y-0 motion-reduce:transition-none ${
           animateIn ? "translate-y-0" : "translate-y-full"
         }`}
         role="dialog"

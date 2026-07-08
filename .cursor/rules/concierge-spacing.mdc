@@ -1,0 +1,47 @@
+---
+description: Shadow and spacing conventions for cards, footer bars, and bottom sheets
+globs: components/**/*.tsx,app/**/*.tsx
+alwaysApply: false
+---
+
+# Shadow Conventions
+
+Three named CSS classes cover every surface. Never use inline shadow values for these patterns.
+
+| Surface | Class | When to use |
+|---|---|---|
+| In-page content card | `card-elevated` | White cards on the `#F1F5FD` / `#F7FAFF` page surface |
+| Sticky/fixed footer bar | `footer-elevated` | Fixed bar separating footer from scrollable content |
+| Bottom sheet panel | `sheet-elevated` | Modal sheets rising from the bottom |
+
+```tsx
+// ✅ GOOD
+<div className="rounded-2xl bg-white card-elevated px-4 py-4">...</div>
+<div className="fixed bottom-0 ... footer-elevated">...</div>
+<div className="... rounded-t-[24px] bg-white sheet-elevated ...">...</div>
+
+// ❌ BAD — inline shadow values drift over time
+<div className="rounded-2xl bg-white shadow-[0_4px_14px_rgba(18,18,18,0.04)] ...">
+<div className="fixed bottom-0 shadow-[0_-4px_6px_0_rgba(54,53,76,0.08)] ...">
+```
+
+# Concierge Artifact Card Spacing
+
+## Stacking multiple artifact cards
+
+When an artifact contains more than one card stacked vertically, use `gap-4` (16px):
+
+```tsx
+// ✅ GOOD
+<div className="flex flex-col gap-4">
+  <AmountReceivedCard ... />
+  <ShimmerInfoCard ... />
+</div>
+
+// ❌ BAD — gap-3 is too tight between distinct cards
+<div className="flex flex-col gap-3">...</div>
+```
+
+## Internal rows within a single card
+
+Rows inside a card (e.g., `<dl>`, amount rows) use `gap-3` (12px) or smaller — do not change these.

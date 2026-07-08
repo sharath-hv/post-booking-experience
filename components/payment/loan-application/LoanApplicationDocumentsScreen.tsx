@@ -11,7 +11,6 @@ import {
   LOAN_APPLICATION_STAGGER_MS,
 } from "@/components/payment/loan-application/loan-application-layout";
 import { LoanApplicationPageStagger } from "@/components/payment/loan-application/LoanApplicationPageStagger";
-import { LoanApplicationShell } from "@/components/payment/loan-application/LoanApplicationShell";
 import { useLoanApplicationBank } from "@/components/payment/loan-application/use-loan-application-bank";
 import { useLoanApplicationState } from "@/components/payment/loan-application/use-loan-application-state";
 import { areLoanApplicationDocumentsComplete } from "@/lib/loan-application-documents-state";
@@ -37,7 +36,7 @@ export function LoanApplicationDocumentsScreen() {
   }, [bankId, canContinue, router, update, uploads]);
 
   return (
-    <LoanApplicationShell currentRoute="documents">
+    <>
       <main className={LOAN_APPLICATION_MAIN_CLASS}>
         <LoanApplicationPageStagger delayMs={LOAN_APPLICATION_STAGGER_MS.title}>
           <h1 className={LOAN_APPLICATION_PAGE_TITLE_CLASS}>
@@ -54,6 +53,6 @@ export function LoanApplicationDocumentsScreen() {
         disabled={!canContinue}
         staggerDelayMs={LOAN_APPLICATION_STAGGER_MS.cta}
       />
-    </LoanApplicationShell>
+    </>
   );
 }

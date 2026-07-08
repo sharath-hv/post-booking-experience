@@ -33,6 +33,8 @@ export type KycTopNavHeaderProps = {
   transparent?: boolean;
   /** White controls on dark hero backgrounds (loan application header). */
   inverted?: boolean;
+  /** Disable sticky positioning — use when the header is inside a non-scrolling hero block. */
+  noSticky?: boolean;
   /** Override default `router.back()` for the back chevron. */
   onBack?: () => void;
   className?: string;
@@ -48,6 +50,7 @@ export function KycTopNavHeader({
   endSlot,
   transparent = false,
   inverted = false,
+  noSticky = false,
   onBack,
   className,
 }: KycTopNavHeaderProps = {}) {
@@ -69,7 +72,8 @@ export function KycTopNavHeader({
   return (
     <header
       className={cn(
-        "sticky top-0 mx-auto flex h-14 w-full max-w-[640px] shrink-0 items-center justify-between gap-2 pl-3.5 pr-5",
+        "mx-auto flex h-14 w-full max-w-[640px] shrink-0 items-center justify-between gap-2 pl-3.5 pr-5",
+        !noSticky && "sticky top-0",
         transparent || inverted ? "z-20" : "z-10",
         className
       )}

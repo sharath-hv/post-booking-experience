@@ -362,9 +362,9 @@ export function NextStepCard({ title, body, etaLabel }: NextStepCardProps) {
         <span className="relative flex h-9 w-9 shrink-0 items-center justify-center">
           <span
             aria-hidden
-            className="absolute inset-0 animate-ping rounded-full bg-[#5920c5]/25 [animation-duration:2.4s] motion-reduce:hidden"
+            className="absolute inset-0 animate-ping rounded-full bg-[#0fa457]/20 [animation-duration:2.4s] motion-reduce:hidden"
           />
-          <span className="relative flex h-9 w-9 items-center justify-center rounded-full bg-[#5920c5] text-white ring-4 ring-[#efe9fb]">
+          <span className="relative flex h-9 w-9 items-center justify-center rounded-full bg-[#0fa457] text-white ring-4 ring-[#dcfce7]">
             <Image
               src={phoneIcon}
               alt=""
@@ -377,20 +377,10 @@ export function NextStepCard({ title, body, etaLabel }: NextStepCardProps) {
           </span>
         </span>
         <div className="min-w-0">
-          <p className="text-base font-semibold leading-6 text-[#121212]">{title}</p>
+          <p className="text-base font-medium leading-6 text-[#121212]">{title}</p>
           <p className="mt-1 text-[13px] leading-[19px] text-[#757575]">{body}</p>
         </div>
       </div>
-      {etaLabel ? (
-        <div className="mt-3.5 flex items-center gap-2 border-t border-dashed border-[#f0f0f0] pt-3">
-          <span
-            aria-hidden
-            className="h-5 w-5 shrink-0 bg-[#121212] [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center] [-webkit-mask-size:contain] [-webkit-mask-repeat:no-repeat] [-webkit-mask-position:center]"
-            style={TIME_ICON_MASK_STYLE}
-          />
-          <span className="text-xs font-medium leading-[18px] text-[#121212]">{etaLabel}</span>
-        </div>
-      ) : null}
     </div>
   );
 }

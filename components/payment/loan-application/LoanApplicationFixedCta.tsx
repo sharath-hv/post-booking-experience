@@ -35,7 +35,7 @@ export function LoanApplicationFixedCta({
   );
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-10 bg-white px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-3 shadow-[0_-4px_8px_-2px_rgba(54,53,76,0.06)]">
+    <div className="fixed bottom-0 left-0 right-0 z-10 bg-white px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-3 footer-elevated">
       {staggerDelayMs != null ? (
         <LoanApplicationPageStagger delayMs={staggerDelayMs}>{inner}</LoanApplicationPageStagger>
       ) : (

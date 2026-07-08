@@ -7,7 +7,6 @@ import { AmountReceivedCard, NextStepCard } from "@/components/concierge/artifac
 import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
 import { bankForQueryParam } from "@/components/payment/acko-drive-finance-bank";
 import {
-  ACKO_LOAN_DOWN_PAYMENT_INR,
   BANK_DISBURSEMENT_INR,
   BOOKING_AMOUNT_PAID_INR,
 } from "@/components/payment/loan-amount-demo-constants";
@@ -35,7 +34,7 @@ export function LoanSanctionedScreen() {
   const says = useMemo(
     () => [
       "Your loan is approved, Sharath.",
-      `${bank.name} has sanctioned ${formatInr(BANK_DISBURSEMENT_INR)}. ${DEALER_NAME} will call you to arrange the down payment — pay it directly to them based on what's discussed on that call.`,
+      `${bank.name} has sanctioned ${formatInr(BANK_DISBURSEMENT_INR)}. ${DEALER_NAME} will call you to arrange the down payment — pay it directly to them.`,
       `Once they confirm receipt, I'll instruct ${bank.name} to release the funds to the dealer.`,
     ],
     [bank.name],
@@ -55,17 +54,16 @@ export function LoanSanctionedScreen() {
         <div className="flex flex-col gap-5">
           <NextStepCard
             title={`Watch for ${DEALER_NAME}'s call`}
-            body="They'll walk you through the down payment — pay it directly to them."
+            body="Pick up their call and pay the agreed amount directly at the dealership."
           />
           <AmountReceivedCard
             amountInr={BANK_DISBURSEMENT_INR}
             title={`Approved by ${bank.name}`}
             rows={[
               { label: "Disburses to", value: DEALER_NAME },
-              { label: "Your down payment", value: formatInr(ACKO_LOAN_DOWN_PAYMENT_INR) },
               { label: "Price lock — already paid", value: formatInr(BOOKING_AMOUNT_PAID_INR) },
             ]}
-            note={`${bank.name} releases funds to ${DEALER_NAME} once they confirm the down payment.`}
+            note={`${bank.name} releases the remaining funds to ${DEALER_NAME} once they confirm your down payment.`}
           />
         </div>
       }

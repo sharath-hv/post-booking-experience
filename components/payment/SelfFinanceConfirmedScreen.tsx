@@ -93,7 +93,7 @@ export function SelfFinanceConfirmedScreen() {
       </div>
 
       <motion.div
-        className="relative z-10 shrink-0 bg-white px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-3 shadow-[0_-4px_6px_0_rgba(54,53,76,0.08)]"
+        className="relative z-10 shrink-0 bg-white px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-3 footer-elevated"
         initial={false}
         animate={{ opacity: showFooter ? 1 : 0 }}
         transition={{ duration: FADE_DURATION, ease: FADE_EASE }}

@@ -449,7 +449,7 @@ export function QuoteScreen() {
       </div>
 
       {/* Sticky footer */}
-        <div className="fixed bottom-0 left-0 right-0 z-20 mx-auto w-full max-w-[640px] bg-white shadow-[0_-4px_24px_rgba(0,0,0,0.08)] tabular-nums">
+        <div className="fixed bottom-0 left-0 right-0 z-20 mx-auto w-full max-w-[640px] bg-white footer-elevated tabular-nums">
         <div
           className="flex items-center justify-center gap-2 py-2 text-xs font-medium leading-[18px]"
           style={{

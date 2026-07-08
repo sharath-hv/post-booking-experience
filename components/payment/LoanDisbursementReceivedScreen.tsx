@@ -1,29 +1,20 @@
 "use client";
 
-import Image from "next/image";
+import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { motion } from "framer-motion";
 
-import loanApprovedIllustration from "@/assets/loan approved.svg";
-import { TimeSkipChip } from "@/components/concierge/TimeSkipChip";
+import { AmountReceivedCard } from "@/components/concierge/artifacts";
+import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
+import { ShimmerInfoCard } from "@/components/ui/ShimmerInfoCard";
+import { bankForQueryParam } from "@/components/payment/acko-drive-finance-bank";
 import {
   DEMO_DEFAULT_LOAN_DISBURSEMENT_INR,
   DEMO_LOAN_DISBURSEMENT_TRANSACTION_ID,
+  FULL_PAYMENT_INSURANCE_INR,
 } from "@/components/payment/loan-amount-demo-constants";
-import { SUCCESS_SCREEN_HEADLINE_SUBTEXT_GAP_CLASS } from "@/components/ui/success-screen-layout";
 import { buildPayInsurancePremiumHref } from "@/lib/paymentUrls";
 
-const HEADLINE = "Loan disbursed, Sharath!";
-const SUBLINE =
-  "The bank has sent the funds to Advaith Hyundai — I confirmed it. Delivery prep starts now; nothing is due from you until just before delivery.";
-
-/** After header + subtext, delay before disbursed amount card (step 3). */
-const CARD_AFTER_HEADER_MS = 420;
-/** After amount card, delay before bottom CTA (step 4). */
-const CTA_AFTER_CARD_MS = 420;
-/** If hero art never loads, still reveal copy so the user is not stuck. */
-const HEADER_FALLBACK_MS = 2200;
+const DEALER_NAME = "Advaith Hyundai";
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -45,29 +36,12 @@ type LoanDisbursementReceivedScreenProps = {
   okayHref?: string;
 };
 
-/**
- * Loan disbursement acknowledged — same load sequence and CTA chrome as
- * {@link SelfFinanceConfirmedScreen} / {@link FullPaymentConfirmedScreen}.
- * Sequence: hero illustration → header + subtext → disbursed amount → Continue.
- */
 export function LoanDisbursementReceivedScreen({
   okayHref: okayHrefProp,
 }: LoanDisbursementReceivedScreenProps) {
   const searchParams = useSearchParams();
-  const headerRevealedByHeroRef = useRef(false);
-  const [showHeader, setShowHeader] = useState(false);
-  const [showAmountCard, setShowAmountCard] = useState(false);
-  const [showFooter, setShowFooter] = useState(false);
-
-  const okayHref = useMemo(
-    () =>
-      okayHrefProp ??
-      buildPayInsurancePremiumHref({
-        bank: searchParams.get("bank"),
-        loanAmount: searchParams.get("loan_amount"),
-      }),
-    [okayHrefProp, searchParams],
-  );
+  const bankId = searchParams.get("bank");
+  const bank = useMemo(() => bankForQueryParam(bankId), [bankId]);
 
   const disbursedAmountInr = useMemo(
     () => parseLoanAmountInr(searchParams.get("loan_amount")),
@@ -81,112 +55,48 @@ export function LoanDisbursementReceivedScreen({
       : DEMO_LOAN_DISBURSEMENT_TRANSACTION_ID;
   }, [searchParams]);
 
-  const revealHeader = useCallback(() => {
-    headerRevealedByHeroRef.current = true;
-    setShowHeader(true);
-  }, []);
+  const okayHref = useMemo(
+    () =>
+      okayHrefProp ??
+      buildPayInsurancePremiumHref({
+        bank: bankId,
+        loanAmount: searchParams.get("loan_amount"),
+      }),
+    [okayHrefProp, bankId, searchParams],
+  );
 
-  const onHeroLoaded = useCallback(() => {
-    revealHeader();
-  }, [revealHeader]);
-
-  useEffect(() => {
-    const id = window.setTimeout(() => {
-      if (!headerRevealedByHeroRef.current) {
-        revealHeader();
-      }
-    }, HEADER_FALLBACK_MS);
-    return () => window.clearTimeout(id);
-  }, [revealHeader]);
-
-  useEffect(() => {
-    if (!showHeader) return;
-    const id = window.setTimeout(() => setShowAmountCard(true), CARD_AFTER_HEADER_MS);
-    return () => window.clearTimeout(id);
-  }, [showHeader]);
-
-  useEffect(() => {
-    if (!showAmountCard) return;
-    const id = window.setTimeout(() => setShowFooter(true), CTA_AFTER_CARD_MS);
-    return () => window.clearTimeout(id);
-  }, [showAmountCard]);
+  const says = useMemo(
+    () => [
+      "Loan disbursed, Sharath.",
+      `I've confirmed the transfer to ${DEALER_NAME}.`,
+      "Delivery prep starts now — nothing more needed from you until just before the car arrives.",
+    ],
+    [],
+  );
 
   return (
-    <div className="relative min-h-dvh overflow-hidden bg-[#F7FAFF] font-sans shadow-[0_-4px_8px_-2px_rgba(54,53,76,0.06)]">
-      <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-[50%] bg-[linear-gradient(to_bottom,rgba(232,248,239,0.9),rgba(244,251,247,0.4),rgba(244,251,247,0))] transition-opacity duration-700"
-        aria-hidden
-      />
-
-      <div className="relative z-10 flex min-h-dvh w-full flex-col justify-start px-4 pb-[max(5.5rem,env(safe-area-inset-bottom))] pt-[calc(48px+clamp(4rem,14vh,6.5rem))]">
-        <main className="mx-auto flex w-full max-w-[640px] flex-col items-center overflow-y-auto text-center">
-          <div className="relative flex h-[96px] w-[96px] shrink-0 items-center justify-center">
-            <Image
-              src={loanApprovedIllustration}
-              alt=""
-              width={96}
-              height={96}
-              className="h-full w-full object-contain"
-              unoptimized
-              priority
-              onLoadingComplete={onHeroLoaded}
-            />
-          </div>
-
-          {showHeader && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-              className={`mt-5 flex w-full flex-col items-center ${SUCCESS_SCREEN_HEADLINE_SUBTEXT_GAP_CLASS}`}
-            >
-              <h1 className="text-center text-2xl font-semibold leading-8 tracking-[-0.1px] text-[#121212]">
-                {HEADLINE}
-              </h1>
-              <p className="w-full text-center text-sm font-normal leading-5 text-[#4b4b4b]">
-                {SUBLINE}
-              </p>
-            </motion.div>
-          )}
-
-          {showAmountCard && (
-            <motion.section
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-              className="mt-5 w-full"
-              aria-label="Disbursed amount summary"
-            >
-              <div className="w-full rounded-xl bg-white card-elevated px-4 py-3 text-left">
-                <dl className="m-0 flex flex-col gap-3">
-                  <div className="flex items-center justify-between gap-3">
-                    <dt className="text-sm font-normal leading-5 text-[#4b4b4b]">Disbursed amount</dt>
-                    <dd className="text-right text-sm font-medium leading-5 text-[#121212]">
-                      {formatInr(disbursedAmountInr)}
-                    </dd>
-                  </div>
-                  <hr className="my-0 border-0 border-t border-dashed border-[#e8e8e8]" />
-                  <div className="flex items-center justify-between gap-3">
-                    <dt className="text-sm font-normal leading-5 text-[#4b4b4b]">Transaction ID</dt>
-                    <dd className="break-all text-right text-sm font-medium leading-5 text-[#121212]">
-                      {transactionId}
-                    </dd>
-                  </div>
-                </dl>
-              </div>
-            </motion.section>
-          )}
-        </main>
-      </div>
-
-      {showFooter && (
-        <div className="fixed inset-x-0 bottom-0 z-20 bg-white pb-[max(1rem,env(safe-area-inset-bottom))] shadow-[0_-4px_6px_0_rgba(54,53,76,0.08)]">
-          <div className="mx-auto flex w-full max-w-[640px] items-start justify-center px-5 pt-3">
-            {/* Insurance is due just before delivery — time passes before the next ask. */}
-            <TimeSkipChip label="When your car's nearly ready" href={okayHref} />
-          </div>
+    <ConciergeTurnShell
+      says={says}
+      artifact={
+        <div className="flex flex-col gap-4">
+          <AmountReceivedCard
+            amountInr={disbursedAmountInr}
+            title={`Disbursed by ${bank.name}`}
+            status="received"
+            rows={[
+              { label: "Transferred to", value: DEALER_NAME },
+              { label: "Transaction ID", value: transactionId },
+            ]}
+            note="Funds are with the dealer — delivery prep is now underway."
+          />
+          <ShimmerInfoCard icon="info">
+            {`One thing still ahead: your ${formatInr(FULL_PAYMENT_INSURANCE_INR)} insurance. The RTO won't register your car without a live policy, and I'll ask you at exactly the right moment.`}
+          </ShimmerInfoCard>
         </div>
-      )}
-    </div>
+      }
+      timeSkip={{ label: "When your car's nearly ready", href: okayHref }}
+      callLabel="Questions? I can call you"
+      showMenu
+    />
   );
 }

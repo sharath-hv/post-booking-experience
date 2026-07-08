@@ -4,7 +4,6 @@ import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "rea
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { KycTopNavHeader } from "@/components/kyc/KycTopNavHeader";
-import { DefaultPageTransition } from "@/components/ui/page-transition";
 
 import { FULL_PAYMENT_INSURANCE_INR } from "@/components/payment/loan-amount-demo-constants";
 import {
@@ -309,8 +308,7 @@ function MockRazorpayPaymentPageContent() {
 
   if (phase === "processing") {
     return (
-      <DefaultPageTransition>
-        <div className="fixed inset-0 z-50 flex min-h-dvh flex-col items-center justify-center bg-[#F7FAFF] font-sans">
+      <div className="fixed inset-0 z-50 flex min-h-dvh flex-col items-center justify-center bg-[#F7FAFF] font-sans">
           <div
             className="h-12 w-12 animate-spin rounded-full border-[3px] border-[#e6e8eb] border-t-[#3395ff]"
             aria-hidden
@@ -318,13 +316,11 @@ function MockRazorpayPaymentPageContent() {
           <p className="mt-6 text-base font-medium text-[#1a1a1a]">Processing payment…</p>
           <p className="mt-1 text-sm text-[#6b7280]">Please do not close this screen</p>
         </div>
-      </DefaultPageTransition>
     );
   }
 
   return (
-    <DefaultPageTransition>
-      <div className="min-h-dvh bg-[#F7FAFF] font-sans">
+    <div className="min-h-dvh bg-[#F7FAFF] font-sans">
         <KycTopNavHeader title="Checkout" />
 
         <main className="mx-auto w-full px-4 pb-32 pt-4">
@@ -469,7 +465,7 @@ function MockRazorpayPaymentPageContent() {
         </p>
       </main>
 
-      <div className="fixed bottom-0 left-0 right-0 border-t border-[#e6e8eb] bg-white px-4 py-4 shadow-[0_-4px_24px_rgba(0,0,0,0.06)]">
+      <div className="fixed bottom-0 left-0 right-0 border-t border-[#e6e8eb] bg-white px-4 py-4 footer-elevated">
         <div className="mx-auto w-full max-w-[640px]">
           <button
             type="button"
@@ -490,7 +486,6 @@ function MockRazorpayPaymentPageContent() {
         </div>
       </div>
       </div>
-    </DefaultPageTransition>
   );
 }
 

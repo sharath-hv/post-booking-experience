@@ -126,7 +126,7 @@ export function CancelBookingSuccessScreen() {
       </div>
 
       <div
-        className={`fixed bottom-0 left-0 right-0 z-10 bg-white shadow-[0_-4px_6px_0_rgba(54,53,76,0.08)] transition-opacity ${HERO_FADE_DURATION_CLASS} ease-out ${
+        className={`fixed bottom-0 left-0 right-0 z-10 bg-white footer-elevated transition-opacity ${HERO_FADE_DURATION_CLASS} ease-out ${
           showCta ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
         aria-hidden={!showCta}
