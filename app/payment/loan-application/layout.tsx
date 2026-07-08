@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 
@@ -15,6 +16,8 @@ export default function LoanApplicationLayout({ children }: { children: ReactNod
   if (currentRoute == null) return <>{children}</>;
 
   return (
-    <LoanApplicationShell currentRoute={currentRoute}>{children}</LoanApplicationShell>
+    <Suspense fallback={null}>
+      <LoanApplicationShell currentRoute={currentRoute}>{children}</LoanApplicationShell>
+    </Suspense>
   );
 }
