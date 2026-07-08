@@ -8,7 +8,6 @@ import {
 import { getModifySelectionCarCutoutForColour } from "@/lib/modify-selection-car-cutouts";
 import type { ModifySelectionColourOption } from "@/lib/modify-selection-colours-content";
 import type { ModifySelectionDeliveryChoice } from "@/lib/modify-selection-colours-content";
-import { MODIFY_SELECTION_NEW_BOOKING_AMOUNT_INR } from "@/lib/modify-selection-review-pay-content";
 import type { ModifySelectionReviewPaySummary } from "@/lib/modify-selection-review-pay-content";
 import type { ModifySelectionColourPending } from "@/lib/modify-selection-colour-pending";
 

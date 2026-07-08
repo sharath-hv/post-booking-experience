@@ -304,6 +304,7 @@ function MockRazorpayPaymentPageContent() {
     returnSource,
     router,
     searchParams,
+    totalDue,
   ]);
 
   if (phase === "processing") {

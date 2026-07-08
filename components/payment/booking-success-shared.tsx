@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 import bookingSuccessTickLottie from "@/assets/booking-success-tick.json";
 import { publicAssetPath } from "@/lib/public-asset-path";
 

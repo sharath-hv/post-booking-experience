@@ -359,7 +359,7 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
           replies: primaryReply(JOURNEY_PATHS.payment.choose),
         };
     }
-  }, [moment, words, flow, car, deliveryLine, deliveryLineClass, arrivalPaid, router]);
+  }, [moment, words, flow, car, deliveryLine, deliveryLineClass, arrivalPaid, router, searchParams]);
 
   const { hideBack, ...turnProps } = turn;
 

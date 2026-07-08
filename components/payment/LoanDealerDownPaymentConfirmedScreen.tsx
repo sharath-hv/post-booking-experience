@@ -52,7 +52,7 @@ export function LoanDealerDownPaymentConfirmedScreen() {
       `${DEALER_NAME} confirmed your ${formatInr(downPaymentInr)} — all good on my end.`,
       `I've asked ${bank.name} to release the funds to the dealer. Nothing more needed from you — I'll let you know the moment it lands.`,
     ],
-    [bank.name, downPaymentInr, loanAmountInr],
+    [bank.name, downPaymentInr],
   );
 
   const disbursementReceivedHref = useMemo(() => {

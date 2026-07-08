@@ -1,7 +1,7 @@
 "use client";
 
 import Image, { type StaticImageData } from "next/image";
-import type { CSSProperties, ReactNode } from "react";
+import type { CSSProperties } from "react";
 
 import cretaCutout from "@/assets/Hyundai Creta.png";
 import carIcon from "@/assets/Car.svg";
@@ -10,14 +10,8 @@ import moneyRoundIcon from "@/assets/Money round.svg";
 import newCarIcon from "@/assets/New car.svg";
 import phoneIcon from "@/assets/Phone.svg";
 import tickIcon from "@/assets/tick.svg";
-import timeIcon from "@/assets/Time.svg";
 import { ShimmerInfoCard } from "@/components/ui/ShimmerInfoCard";
 import { cn } from "@/lib/utils";
-
-const TIME_ICON_MASK_STYLE = {
-  maskImage: `url(${timeIcon.src})`,
-  WebkitMaskImage: `url(${timeIcon.src})`,
-} satisfies CSSProperties;
 
 const TICK_ICON_MASK_STYLE = {
   maskImage: `url(${tickIcon.src})`,
@@ -355,7 +349,7 @@ export type NextStepCardProps = {
  * slow radar pulse on the node — something is coming for you. Stakes go in a
  * ShimmerInfoCard next to it, not in here.
  */
-export function NextStepCard({ title, body, etaLabel }: NextStepCardProps) {
+export function NextStepCard({ title, body }: NextStepCardProps) {
   return (
     <div className="rounded-2xl bg-white card-elevated px-4 py-4">
       <div className="flex items-start gap-3.5">
