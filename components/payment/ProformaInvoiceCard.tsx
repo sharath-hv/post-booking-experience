@@ -6,14 +6,22 @@ import { useCallback, type MouseEvent } from "react";
 import { PAYMENT_CHOOSE_ASSETS } from "@/components/payment/payment-choose-assets";
 
 export type ProformaInvoiceCardProps = {
-  /** Optional URL for the proforma PDF (stub uses `#` until wired). */
+  /** Card title. Defaults to "Proforma Invoice". */
+  title?: string;
+  /** Subtitle line (e.g. "Hyundai Creta 1.5 X-Line AT Diesel"). */
+  subtitle?: string;
+  /** Optional URL for the download link. Shows "Download" CTA regardless; prevents navigation when omitted. */
   downloadHref?: string;
 };
 
 /**
- * Proforma invoice callout — title, variant line, download link.
+ * Price-lock receipt / proforma invoice callout card.
  */
-export function ProformaInvoiceCard({ downloadHref }: ProformaInvoiceCardProps) {
+export function ProformaInvoiceCard({
+  title = "Proforma Invoice",
+  subtitle = "Hyundai Creta 1.5 X-Line AT Diesel",
+  downloadHref,
+}: ProformaInvoiceCardProps) {
   const onPlaceholderClick = useCallback(
     (e: MouseEvent<HTMLAnchorElement>) => {
       if (!downloadHref) e.preventDefault();
@@ -23,34 +31,34 @@ export function ProformaInvoiceCard({ downloadHref }: ProformaInvoiceCardProps) 
 
   return (
     <section
-      className="w-full rounded-xl bg-white card-elevated p-3 text-left"
-      aria-label="Proforma invoice"
+      className="w-full rounded-2xl bg-white card-elevated p-4 text-left"
+      aria-label={title}
     >
       <div className="flex items-start gap-3">
         <div
-          className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-[#f5f5f5]"
+          className="flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#f5f5f5]"
           aria-hidden
         >
           <Image
-            src={PAYMENT_CHOOSE_ASSETS.documentBlack}
+            src={PAYMENT_CHOOSE_ASSETS.proformaInvoice}
             alt=""
             width={24}
             height={24}
-            className="size-6 object-contain"
+            className="size-5 object-contain"
             unoptimized
           />
         </div>
         <div className="flex min-w-0 flex-1 flex-col gap-1">
-          <p className="text-sm font-medium leading-5 text-[#121212]">Proforma Invoice</p>
-          <p className="text-xs font-normal leading-[18px] text-[#757575]">
-            Hyundai Creta 1.5 X-Line AT Diesel
-          </p>
+          <div className="flex flex-col gap-0.5">
+            <p className="text-sm font-medium leading-5 text-[#121212]">{title}</p>
+            <p className="text-xs font-normal leading-[18px] text-[#757575]">{subtitle}</p>
+          </div>
           <a
             href={downloadHref ?? "#"}
             onClick={onPlaceholderClick}
-            className="w-fit text-xs font-medium leading-[18px] text-[#1b73e8] underline-offset-2 hover:underline focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#1b73e8]/30 focus-visible:ring-offset-2"
+            className="self-start text-xs font-medium leading-[18px] text-[#1b73e8] underline-offset-2 hover:underline focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#1b73e8]/30 focus-visible:ring-offset-2"
           >
-            Download PDF
+            Download
           </a>
         </div>
       </div>

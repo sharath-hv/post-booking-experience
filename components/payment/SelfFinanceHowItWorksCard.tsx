@@ -15,14 +15,8 @@ export function SelfFinanceHowItWorksCard({
 }: SelfFinanceHowItWorksCardProps) {
   const isEmbedded = variant === "embedded";
 
-  return (
-    <div
-      className={
-        isEmbedded
-          ? "w-full rounded-2xl bg-[#f5f5f5] p-5"
-          : "w-full rounded-2xl bg-white card-elevated p-5"
-      }
-    >
+  const content = (
+    <>
       {showTitle && (
         <h2 className="mb-4 text-left text-sm font-medium leading-5 text-[#121212]">
           Here is how it works
@@ -32,9 +26,7 @@ export function SelfFinanceHowItWorksCard({
         {SELF_FINANCE_HOW_IT_WORKS_STEPS.map((step, index) => (
           <div key={index} className="flex gap-3">
             <div
-              className={`relative mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
-                isEmbedded ? "bg-white" : "bg-[#f5f5f5]"
-              }`}
+              className="relative mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#f5f5f5]"
             >
               <Image
                 src={step.icon}
@@ -55,6 +47,16 @@ export function SelfFinanceHowItWorksCard({
           </div>
         ))}
       </div>
+    </>
+  );
+
+  if (isEmbedded) {
+    return <div className="w-full">{content}</div>;
+  }
+
+  return (
+    <div className="w-full rounded-2xl bg-white card-elevated p-5">
+      {content}
     </div>
   );
 }

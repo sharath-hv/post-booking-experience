@@ -11,7 +11,7 @@ import { PAYMENT_CHOOSE_ASSETS } from "@/components/payment/payment-choose-asset
 const HEADLINE = "Your margin money slip is ready!";
 
 const SUBLINE =
-  "Your down payment is in. Hand this slip to your bank — they release the loan to the dealer against it. The sooner that happens, the sooner delivery prep starts.";
+  "The dealer has confirmed your down payment. Share this slip with your bank and they will release the loan amount directly to the dealer.";
 
 /**
  * Self finance — after full down payment; user downloads margin money slip for the bank.
@@ -31,24 +31,22 @@ export function MarginMoneySlipActionScreen() {
     if (loanAmount) q.set("loan_amount", loanAmount);
     if (originalDownPayment) q.set("original_down_payment", originalDownPayment);
     const qs = q.toString();
-    const base = qs ? `/payment/down-payment-insurance-setup?${qs}` : "/payment/down-payment-insurance-setup";
+    const base = qs
+      ? `/payment/self-finance-transfer-verification?${qs}`
+      : "/payment/self-finance-transfer-verification";
     return { nextHref: base, prefetchHref: base };
   }, [bank, loanAmount, originalDownPayment]);
 
-  const onBankTransferConfirm = useCallback(
-    (utr: string) => {
-      setBankTransferSheetOpen(false);
-      const q = new URLSearchParams();
-      if (bank) q.set("bank", bank);
-      if (loanAmount) q.set("loan_amount", loanAmount);
-      if (originalDownPayment) q.set("original_down_payment", originalDownPayment);
-      if (utr) q.set("bank_transfer_ref", utr);
-      const qs = q.toString();
-      const href = qs ? `/payment/down-payment-insurance-setup?${qs}` : "/payment/down-payment-insurance-setup";
-      router.push(href);
-    },
-    [router, bank, loanAmount, originalDownPayment],
-  );
+  const onBankTransferConfirm = useCallback(() => {
+    setBankTransferSheetOpen(false);
+    const q = new URLSearchParams();
+    if (loanAmount) q.set("loan_amount", loanAmount);
+    const qs = q.toString();
+    const href = qs
+      ? `/payment/self-finance-transfer-verification?${qs}`
+      : "/payment/self-finance-transfer-verification";
+    router.push(href);
+  }, [router, loanAmount]);
 
   const heroSummaryCard = useMemo(() => <MarginMoneySlipCard />, []);
 
@@ -61,7 +59,7 @@ export function MarginMoneySlipActionScreen() {
         heroSummaryCard={heroSummaryCard}
         nextHref={nextHref}
         prefetchHref={prefetchHref}
-        nextCtaLabel="Confirm bank transfer"
+        nextCtaLabel="Bank has transferred the amount"
         onPrimaryCtaClick={() => setBankTransferSheetOpen(true)}
         manageBookingShowVehicleIdentification
       />

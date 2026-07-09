@@ -1,39 +1,24 @@
 "use client";
 
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState, type ChangeEvent } from "react";
 
-import moneyIcon from "@/assets/money.svg";
+import { ShiviCallSheet } from "@/components/concierge/ShiviCallSheet";
 import { GetHelpPillButton } from "@/components/kyc/GetHelpPillButton";
-import { BOOKING_CONFIRMED_ASSETS } from "@/components/kyc/kyc-booking-confirmed-assets";
 import { KycTopNavHeader } from "@/components/kyc/KycTopNavHeader";
 import {
-  FULL_PAYMENT_INSURANCE_INR,
   MIN_LOAN_INR,
   ON_ROAD_PRICE_INR,
   SELF_FINANCE_LOAN_DEFAULT_INR,
   SLIDER_STEP,
 } from "@/components/payment/loan-amount-demo-constants";
-import { BOOKING_LOCK_AMOUNT_INR, buildDownPaymentCheckoutHref } from "@/lib/paymentUrls";
 import { formatInrAmountDigits, parseInrAmountInput } from "@/lib/loan-emi";
 
-/** Carried on `/payment/pay-down-payment` → `/payment` so the chain matches ACKO finance `?bank=` wiring. */
-const SELF_FINANCE_BANK_QUERY = "self_finance";
 
 const STAGGER_TITLE_MS = 90;
 const STAGGER_SUBTEXT_MS = 120;
 const STAGGER_AMOUNT_MS = 220;
 const STAGGER_SLIDER_MS = 320;
-const STAGGER_SUMMARY_MS = 440;
-
-function formatInr(amount: number) {
-  return new Intl.NumberFormat("en-IN", {
-    style: "currency",
-    currency: "INR",
-    maximumFractionDigits: 0,
-  }).format(amount);
-}
 
 function formatInrLakhLabel(amount: number) {
   const lakhs = amount / 100_000;
@@ -52,6 +37,7 @@ function clampDisbursementLoan(value: number) {
  */
 export function EnterDisbursementAmountScreen() {
   const router = useRouter();
+  const [shiviSheetOpen, setShiviSheetOpen] = useState(false);
   const [loanAmount, setLoanAmount] = useState(() =>
     clampDisbursementLoan(SELF_FINANCE_LOAN_DEFAULT_INR),
   );
@@ -64,19 +50,6 @@ export function EnterDisbursementAmountScreen() {
     setLoanAmount(clamped);
     setLoanAmountInput(formatInrAmountDigits(clamped));
   }, []);
-
-  const totalDownPaymentInr = ON_ROAD_PRICE_INR - loanAmount - BOOKING_LOCK_AMOUNT_INR;
-  const carDownPaymentPortionInr = Math.max(0, totalDownPaymentInr - FULL_PAYMENT_INSURANCE_INR);
-
-  const sliderSpan = ON_ROAD_PRICE_INR - MIN_LOAN_INR;
-  const fillPct = sliderSpan > 0 ? ((loanAmount - MIN_LOAN_INR) / sliderSpan) * 100 : 0;
-
-  const onLoanRangeChange = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      applyLoanAmount(Number(e.target.value));
-    },
-    [applyLoanAmount],
-  );
 
   const onLoanAmountInputChange = useCallback((raw: string) => {
     const digits = raw.replace(/\D/g, "");
@@ -92,6 +65,16 @@ export function EnterDisbursementAmountScreen() {
     }
   }, []);
 
+  const sliderSpan = ON_ROAD_PRICE_INR - MIN_LOAN_INR;
+  const fillPct = sliderSpan > 0 ? ((loanAmount - MIN_LOAN_INR) / sliderSpan) * 100 : 0;
+
+  const onLoanRangeChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      applyLoanAmount(Number(e.target.value));
+    },
+    [applyLoanAmount],
+  );
+
   const onLoanAmountBlur = useCallback(() => {
     const parsed = parseInrAmountInput(loanAmountInput);
     if (loanAmountInput === "" || parsed < MIN_LOAN_INR) {
@@ -101,25 +84,17 @@ export function EnterDisbursementAmountScreen() {
     applyLoanAmount(parsed);
   }, [applyLoanAmount, loanAmountInput]);
 
-  /** Straight to checkout — this screen already shows the full split. */
-  const navigateToPayDownPayment = useCallback(() => {
-    // Net cash due now — the price identity already excludes lock + insurance.
-    router.push(
-      buildDownPaymentCheckoutHref(
-        SELF_FINANCE_BANK_QUERY,
-        String(loanAmount),
-        carDownPaymentPortionInr,
-      ),
-    );
-  }, [loanAmount, router, carDownPaymentPortionInr]);
+  const navigateNext = useCallback(() => {
+    router.push(`/payment/self-finance-loan-confirmed?loan_amount=${loanAmount}`);
+  }, [loanAmount, router]);
 
   useEffect(() => {
-    router.prefetch("/payment");
+    router.prefetch("/payment/self-finance-loan-confirmed");
   }, [router]);
 
   return (
-    <div className="min-h-dvh bg-[#F7FAFF] font-sans">
-      <KycTopNavHeader endSlot={<GetHelpPillButton />} />
+    <div className="min-h-dvh bg-white font-sans">
+      <KycTopNavHeader endSlot={<GetHelpPillButton onClick={() => setShiviSheetOpen(true)} />} />
 
       <main className="mx-auto w-full max-w-[640px] px-5 pb-[calc(7rem+env(safe-area-inset-bottom))] pt-2">
         <h1
@@ -127,22 +102,21 @@ export function EnterDisbursementAmountScreen() {
           className="payment-success-stagger text-2xl font-semibold leading-8 tracking-[-0.1px] text-[#121212]"
           style={{ animationDelay: `${STAGGER_TITLE_MS}ms` }}
         >
-          How much has your bank sanctioned?
+          What&apos;s the loan amount your bank approved?
         </h1>
 
         <p
           className="payment-success-stagger mt-4 text-sm font-normal leading-5 text-[#4b4b4b]"
           style={{ animationDelay: `${STAGGER_SUBTEXT_MS}ms` }}
         >
-          Enter the amount your bank will transfer to Advaith Hyundai. This is usually your
-          sanctioned amount minus any processing fees.
+          Just enter it here. I&apos;ll pass it on to the dealer so they know how much the bank is sending.
         </p>
 
         <div
           className="payment-success-stagger mt-8"
           style={{ animationDelay: `${STAGGER_AMOUNT_MS}ms` }}
         >
-          <div className="flex h-12 min-h-12 w-[174px] max-w-full shrink-0 items-center rounded-lg bg-white card-elevated px-4">
+          <div className="flex h-12 min-h-12 w-[174px] max-w-full shrink-0 items-center rounded-lg border border-[#e8e8e8] bg-white px-4">
             <label htmlFor="self-finance-loan-amount-input" className="sr-only">
               Loan amount in rupees
             </label>
@@ -189,91 +163,15 @@ export function EnterDisbursementAmountScreen() {
             </div>
           </label>
         </div>
-
-        <section
-          className="payment-success-stagger mt-8 overflow-hidden rounded-2xl border border-[#e3f0e5] bg-gradient-to-b from-white to-[#e7ffee]"
-          style={{ animationDelay: `${STAGGER_SUMMARY_MS}ms` }}
-          aria-label="Down payment amount and split"
-        >
-          <div className="flex gap-3 px-4 pb-3 pt-4">
-            <div
-              className="relative flex size-12 shrink-0 items-center justify-center rounded-lg bg-[#e4f6e7]"
-              aria-hidden
-            >
-              <Image
-                src={moneyIcon}
-                alt=""
-                width={24}
-                height={24}
-                className="object-contain"
-                unoptimized
-              />
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className="text-xs font-normal leading-[18px] text-[#121212]">Your down payment</p>
-              <p className="mt-0.5 text-[18px] font-medium leading-7 tracking-[-0.1px] text-[#121212] tabular-nums">
-                {formatInr(carDownPaymentPortionInr)}
-              </p>
-            </div>
-          </div>
-
-          <hr className="border-0 border-t border-[#d5e5d8]" />
-
-          <div className="px-4 pb-4 pt-3">
-            <p className="text-xs font-normal leading-[18px] text-[#4b4b4b]">
-              Insurance is separate — it is not part of your down payment
-            </p>
-            <ul className="mt-3 space-y-3">
-              <li className="flex gap-1">
-                <span className="relative mt-0.5 h-4 w-4 shrink-0" aria-hidden>
-                  <Image
-                    src={BOOKING_CONFIRMED_ASSETS.dotSeparator}
-                    alt=""
-                    width={16}
-                    height={16}
-                    className="object-contain"
-                    unoptimized
-                    sizes="16px"
-                  />
-                </span>
-                <p className="min-w-0 text-xs leading-[18px] text-[#4b4b4b]">
-                  <span className="font-medium text-[#121212]">
-                    {formatInr(carDownPaymentPortionInr)} down payment.
-                  </span>{" "}
-                  Due now — delivery prep starts once it&apos;s in
-                </p>
-              </li>
-              <li className="flex gap-1">
-                <span className="relative mt-0.5 h-4 w-4 shrink-0" aria-hidden>
-                  <Image
-                    src={BOOKING_CONFIRMED_ASSETS.dotSeparator}
-                    alt=""
-                    width={16}
-                    height={16}
-                    className="object-contain"
-                    unoptimized
-                    sizes="16px"
-                  />
-                </span>
-                <p className="min-w-0 text-xs leading-[18px] text-[#4b4b4b]">
-                  <span className="font-medium text-[#121212]">
-                    {formatInr(FULL_PAYMENT_INSURANCE_INR)} insurance — separate.
-                  </span>{" "}
-                  Pay later, just before delivery — it&apos;s needed for RTO registration
-                </p>
-              </li>
-            </ul>
-          </div>
-        </section>
       </main>
 
-      <div className="fixed bottom-0 left-0 right-0 z-10 pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_6px_0_rgba(54,53,76,0.08)]">
-        <div className="mx-auto w-full max-w-[640px] bg-white px-5 pb-5 pt-3">
-          <button type="button" onClick={navigateToPayDownPayment} className="primary-cta w-full">
-            Confirm loan amount
-          </button>
-        </div>
+      <div className="fixed bottom-0 left-0 right-0 z-10 mx-auto w-full max-w-[640px] px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-3">
+        <button type="button" onClick={navigateNext} className="primary-cta w-full">
+          Confirm loan amount
+        </button>
       </div>
+
+      <ShiviCallSheet open={shiviSheetOpen} onClose={() => setShiviSheetOpen(false)} />
     </div>
   );
 }

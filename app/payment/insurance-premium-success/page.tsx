@@ -40,7 +40,11 @@ function InsurancePremiumSuccessInner() {
 
   return (
     <CelebrationPageTransition>
-      <DownPaymentInstalmentSuccess subline={subline} nextHref={nextHref} />
+      <DownPaymentInstalmentSuccess
+        subline={subline}
+        nextHref={nextHref}
+        backgroundClassName="bg-white"
+      />
     </CelebrationPageTransition>
   );
 }

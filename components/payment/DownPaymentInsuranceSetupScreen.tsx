@@ -22,9 +22,12 @@ function formatInr(amount: number) {
 const LOAN_HEADLINE = "Down payment received";
 const LOAN_BANK_TRANSFER_HEADLINE = "Payment received";
 const LOAN_SUBLINE =
-  "The bank is moving your loan to the dealer. Banks take 24–48 hours here — I'll confirm the moment it lands.";
+  "The bank is moving your loan to the dealer. Banks take 24 to 48 hours here. I'll confirm the moment it lands.";
 const LOAN_BANK_TRANSFER_SUBLINE =
-  "I'm confirming the transfer from your bank — it takes 24–48 hours to clear. The moment it does, I start your delivery prep.";
+  "I'm confirming the transfer from your bank. It takes 24 to 48 hours to clear. The moment it does, I start your delivery prep.";
+const SELF_FINANCE_HEADLINE = "Transfer confirmed.";
+const SELF_FINANCE_SUBLINE =
+  "Advaith Hyundai has confirmed the transfer. Just one more thing before your car arrives.";
 
 const FULL_PAYMENT_HEADLINE = "Your payment is complete";
 const FULL_PAYMENT_SUBLINE = "Your car is now being prepared for delivery.";
@@ -32,10 +35,10 @@ const FULL_PAYMENT_SUBLINE = "Your car is now being prepared for delivery.";
 /** The insurance step — the one payment ahead, with the reason it waits. */
 const INSURANCE_STEP: MoneyPlanStep = {
   state: "later",
-  title: "Insurance — your last payment",
+  title: "Insurance, your last payment",
   amountLabel: formatInr(FULL_PAYMENT_INSURANCE_INR),
   detail:
-    "Due just before delivery — the RTO won't register your car without a live policy. I'll ask you at exactly the right moment.",
+    "Due just before delivery. The RTO won't register your car without a live policy. I'll ask you at exactly the right moment.",
 };
 
 /** Post–full down payment: hero + CTA + the money plan (paid / moving / one left). */
@@ -50,14 +53,18 @@ export function DownPaymentInsuranceSetupScreen() {
 
   const headline = isFullPayment
     ? FULL_PAYMENT_HEADLINE
-    : bankTransferRef
-      ? LOAN_BANK_TRANSFER_HEADLINE
-      : LOAN_HEADLINE;
+    : isSelfFinance
+      ? SELF_FINANCE_HEADLINE
+      : bankTransferRef
+        ? LOAN_BANK_TRANSFER_HEADLINE
+        : LOAN_HEADLINE;
   const subline = isFullPayment
     ? FULL_PAYMENT_SUBLINE
-    : bankTransferRef
-      ? LOAN_BANK_TRANSFER_SUBLINE
-      : LOAN_SUBLINE;
+    : isSelfFinance
+      ? SELF_FINANCE_SUBLINE
+      : bankTransferRef
+        ? LOAN_BANK_TRANSFER_SUBLINE
+        : LOAN_SUBLINE;
 
   const moneyPlanCard = useMemo(() => {
     const paidAmount =
@@ -84,16 +91,39 @@ export function DownPaymentInsuranceSetupScreen() {
       );
     }
 
+    if (isSelfFinance) {
+      return (
+        <MoneyPlanCard
+          heading="One payment left"
+          subheading="All payments done. Just insurance before delivery."
+          steps={[
+            {
+              state: "done",
+              title: "Down payment",
+              amountLabel: paidLabel,
+              detail: "Confirmed by the dealer.",
+            },
+            {
+              state: "done",
+              title: "Loan transfer to dealer",
+              detail: "Verified and confirmed.",
+            },
+            INSURANCE_STEP,
+          ]}
+        />
+      );
+    }
+
     if (bankTransferRef) {
       return (
         <MoneyPlanCard
           heading="One payment left"
-          subheading="Your money's in motion — only insurance remains."
+          subheading="Your money is in motion. Only insurance remains."
           steps={[
             {
               state: "moving",
               title: "Your bank transfer clears",
-              detail: `24–48 hours · I'm tracking it with your bank — ref ${bankTransferRef}.`,
+              detail: `24 to 48 hours. I'm tracking it with your bank, ref ${bankTransferRef}.`,
             },
             INSURANCE_STEP,
           ]}
@@ -107,7 +137,7 @@ export function DownPaymentInsuranceSetupScreen() {
     return (
       <MoneyPlanCard
         heading="One payment left"
-        subheading="Your part's done for now — only insurance remains."
+        subheading="Your part's done for now. Only insurance remains."
         steps={[
           {
             state: "done",
@@ -118,13 +148,13 @@ export function DownPaymentInsuranceSetupScreen() {
           {
             state: "moving",
             title: `${bankName} sends the loan to the dealer`,
-            detail: "24–48 hours · nothing needed from you — I'm chasing it.",
+            detail: "24 to 48 hours. Nothing needed from you, I'm chasing it.",
           },
           INSURANCE_STEP,
         ]}
       />
     );
-  }, [isFullPayment, bankTransferRef, bank, originalDownPayment]);
+  }, [isFullPayment, isSelfFinance, bankTransferRef, bank, originalDownPayment]);
 
   const nextHref = isFullPayment
     ? buildPayInsurancePremiumHref()

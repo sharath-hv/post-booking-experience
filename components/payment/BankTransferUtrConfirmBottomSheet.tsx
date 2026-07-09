@@ -1,11 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState, type ChangeEvent } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { PAYMENT_CHOOSE_ASSETS } from "@/components/payment/payment-choose-assets";
 import {
-  BOTTOM_SHEET_BODY_BEFORE_CTA_CLASS,
   BOTTOM_SHEET_CTA_STRIP_TOP_CLASS,
   BOTTOM_SHEET_MAX_HEIGHT_CLASS,
   BOTTOM_SHEET_OVERLAY_Z_CLASS,
@@ -15,17 +14,14 @@ import { BottomSheetCloseIcon } from "@/components/ui/BottomSheetCloseIcon";
 
 const SHEET_TRANSITION_MS = 280;
 
-const MAX_UTR_LEN = 50;
-
 type BankTransferUtrConfirmBottomSheetProps = {
   open: boolean;
   onClose: () => void;
-  /** Called after the user confirms with a non-empty UTR (whitespace stripped from input). */
-  onConfirm: (utr: string) => void;
+  onConfirm: () => void;
 };
 
 /**
- * Self finance — user confirms bank transfer by entering a UTR for verification.
+ * Self finance — user confirms the bank has transferred the loan amount to the dealer.
  */
 export function BankTransferUtrConfirmBottomSheet({
   open,
@@ -34,7 +30,6 @@ export function BankTransferUtrConfirmBottomSheet({
 }: BankTransferUtrConfirmBottomSheetProps) {
   const [mounted, setMounted] = useState(false);
   const [animateIn, setAnimateIn] = useState(false);
-  const [utr, setUtr] = useState("");
   const exitTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -49,11 +44,6 @@ export function BankTransferUtrConfirmBottomSheet({
       requestAnimationFrame(() => setAnimateIn(true));
     });
     return () => cancelAnimationFrame(id);
-  }, [open]);
-
-  useEffect(() => {
-    if (!open) return;
-    setUtr("");
   }, [open]);
 
   useEffect(() => {
@@ -80,17 +70,9 @@ export function BankTransferUtrConfirmBottomSheet({
     };
   }, [mounted]);
 
-  const onUtrChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    const next = e.target.value.replace(/\s/g, "").slice(0, MAX_UTR_LEN);
-    setUtr(next);
-  }, []);
-
   const handleConfirm = useCallback(() => {
-    if (utr === "") return;
-    onConfirm(utr);
-  }, [onConfirm, utr]);
-
-  const primaryDisabled = utr.length === 0;
+    onConfirm();
+  }, [onConfirm]);
 
   if (!mounted) return null;
 
@@ -123,7 +105,7 @@ export function BankTransferUtrConfirmBottomSheet({
             <BottomSheetCloseIcon />
           </button>
 
-          <div className={`min-h-0 flex-1 overflow-y-auto px-5 pt-6 ${BOTTOM_SHEET_BODY_BEFORE_CTA_CLASS}`}>
+          <div className="min-h-0 flex-1 overflow-y-auto px-5 pb-8 pt-6">
             <div className="relative h-[72px] w-[72px] shrink-0 overflow-hidden bg-white" aria-hidden>
               <Image
                 src={PAYMENT_CHOOSE_ASSETS.loanApproved}
@@ -139,33 +121,14 @@ export function BankTransferUtrConfirmBottomSheet({
               id="bank-transfer-confirm-title"
               className={`mt-6 ${bottomSheetTitleWidthWithIllustration} text-left text-[20px] font-semibold leading-[28px] tracking-[-0.12px] text-[#121212]`}
             >
-              Confirm bank transfer
+              Has your bank transferred the amount?
             </h2>
             <p
               id="bank-transfer-confirm-body"
               className="mt-3 w-full text-left text-sm font-normal leading-[22px] text-[#4b4b4b]"
             >
-              Let us know once your bank has transferred the loan amount to the dealer. Adding your UTR
-              number helps us verify the transfer faster.
+              I will check with the dealer and confirm the transfer on your behalf.
             </p>
-
-            <div className="mt-6 w-full">
-              <label htmlFor="bank-transfer-utr-input" className="sr-only">
-                UTR number
-              </label>
-              <div className="flex h-12 min-h-12 w-full items-center rounded-lg border border-[#e8e8e8] bg-white px-4">
-                <input
-                  id="bank-transfer-utr-input"
-                  type="text"
-                  autoComplete="off"
-                  value={utr}
-                  onChange={onUtrChange}
-                  placeholder="Enter UTR number"
-                  maxLength={MAX_UTR_LEN}
-                  className="min-w-0 w-full border-0 bg-transparent p-0 text-[16px] font-normal leading-[22px] text-[#121212] outline-none placeholder:text-[#9e9e9e] focus:ring-0"
-                />
-              </div>
-            </div>
           </div>
 
           <div
@@ -174,10 +137,9 @@ export function BankTransferUtrConfirmBottomSheet({
             <button
               type="button"
               onClick={handleConfirm}
-              disabled={primaryDisabled}
-              className="primary-cta w-full disabled:pointer-events-none disabled:opacity-50"
+              className="primary-cta w-full"
             >
-              Confirm transfer
+              Yes, bank has transferred
             </button>
           </div>
         </div>
