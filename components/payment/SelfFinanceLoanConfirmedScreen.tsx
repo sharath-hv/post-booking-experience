@@ -1,0 +1,74 @@
+"use client";
+
+import { useMemo } from "react";
+import { useSearchParams } from "next/navigation";
+
+import { AmountReceivedCard, NextStepCard } from "@/components/concierge/artifacts";
+import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
+import { SELF_FINANCE_LOAN_DEFAULT_INR } from "@/components/payment/loan-amount-demo-constants";
+import { buildMarginMoneySlipActionHref } from "@/lib/paymentUrls";
+
+const DEALER_NAME = "Advaith Hyundai";
+
+function formatInr(amount: number) {
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 0,
+  }).format(Math.max(0, Math.round(amount)));
+}
+
+function parseLoanAmount(raw: string | null): number {
+  if (!raw) return SELF_FINANCE_LOAN_DEFAULT_INR;
+  const n = Number(raw);
+  return Number.isFinite(n) && n > 0 ? Math.round(n) : SELF_FINANCE_LOAN_DEFAULT_INR;
+}
+
+/**
+ * Self finance — Shivi acknowledges the sanctioned loan amount and explains
+ * that the dealer will call to arrange the down payment offline.
+ */
+export function SelfFinanceLoanConfirmedScreen() {
+  const searchParams = useSearchParams();
+  const loanAmountInr = useMemo(
+    () => parseLoanAmount(searchParams.get("loan_amount")),
+    [searchParams],
+  );
+
+  const says = useMemo(
+    () => [
+      `Got it, ${formatInr(loanAmountInr)} noted.`,
+      `I've let ${DEALER_NAME} know. They'll call you to confirm the down payment amount and share the details to transfer it directly to them.`,
+    ],
+    [loanAmountInr],
+  );
+
+  const timeSkipHref = buildMarginMoneySlipActionHref({
+    bank: "self_finance",
+    loanAmount: String(loanAmountInr),
+  });
+
+  return (
+    <ConciergeTurnShell
+      says={says}
+      artifact={
+        <div className="flex flex-col gap-4">
+          <NextStepCard
+            title={`Watch for ${DEALER_NAME}'s call`}
+            body="Once they share the payment details, transfer the down payment directly to the dealer."
+          />
+          <AmountReceivedCard
+            amountInr={loanAmountInr}
+            title="Loan amount confirmed"
+            rows={[
+              { label: "Shared with", value: DEALER_NAME },
+            ]}
+          />
+        </div>
+      }
+      timeSkip={{ label: "After dealer confirms down payment", href: timeSkipHref }}
+      callLabel="Questions? I can call you"
+      showMenu
+    />
+  );
+}

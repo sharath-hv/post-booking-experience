@@ -5,9 +5,9 @@ import { publicAssetPath } from "@/lib/public-asset-path";
 
 const BULLET_ICON = publicAssetPath("tick.svg");
 
-/** Grey container + tick bullets — shared by payment / modify confirm bottom sheets. */
+/** Tick bullets — shared by payment / modify confirm bottom sheets. */
 export const BOTTOM_SHEET_CONFIRM_BULLET_LIST_CLASS =
-  "mt-4 w-full list-none space-y-[12px] rounded-2xl bg-[#f5f5f5] p-4";
+  "mt-5 w-full list-none space-y-5";
 
 type BottomSheetConfirmBulletListProps = {
   id?: string;
@@ -18,8 +18,11 @@ export function BottomSheetConfirmBulletList({ id, points }: BottomSheetConfirmB
   return (
     <ul id={id} className={BOTTOM_SHEET_CONFIRM_BULLET_LIST_CLASS}>
       {points.map((line, index) => (
-        <li key={index} className="flex gap-2">
-          <span className="relative mt-0.5 h-5 w-5 shrink-0" aria-hidden>
+        <li key={index} className="flex gap-3">
+          <div
+            className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#f5f5f5]"
+            aria-hidden
+          >
             <Image
               src={BULLET_ICON}
               alt=""
@@ -29,8 +32,8 @@ export function BottomSheetConfirmBulletList({ id, points }: BottomSheetConfirmB
               unoptimized
               sizes="20px"
             />
-          </span>
-          <p className="min-w-0 flex-1 text-left text-xs font-normal leading-[18px] text-[#121212]">
+          </div>
+          <p className="min-w-0 flex-1 self-center text-left text-sm font-normal leading-5 text-[#121212]">
             {line}
           </p>
         </li>

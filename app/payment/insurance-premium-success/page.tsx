@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 
 import { DownPaymentInstalmentSuccess } from "@/components/payment/DownPaymentInstalmentSuccess";
 import { FULL_PAYMENT_INSURANCE_INR } from "@/components/payment/loan-amount-demo-constants";
+import { CelebrationPageTransition } from "@/components/ui/page-transition";
 import { buildCarDeliveryInsurancePrepHref } from "@/lib/paymentUrls";
 
 function formatInr(amount: number) {
@@ -38,7 +39,15 @@ function InsurancePremiumSuccessInner() {
     };
   }, [searchParams]);
 
-  return <DownPaymentInstalmentSuccess subline={subline} nextHref={nextHref} />;
+  return (
+    <CelebrationPageTransition>
+      <DownPaymentInstalmentSuccess
+        subline={subline}
+        nextHref={nextHref}
+        backgroundClassName="bg-white"
+      />
+    </CelebrationPageTransition>
+  );
 }
 
 /** Insurance premium ack; auto-advances to car insurance prep. */

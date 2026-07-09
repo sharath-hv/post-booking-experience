@@ -5,6 +5,7 @@ import { useMemo } from "react";
 import { KycBookingProcessingScreen } from "@/components/kyc/KycBookingProcessingScreen";
 import { PAYMENT_CHOOSE_ASSETS } from "@/components/payment/payment-choose-assets";
 import { ProformaInvoiceCard } from "@/components/payment/ProformaInvoiceCard";
+import { ShimmerInfoCard } from "@/components/ui/ShimmerInfoCard";
 
 const HEADLINE_LINE_1 = "Your proforma invoice";
 const HEADLINE_LINE_2 = "is ready";
@@ -20,7 +21,15 @@ const CTA_WARNING_LINE =
  * {@link PaymentDefaultScreen}: processing hero + What’s next + primary CTA.
  */
 export function SelfFinanceActionScreen() {
-  const heroSummaryCard = useMemo(() => <ProformaInvoiceCard />, []);
+  const heroSummaryCard = useMemo(
+    () => (
+      <div className="flex flex-col gap-4">
+        <ProformaInvoiceCard />
+        <ShimmerInfoCard icon="info">{CTA_WARNING_LINE}</ShimmerInfoCard>
+      </div>
+    ),
+    [],
+  );
 
   return (
     <KycBookingProcessingScreen
@@ -31,7 +40,6 @@ export function SelfFinanceActionScreen() {
       heroSummaryCard={heroSummaryCard}
       nextHref="/payment/enter-disbursement-amount"
       prefetchHref="/payment/enter-disbursement-amount"
-      ctaWarningLine={CTA_WARNING_LINE}
       nextCtaLabel="I have my loan amount"
       manageBookingShowVehicleIdentification
     />

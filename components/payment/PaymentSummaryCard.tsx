@@ -109,7 +109,7 @@ export function PaymentSummaryCard({
       </div>
 
       {showRemainingFooter || !showPaymentPaidRow ? (
-        <div className="flex items-center justify-between gap-2 bg-[#f5f5f5] px-4 py-4">
+        <div className="flex items-center justify-between gap-2 border-t border-[#e8e8e8] bg-white px-4 py-4">
           <span className="text-base font-medium leading-6 text-[#121212]">Amount to pay</span>
           <span className="text-base font-medium leading-6 text-[#121212]">
             {showRemainingFooter

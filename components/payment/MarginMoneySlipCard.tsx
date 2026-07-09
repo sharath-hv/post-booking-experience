@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useCallback, type MouseEvent } from "react";
 
-import { PAYMENT_CHOOSE_ASSETS } from "@/components/payment/payment-choose-assets";
+import marginMoneySlipIcon from "@/assets/margin money slip.svg";
 
 /**
  * Stub download — replace with a real PDF URL when available.
@@ -34,32 +34,34 @@ export function MarginMoneySlipCard() {
 
   return (
     <section
-      className="w-full rounded-xl bg-white card-elevated p-3 text-left"
+      className="w-full rounded-2xl bg-white card-elevated p-4 text-left"
       aria-label="Margin money slip"
     >
-      <div className="flex items-center gap-3">
+      <div className="flex items-start gap-3">
         <div
-          className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-[#f5f5f5]"
+          className="flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#f5f5f5]"
           aria-hidden
         >
           <Image
-            src={PAYMENT_CHOOSE_ASSETS.documentBlack}
+            src={marginMoneySlipIcon}
             alt=""
             width={24}
             height={24}
-            className="size-6 object-contain"
+            className="size-5 object-contain"
             unoptimized
           />
         </div>
         <div className="flex min-w-0 flex-1 flex-col gap-1">
-          <p className="text-sm font-medium leading-5 text-[#121212]">Margin money slip</p>
-          <p className="text-xs font-normal leading-[18px] text-[#757575]">
-            Hyundai Creta 1.5 X-Line AT Diesel
-          </p>
+          <div className="flex flex-col gap-0.5">
+            <p className="text-sm font-medium leading-5 text-[#121212]">Margin money slip</p>
+            <p className="text-xs font-normal leading-[18px] text-[#757575]">
+              Hyundai Creta 1.5 X-Line AT Diesel
+            </p>
+          </div>
           <a
             href="#"
             onClick={onDownload}
-            className="w-fit text-xs font-medium leading-[18px] text-[#1b73e8] underline-offset-2 hover:underline focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#1b73e8]/30 focus-visible:ring-offset-2"
+            className="self-start text-xs font-medium leading-[18px] text-[#1b73e8] underline-offset-2 hover:underline focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#1b73e8]/30 focus-visible:ring-offset-2"
           >
             Download
           </a>

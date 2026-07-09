@@ -18,12 +18,18 @@ export type DownPaymentInstalmentSuccessProps = {
   /** Detail under the main title. */
   subline: string;
   nextHref: string;
+  /** Page background. Defaults to booking success blue. */
+  backgroundClassName?: string;
 };
 
 /**
  * Down payment instalment acknowledgment — no CTA; auto-navigates after 3 seconds.
  */
-export function DownPaymentInstalmentSuccess({ subline, nextHref }: DownPaymentInstalmentSuccessProps) {
+export function DownPaymentInstalmentSuccess({
+  subline,
+  nextHref,
+  backgroundClassName = "bg-[#F7FAFF]",
+}: DownPaymentInstalmentSuccessProps) {
   const router = useRouter();
 
   useEffect(() => {
@@ -34,7 +40,7 @@ export function DownPaymentInstalmentSuccess({ subline, nextHref }: DownPaymentI
   }, [nextHref, router]);
 
   return (
-    <div className="relative min-h-dvh overflow-hidden bg-[#F7FAFF] font-sans">
+    <div className={`relative min-h-dvh overflow-hidden font-sans ${backgroundClassName}`}>
       <div
         className="pointer-events-none absolute left-1/2 top-0 h-[240px] w-full max-w-[640px] -translate-x-1/2"
         aria-hidden

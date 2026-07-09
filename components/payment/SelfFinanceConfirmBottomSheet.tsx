@@ -129,7 +129,7 @@ export function SelfFinanceConfirmBottomSheet({
               Here is how your own bank loan works
             </h2>
 
-            <div id="self-finance-how-it-works" className="mt-4">
+            <div id="self-finance-how-it-works" className="mt-5">
               <SelfFinanceHowItWorksCard showTitle={false} variant="embedded" />
             </div>
           </div>
