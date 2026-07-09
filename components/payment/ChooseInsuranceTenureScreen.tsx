@@ -146,8 +146,8 @@ export function ChooseInsuranceTenureScreen() {
 
   const says = useMemo(
     () => [
-      "One last choice before you pay — how long do you want this locked in?",
-      "Extended cover locks in your premium for 3 years — no renewals, no rate hikes. Most people who go extended are glad they did.",
+      "One last choice before you pay: how long do you want this locked in?",
+      "Extended cover locks in your premium for 3 years. No renewals, no rate hikes. Most people who go extended are glad they did.",
     ],
     [],
   );

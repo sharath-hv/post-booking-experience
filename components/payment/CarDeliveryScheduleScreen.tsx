@@ -163,8 +163,8 @@ export function CarDeliveryScheduleScreen() {
     return (
       <ConciergeTurnShell
         says={[
-          `Locked — ${day}, ${windowSlot.toLowerCase()}.`,
-          "Your Creta arrives at your door. I'll send the driver's details and your registration number the day before. It's been a pleasure, Sharath — enjoy every kilometre.",
+          `Locked: ${day}, ${windowSlot.toLowerCase()}.`,
+          "Your Creta arrives at your door. I'll send the driver's details and your registration number the day before. It's been a pleasure, Sharath. Enjoy every kilometre.",
         ]}
         artifact={
           <CarSummaryCardLite
@@ -187,7 +187,7 @@ export function CarDeliveryScheduleScreen() {
     <ConciergeTurnShell
       says={[
         "Your Creta is ready, Sharath.",
-        "Registered, insured, and ready to roll. Most people like to come collect it — pick a time and it's yours. Prefer your door? I can bring it instead.",
+        "Registered, insured, and ready to roll. Most people like to come collect it. Pick a time and it's yours. Prefer your door? I can bring it instead.",
       ]}
       replies={replies}
       callLabel="Special instructions? I can call you"

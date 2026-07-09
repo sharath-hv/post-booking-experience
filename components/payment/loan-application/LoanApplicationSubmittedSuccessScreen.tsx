@@ -72,7 +72,7 @@ export function LoanApplicationSubmittedSuccessScreen() {
               Loan application submitted
             </h1>
             <p className="max-w-sm text-sm font-normal leading-5 text-[#6b7280]">
-              I&apos;ve sent it to {bank.name} — I&apos;ll chase the review and keep you posted.
+              I&apos;ve sent it to {bank.name}. I&apos;ll chase the review and keep you posted.
             </p>
           </div>
         </div>

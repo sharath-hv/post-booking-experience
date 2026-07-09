@@ -11,9 +11,9 @@ import {
   type InsuranceJourneyQuery,
 } from "@/lib/paymentUrls";
 
-const HEADLINE = "Your car's nearly ready — one last payment.";
+const HEADLINE = "Your car's nearly ready. One last payment.";
 const SUBLINE =
-  "The RTO won't register a car without an active policy, so insurance is the final gate before delivery. Pay and your policy is issued on the spot — insurance is us, after all.";
+  "The RTO won't register a car without an active policy, so insurance is the final gate before delivery. Pay and your policy is issued on the spot. Insurance is us, after all.";
 
 /**
  * Step 1 of insurance — shows coverage summary.

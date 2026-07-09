@@ -19,7 +19,7 @@ function SpinnerIcon() {
       viewBox="0 0 24 24"
       fill="none"
       aria-hidden
-      className="shrink-0 animate-spin text-[#6841e6] motion-reduce:animate-none"
+      className="shrink-0 animate-spin text-[#121212] motion-reduce:animate-none"
     >
       <circle cx="12" cy="12" r="9" stroke="currentColor" strokeOpacity="0.2" strokeWidth="2.5" />
       <path

@@ -140,7 +140,7 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
           {
             icon: "money",
             title: "We sort the money",
-            detail: "Finance through me or your own bank — your call.",
+            detail: "Finance through me or your own bank. Your call.",
           },
           {
             icon: "delivery",
@@ -232,7 +232,7 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
           ...base,
           artifact: (
             <NoteCallout>
-              Nothing needed from you right now — I&apos;ll message you the moment there&apos;s
+              Nothing needed from you right now. I&apos;ll message you the moment there&apos;s
               news.
             </NoteCallout>
           ),
@@ -286,7 +286,7 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
               />
               <NextStepCard
                 title={`Pick up ${DEALER_NAME}'s call`}
-                body="Share the OTP that you receive — it registers the Creta on Hyundai's system and locks it in your name. Expected today, before 6:00 PM."
+                body="Share the OTP that you receive. It registers the Creta on Hyundai's system and locks it in your name. Expected today, before 6:00 PM."
               />
               <NoteCallout>
                 If you miss the call, your reservation and your {deliveryDate} delivery could slip.

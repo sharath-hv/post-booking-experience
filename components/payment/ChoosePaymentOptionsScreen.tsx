@@ -322,7 +322,7 @@ export function ChoosePaymentOptionsScreen() {
       <ConciergeTurnShell
         says={[
           "How do you want to pay the remaining ₹13,63,780?",
-          "Pick what suits you — I'll make any of these painless.",
+          "Pick what suits you. I'll make any of these painless.",
         ]}
         artifact={
           <div className="flex w-full flex-col gap-4">
@@ -334,7 +334,7 @@ export function ChoosePaymentOptionsScreen() {
                 illustrationSrc={PAYMENT_CHOOSE_ASSETS.ackoDriveFinance}
                 title="Finance with ACKO Drive"
                 chip="Easiest"
-                blurb="You pick the bank, I run the entire loan — at rates I've already pushed down for you."
+                blurb="You pick the bank, I run the entire loan at rates I've already pushed down for you."
                 stats={[
                   { value: "~2 days", caption: "approval time" },
                   { value: formatInr(ACKO_EMI_FROM_INR), caption: "estimated monthly EMI" },
@@ -361,7 +361,7 @@ export function ChoosePaymentOptionsScreen() {
                 illustrationSrc={PAYMENT_CHOOSE_ASSETS.selfFinance}
                 title="Loan from your own bank"
                 chip="Most control"
-                blurb="Your bank, your terms — bring me the sanction letter and I take it from there."
+                blurb="Your bank, your terms. Bring me the sanction letter and I take it from there."
                 stats={[
                   { value: "5–7 days", caption: "typical bank approval" },
                   { value: "Any bank", caption: "your relationship, your rate" },
@@ -384,15 +384,15 @@ export function ChoosePaymentOptionsScreen() {
                 selected={choice === "full_payment"}
                 onSelect={() => setChoice("full_payment")}
                 illustrationSrc={PAYMENT_CHOOSE_ASSETS.fullCash}
-                title="Pay in full — no loan"
+                title="Pay in full, no loan"
                 chip="Fastest"
-                blurb="No loan, no EMI, no paperwork — pay and your car gets ready for delivery."
+                blurb="No loan, no EMI, no paperwork. Pay and your car gets ready for delivery."
                 stats={[
                   { value: formatInr(FULL_PAYMENT_CAR_AMOUNT_INR), caption: "due now" },
                   { value: "No bank wait", caption: "fastest to delivery" },
                 ]}
                 flow={[
-                  "Pay — in parts or at once",
+                  "Pay in parts or at once",
                   "That’s the money done",
                   "We get your car ready",
                 ]}
@@ -401,7 +401,7 @@ export function ChoosePaymentOptionsScreen() {
           </div>
         }
         replies={[{ label: ctaLabel, onClick: onContinue, echo: null }]}
-        footnote="Your delivery date locks in once the money plan is set — best done now"
+        footnote="Your delivery date locks in once the money plan is set. Best done now."
         callLabel="Not sure? I can call you"
         manageShowVehicleIdentification
       />

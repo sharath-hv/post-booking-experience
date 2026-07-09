@@ -77,13 +77,13 @@ export function DownPaymentInsuranceSetupScreen() {
       return (
         <MoneyPlanCard
           heading="One payment left"
-          subheading="The car is fully paid — only insurance remains."
+          subheading="The car is fully paid. Only insurance remains."
           steps={[
             {
               state: "done",
               title: "Car amount",
               amountLabel: paidLabel,
-              detail: "Paid in full — the dealer starts delivery prep.",
+              detail: "Paid in full. The dealer starts delivery prep.",
             },
             INSURANCE_STEP,
           ]}

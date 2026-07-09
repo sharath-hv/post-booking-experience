@@ -49,8 +49,8 @@ export function LoanDealerDownPaymentConfirmedScreen() {
   const says = useMemo(
     () => [
       "Down payment confirmed.",
-      `${DEALER_NAME} confirmed your ${formatInr(downPaymentInr)} — all good on my end.`,
-      `I've asked ${bank.name} to release the funds to the dealer. Nothing more needed from you — I'll let you know the moment it lands.`,
+      `${DEALER_NAME} confirmed your ${formatInr(downPaymentInr)}. All good on my end.`,
+      `I've asked ${bank.name} to release the funds to the dealer. Nothing more needed from you. I'll let you know the moment it lands.`,
     ],
     [bank.name, downPaymentInr],
   );
@@ -69,7 +69,7 @@ export function LoanDealerDownPaymentConfirmedScreen() {
         <div className="flex flex-col gap-4">
           <AmountReceivedCard
             amountInr={loanAmountInr}
-            title={`${bank.name} disbursement — in progress`}
+            title={`${bank.name} disbursement · in progress`}
             status="processing"
             rows={[
               { label: "Down payment confirmed", value: formatInr(downPaymentInr) },
@@ -78,7 +78,7 @@ export function LoanDealerDownPaymentConfirmedScreen() {
             note="Typically completes within 1–2 business days."
           />
           <ShimmerInfoCard icon="info">
-            {`One thing still ahead: your ${formatInr(FULL_PAYMENT_INSURANCE_INR)} insurance. The RTO won't register your car without a live policy, and I'll ask you at exactly the right moment.`}
+            <strong>One thing still ahead:</strong>{` your ${formatInr(FULL_PAYMENT_INSURANCE_INR)} insurance. The RTO won't register your car without a live policy, and I'll ask you at exactly the right moment.`}
           </ShimmerInfoCard>
         </div>
       }

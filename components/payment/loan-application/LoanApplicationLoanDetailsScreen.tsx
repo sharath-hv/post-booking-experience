@@ -110,7 +110,7 @@ export function LoanApplicationLoanDetailsScreen() {
     <>
       <main className={LOAN_APPLICATION_MAIN_CLASS}>
         <LoanApplicationPageStagger delayMs={LOAN_APPLICATION_STAGGER_MS.title}>
-          <h1 className={LOAN_APPLICATION_PAGE_TITLE_CLASS}>First, the loan itself — how much and how long?</h1>
+          <h1 className={LOAN_APPLICATION_PAGE_TITLE_CLASS}>First, the loan itself: how much and how long?</h1>
         </LoanApplicationPageStagger>
 
         <LoanApplicationPageStagger

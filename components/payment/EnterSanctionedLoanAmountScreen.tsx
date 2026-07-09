@@ -163,7 +163,7 @@ export function EnterSanctionedLoanAmountScreen() {
 
             <div className="flex items-start justify-between gap-3">
               <span className="min-w-0 max-w-[196px] text-sm font-normal leading-5 text-[#121212]">
-                Price lock — paid
+                Price lock (paid)
               </span>
               <span className="w-20 shrink-0 text-right text-sm font-medium leading-5 text-[#121212] tabular-nums">
                 − {formatInr(BOOKING_LOCK_AMOUNT_INR)}
@@ -207,7 +207,7 @@ export function EnterSanctionedLoanAmountScreen() {
 
           <div className="flex min-h-12 items-center justify-between border-t border-[#e8e8e8] px-4 py-3">
             <span className="text-sm font-normal leading-5 text-[#121212]">
-              Insurance — later, before delivery
+              Insurance, later before delivery
             </span>
             <span className="min-w-[80px] text-right text-sm font-medium leading-5 text-[#121212] tabular-nums">
               − {formatInr(DOWN_PAYMENT_INSURANCE_INR)}
@@ -215,7 +215,7 @@ export function EnterSanctionedLoanAmountScreen() {
           </div>
 
           <div className="flex h-16 min-h-16 items-center justify-between border-x-0 border-b-0 border-t border-[#e3f0e5] bg-gradient-to-b from-white to-[#e7ffee] px-4">
-            <span className="text-sm font-medium leading-5 text-[#121212]">Your down payment — due now</span>
+            <span className="text-sm font-medium leading-5 text-[#121212]">Your down payment, due now</span>
             <span className="min-w-[80px] text-right text-base font-semibold leading-6 text-[#121212] tabular-nums">
               {formatInr(carDownPaymentPortionInr)}
             </span>
@@ -229,7 +229,7 @@ export function EnterSanctionedLoanAmountScreen() {
           aria-label="Down payment parts"
         >
           <p className="text-xs font-normal leading-[18px] text-[#121212]">
-            Two things to know —
+            Two things to know:
           </p>
           <ul className="mt-2 space-y-2">
             <li className="flex gap-2">
@@ -248,7 +248,7 @@ export function EnterSanctionedLoanAmountScreen() {
                 <span className="font-semibold">
                   {formatInr(carDownPaymentPortionInr)} by {CAR_DOWN_PAYMENT_DUE_LABEL}
                 </span>{" "}
-                — your reservation holds until then.
+                . Your reservation holds until then.
               </p>
             </li>
             <li className="flex gap-2">
@@ -267,7 +267,7 @@ export function EnterSanctionedLoanAmountScreen() {
                 <span className="font-semibold">
                   {formatInr(DOWN_PAYMENT_INSURANCE_INR)} is separate
                 </span>{" "}
-                — pay it just before delivery, for RTO registration.
+                . Pay it just before delivery, for RTO registration.
               </p>
             </li>
           </ul>

@@ -68,8 +68,8 @@ export function LoanRejectedScreen() {
     <>
       <ConciergeTurnShell
         says={[
-          `${rejected.name} said no — their loss.`,
-          `It happens; bank criteria shift weekly, and it says nothing about you. ${alt.name} has you pre-approved at ${alt.rate} for the same amount, and your one free switch covers this. Nothing restarts — your application carries over, only the bank changes.`,
+          `${rejected.name} said no. Their loss.`,
+          `It happens; bank criteria shift weekly, and it says nothing about you. ${alt.name} has you pre-approved at ${alt.rate} for the same amount, and your one free switch covers this. Nothing restarts. Your application carries over, only the bank changes.`,
         ]}
         artifact={
           <div className="overflow-hidden rounded-2xl bg-white card-elevated">
@@ -102,7 +102,7 @@ export function LoanRejectedScreen() {
               <div className="flex items-center justify-between gap-3 py-1">
                 <span className="text-sm leading-5 text-[#4b4b4b]">Disbursement</span>
                 <span className="text-sm font-medium leading-5 text-[#121212] tabular-nums">
-                  {formatInr(BANK_DISBURSEMENT_INR)} — unchanged
+                  {formatInr(BANK_DISBURSEMENT_INR)}, unchanged
                 </span>
               </div>
               <div className="flex items-center justify-between gap-3 py-1">
@@ -116,7 +116,7 @@ export function LoanRejectedScreen() {
         }
         replies={[
           {
-            label: `Switch to ${alt.name} — free`,
+            label: `Switch to ${alt.name} (free)`,
             onClick: () => switchToBank(alt.id, alt.name),
             echo: null,
           },
@@ -127,7 +127,7 @@ export function LoanRejectedScreen() {
             echo: null,
           },
         ]}
-        footnote="Your price lock and delivery date are untouched — the switch costs nothing"
+        footnote="Your price lock and delivery date are untouched. The switch costs nothing."
         callLabel="Rather talk it through? I can call you"
       />
       <BankSelectionBottomSheet

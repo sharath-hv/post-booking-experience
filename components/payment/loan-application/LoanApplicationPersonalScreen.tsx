@@ -106,7 +106,7 @@ export function LoanApplicationPersonalScreen() {
     <>
       <main className={LOAN_APPLICATION_MAIN_CLASS}>
         <LoanApplicationPageStagger delayMs={LOAN_APPLICATION_STAGGER_MS.title}>
-          <h1 className={LOAN_APPLICATION_PAGE_TITLE_CLASS}>Now a bit about you — the bank insists.</h1>
+          <h1 className={LOAN_APPLICATION_PAGE_TITLE_CLASS}>Now a bit about you. The bank insists.</h1>
         </LoanApplicationPageStagger>
 
         <LoanApplicationPageStagger

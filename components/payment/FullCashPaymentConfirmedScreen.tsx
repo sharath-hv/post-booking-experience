@@ -7,10 +7,10 @@ import { AmountReceivedCard } from "@/components/concierge/artifacts";
 import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
 import { ShimmerInfoCard } from "@/components/ui/ShimmerInfoCard";
 import {
+  FULL_PAYMENT_CAR_AMOUNT_INR,
   FULL_PAYMENT_INSURANCE_INR,
-  SELF_FINANCE_LOAN_DEFAULT_INR,
 } from "@/components/payment/loan-amount-demo-constants";
-import { buildPayInsurancePremiumHref } from "@/lib/paymentUrls";
+import { buildPayInsurancePremiumHref, FULL_PAYMENT_BANK_ID } from "@/lib/paymentUrls";
 
 const DEALER_NAME = "Advaith Hyundai";
 
@@ -22,38 +22,34 @@ function formatInr(amount: number) {
   }).format(Math.max(0, Math.round(amount)));
 }
 
-function parseLoanAmount(raw: string | null): number {
-  if (!raw) return SELF_FINANCE_LOAN_DEFAULT_INR;
+function parseCarAmount(raw: string | null): number {
+  if (!raw) return FULL_PAYMENT_CAR_AMOUNT_INR;
   const n = Number(raw);
-  return Number.isFinite(n) && n > 0 ? Math.round(n) : SELF_FINANCE_LOAN_DEFAULT_INR;
+  return Number.isFinite(n) && n > 0 ? Math.round(n) : FULL_PAYMENT_CAR_AMOUNT_INR;
 }
 
 /**
- * Self finance — dealer has confirmed the bank transfer.
- * Mirrors {@link LoanDisbursementReceivedScreen} for the self-finance journey.
+ * Full cash payment — dealer has confirmed receipt of the car amount.
+ * Mirrors {@link SelfFinanceTransferConfirmedScreen} for the full-cash journey.
  */
-export function SelfFinanceTransferConfirmedScreen() {
+export function FullCashPaymentConfirmedScreen() {
   const searchParams = useSearchParams();
-  const loanAmountInr = useMemo(
-    () => parseLoanAmount(searchParams.get("loan_amount")),
+  const carAmountInr = useMemo(
+    () => parseCarAmount(searchParams.get("car_amount")),
     [searchParams],
   );
 
   const says = useMemo(
     () => [
-      "Transfer confirmed, Sharath.",
-      `${DEALER_NAME} has confirmed they received the loan amount. Delivery prep starts now, and nothing more is needed from you until just before the car arrives.`,
+      "Payment confirmed, Sharath.",
+      `${DEALER_NAME} has confirmed receipt. Delivery prep starts now, and nothing more is needed from you until just before the car arrives.`,
     ],
     [],
   );
 
   const insuranceHref = useMemo(
-    () =>
-      buildPayInsurancePremiumHref({
-        bank: "self_finance",
-        loanAmount: String(loanAmountInr),
-      }),
-    [loanAmountInr],
+    () => buildPayInsurancePremiumHref({ bank: FULL_PAYMENT_BANK_ID }),
+    [],
   );
 
   return (
@@ -62,13 +58,10 @@ export function SelfFinanceTransferConfirmedScreen() {
       artifact={
         <div className="flex flex-col gap-4">
           <AmountReceivedCard
-            amountInr={loanAmountInr}
+            amountInr={carAmountInr}
             title={`Received by ${DEALER_NAME}`}
             status="received"
-            rows={[
-              { label: "Transferred to", value: DEALER_NAME },
-            ]}
-            note="Funds are with the dealer. Delivery prep is now underway."
+            rows={[{ label: "Paid to", value: DEALER_NAME }]}
           />
           <ShimmerInfoCard icon="info">
             <strong>One thing still ahead:</strong>{` your ${formatInr(FULL_PAYMENT_INSURANCE_INR)} insurance. The RTO won't register your car without a live policy, and I'll ask you at exactly the right moment.`}

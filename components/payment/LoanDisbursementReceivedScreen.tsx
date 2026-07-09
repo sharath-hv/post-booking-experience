@@ -86,10 +86,10 @@ export function LoanDisbursementReceivedScreen({
               { label: "Transferred to", value: DEALER_NAME },
               { label: "Transaction ID", value: transactionId },
             ]}
-            note="Funds are with the dealer — delivery prep is now underway."
+            note="Funds are with the dealer. Delivery prep is now underway."
           />
           <ShimmerInfoCard icon="info">
-            {`One thing still ahead: your ${formatInr(FULL_PAYMENT_INSURANCE_INR)} insurance. The RTO won't register your car without a live policy, and I'll ask you at exactly the right moment.`}
+            <strong>One thing still ahead:</strong>{` your ${formatInr(FULL_PAYMENT_INSURANCE_INR)} insurance. The RTO won't register your car without a live policy, and I'll ask you at exactly the right moment.`}
           </ShimmerInfoCard>
         </div>
       }

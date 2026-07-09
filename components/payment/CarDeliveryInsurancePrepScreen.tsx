@@ -10,7 +10,7 @@ import type { InsuranceTenureId } from "@/components/payment/insurance-coverage-
 
 const HEADLINE = "Your Creta is covered, Sharath";
 const SUBLINE =
-  "Issued the moment your payment landed — insurance is us, after all. Zero depreciation, active from today. Next, I take your registration file to the RTO.";
+  "Issued the moment your payment landed. Insurance is us, after all. Zero depreciation, active from today. Next, I take your registration file to the RTO.";
 
 /** Policy issued instantly (ACKO is the insurer) — news turn, then on to the RTO wait. */
 export function CarDeliveryInsurancePrepScreen() {

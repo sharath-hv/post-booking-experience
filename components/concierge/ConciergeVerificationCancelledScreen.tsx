@@ -23,7 +23,7 @@ export function ConciergeVerificationCancelledScreen() {
     <ConciergeTurnShell
       says={[
         "I wasn't able to verify your documents after the retry, Sharath.",
-        `That means I can't keep the purchase open — it's been cancelled. The full ${formatInr(REFUND_INR)} is on its way back to your original payment method within 5–7 business days.`,
+        `That means I can't keep the purchase open. It's been cancelled. The full ${formatInr(REFUND_INR)} is on its way back to your original payment method within 5–7 business days.`,
         "Nothing more needed from you. And whenever you want to try again, I'm here.",
       ]}
       artifact={

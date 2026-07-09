@@ -383,7 +383,7 @@ export function QuoteScreen() {
               Before your car is confirmed
             </div>
             <div className="flex flex-1 items-center p-4 text-sm font-medium text-[var(--quote-green)]">
-              Free — every rupee comes back
+              Free. Every rupee comes back.
             </div>
           </div>
           <div className="flex border-b border-[var(--quote-border-light)]">
@@ -399,7 +399,7 @@ export function QuoteScreen() {
               If we can&apos;t deliver
             </div>
             <div className="flex flex-1 items-center p-4 text-sm font-medium text-[var(--quote-green)]">
-              100% refund — our failure is never your cost
+              100% refund. Our failure is never your cost.
             </div>
           </div>
         </div>
@@ -424,7 +424,7 @@ export function QuoteScreen() {
               When does &ldquo;confirmed&rdquo; happen?
             </p>
             <p className="mt-1 text-[var(--quote-text-body)]">
-              After your paperwork clears and we lock your exact car with a dealer — you&apos;ll
+              After your paperwork clears and we lock your exact car with a dealer, you&apos;ll
               be told clearly before that happens. Until then you can walk away free, and even
               after, you can change colour or model once for ₹5,000 instead of cancelling.
             </p>

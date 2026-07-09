@@ -34,7 +34,7 @@ export function LoanSanctionedScreen() {
   const says = useMemo(
     () => [
       "Your loan is approved, Sharath.",
-      `${bank.name} has sanctioned ${formatInr(BANK_DISBURSEMENT_INR)}. ${DEALER_NAME} will call you to arrange the down payment — pay it directly to them.`,
+      `${bank.name} has sanctioned ${formatInr(BANK_DISBURSEMENT_INR)}. ${DEALER_NAME} will call you to arrange the down payment. Pay it directly to them.`,
       `Once they confirm receipt, I'll instruct ${bank.name} to release the funds to the dealer.`,
     ],
     [bank.name],
@@ -61,7 +61,7 @@ export function LoanSanctionedScreen() {
             title={`Approved by ${bank.name}`}
             rows={[
               { label: "Disburses to", value: DEALER_NAME },
-              { label: "Price lock — already paid", value: formatInr(BOOKING_AMOUNT_PAID_INR) },
+              { label: "Price lock (already paid)", value: formatInr(BOOKING_AMOUNT_PAID_INR) },
             ]}
             note={`${bank.name} releases the remaining funds to ${DEALER_NAME} once they confirm your down payment.`}
           />

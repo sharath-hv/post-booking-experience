@@ -15,7 +15,7 @@ const HEADLINE_REMAINING = "Complete your remaining down payment, Sharath!";
 
 /** Urgency line above the primary CTA — consequence, not a deadline to procrastinate against. */
 const PAY_DOWN_PAYMENT_CTA_WARNING =
-  "Delivery prep starts the moment this lands — every day here moves your delivery date";
+  "Delivery prep starts the moment this lands. Every day here moves your delivery date.";
 
 /**
  * Remaining-instalment step after a partial down payment (progress + CTA).

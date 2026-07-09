@@ -19,7 +19,7 @@ const SHEET_TRANSITION_MS = 280;
 
 const BEFORE_YOU_PROCEED_POINTS: readonly ReactNode[] = [
   <>You pay the full ACKO Drive price upfront. No loan or EMI involved.</>,
-  <>You can pay in one go or split it across multiple transactions.</>,
+  <>Advaith Hyundai will call you to share the payment details. Transfer the car amount directly to them.</>,
   <>
     Complete your full payment by <span className="font-semibold">30 May</span> to keep your booking
     active.

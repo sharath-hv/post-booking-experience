@@ -11,10 +11,10 @@ const HEADLINE_LINE_1 = "Your proforma invoice";
 const HEADLINE_LINE_2 = "is ready";
 
 const SUBLINE =
-  "Take this to your bank to get your loan sanctioned. This part runs on your clock — the sooner the bank confirms, the sooner your delivery locks. Come back with the sanctioned amount.";
+  "Take this to your bank to get your loan sanctioned. This part runs on your clock. The sooner the bank confirms, the sooner your delivery locks. Come back with the sanctioned amount.";
 
 const CTA_WARNING_LINE =
-  "Banks run on their own clock — start today and your delivery date stays safe";
+  "Banks run on their own clock. Start today and your delivery date stays safe.";
 
 /**
  * Self finance — “action” step after confirmation (`/payment/self-finance-confirmed`). Same shell as

@@ -120,7 +120,7 @@ export function LoanDocumentsChecklistCard() {
         <div className="min-w-0">
           <p className="text-sm font-semibold leading-5 text-[#121212]">Keep these ready</p>
           <p className="mt-0.5 text-xs leading-[18px] text-[#757575]">
-            Photos or PDFs — nothing needs printing.
+            Photos or PDFs. Nothing needs printing.
           </p>
         </div>
       </div>
@@ -163,7 +163,7 @@ export function LoanDocumentsChecklistCard() {
 
       <div className="border-t border-[#f0f0f0] bg-[#fafafa] px-4 py-2.5">
         <p className="text-xs leading-[18px] text-[#757575]">
-          Missing one? Start anyway — you can add it while I keep the rest moving.
+          Missing one? Start anyway. You can add it while I keep the rest moving.
         </p>
       </div>
     </div>

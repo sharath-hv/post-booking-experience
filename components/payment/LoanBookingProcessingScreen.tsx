@@ -39,7 +39,7 @@ export function LoanBookingProcessingScreen() {
         <div className="flex flex-col gap-5">
           <NextStepCard
             title={`Pick up ${bank.name}'s call`}
-            body="A bank representative will call within 2 business days to confirm your loan details — share the OTP they ask for."
+            body="A bank representative will call within 2 business days to confirm your loan details. Share the OTP they ask for."
           />
         </div>
       }

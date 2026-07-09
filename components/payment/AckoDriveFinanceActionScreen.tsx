@@ -13,11 +13,11 @@ import {
 import { loanApplicationEntryPath } from "@/lib/loan-application-urls";
 import { BankSelectionBottomSheet } from "@/components/payment/BankSelectionBottomSheet";
 
-const HEADLINE_LINE_1 = "Good choice — I'll run";
-const HEADLINE_LINE_2 = "your loan from here.";
+const HEADLINE_LINE_1 = "Good choice.";
+const HEADLINE_LINE_2 = "I'll run your loan from here.";
 
 const SUBLINE =
-  "I take your application to the bank, chase the approval, and keep you posted at every step. Here's everything the bank will ask for — have them nearby and we can start right now.";
+  "I take your application to the bank, chase the approval, and keep you posted at every step. Here's everything the bank will ask for. Have them nearby and we can start right now.";
 
 /**
  * ACKO Drive finance — action step after celebration confirmation.

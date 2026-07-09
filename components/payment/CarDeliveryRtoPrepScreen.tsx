@@ -7,7 +7,7 @@ import { RtoRegistrationStatusCard } from "@/components/payment/RtoRegistrationS
 
 const HEADLINE = "Your file is at the RTO, Sharath.";
 const SUBLINE =
-  "I've submitted your registration paperwork. The RTO takes a few working days — government clocks, not mine. I'll keep nudging and keep you posted.";
+  "I've submitted your registration paperwork. The RTO takes a few working days. Government clocks, not mine. I'll keep nudging and keep you posted.";
 
 /**
  * After insurance is set up — RTO is the active delivery milestone (see What&apos;s next nested rail).

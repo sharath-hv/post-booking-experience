@@ -31,7 +31,7 @@ const COPY: Record<Exclude<KycVerificationFailureReason, "image_not_clear">, Fai
   pan_not_clear: {
     says: [
       "Your PAN photo wasn't clear enough for me to read.",
-      "Natural light works best — keep the full card in frame and make sure there's no shadow or glare over the text.",
+      "Natural light works best. Keep the full card in frame and make sure there's no shadow or glare over the text.",
     ],
     requiredDocs: ["pan"],
     replyEcho: "I've re-uploaded my PAN",
@@ -39,7 +39,7 @@ const COPY: Record<Exclude<KycVerificationFailureReason, "image_not_clear">, Fai
   aadhaar_not_clear: {
     says: [
       "Your Aadhaar photo wasn't clear enough for me to read.",
-      "Natural light works best — keep the full card in frame and make sure there's no shadow or glare over the text.",
+      "Natural light works best. Keep the full card in frame and make sure there's no shadow or glare over the text.",
     ],
     requiredDocs: ["aadhaar"],
     replyEcho: "I've re-uploaded my Aadhaar",

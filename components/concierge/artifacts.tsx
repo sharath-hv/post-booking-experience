@@ -30,14 +30,30 @@ function formatInr(amount: number) {
 /* Receipt — money landed                                                    */
 /* ----------------------------------------------------------------------- */
 
+type RowTag = {
+  text: string;
+  /** `green` = paid, `amber` = pending/later, `grey` = neutral */
+  variant: "green" | "amber" | "grey";
+};
+
+const ROW_TAG_CLASS: Record<RowTag["variant"], string> = {
+  green: "bg-[#e7f6ee] text-[#0c7a42]",
+  amber: "bg-[#fff7e5] text-[#a76406]",
+  grey:  "bg-[#f5f5f5] text-[#757575]",
+};
+
 export type AmountReceivedCardProps = {
   amountInr: number;
   title: string;
-  rows?: readonly { label: string; value: string }[];
+  rows?: readonly { label: string; value: string; tag?: RowTag }[];
   /** Quiet reassurance under the rows (e.g. refundability). */
   note?: string;
   /** `processing` keeps the receipt live (spinner) until the payment settles. */
   status?: "received" | "processing";
+  /** Custom icon image to replace the default tick / spinner. */
+  iconSrc?: string | StaticImageData;
+  /** Tailwind bg class for the icon container (overrides the green / yellow default). */
+  iconBgClassName?: string;
 };
 
 /** What she slides across the desk after money moves — a clean receipt. */
@@ -47,18 +63,23 @@ export function AmountReceivedCard({
   rows,
   note,
   status = "received",
+  iconSrc,
+  iconBgClassName,
 }: AmountReceivedCardProps) {
   const processing = status === "processing";
+  const defaultBg = processing ? "bg-[#fff7e5]" : "bg-[#e7f6ee]";
   return (
     <div className="overflow-hidden rounded-2xl bg-white card-elevated">
       <div className="flex items-center gap-3 px-4 py-4">
         <span
           className={cn(
             "flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition-colors duration-300",
-            processing ? "bg-[#fff7e5]" : "bg-[#e7f6ee]"
+            iconBgClassName ?? defaultBg,
           )}
         >
-          {processing ? (
+          {iconSrc ? (
+            <Image src={iconSrc} alt="" width={20} height={20} className="object-contain" unoptimized />
+          ) : processing ? (
             <span
               className="h-5 w-5 animate-spin rounded-full border-2 border-[#f0ddb0] border-t-[#a76406]"
               aria-hidden
@@ -83,10 +104,29 @@ export function AmountReceivedCard({
         </div>
       </div>
       {rows?.length ? (
-        <div className="border-t border-dashed border-[#e8e8e8] px-4 py-3">
-          {rows.map((row) => (
-            <div key={row.label} className="flex items-center justify-between gap-3 py-1">
-              <span className="text-sm leading-5 text-[#4b4b4b]">{row.label}</span>
+        <div className="border-t border-dashed border-[#e8e8e8] px-4 py-4">
+          {rows.map((row, i) => (
+            <div
+              key={row.label}
+              className={cn(
+                "flex items-center justify-between gap-3",
+                i > 0 && "border-t border-dashed border-[#efefef] pt-3",
+                i < rows.length - 1 && "pb-3",
+              )}
+            >
+              <span className="flex min-w-0 items-center gap-1.5 text-sm leading-5 text-[#4b4b4b]">
+                {row.label}
+                {row.tag ? (
+                  <span
+                    className={cn(
+                      "shrink-0 rounded-full px-2 py-0.5 text-[11px] font-medium leading-4",
+                      ROW_TAG_CLASS[row.tag.variant],
+                    )}
+                  >
+                    {row.tag.text}
+                  </span>
+                ) : null}
+              </span>
               <span className="text-sm font-medium leading-5 text-[#121212] tabular-nums">
                 {row.value}
               </span>
@@ -324,7 +364,7 @@ export function CarPriceBreakupCard({
 
       <div className="border-t border-[#f0f0f0] bg-[#fafafa] px-4 py-2.5">
         <p className="text-xs leading-[18px] text-[#757575]">
-          These parts always add up to your locked price — nothing extra, ever. Insurance is
+          These parts always add up to your locked price. Nothing extra, ever. Insurance is
           paid just before delivery, for RTO registration.
         </p>
       </div>
@@ -475,19 +515,17 @@ export function CarSummaryCardLite({
               <span
                 className={
                   statusChipVariant === "blue"
-                    ? "inline-flex h-6 w-fit items-center gap-1 rounded-full bg-[#e8f0fe] px-2 py-1 text-[11px] font-medium leading-4 text-[#1a56db]"
+                    ? "inline-flex h-6 w-fit items-center rounded-full bg-[#e8f0fe] px-2 py-1 text-[11px] font-medium leading-4 text-[#1a56db]"
                     : "inline-flex h-6 w-fit items-center gap-1 rounded-full bg-[#e7f6ee] px-2 py-1 text-[11px] font-medium leading-4 text-[#0c7a42]"
                 }
               >
-                <span
-                  aria-hidden
-                  className={
-                    statusChipVariant === "blue"
-                      ? "h-5 w-5 shrink-0 bg-[#1a56db] [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center] [-webkit-mask-size:contain] [-webkit-mask-repeat:no-repeat] [-webkit-mask-position:center]"
-                      : "h-5 w-5 shrink-0 bg-[#0c7a42] [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center] [-webkit-mask-size:contain] [-webkit-mask-repeat:no-repeat] [-webkit-mask-position:center]"
-                  }
-                  style={TICK_ICON_MASK_STYLE}
-                />
+                {statusChipVariant === "blue" ? null : (
+                  <span
+                    aria-hidden
+                    className="h-5 w-5 shrink-0 bg-[#0c7a42] [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center] [-webkit-mask-size:contain] [-webkit-mask-repeat:no-repeat] [-webkit-mask-position:center]"
+                    style={TICK_ICON_MASK_STYLE}
+                  />
+                )}
                 {statusChipLabel(statusChip)}
               </span>
             ) : null}
