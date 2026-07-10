@@ -14,7 +14,12 @@ import tickIcon from "@/assets/tick.svg";
 import { ShimmerInfoCard } from "@/components/ui/ShimmerInfoCard";
 import { BookingCarCardDetails } from "@/components/kyc/BookingCarCardDetails";
 import {
+  BOOKING_CAR_CARD_SHELL_CLASS,
+  BOOKING_CAR_HERO_HEIGHT_CLASS,
+  BOOKING_CAR_HERO_HEIGHT_VIN_CLASS,
   BOOKING_CAR_SUMMARY_PANEL_CLASS,
+  BOOKING_CAR_SUMMARY_PANEL_POSITION_CLASS,
+  BookingCarCardBackdrop,
   BookingCarSummaryCardVisualStage,
 } from "@/components/kyc/BookingCarSummaryCard";
 import { cn } from "@/lib/utils";
@@ -390,7 +395,7 @@ export type NextStepCardProps = {
  */
 export function NextStepCard({ title, body }: NextStepCardProps) {
   return (
-    <div className="rounded-2xl border border-[#efe9fb] bg-[#f9f6ff] px-4 py-4">
+    <div className="rounded-2xl border border-[#efe9fb] bg-[#f9f6ff] px-4 py-4 card-elevated">
       <div className="flex items-center gap-3.5">
         <span className="relative flex h-9 w-9 shrink-0 items-center justify-center">
           <span
@@ -458,9 +463,6 @@ function deliveryIconPath(src?: StaticImageData | string) {
 
 /** ACKO Drive attribution row on CarSummaryCardLite — flip to restore. */
 const SHOW_CAR_SOURCE_HEADER = false;
-
-/** Match showroom backdrop floor — avoids pure white seam below the hero. */
-const CAR_SHOWROOM_FLOOR_CLASS = "bg-[#f0f0f0]";
 
 /** Compact car card — her find, your car. */
 export function CarSummaryCardLite({
@@ -592,9 +594,16 @@ export function CarSummaryCardLite({
   );
 
   return (
-    <div className={cn("overflow-hidden rounded-2xl card-elevated", CAR_SHOWROOM_FLOOR_CLASS)}>
+    <div
+      className={cn(
+        BOOKING_CAR_CARD_SHELL_CLASS,
+        showVehicleIdentification && BOOKING_CAR_HERO_HEIGHT_VIN_CLASS
+      )}
+    >
+      {showVehicleIdentification ? <BookingCarCardBackdrop /> : null}
+
       {SHOW_CAR_SOURCE_HEADER ? (
-        <div className="flex items-center gap-3 px-4 py-3">
+        <div className="relative z-10 flex items-center gap-3 px-4 py-3">
           <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#f5f5f5]">
             <Image src={ackoDriveWordmark} alt="" width={20} height={15} className="h-[15px] w-5 object-contain" unoptimized />
           </span>
@@ -618,17 +627,17 @@ export function CarSummaryCardLite({
 
       {showVehicleIdentification ? (
         <>
-          <div className={cn("relative h-[228px] w-full", CAR_SHOWROOM_FLOOR_CLASS)}>
-            <BookingCarSummaryCardVisualStage />
+          <div className={`relative w-full ${BOOKING_CAR_HERO_HEIGHT_CLASS}`}>
+            <BookingCarSummaryCardVisualStage showBackdrop={false} />
           </div>
           <div className={`relative z-10 mx-2 -mt-24 mb-2 ${BOOKING_CAR_SUMMARY_PANEL_CLASS}`}>
             {carDetails}
           </div>
         </>
       ) : (
-        <div className={cn("relative h-[228px] w-full", CAR_SHOWROOM_FLOOR_CLASS)}>
+        <div className={`relative w-full ${BOOKING_CAR_HERO_HEIGHT_CLASS}`}>
           <BookingCarSummaryCardVisualStage />
-          <div className={`absolute inset-x-2 bottom-2 ${BOOKING_CAR_SUMMARY_PANEL_CLASS}`}>
+          <div className={`${BOOKING_CAR_SUMMARY_PANEL_POSITION_CLASS} ${BOOKING_CAR_SUMMARY_PANEL_CLASS}`}>
             {carDetails}
           </div>
         </div>

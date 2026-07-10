@@ -1,11 +1,20 @@
 "use client";
 
-import Image from "next/image";
+import { type StaticImageData } from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import Lottie from "lottie-react";
 
 import { BookingCarCardDetails } from "@/components/kyc/BookingCarCardDetails";
+import {
+  BOOKING_CAR_CARD_SHELL_CLASS,
+  BOOKING_CAR_HERO_HEIGHT_CLASS,
+  BOOKING_CAR_HERO_HEIGHT_VIN_CLASS,
+  BOOKING_CAR_SUMMARY_PANEL_CLASS,
+  BOOKING_CAR_SUMMARY_PANEL_POSITION_CLASS,
+  BookingCarCardBackdrop,
+  BookingCarSummaryCardVisualStage,
+} from "@/components/kyc/BookingCarSummaryCard";
 import { BOOKING_CONFIRMED_ASSETS } from "@/components/kyc/kyc-booking-confirmed-assets";
 import {
   CELEBRATION_LOTTIE_TO_HEADLINE_MT,
@@ -13,6 +22,7 @@ import {
   SUCCESS_SCREEN_HEADLINE_SUBTEXT_GAP_CLASS,
 } from "@/components/ui/success-screen-layout";
 import { PaymentSuccessStagger } from "@/components/ui/stagger-container";
+import { cn } from "@/lib/utils";
 
 import bookingSuccessLottie from "./lottie/booking-success.json";
 
@@ -23,10 +33,17 @@ const CAR_REVEAL_DELAY_MS = 180;
 
 const CAR_MODEL = "Creta";
 
+function assetHref(src: string | StaticImageData) {
+  return typeof src === "string" ? src : src.src;
+}
+
 function usePreloadBookingImages(enabled: boolean) {
   useEffect(() => {
     if (!enabled) return;
-    const hrefs = [BOOKING_CONFIRMED_ASSETS.cardBackdrop, BOOKING_CONFIRMED_ASSETS.carCutout];
+    const hrefs = [
+      assetHref(BOOKING_CONFIRMED_ASSETS.cardBackdrop),
+      BOOKING_CONFIRMED_ASSETS.carCutout,
+    ];
     const links = hrefs.map((href) => {
       const link = document.createElement("link");
       link.rel = "preload";
@@ -185,55 +202,29 @@ export function BookingCelebrationSuccessScreen({
             showCarSection &&
             (showDefaultCarCard ? (
               <PaymentSuccessStagger
-                className="relative mt-8 w-full self-center overflow-hidden rounded-2xl bg-white card-elevated"
+                className={cn("relative mt-8 w-full self-center", BOOKING_CAR_CARD_SHELL_CLASS)}
                 delay={0.6}
               >
                 <div
-                  className={`relative w-full overflow-hidden bg-white ${
-                    showVehicleIdentification ? "min-h-[318px]" : "h-[244px]"
+                  className={`relative w-full overflow-hidden ${
+                    showVehicleIdentification
+                      ? BOOKING_CAR_HERO_HEIGHT_VIN_CLASS
+                      : BOOKING_CAR_HERO_HEIGHT_CLASS
                   }`}
                 >
-                  <div aria-hidden className="absolute inset-0">
-                    <div className="absolute inset-0 overflow-hidden">
-                      <Image
-                        src={BOOKING_CONFIRMED_ASSETS.cardBackdrop}
-                        alt=""
-                        fill
-                        className="object-cover"
-                        style={{ objectPosition: "center 28%" }}
-                        sizes="(max-width: 640px) 100vw, 640px"
-                        priority
-                      />
-                    </div>
-                    <div
-                      className="absolute inset-0"
-                      style={{
-                        backgroundImage:
-                          "linear-gradient(180deg, rgba(255,255,255,0) 74%, rgba(255,255,255,0.4) 100%), linear-gradient(180deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 28%)",
-                      }}
+                  {showVehicleIdentification ? <BookingCarCardBackdrop /> : null}
+                  <BookingCarSummaryCardVisualStage showBackdrop={!showVehicleIdentification} />
+                  <div
+                    className={
+                      showVehicleIdentification
+                        ? `relative z-10 mx-2 -mt-24 mb-2 ${BOOKING_CAR_SUMMARY_PANEL_CLASS}`
+                        : `${BOOKING_CAR_SUMMARY_PANEL_POSITION_CLASS} ${BOOKING_CAR_SUMMARY_PANEL_CLASS}`
+                    }
+                  >
+                    <BookingCarCardDetails
+                      engineNo={showVehicleIdentification ? vehicleEngineNo : undefined}
+                      chassisNo={showVehicleIdentification ? vehicleChassisNo : undefined}
                     />
-                  </div>
-
-                  <div className="absolute left-1/2 top-8 h-[102px] w-[180px] -translate-x-1/2 overflow-hidden">
-                    <div className="relative mx-auto h-full w-full max-w-[180px]">
-                      <Image
-                        src={BOOKING_CONFIRMED_ASSETS.carCutout}
-                        alt=""
-                        fill
-                        className="object-contain object-bottom"
-                        sizes="180px"
-                        priority
-                      />
-                    </div>
-                  </div>
-
-                  <div className="absolute inset-x-2 bottom-2 overflow-hidden rounded-xl border border-white/60 bg-white/90 shadow-sm backdrop-blur-[12px]">
-                    <div className="px-3 py-3 text-left">
-                      <BookingCarCardDetails
-                        engineNo={showVehicleIdentification ? vehicleEngineNo : undefined}
-                        chassisNo={showVehicleIdentification ? vehicleChassisNo : undefined}
-                      />
-                    </div>
                   </div>
                 </div>
               </PaymentSuccessStagger>

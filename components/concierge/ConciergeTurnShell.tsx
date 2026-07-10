@@ -196,38 +196,36 @@ function DeliveryDatePill({
 }
 
 /**
- * Expand/contract control — opens the manage layer (Dot-style zoom) and
- * morphs into a close affordance while the layer is up.
+ * Menu pill — opens the manage layer and morphs hamburger → × with a
+ * label crossfade ("Menu" ↔ "Close") using the same spring easing as the
+ * rest of the concierge shell.
  */
-function ExpandContractButton({ open, onClick }: { open: boolean; onClick: () => void }) {
+function MenuButton({ open, onClick }: { open: boolean; onClick: () => void }) {
   return (
     <button
       type="button"
-      aria-label={open ? "Close booking details" : "Manage booking"}
+      aria-label={open ? "Close" : "Menu"}
       aria-expanded={open}
       onClick={onClick}
-      className="pointer-events-auto flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#e8e8e8] bg-white text-[#121212] transition-colors hover:bg-[#fafafa] focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/20 focus-visible:ring-offset-2"
+      className="pointer-events-auto flex h-8 shrink-0 items-center gap-1.5 rounded-[32px] border border-[#e8e8e8] bg-white pl-2 pr-3 text-[#121212] transition-colors hover:bg-[#fafafa] focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/20 focus-visible:ring-offset-2"
     >
-      <span className="relative h-4 w-4" aria-hidden>
-        {/* Expand — diagonal out arrows */}
+      {/* Icon container — hamburger and × are stacked and crossfade */}
+      <span className="relative h-4 w-4 shrink-0" aria-hidden>
+        {/* Hamburger lines — rotates away when open */}
         <svg
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
           strokeLinecap="round"
-          strokeLinejoin="round"
           className={cn(
             "absolute inset-0 h-4 w-4 transition-[rotate,scale,opacity] duration-[400ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
             open ? "rotate-90 scale-50 opacity-0" : "rotate-0 scale-100 opacity-100"
           )}
         >
-          <path d="M14 4.5h5.5V10" />
-          <path d="M19.5 4.5 13 11" />
-          <path d="M10 19.5H4.5V14" />
-          <path d="M4.5 19.5 11 13" />
+          <path d="M4 7h16M4 12h16M4 17h16" />
         </svg>
-        {/* Contract — close */}
+        {/* Close × — unwinds from −90° when open */}
         <svg
           viewBox="0 0 24 24"
           fill="none"
@@ -243,6 +241,26 @@ function ExpandContractButton({ open, onClick }: { open: boolean; onClick: () =>
           <path d="M6 6l12 12" />
           <path d="M18 6 6 18" />
         </svg>
+      </span>
+
+      {/* Label — "Menu" slides up out, "Close" slides up in */}
+      <span className="relative h-[18px] overflow-hidden">
+        <span
+          className={cn(
+            "block text-xs font-medium leading-[18px] transition-[opacity,translate] duration-[350ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
+            open ? "pointer-events-none -translate-y-full opacity-0" : "translate-y-0 opacity-100"
+          )}
+        >
+          Menu
+        </span>
+        <span
+          className={cn(
+            "absolute inset-0 flex items-center text-xs font-medium leading-[18px] transition-[opacity,translate] duration-[350ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
+            open ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"
+          )}
+        >
+          Close
+        </span>
       </span>
     </button>
   );
@@ -335,7 +353,7 @@ export function ConciergeTurnShell({
               holder={dateHolder ?? (replies?.length ? "you" : "shivi")}
               onClick={() => manage.setOpen(true)}
             />
-            <ExpandContractButton open={manage.open} onClick={() => manage.setOpen((v) => !v)} />
+            <MenuButton open={manage.open} onClick={() => manage.setOpen((v) => !v)} />
           </div>
         </div>
       ) : null}

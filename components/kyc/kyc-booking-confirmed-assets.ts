@@ -1,3 +1,5 @@
+import carCardBackdrop from "@/assets/Car card bg_updated.png";
+
 import { publicAssetPath, publicAssetPathIn } from "@/lib/public-asset-path";
 
 /**
@@ -7,7 +9,7 @@ import { publicAssetPath, publicAssetPathIn } from "@/lib/public-asset-path";
 const asset = (filename: string) => publicAssetPathIn("kyc-booking-confirmed", filename);
 
 export const BOOKING_CONFIRMED_ASSETS = {
-  cardBackdrop: publicAssetPath("Car card bg.png"),
+  cardBackdrop: carCardBackdrop,
   carCutout: asset("car-cutout.png"),
   dotSeparator: publicAssetPath("dot separator.svg"),
   /** Express delivery bolt — `express-delivery.svg` under this folder. */

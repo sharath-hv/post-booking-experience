@@ -137,7 +137,7 @@ export function ManageBookingZoomOverlay({
             </div>
 
             {/* The living delivery date — the one number this purchase is about. */}
-            <div className="flex items-center justify-between gap-3 rounded-2xl bg-white card-elevated px-4 py-3.5">
+            <div className="flex items-center justify-between gap-3 rounded-2xl border border-white bg-[linear-gradient(0deg,rgba(255,255,255,1)_0%,rgba(255,255,255,0.1)_100%)] px-4 py-3.5 shadow-[0_4px_12px_0_rgba(0,0,0,0.15)] backdrop-blur-[24px]">
               <div className="min-w-0">
                 <p className="text-[10px] font-semibold uppercase leading-4 tracking-[0.08em] text-[#8f8e92]">
                   Arriving

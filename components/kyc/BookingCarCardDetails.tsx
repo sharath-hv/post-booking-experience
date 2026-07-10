@@ -63,8 +63,8 @@ export function BookingCarCardDetails({
 
   return (
     <>
-      <p className="text-sm font-medium leading-6 text-[#121212]">{titleLabel}</p>
-      <div className="mt-1 flex flex-wrap items-center gap-1 text-xs leading-[18px] text-[#121212]">
+      <p className="text-base font-medium leading-6 text-[#121212]">{titleLabel}</p>
+      <div className="mt-1 flex flex-wrap items-center gap-1 text-xs leading-[18px] text-[#4b4b4b]">
         <span className="shrink-0">{variantLabel}</span>
         <span
           className="inline-flex h-[18px] w-4 shrink-0 items-center justify-center"
