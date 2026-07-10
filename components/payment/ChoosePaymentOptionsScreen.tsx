@@ -1,7 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
@@ -83,16 +82,13 @@ const FLOW_SLIDE_MS = 2200;
 
 /**
  * “How it works” as a one-line slideshow — steps cycle one at a time with
- * position dots, inside a fixed-height strip so nothing jumps. Runs only on
- * the selected card.
+ * position dots, inside a fixed-height strip so nothing jumps.
  */
 function FlowStrip({
   steps,
-  active,
   bankLogosOnStep,
 }: {
   steps: readonly string[];
-  active: boolean;
   /** Show partner-bank marks beside this step (e.g. “You pick the bank”). */
   bankLogosOnStep?: number;
 }) {
@@ -108,16 +104,12 @@ function FlowStrip({
   }, []);
 
   useEffect(() => {
-    if (!active) {
-      setIdx(0);
-      return;
-    }
     const id = window.setInterval(
       () => setIdx((i) => (i + 1) % steps.length),
       reduceMotion ? FLOW_SLIDE_MS + 1300 : FLOW_SLIDE_MS,
     );
     return () => window.clearInterval(id);
-  }, [active, steps.length, reduceMotion]);
+  }, [steps.length, reduceMotion]);
 
   return (
     <div className="flex h-5 items-center gap-3" aria-label="How it works">
@@ -166,7 +158,7 @@ type OptionCardProps = {
   id: PaymentOptionId;
   selected: boolean;
   onSelect: () => void;
-  illustrationSrc: string;
+  illustrationSrc: string | StaticImageData;
   title: string;
   /** One-word positioning — “Easiest” / “Most control” / “Fastest”. */
   chip?: string;
@@ -174,7 +166,7 @@ type OptionCardProps = {
   blurb: string;
   /** The deciding numbers — visible before any tap. */
   stats: readonly OptionStat[];
-  /** Micro process steps — slideshow in a thin strip when the card is selected. */
+  /** Micro process steps — slideshow in a thin strip at the bottom of every card. */
   flow: readonly string[];
   /** Show partner-bank marks beside this flow step. */
   flowBankLogosOnStep?: number;
@@ -192,8 +184,6 @@ function OptionCard({
   flow,
   flowBankLogosOnStep,
 }: OptionCardProps) {
-  const reduceMotion = useReducedMotion();
-
   return (
     <button
       type="button"
@@ -206,8 +196,8 @@ function OptionCard({
           : "border-transparent bg-white"
       }`}
     >
-      <div className="flex items-start gap-3">
-        <div className="relative h-10 w-10 shrink-0 self-center">
+      <div className="flex items-start">
+        <div className="relative mr-3 h-10 w-10 shrink-0 self-center">
           <Image
             src={illustrationSrc}
             alt=""
@@ -228,7 +218,7 @@ function OptionCard({
             {title}
           </p>
         </div>
-        <span className="mt-1 flex shrink-0">
+        <span className="mt-1 ml-3 flex shrink-0">
           <RadioIndicator selected={selected} />
         </span>
       </div>
@@ -253,24 +243,10 @@ function OptionCard({
         ))}
       </div>
 
-      {/* Selected → the thin how-it-works strip expands; collapsed cards stay compact. */}
-      <motion.div
-        initial={false}
-        animate={{
-          height: selected ? "auto" : 0,
-          opacity: selected ? 1 : 0,
-        }}
-        transition={{
-          duration: reduceMotion ? 0 : 0.5,
-          ease: [0.22, 1, 0.36, 1],
-        }}
-        className="overflow-hidden"
-        aria-hidden={!selected}
-      >
-        <div className="mt-3 border-t border-dashed border-[#dcdbe1] pt-3">
-          <FlowStrip steps={flow} active={selected} bankLogosOnStep={flowBankLogosOnStep} />
-        </div>
-      </motion.div>
+      {/* How-it-works strip — always visible and cycling on every card. */}
+      <div className="mt-3 border-t border-dashed border-[#dcdbe1] pt-3">
+        <FlowStrip steps={flow} bankLogosOnStep={flowBankLogosOnStep} />
+      </div>
     </button>
   );
 }
