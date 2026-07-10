@@ -10,8 +10,7 @@ import {
   FULL_PAYMENT_CAR_AMOUNT_INR,
   FULL_PAYMENT_INSURANCE_INR,
 } from "@/components/payment/loan-amount-demo-constants";
-
-const DEALER_NAME = "Advaith Hyundai";
+import { PARTNER_DEALER_LABEL } from "@/lib/dealer-attribution-content";
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -40,7 +39,7 @@ export function FullCashPaymentVerificationScreen() {
 
   const says = [
     "Checking with the dealer now.",
-    `I've notified ${DEALER_NAME} about your transfer. I'll update you here as soon as they confirm receipt.`,
+    `I've notified ${PARTNER_DEALER_LABEL} about your transfer. I'll update you here as soon as they confirm receipt.`,
   ];
 
   const nextHref = useMemo(
@@ -57,7 +56,7 @@ export function FullCashPaymentVerificationScreen() {
             amountInr={carAmountInr}
             title="Payment · verifying with dealer"
             status="processing"
-            rows={[{ label: "Sent to", value: DEALER_NAME }]}
+            rows={[{ label: "Sent to", value: PARTNER_DEALER_LABEL }]}
           />
           <ShimmerInfoCard icon="info">
             <strong>One thing still ahead:</strong>{` your ${formatInr(FULL_PAYMENT_INSURANCE_INR)} insurance. The RTO won't register your car without a live policy, and I'll ask you at exactly the right moment.`}

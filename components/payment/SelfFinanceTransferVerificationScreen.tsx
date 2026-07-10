@@ -10,8 +10,7 @@ import {
   FULL_PAYMENT_INSURANCE_INR,
   SELF_FINANCE_LOAN_DEFAULT_INR,
 } from "@/components/payment/loan-amount-demo-constants";
-
-const DEALER_NAME = "Advaith Hyundai";
+import { PARTNER_DEALER_LABEL } from "@/lib/dealer-attribution-content";
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -41,7 +40,7 @@ export function SelfFinanceTransferVerificationScreen() {
   const says = useMemo(
     () => [
       "Checking with the dealer now.",
-      `I'm checking with ${DEALER_NAME} to confirm they've received the ${formatInr(loanAmountInr)} from your bank.`,
+      `I'm checking with ${PARTNER_DEALER_LABEL} to confirm they've received the ${formatInr(loanAmountInr)} from your bank.`,
     ],
     [loanAmountInr],
   );
@@ -61,7 +60,7 @@ export function SelfFinanceTransferVerificationScreen() {
             title="Bank transfer - verifying with dealer"
             status="processing"
             rows={[
-              { label: "Sent to", value: DEALER_NAME },
+              { label: "Sent to", value: PARTNER_DEALER_LABEL },
             ]}
             note="Confirmation typically takes 1-2 business days."
           />

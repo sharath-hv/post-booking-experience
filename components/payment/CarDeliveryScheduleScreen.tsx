@@ -23,7 +23,9 @@ import {
   type ExperienceFlow,
 } from "@/lib/experience-flow";
 import { cn } from "@/lib/utils";
+import { CAR_SOURCE_NAME, CAR_SOURCE_DETAIL } from "@/lib/dealer-attribution-content";
 
+/** Real pickup address for the "Pick it up" flow below — kept as-is, not brand attribution. */
 const DEALER_NAME = "Advaith Hyundai";
 const DEALER_DETAIL = "Whitefield · Bengaluru";
 
@@ -172,8 +174,8 @@ export function CarDeliveryScheduleScreen() {
             variant={BOOKING_CAR_VARIANT}
             colour={BOOKING_CAR_COLOR}
             deliveryLine={`Arriving ${day} · ${windowSlot}`}
-            dealerName={DEALER_NAME}
-            dealerDetail={DEALER_DETAIL}
+            dealerName={CAR_SOURCE_NAME}
+            dealerDetail={CAR_SOURCE_DETAIL}
             engineNo={DEMO_VEHICLE_ENGINE_NO}
             chassisNo={DEMO_VEHICLE_CHASSIS_NO}
           />

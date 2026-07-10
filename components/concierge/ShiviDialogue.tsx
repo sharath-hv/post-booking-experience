@@ -18,6 +18,8 @@ const AFTER_LEAD_SLOT_GAP_MS = 700;
 
 const LEAD_CLASS = "text-2xl font-medium leading-8 tracking-[-0.2px] text-[#121212]";
 const BODY_CLASS = "text-base font-normal leading-6 text-[#4b4b4b]";
+/** Last line acting as a header for the card/artifact directly below it. */
+const HEADING_CLASS = "mt-4 text-base font-medium leading-6 text-[#121212]";
 
 export type ShiviDialogueProps = {
   /** Her lines for this turn — first line is the lead (large), rest are body. */
@@ -26,6 +28,8 @@ export type ShiviDialogueProps = {
   afterLead?: ReactNode;
   /** Continues the last body line once it has been spoken. */
   afterBody?: ReactNode;
+  /** Render the final line as a section heading for the card/artifact below it. */
+  headingLastLine?: boolean;
   /** Gate the reveal (e.g. wait for the user's echo chip to land). */
   startWhen?: boolean;
   /** Fires once after the last line has fully revealed. */
@@ -42,6 +46,7 @@ export function ShiviDialogue({
   lines,
   afterLead,
   afterBody,
+  headingLastLine = false,
   startWhen = true,
   onComplete,
   className,
@@ -131,21 +136,26 @@ export function ShiviDialogue({
       <div className="mt-4 flex flex-col gap-3">
         {lines.map((line, idx) => {
           if (idx >= activeLines) return null;
+          const isHeading = headingLastLine && idx > 0 && idx === lines.length - 1;
+          const lineClass = idx === 0 ? LEAD_CLASS : isHeading ? HEADING_CLASS : BODY_CLASS;
+          const lineTag = idx === 0 ? "h1" : isHeading ? "h2" : "p";
           const lineNode =
             skipAnimation || idx < doneLines ? (
               idx === 0 ? (
-                <h1 className={LEAD_CLASS}>{line}</h1>
+                <h1 className={lineClass}>{line}</h1>
+              ) : isHeading ? (
+                <h2 className={lineClass}>{line}</h2>
               ) : (
-                <p className={BODY_CLASS}>{line}</p>
+                <p className={lineClass}>{line}</p>
               )
             ) : (
               <WordByWordLine
                 text={line}
-                as={idx === 0 ? "h1" : "p"}
+                as={lineTag}
                 wordDelayMs={idx === 0 ? LEAD_WORD_DELAY_MS : BODY_WORD_DELAY_MS}
                 onComplete={() => onLineComplete(idx)}
                 ariaLabel={line}
-                className={idx === 0 ? LEAD_CLASS : BODY_CLASS}
+                className={lineClass}
               />
             );
           return (

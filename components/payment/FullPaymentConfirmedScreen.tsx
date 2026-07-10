@@ -12,6 +12,10 @@ import {
   FULL_PAYMENT_INSURANCE_INR,
   ON_ROAD_PRICE_INR,
 } from "@/components/payment/loan-amount-demo-constants";
+import {
+  PARTNER_DEALER_LABEL,
+  PARTNER_DEALER_LABEL_CAPITALIZED,
+} from "@/lib/dealer-attribution-content";
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -20,8 +24,6 @@ function formatInr(amount: number) {
     maximumFractionDigits: 0,
   }).format(Math.max(0, Math.round(amount)));
 }
-
-const DEALER_NAME = "Advaith Hyundai";
 
 const VERIFICATION_HREF = `/payment/full-cash-payment-verification?car_amount=${FULL_PAYMENT_CAR_AMOUNT_INR}`;
 
@@ -40,7 +42,7 @@ export function FullPaymentConfirmedScreen() {
   const says = useMemo(
     () => [
       "Here's what you're paying, Sharath.",
-      `Your ₹10,000 lock already counts toward the price. ${DEALER_NAME} will call you to arrange the transfer. Pay the car amount directly to them.`,
+      `Your ₹10,000 lock already counts toward the price. ${PARTNER_DEALER_LABEL_CAPITALIZED} will call you to arrange the transfer. Pay the car amount directly to them.`,
     ],
     [],
   );
@@ -51,7 +53,7 @@ export function FullPaymentConfirmedScreen() {
       artifact={
         <div className="flex flex-col gap-4">
           <NextStepCard
-            title={`Watch for ${DEALER_NAME}'s call`}
+            title={`Watch for ${PARTNER_DEALER_LABEL}'s call`}
             body="They'll share the payment details. Transfer the car amount directly to the dealer. Insurance will be collected separately, just before car registration."
           />
           <AmountReceivedCard

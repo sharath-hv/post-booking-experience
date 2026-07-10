@@ -55,29 +55,24 @@ export function getBookingDeliveryTextClass(flow?: ExperienceFlow): string {
     : BOOKING_EXPRESS_DELIVERY_TEXT_CLASS;
 }
 
-const CAR_ALLOCATION_PENDING_SUBLINE_BASE =
-  "We are working with Advaith Hyundai to allocate your exact Creta variant and colour.";
+/** Delivery strip on car cards — express lavender tint vs standard neutral. */
+export const BOOKING_EXPRESS_DELIVERY_STRIP_CLASS = "border-[#efe9fb] bg-[#f9f6ff]";
+export const BOOKING_STANDARD_DELIVERY_STRIP_CLASS = "border-[#ececec] bg-[#f5f5f5]";
 
-/** Express / default — includes timing estimate. */
-export const CAR_ALLOCATION_PENDING_SUBLINE_EXPRESS = `${CAR_ALLOCATION_PENDING_SUBLINE_BASE} This usually takes 24-48 hours.`;
-
-/** Standard delivery — no timing line on car allocation pending. */
-export const CAR_ALLOCATION_PENDING_SUBLINE_STANDARD = CAR_ALLOCATION_PENDING_SUBLINE_BASE;
-
-export function getCarAllocationPendingSubline(flow?: ExperienceFlow): string {
+export function getBookingDeliveryStripContainerClass(flow?: ExperienceFlow): string {
   return isStandardDeliveryFlow(flow)
-    ? CAR_ALLOCATION_PENDING_SUBLINE_STANDARD
-    : CAR_ALLOCATION_PENDING_SUBLINE_EXPRESS;
+    ? BOOKING_STANDARD_DELIVERY_STRIP_CLASS
+    : BOOKING_EXPRESS_DELIVERY_STRIP_CLASS;
 }
 
-/** Info callout on car allocation pending — express / default. */
+const CAR_ALLOCATION_PENDING_SUBLINE =
+  "We're allocating your exact Creta variant and colour. This usually takes 24-48 hours.";
+
+/** Car allocation pending subline — same copy for express and standard. */
+export function getCarAllocationPendingSubline(_flow?: ExperienceFlow): string {
+  return CAR_ALLOCATION_PENDING_SUBLINE;
+}
+
+/** Info callout on car allocation pending. */
 export const CAR_ALLOCATION_PENDING_INFO_BOX_EXPRESS =
   "Once allocated, you will receive your car's engine and chassis number.";
-
-/** Standard delivery — allocation-by date shown with emphasis in the info callout. */
-export const CAR_ALLOCATION_PENDING_ALLOCATION_BY_DATE = "5 Jun 2026";
-
-/** Car allocation pending summary card — standard delivery only. */
-export const CAR_ALLOCATION_PENDING_SUMMARY_LABEL_STANDARD = "Car allocation by";
-export const CAR_ALLOCATION_PENDING_SUMMARY_DESCRIPTION_STANDARD =
-  "You'll receive the engine and chassis number once it's confirmed.";

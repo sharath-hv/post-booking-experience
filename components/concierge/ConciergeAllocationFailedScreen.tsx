@@ -1,60 +1,174 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
 import { writeChangeEntryStage } from "@/lib/change-policy";
 import { writeConciergeEcho } from "@/lib/concierge/echo";
-import { writeExperienceFlow } from "@/lib/experience-flow";
+import {
+  DEFAULT_EXPERIENCE_FLOW,
+  readExperienceFlow,
+  writeExperienceFlow,
+  type ExperienceFlow,
+} from "@/lib/experience-flow";
+import { isStandardDeliveryFlow } from "@/lib/experience-flow-content";
 import { JOURNEY_PATHS } from "@/lib/journey-routes";
 import { BOOKING_LOCK_AMOUNT_INR } from "@/lib/paymentUrls";
+import { cn } from "@/lib/utils";
+
+const BOOKING_LOCK_LABEL = `₹${BOOKING_LOCK_AMOUNT_INR.toLocaleString("en-IN")}`;
+
+type AllocationFailedOptionCardProps = {
+  title: string;
+  chip?: string;
+  body: string;
+  reassurance: string;
+  highlight?: boolean;
+  onClick: () => void;
+};
+
+function ShieldReassuranceIcon() {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      className="mt-px shrink-0"
+      aria-hidden
+    >
+      <path
+        d="M12 3l7 3v5c0 4.4-3 8.2-7 9-4-0.8-7-4.6-7-9V6l7-3z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M9 12l2 2 4-4"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function AllocationFailedOptionCard({
+  title,
+  chip,
+  body,
+  reassurance,
+  highlight,
+  onClick,
+}: AllocationFailedOptionCardProps) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn(
+        "group w-full rounded-2xl bg-white p-4 text-left card-elevated transition-transform active:scale-[0.99]",
+        highlight && "ring-1 ring-[#0fa457]/35"
+      )}
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-2">
+            <h3 className="text-[15px] font-semibold leading-5 text-[#121212]">{title}</h3>
+            {chip ? (
+              <span className="rounded-full bg-[#eef6ff] px-2 py-0.5 text-[11px] font-medium text-[#1b73e8]">
+                {chip}
+              </span>
+            ) : null}
+          </div>
+          <p className="mt-1 text-[13px] leading-[18px] text-[#4b4b4b]">{body}</p>
+          <p className="mt-2.5 flex items-start gap-1.5 text-[12px] font-medium leading-[17px] text-[#0c7a42]">
+            <ShieldReassuranceIcon />
+            <span>{reassurance}</span>
+          </p>
+        </div>
+        <svg
+          className="mt-1 h-5 w-5 shrink-0 text-[#c2c2c2] transition-colors group-hover:text-[#757575]"
+          viewBox="0 0 24 24"
+          fill="none"
+          aria-hidden
+        >
+          <path
+            d="M9 6l6 6-6 6"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
+        </svg>
+      </div>
+    </button>
+  );
+}
 
 /**
- * Allocation failed — ACKO couldn't source the exact car in the promised
- * window. Policy §1.14: our failure is never the customer's cost, so every
- * way out is free — full refund, a switch to the standard timeline, or a
- * free car change that does NOT consume the one-time change allowance.
+ * Allocation / dealer-search failed — policy §1.14 remediation.
+ * Card-based outs (Vercel parity): standard delivery, different car, or full refund.
  */
 export function ConciergeAllocationFailedScreen() {
   const router = useRouter();
+  const [flow, setFlow] = useState<ExperienceFlow>(DEFAULT_EXPERIENCE_FLOW);
+
+  useEffect(() => {
+    const active = readExperienceFlow();
+    setFlow(active);
+    if (isStandardDeliveryFlow(active)) {
+      router.replace(JOURNEY_PATHS.kyc.processing);
+    }
+  }, [router]);
+
+  if (isStandardDeliveryFlow(flow)) {
+    return null;
+  }
+
+  const bodyLine = `We couldn't source your exact Creta on the express timeline. This one's on me, not you — so whatever you choose below, your ${BOOKING_LOCK_LABEL} stays exactly where it is and comes with you.`;
 
   return (
     <ConciergeTurnShell
-      says={[
-        "I couldn't find your car, Sharath. I'm sorry.",
-        "Advaith Hyundai's allocation fell through, and no dealer near you has your exact Creta on the express timeline. This one is on us, not you, so every option below is free and your money is never stuck.",
-      ]}
-      replies={[
-        {
-          label: "I'll wait. Switch me to standard delivery",
-          onClick: () => {
-            // The same car on the honest longer clock — delivery moves to 25 Oct '26.
-            writeExperienceFlow("standard");
-            writeConciergeEcho("Okay, standard delivery it is");
-            router.push(JOURNEY_PATHS.carAllocation.pending);
-          },
-          echo: null,
-        },
-        {
-          label: "Show me different cars (free)",
-          kind: "soft",
-          onClick: () => {
-            // Our failure: the change is free and doesn't consume the one-time allowance.
-            writeChangeEntryStage("pre");
-            writeConciergeEcho("Let's pick a different car");
-            router.push(JOURNEY_PATHS.kyc.modifySelection);
-          },
-          echo: null,
-        },
-        {
-          label: "Cancel and refund everything",
-          kind: "soft",
-          href: `${JOURNEY_PATHS.kyc.cancelBooking}?paid=${BOOKING_LOCK_AMOUNT_INR}&reason=our-failure`,
-          echo: null,
-        },
-      ]}
-      footnote="All three options are free. This one's on us."
-      callLabel="Annoyed? Fair. I can call you"
+      says={["I'm sorry, Sharath. I couldn't find your car.", bodyLine]}
+      dateHolder="you"
+      artifact={
+        <div className="flex flex-col gap-3">
+          <AllocationFailedOptionCard
+            title="Wait for standard delivery"
+            chip="About 3 months"
+            highlight
+            body="Same Creta, same spec — I just source it on the standard timeline instead of express. It takes a little longer, around three months."
+            reassurance={`Your ${BOOKING_LOCK_LABEL} carries straight over — nothing more to pay now.`}
+            onClick={() => {
+              writeExperienceFlow("standard");
+              writeConciergeEcho("I'll wait for standard delivery");
+              router.push(JOURNEY_PATHS.kyc.bookingAccepted);
+            }}
+          />
+          <AllocationFailedOptionCard
+            title="Pick a different car"
+            body="Choose another car that can reach you sooner. I'll show you what's available right away."
+            reassurance={`Your ${BOOKING_LOCK_LABEL} moves to it automatically — and since this was on us, there's no change fee.`}
+            onClick={() => {
+              writeChangeEntryStage("pre");
+              writeConciergeEcho("Let's pick a different car");
+              router.push(JOURNEY_PATHS.kyc.modifySelection);
+            }}
+          />
+          <AllocationFailedOptionCard
+            title="Get a full refund"
+            body="Prefer to step away for now? No hard feelings, and the door stays open."
+            reassurance={`The full ${BOOKING_LOCK_LABEL} comes straight back to your account.`}
+            onClick={() => {
+              router.push(
+                `${JOURNEY_PATHS.kyc.cancelBooking}?paid=${BOOKING_LOCK_AMOUNT_INR}&reason=our-failure`
+              );
+            }}
+          />
+        </div>
+      }
+      callLabel="Want to talk it through? I can call you"
     />
   );
 }

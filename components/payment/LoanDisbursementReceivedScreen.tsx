@@ -13,8 +13,7 @@ import {
   FULL_PAYMENT_INSURANCE_INR,
 } from "@/components/payment/loan-amount-demo-constants";
 import { buildPayInsurancePremiumHref } from "@/lib/paymentUrls";
-
-const DEALER_NAME = "Advaith Hyundai";
+import { PARTNER_DEALER_LABEL } from "@/lib/dealer-attribution-content";
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -68,7 +67,7 @@ export function LoanDisbursementReceivedScreen({
   const says = useMemo(
     () => [
       "Loan disbursed, Sharath.",
-      `I've confirmed the transfer to ${DEALER_NAME}. Delivery prep starts now, and nothing more is needed from you until just before the car arrives.`,
+      `I've confirmed the transfer to ${PARTNER_DEALER_LABEL}. Delivery prep starts now, and nothing more is needed from you until just before the car arrives.`,
     ],
     [],
   );
@@ -83,7 +82,7 @@ export function LoanDisbursementReceivedScreen({
             title={`Disbursed by ${bank.name}`}
             status="received"
             rows={[
-              { label: "Transferred to", value: DEALER_NAME },
+              { label: "Transferred to", value: PARTNER_DEALER_LABEL },
               { label: "Transaction ID", value: transactionId },
             ]}
             note="Funds are with the dealer. Delivery prep is now underway."

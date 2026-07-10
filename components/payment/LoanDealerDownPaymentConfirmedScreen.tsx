@@ -12,9 +12,10 @@ import {
   cashDownPaymentDueInr,
   FULL_PAYMENT_INSURANCE_INR,
 } from "@/components/payment/loan-amount-demo-constants";
-
-
-const DEALER_NAME = "Advaith Hyundai";
+import {
+  PARTNER_DEALER_LABEL,
+  PARTNER_DEALER_LABEL_CAPITALIZED,
+} from "@/lib/dealer-attribution-content";
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -49,7 +50,7 @@ export function LoanDealerDownPaymentConfirmedScreen() {
   const says = useMemo(
     () => [
       "Down payment confirmed.",
-      `${DEALER_NAME} confirmed your ${formatInr(downPaymentInr)}. All good on my end.`,
+      `${PARTNER_DEALER_LABEL_CAPITALIZED} confirmed your ${formatInr(downPaymentInr)}. All good on my end.`,
       `I've asked ${bank.name} to release the funds to the dealer. Nothing more needed from you. I'll let you know the moment it lands.`,
     ],
     [bank.name, downPaymentInr],
@@ -73,7 +74,7 @@ export function LoanDealerDownPaymentConfirmedScreen() {
             status="processing"
             rows={[
               { label: "Down payment confirmed", value: formatInr(downPaymentInr) },
-              { label: "Releasing to", value: DEALER_NAME },
+              { label: "Releasing to", value: PARTNER_DEALER_LABEL },
             ]}
             note="Typically completes within 1–2 business days."
           />

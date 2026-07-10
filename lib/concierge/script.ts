@@ -1,4 +1,5 @@
 import type { ExperienceFlow } from "@/lib/experience-flow";
+import { getDeliveryDateShort } from "@/lib/journey-stage";
 
 /**
  * Shivi's script — every word she says on the converted journey, in one place.
@@ -140,11 +141,10 @@ const EXPRESS_SCRIPT: Record<ConciergeMomentId, TurnWords> = {
 
   dealerFound: {
     says: [
-      "Morning, Sharath. I found your exact car.",
-      "Three dealers came back, and Advaith Hyundai can deliver soonest, so I've reserved a fresh Creta for you with them. Its engine and chassis numbers are below.",
-      "They'll call you today, and a one-time code on your phone confirms it's yours.",
+      "Found it, Sharath. This is your exact car.",
+      "I've reserved a fresh Creta for you, with its engine and chassis numbers below. One quick code confirms it's yours. I'll notify you the moment it's ready to enter.",
     ],
-    timeSkipLabel: "After the dealer's call",
+    timeSkipLabel: "After the call",
     callLabel: "Questions? I can call you",
   },
 
@@ -160,12 +160,12 @@ const EXPRESS_SCRIPT: Record<ConciergeMomentId, TurnWords> = {
   allocationPending: {
     says: [
       "Picking your exact unit.",
-      "I've asked Advaith Hyundai for the newest manufacture date in their stock. Their yard team assigns units through the day — nothing needed from you. The moment yours is locked, the engine and chassis numbers are yours.",
+      "I'm sourcing the newest manufacture date in stock for you. Units get assigned through the day. Nothing needed from you. The moment yours is locked, the engine and chassis numbers are yours.",
     ],
     workingLines: [
-      "Request placed with Advaith Hyundai",
-      "They review incoming stock and manufacture dates…",
-      "Your unit gets assigned — engine & chassis in your name",
+      "Sourcing request placed",
+      "Reviewing incoming stock and manufacture dates…",
+      "Your unit gets assigned. Engine & chassis in your name",
     ],
     workingMode: "ongoing",
     workingDoneCount: 1,
@@ -177,7 +177,7 @@ const EXPRESS_SCRIPT: Record<ConciergeMomentId, TurnWords> = {
   allocationDone: {
     says: [
       "This one's yours, Sharath.",
-      "Advaith Hyundai came back this evening — a fresh unit, newest manufacture date in their stock, now with your name on it. Engine and chassis below.",
+      "I heard back this evening. A fresh unit, newest manufacture date in stock, is now yours. Engine and chassis below.",
     ],
     replyLabel: "What's next?",
     replyEcho: "What's next?",
@@ -190,69 +190,20 @@ const EXPRESS_SCRIPT: Record<ConciergeMomentId, TurnWords> = {
     ],
     replyLabel: "Show me my options",
     replyEcho: "Show me my options",
-    footnote: "Your 10 Jun delivery holds once payment is set up. Every day this waits moves it back.",
     callLabel: "Rather talk it through? I can call you",
   },
 };
 
-/**
- * Standard delivery — same conversation, slower clock. Only what differs.
- */
-const STANDARD_OVERRIDES: Partial<Record<ConciergeMomentId, Partial<TurnWords>>> = {
-  arrival: {
-    says: [
-      "Hi Sharath, I'm Shivi. Your payment is in and your price is locked.",
-      "You're almost there. One short paperwork step comes next, then I can lock in your delivery date.",
-      "Here's how the next few weeks look:",
-    ],
-  },
-  dealerSearch: {
-    says: [
-      "That's the paperwork done, Sharath ✓",
-      "Straight to my favourite part — I've started reaching out to dealers for your exact Creta, 1.5 X-Line AT in Starry Night. Stock for this colour moves slowly, so confirmations can take a couple of days. I'll chase; you relax.",
-    ],
-    workingEtaLabel: "Expect news from me in 2–3 days",
-    timeSkipLabel: "2 days later",
-  },
-  dealerFound: {
-    says: [
-      "Welcome back, Sharath — found it.",
-      "Took a couple of days of chasing, but three dealers came back with your exact Creta; Advaith Hyundai can move the fastest, so I've reserved it with them. They'll call you today — an OTP will land on your phone, you read it back to them, and the car is locked to you.",
-    ],
-  },
-  carReserved: {
-    says: [
-      "Your code checked out, Sharath. This Creta is yours.",
-      "Its engine and chassis numbers are on the card below. Next, let's sort the payment — the last big thing between you and your delivery date.",
-    ],
-  },
-  allocationPending: {
-    says: [
-      "Picking your exact unit.",
-      "I've asked Advaith Hyundai for the newest manufacture date in their stock. On the standard timeline their allocations take a few days — nothing needed from you. I'll nudge them along and tell you the moment it's assigned.",
-    ],
-    workingEtaLabel: "Expect the assignment in 3–4 days",
-    timeSkipLabel: "4 days later",
-  },
-  allocationDone: {
-    says: [
-      "This one's yours, Sharath.",
-      "Advaith Hyundai confirmed your unit — fresh stock, newest manufacture date they had, now with your name on it. Engine and chassis below.",
-    ],
-  },
-  moneyIntro: {
-    says: [
-      "Welcome back, Sharath. Let's sort out the payment.",
-      "₹13,63,780 is left to pay on your Creta. You can finance it through me, at rates I've already negotiated with five banks, or arrange it yourself. Whichever you prefer.",
-    ],
-    footnote: "Your 25 Oct delivery holds once payment is set up. Delays here push it back.",
-  },
-};
+function moneyIntroFootnote(flow: ExperienceFlow): string {
+  const date = getDeliveryDateShort(flow);
+  return `Your ${date} delivery holds once payment is set up. Every day this waits moves it back.`;
+}
 
-/** Words for a turn — standard delivery overrides merge over the express base. */
+/** Words for a turn — express and standard share the same copy; only date call-outs differ. */
 export function getTurnWords(moment: ConciergeMomentId, flow: ExperienceFlow): TurnWords {
   const base = EXPRESS_SCRIPT[moment];
-  if (flow !== "standard") return base;
-  const override = STANDARD_OVERRIDES[moment];
-  return override ? { ...base, ...override } : base;
+  if (moment === "moneyIntro") {
+    return { ...base, footnote: moneyIntroFootnote(flow) };
+  }
+  return base;
 }

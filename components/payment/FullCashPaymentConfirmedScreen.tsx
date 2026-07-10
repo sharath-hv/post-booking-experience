@@ -11,8 +11,10 @@ import {
   FULL_PAYMENT_INSURANCE_INR,
 } from "@/components/payment/loan-amount-demo-constants";
 import { buildPayInsurancePremiumHref, FULL_PAYMENT_BANK_ID } from "@/lib/paymentUrls";
-
-const DEALER_NAME = "Advaith Hyundai";
+import {
+  PARTNER_DEALER_LABEL,
+  PARTNER_DEALER_LABEL_CAPITALIZED,
+} from "@/lib/dealer-attribution-content";
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -42,7 +44,7 @@ export function FullCashPaymentConfirmedScreen() {
   const says = useMemo(
     () => [
       "Payment confirmed, Sharath.",
-      `${DEALER_NAME} has confirmed receipt. Delivery prep starts now, and nothing more is needed from you until just before the car arrives.`,
+      `${PARTNER_DEALER_LABEL_CAPITALIZED} has confirmed receipt. Delivery prep starts now, and nothing more is needed from you until just before the car arrives.`,
     ],
     [],
   );
@@ -59,9 +61,9 @@ export function FullCashPaymentConfirmedScreen() {
         <div className="flex flex-col gap-4">
           <AmountReceivedCard
             amountInr={carAmountInr}
-            title={`Received by ${DEALER_NAME}`}
+            title={`Received by ${PARTNER_DEALER_LABEL}`}
             status="received"
-            rows={[{ label: "Paid to", value: DEALER_NAME }]}
+            rows={[{ label: "Paid to", value: PARTNER_DEALER_LABEL }]}
           />
           <ShimmerInfoCard icon="info">
             <strong>One thing still ahead:</strong>{` your ${formatInr(FULL_PAYMENT_INSURANCE_INR)} insurance. The RTO won't register your car without a live policy, and I'll ask you at exactly the right moment.`}

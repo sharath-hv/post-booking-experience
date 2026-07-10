@@ -7,8 +7,7 @@ import { AmountReceivedCard, NextStepCard } from "@/components/concierge/artifac
 import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
 import { SELF_FINANCE_LOAN_DEFAULT_INR } from "@/components/payment/loan-amount-demo-constants";
 import { buildMarginMoneySlipActionHref } from "@/lib/paymentUrls";
-
-const DEALER_NAME = "Advaith Hyundai";
+import { PARTNER_DEALER_LABEL } from "@/lib/dealer-attribution-content";
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -38,7 +37,7 @@ export function SelfFinanceLoanConfirmedScreen() {
   const says = useMemo(
     () => [
       `Got it, ${formatInr(loanAmountInr)} noted.`,
-      `I've let ${DEALER_NAME} know. They'll call you to confirm the down payment amount and share the details to transfer it directly to them.`,
+      `I've let ${PARTNER_DEALER_LABEL} know. They'll call you to confirm the down payment amount and share the details to transfer it directly to them.`,
     ],
     [loanAmountInr],
   );
@@ -54,14 +53,14 @@ export function SelfFinanceLoanConfirmedScreen() {
       artifact={
         <div className="flex flex-col gap-4">
           <NextStepCard
-            title={`Watch for ${DEALER_NAME}'s call`}
+            title={`Watch for ${PARTNER_DEALER_LABEL}'s call`}
             body="Once they share the payment details, transfer the down payment directly to the dealer."
           />
           <AmountReceivedCard
             amountInr={loanAmountInr}
             title="Loan amount confirmed"
             rows={[
-              { label: "Shared with", value: DEALER_NAME },
+              { label: "Shared with", value: PARTNER_DEALER_LABEL },
             ]}
           />
         </div>

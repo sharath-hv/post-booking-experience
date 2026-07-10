@@ -22,6 +22,7 @@ export const JOURNEY_PATHS = {
   carAllocation: {
     pending: "/car-allocation/pending",
     confirmed: "/car-allocation/confirmed",
+    failed: "/car-allocation/failed",
   },
   payment: {
     default: "/payment/default",

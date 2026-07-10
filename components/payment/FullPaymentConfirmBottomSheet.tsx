@@ -13,13 +13,14 @@ import {
 import { bottomSheetTitleWidthWithIllustration } from "@/components/ui/bottom-sheet-title-layout";
 import { BottomSheetCloseIcon } from "@/components/ui/BottomSheetCloseIcon";
 import { BottomSheetConfirmBulletList } from "@/components/ui/BottomSheetConfirmBulletList";
+import { PARTNER_DEALER_LABEL_CAPITALIZED } from "@/lib/dealer-attribution-content";
 
 /** Enter/exit slide duration — keep in sync with `SelfFinanceConfirmBottomSheet` */
 const SHEET_TRANSITION_MS = 280;
 
 const BEFORE_YOU_PROCEED_POINTS: readonly ReactNode[] = [
   <>You pay the full ACKO Drive price upfront. No loan or EMI involved.</>,
-  <>Advaith Hyundai will call you to share the payment details. Transfer the car amount directly to them.</>,
+  <>{PARTNER_DEALER_LABEL_CAPITALIZED} will call you to share the payment details. Transfer the car amount directly to them.</>,
   <>
     Complete your full payment by <span className="font-semibold">30 May</span> to keep your booking
     active.

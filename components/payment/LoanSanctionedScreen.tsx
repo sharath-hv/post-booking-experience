@@ -10,8 +10,10 @@ import {
   BANK_DISBURSEMENT_INR,
   BOOKING_AMOUNT_PAID_INR,
 } from "@/components/payment/loan-amount-demo-constants";
-
-const DEALER_NAME = "Advaith Hyundai";
+import {
+  PARTNER_DEALER_LABEL,
+  PARTNER_DEALER_LABEL_CAPITALIZED,
+} from "@/lib/dealer-attribution-content";
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -34,7 +36,7 @@ export function LoanSanctionedScreen() {
   const says = useMemo(
     () => [
       "Your loan is approved, Sharath.",
-      `${bank.name} has sanctioned ${formatInr(BANK_DISBURSEMENT_INR)}. ${DEALER_NAME} will call you to arrange the down payment. Pay it directly to them.`,
+      `${bank.name} has sanctioned ${formatInr(BANK_DISBURSEMENT_INR)}. ${PARTNER_DEALER_LABEL_CAPITALIZED} will call you to arrange the down payment. Pay it directly to them.`,
       `Once they confirm receipt, I'll instruct ${bank.name} to release the funds to the dealer.`,
     ],
     [bank.name],
@@ -53,17 +55,17 @@ export function LoanSanctionedScreen() {
       artifact={
         <div className="flex flex-col gap-5">
           <NextStepCard
-            title={`Watch for ${DEALER_NAME}'s call`}
-            body="Pick up their call and pay the agreed amount directly at the dealership."
+            title={`Watch for ${PARTNER_DEALER_LABEL}'s call`}
+            body="Pick up their call. They'll share the payment details so you can pay them directly."
           />
           <AmountReceivedCard
             amountInr={BANK_DISBURSEMENT_INR}
             title={`Approved by ${bank.name}`}
             rows={[
-              { label: "Disburses to", value: DEALER_NAME },
+              { label: "Disburses to", value: PARTNER_DEALER_LABEL },
               { label: "Price lock (already paid)", value: formatInr(BOOKING_AMOUNT_PAID_INR) },
             ]}
-            note={`${bank.name} releases the remaining funds to ${DEALER_NAME} once they confirm your down payment.`}
+            note={`${bank.name} releases the remaining funds to ${PARTNER_DEALER_LABEL} once they confirm your down payment.`}
           />
         </div>
       }

@@ -153,7 +153,7 @@ export function ConciergeDocumentsCard({
           Re-upload turns already have Shivi's explanation above, so suppress it. */}
       {onlyDocs == null ? (
         <ShimmerInfoCard icon="info" lead="Quick check:">
-          the name should match on both documents, and the Aadhaar address should be in Bengaluru (where your car gets registered).
+          the name should match on both documents, and the Aadhaar address should be in Bengaluru, where your car gets registered.
         </ShimmerInfoCard>
       ) : null}
 

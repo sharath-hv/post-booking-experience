@@ -4,6 +4,7 @@ import {
 } from "@/lib/experience-flow-content";
 import type { ExperienceFlow } from "@/lib/experience-flow";
 import { normalizeAppPathname } from "@/lib/journey-routes";
+import { CAR_SOURCE_NAME } from "@/lib/dealer-attribution-content";
 
 /**
  * The four chapters of the journey — one source of truth for the purchase-state
@@ -117,7 +118,7 @@ export function getJourneyReceipts(pathname: string): JourneyReceipt[] {
   ];
   if (stage >= 2) {
     receipts.push(
-      { title: "Reservation confirmation", meta: "Advaith Hyundai" },
+      { title: "Reservation confirmation", meta: CAR_SOURCE_NAME },
       { title: "Allocation certificate", meta: "Engine & chassis no." },
       { title: "Proforma invoice", meta: "On-road price breakup" },
     );

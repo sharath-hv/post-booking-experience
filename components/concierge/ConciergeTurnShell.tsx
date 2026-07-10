@@ -44,6 +44,8 @@ export type ConciergeTurn = {
   afterLead?: ReactNode;
   /** Continues the last body line — same voice, left-aligned (e.g. banking partner row). */
   afterBody?: ReactNode;
+  /** Render her final line as a section heading for the artifact/card below it. */
+  headingLastLine?: boolean;
   /** What she hands you — card(s) below her words. */
   artifact?: ReactNode;
   /** Her visible activity for working turns. */
@@ -257,6 +259,7 @@ export function ConciergeTurnShell({
   says,
   afterLead,
   afterBody,
+  headingLastLine,
   artifact,
   working,
   replies,
@@ -376,12 +379,13 @@ export function ConciergeTurnShell({
           lines={says}
           afterLead={afterLead}
           afterBody={afterBody}
+          headingLastLine={headingLastLine}
           startWhen={dialogueStarted}
           onComplete={() => setDialogueDone(true)}
         />
 
         {contentShown && (artifact || children) ? (
-          <div className="kyc-stagger mt-8 flex flex-col gap-2">
+          <div className={cn("kyc-stagger flex flex-col gap-2", headingLastLine ? "mt-4" : "mt-8")}>
             {artifact}
             {children}
           </div>

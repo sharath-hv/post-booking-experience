@@ -11,8 +11,10 @@ import {
   SELF_FINANCE_LOAN_DEFAULT_INR,
 } from "@/components/payment/loan-amount-demo-constants";
 import { buildPayInsurancePremiumHref } from "@/lib/paymentUrls";
-
-const DEALER_NAME = "Advaith Hyundai";
+import {
+  PARTNER_DEALER_LABEL,
+  PARTNER_DEALER_LABEL_CAPITALIZED,
+} from "@/lib/dealer-attribution-content";
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -42,7 +44,7 @@ export function SelfFinanceTransferConfirmedScreen() {
   const says = useMemo(
     () => [
       "Transfer confirmed, Sharath.",
-      `${DEALER_NAME} has confirmed they received the loan amount. Delivery prep starts now, and nothing more is needed from you until just before the car arrives.`,
+      `${PARTNER_DEALER_LABEL_CAPITALIZED} has confirmed they received the loan amount. Delivery prep starts now, and nothing more is needed from you until just before the car arrives.`,
     ],
     [],
   );
@@ -63,10 +65,10 @@ export function SelfFinanceTransferConfirmedScreen() {
         <div className="flex flex-col gap-4">
           <AmountReceivedCard
             amountInr={loanAmountInr}
-            title={`Received by ${DEALER_NAME}`}
+            title={`Received by ${PARTNER_DEALER_LABEL}`}
             status="received"
             rows={[
-              { label: "Transferred to", value: DEALER_NAME },
+              { label: "Transferred to", value: PARTNER_DEALER_LABEL },
             ]}
             note="Funds are with the dealer. Delivery prep is now underway."
           />

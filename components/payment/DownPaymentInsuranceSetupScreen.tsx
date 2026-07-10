@@ -10,6 +10,7 @@ import { MoneyPlanCard, type MoneyPlanStep } from "@/components/payment/MoneyPla
 import { useFullPaymentJourney } from "@/components/payment/use-full-payment-journey";
 import { FULL_PAYMENT_INSURANCE_INR } from "@/components/payment/loan-amount-demo-constants";
 import { buildLoanDisbursementReceivedHref, buildPayInsurancePremiumHref } from "@/lib/paymentUrls";
+import { PARTNER_DEALER_LABEL_CAPITALIZED } from "@/lib/dealer-attribution-content";
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -27,7 +28,7 @@ const LOAN_BANK_TRANSFER_SUBLINE =
   "I'm confirming the transfer from your bank. It takes 24 to 48 hours to clear. The moment it does, I start your delivery prep.";
 const SELF_FINANCE_HEADLINE = "Transfer confirmed.";
 const SELF_FINANCE_SUBLINE =
-  "Advaith Hyundai has confirmed the transfer. Just one more thing before your car arrives.";
+  `${PARTNER_DEALER_LABEL_CAPITALIZED} has confirmed the transfer. Just one more thing before your car arrives.`;
 
 const FULL_PAYMENT_HEADLINE = "Your payment is complete";
 const FULL_PAYMENT_SUBLINE = "Your car is now being prepared for delivery.";

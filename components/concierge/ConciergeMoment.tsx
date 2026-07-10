@@ -32,8 +32,11 @@ import {
   type ExperienceFlow,
 } from "@/lib/experience-flow";
 import {
+  getBookingDeliveryIconSrc,
   getBookingDeliveryLine,
+  getBookingDeliveryStripContainerClass,
   getBookingDeliveryTextClass,
+  isStandardDeliveryFlow,
 } from "@/lib/experience-flow-content";
 import { JOURNEY_PATHS } from "@/lib/journey-routes";
 import {
@@ -48,9 +51,7 @@ import {
   KYC_VERIFICATION_FAILED_HREF,
 } from "@/lib/kyc-verification-outcome";
 import { BOOKING_LOCK_AMOUNT_INR } from "@/lib/paymentUrls";
-
-const DEALER_NAME = "Advaith Hyundai";
-const DEALER_DETAIL = "Whitefield · Bengaluru";
+import { CAR_SOURCE_NAME, CAR_SOURCE_DETAIL } from "@/lib/dealer-attribution-content";
 
 export type ConciergeMomentProps = {
   moment: ConciergeMomentId;
@@ -99,6 +100,8 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
 
   const deliveryLine = getBookingDeliveryLine(flow);
   const deliveryLineClass = getBookingDeliveryTextClass(flow);
+  const deliveryStripClass = getBookingDeliveryStripContainerClass(flow);
+  const deliveryIconSrc = getBookingDeliveryIconSrc(flow);
 
   const turn: ConciergeTurn & { hideBack?: boolean } = useMemo(() => {
     const base: ConciergeTurn & { hideBack?: boolean } = {
@@ -159,6 +162,7 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
               title={arrivalPaid ? "Payment received" : "Payment processing…"}
             />
           ),
+          headingLastLine: true,
           artifact: <PlanList items={planItems} />,
           replies: primaryReply(JOURNEY_PATHS.kyc.hub),
         };
@@ -258,13 +262,15 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
           timeSkip: words.timeSkipLabel
             ? { label: words.timeSkipLabel, href: JOURNEY_PATHS.kyc.bookingAccepted }
             : undefined,
+          altTimeSkip: isStandardDeliveryFlow(flow)
+            ? undefined
+            : {
+                label: "If no car is found",
+                href: JOURNEY_PATHS.carAllocation.failed,
+              },
         };
 
       case "dealerFound": {
-        const deliveryDate = deliveryLine
-          .replace("Express delivery by", "")
-          .replace("Standard delivery by", "")
-          .trim();
         return {
           ...base,
           // No reply buttons here, but the date is in the user's hands — the call is the action.
@@ -279,18 +285,17 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
                 statusChipVariant="blue"
                 deliveryLine={deliveryLine}
                 deliveryLineClassName={deliveryLineClass}
-                dealerName={DEALER_NAME}
-                dealerDetail={DEALER_DETAIL}
+                deliveryStripClassName={deliveryStripClass}
+                deliveryIconSrc={deliveryIconSrc}
+                dealerName={CAR_SOURCE_NAME}
+                dealerDetail={CAR_SOURCE_DETAIL}
                 engineNo={DEMO_VEHICLE_ENGINE_NO}
                 chassisNo={DEMO_VEHICLE_CHASSIS_NO}
               />
               <NextStepCard
-                title={`Pick up ${DEALER_NAME}'s call`}
-                body="Share the OTP that you receive. It registers the Creta on Hyundai's system and locks it in your name. Expected today, before 6:00 PM."
+                title="Confirm with a one-time code"
+                body="Our partner will call you shortly. Share the OTP with them, this is how Hyundai registers the Creta in your name. Expected today, before 6:00 PM."
               />
-              <NoteCallout>
-                If you miss the call, your reservation and your {deliveryDate} delivery could slip.
-              </NoteCallout>
               <p className="px-1 text-xs leading-[18px] text-[#757575]">
                 <span className="font-semibold">Having second thoughts?</span> A change costs ₹5,000 and
                 cancelling holds back half of what you&apos;ve paid. Both are in the menu up top.
@@ -314,8 +319,10 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
               statusChip="Yours ✓"
               deliveryLine={deliveryLine}
               deliveryLineClassName={deliveryLineClass}
-              dealerName={DEALER_NAME}
-              dealerDetail={DEALER_DETAIL}
+              deliveryStripClassName={deliveryStripClass}
+              deliveryIconSrc={deliveryIconSrc}
+              dealerName={CAR_SOURCE_NAME}
+              dealerDetail={CAR_SOURCE_DETAIL}
               engineNo={DEMO_VEHICLE_ENGINE_NO}
               chassisNo={DEMO_VEHICLE_CHASSIS_NO}
             />
@@ -330,7 +337,9 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
           timeSkip: words.timeSkipLabel
             ? { label: words.timeSkipLabel, href: JOURNEY_PATHS.carAllocation.confirmed }
             : undefined,
-          altTimeSkip: { label: "If no car is found", href: "/car-allocation/failed" },
+          altTimeSkip: isStandardDeliveryFlow(flow)
+            ? undefined
+            : { label: "If no car is found", href: JOURNEY_PATHS.carAllocation.failed },
         };
 
       case "allocationDone":
@@ -344,8 +353,10 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
               statusChip="Yours ✓"
               deliveryLine={deliveryLine}
               deliveryLineClassName={deliveryLineClass}
-              dealerName={DEALER_NAME}
-              dealerDetail={DEALER_DETAIL}
+              deliveryStripClassName={deliveryStripClass}
+              deliveryIconSrc={deliveryIconSrc}
+              dealerName={CAR_SOURCE_NAME}
+              dealerDetail={CAR_SOURCE_DETAIL}
               engineNo={DEMO_VEHICLE_ENGINE_NO}
               chassisNo={DEMO_VEHICLE_CHASSIS_NO}
             />
@@ -360,7 +371,7 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
           replies: primaryReply(JOURNEY_PATHS.payment.choose),
         };
     }
-  }, [moment, words, flow, car, deliveryLine, deliveryLineClass, arrivalPaid, router, searchParams]);
+  }, [moment, words, flow, car, deliveryLine, deliveryLineClass, deliveryStripClass, deliveryIconSrc, arrivalPaid, router, searchParams]);
 
   const { hideBack, ...turnProps } = turn;
 

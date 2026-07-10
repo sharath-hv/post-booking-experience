@@ -377,7 +377,7 @@ export function CarPriceBreakupCard({
 /* ----------------------------------------------------------------------- */
 
 export type NextStepCardProps = {
-  /** Tight imperative — e.g. “Pick up Advaith Hyundai's call”. */
+  /** Tight imperative — e.g. “Pick up my call”. */
   title: string;
   body: string;
   /** Expectation row — e.g. “Expected today, before 6:00 PM”. */
@@ -389,7 +389,7 @@ export type NextStepCardProps = {
  * slow radar pulse on the node — something is coming for you. Stakes go in a
  * ShimmerInfoCard next to it, not in here.
  */
-export function NextStepCard({ title, body }: NextStepCardProps) {
+export function NextStepCard({ title, body, etaLabel }: NextStepCardProps) {
   return (
     <div className="rounded-2xl bg-white card-elevated px-4 py-4">
       <div className="flex items-start gap-3.5">
@@ -413,6 +413,9 @@ export function NextStepCard({ title, body }: NextStepCardProps) {
         <div className="min-w-0">
           <p className="text-base font-medium leading-6 text-[#121212]">{title}</p>
           <p className="mt-1 text-[13px] leading-[19px] text-[#757575]">{body}</p>
+          {etaLabel ? (
+            <p className="mt-1 text-[13px] leading-[19px] text-[#757575]">{etaLabel}</p>
+          ) : null}
         </div>
       </div>
     </div>
@@ -430,6 +433,10 @@ export type CarSummaryCardLiteProps = {
   /** e.g. “Express delivery by 10 Jun '25”. */
   deliveryLine?: string;
   deliveryLineClassName?: string;
+  /** Strip container classes — express lavender vs standard neutral. */
+  deliveryStripClassName?: string;
+  /** Bolt (express) or clock (standard). */
+  deliveryIconSrc?: StaticImageData | string;
   /** Who has it (dealer attribution row). */
   dealerName?: string;
   dealerDetail?: string;
@@ -455,6 +462,8 @@ export function CarSummaryCardLite({
   colour,
   deliveryLine,
   deliveryLineClassName = "text-[#5920c5]",
+  deliveryStripClassName = "border-[#efe9fb] bg-[#f9f6ff]",
+  deliveryIconSrc,
   dealerName,
   dealerDetail,
   hero = "car",
@@ -581,13 +590,26 @@ export function CarSummaryCardLite({
       {deliveryLine ? (
         <div
           className={cn(
-            "flex items-center justify-center gap-1.5 border-t border-[#efe9fb] bg-[#f9f6ff] px-4 py-2",
+            "flex items-center justify-center gap-1.5 border-t px-4 py-2",
+            deliveryStripClassName,
             deliveryLineClassName
           )}
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden className="shrink-0">
-            <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z" fill="currentColor" />
-          </svg>
+          {deliveryIconSrc ? (
+            <Image
+              src={deliveryIconSrc}
+              alt=""
+              width={14}
+              height={14}
+              className="h-3.5 w-3.5 shrink-0 object-contain"
+              unoptimized
+              aria-hidden
+            />
+          ) : (
+            <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden className="shrink-0">
+              <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z" fill="currentColor" />
+            </svg>
+          )}
           <span className="text-xs font-medium leading-[18px]">{deliveryLine}</span>
         </div>
       ) : null}
