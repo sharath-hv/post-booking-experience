@@ -23,6 +23,7 @@ import {
   BookingCarSummaryCardVisualStage,
 } from "@/components/kyc/BookingCarSummaryCard";
 import { cn } from "@/lib/utils";
+import { OVERLAY_GLASS_CARD_CLASS, OVERLAY_GLASS_SURFACE_CLASS } from "@/lib/overlay-glass-card";
 
 const TICK_ICON_MASK_STYLE = {
   maskImage: `url(${tickIcon.src})`,
@@ -65,6 +66,8 @@ export type AmountReceivedCardProps = {
   iconSrc?: string | StaticImageData;
   /** Tailwind bg class for the icon container (overrides the green / yellow default). */
   iconBgClassName?: string;
+  /** `glass` — frosted gradient surface used on the manage-booking overlay. */
+  variant?: "default" | "glass";
 };
 
 /** What she slides across the desk after money moves — a clean receipt. */
@@ -76,11 +79,17 @@ export function AmountReceivedCard({
   status = "received",
   iconSrc,
   iconBgClassName,
+  variant = "default",
 }: AmountReceivedCardProps) {
   const processing = status === "processing";
+  const isGlass = variant === "glass";
   const defaultBg = processing ? "bg-[#fff7e5]" : "bg-[#e7f6ee]";
   return (
-    <div className="overflow-hidden rounded-2xl bg-white card-elevated">
+    <div
+      className={cn(
+        isGlass ? OVERLAY_GLASS_CARD_CLASS : "overflow-hidden rounded-2xl bg-white card-elevated",
+      )}
+    >
       <div className="flex items-center gap-3 px-4 py-4">
         <span
           className={cn(
@@ -141,7 +150,7 @@ export function AmountReceivedCard({
         </div>
       ) : null}
       {note ? (
-        <div className="border-t border-[#f0f0f0] bg-[#fafafa] px-4 py-2.5">
+        <div className={cn("border-t border-[#f0f0f0] px-4 py-2.5", !isGlass && "bg-[#fafafa]")}>
           <p className="text-xs leading-[18px] text-[#757575]">{note}</p>
         </div>
       ) : null}
@@ -188,15 +197,22 @@ function PlanTimelineGlyph({ name, className }: { name: PlanTimelineIcon; classN
 
 export type PlanListProps = {
   items: readonly PlanItem[];
+  /** `glass` — frosted gradient surface used on the manage-booking overlay. */
+  variant?: "default" | "glass";
 };
 
 /**
  * “Here's how I'll get you your car” — her commitments as a timeline:
  * icon nodes on a dashed rail, the live step filled in brand purple as “Now”.
  */
-export function PlanList({ items }: PlanListProps) {
+export function PlanList({ items, variant = "default" }: PlanListProps) {
   return (
-    <ol className="flex flex-col rounded-2xl bg-white card-elevated px-4 py-5">
+    <ol
+      className={cn(
+        "flex flex-col rounded-2xl card-elevated px-4 py-5",
+        variant === "glass" ? OVERLAY_GLASS_SURFACE_CLASS : "bg-white"
+      )}
+    >
       {items.map((item, idx) => {
         const status = item.status ?? (idx === 0 ? "now" : "todo");
         const isNow = status === "now";
@@ -395,7 +411,7 @@ export type NextStepCardProps = {
  */
 export function NextStepCard({ title, body }: NextStepCardProps) {
   return (
-    <div className="rounded-2xl border border-[#efe9fb] bg-[#f9f6ff] px-4 py-4 card-elevated">
+    <div className="rounded-2xl border border-[var(--violet-200)] bg-[#f9f6ff] px-4 py-4 card-elevated">
       <div className="flex items-center gap-3.5">
         <span className="relative flex h-9 w-9 shrink-0 items-center justify-center">
           <span

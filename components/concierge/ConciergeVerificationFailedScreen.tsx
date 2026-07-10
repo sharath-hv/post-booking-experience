@@ -140,6 +140,7 @@ export function ConciergeVerificationFailedScreen() {
           onUploadsChange={setUploads}
           mockUploadCounterRef={mockUploadCounterRef}
           onlyDocs={requiredDocs}
+          variant="glass"
         />
       }
       footnote={FOOTNOTE}

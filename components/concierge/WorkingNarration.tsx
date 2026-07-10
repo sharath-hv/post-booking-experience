@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import warningAmberIcon from "@/assets/Warning amber.svg";
 
 import { instantRevealEnabled } from "@/lib/concierge/instant";
+import { OVERLAY_GLASS_SURFACE_CLASS } from "@/lib/overlay-glass-card";
 import { cn } from "@/lib/utils";
 
 /** Time each activity line stays “in progress” before ticking done (live mode). */
@@ -181,7 +182,8 @@ export function WorkingNarration({
   return (
     <div
       className={cn(
-        "rounded-2xl bg-white/75 card-elevated px-4 py-4 backdrop-blur-sm",
+        "rounded-2xl px-4 py-4",
+        OVERLAY_GLASS_SURFACE_CLASS,
         className
       )}
       role="status"

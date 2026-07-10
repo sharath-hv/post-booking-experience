@@ -160,10 +160,11 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
               amountInr={BOOKING_LOCK_AMOUNT_INR}
               status={arrivalPaid ? "received" : "processing"}
               title={arrivalPaid ? "Payment received" : "Payment processing…"}
+              variant="glass"
             />
           ),
           headingLastLine: true,
-          artifact: <PlanList items={planItems} />,
+          artifact: <PlanList items={planItems} variant="glass" />,
           replies: primaryReply(JOURNEY_PATHS.kyc.hub),
         };
       }
@@ -363,7 +364,7 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
       case "moneyIntro":
         return {
           ...base,
-          artifact: <PaymentSummaryCard />,
+          artifact: <PaymentSummaryCard variant="glass" />,
           replies: primaryReply(JOURNEY_PATHS.payment.choose),
         };
     }

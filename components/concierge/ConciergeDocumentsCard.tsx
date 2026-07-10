@@ -13,6 +13,7 @@ import {
 } from "@/lib/kyc-mock-upload";
 import type { KycUploadsState } from "@/lib/kyc-upload-state";
 import { ShimmerInfoCard } from "@/components/ui/ShimmerInfoCard";
+import { OVERLAY_GLASS_CARD_CLASS } from "@/lib/overlay-glass-card";
 import { cn } from "@/lib/utils";
 
 import deleteIcon from "@/assets/Delete.svg";
@@ -25,6 +26,8 @@ type ConciergeDocumentsCardProps = {
   mockUploadCounterRef: React.MutableRefObject<number>;
   /** Restrict to specific doc kinds — for re-upload flows where only one doc needs fixing. */
   onlyDocs?: readonly KycDocumentKind[];
+  /** `glass` — frosted gradient surface used on the manage-booking overlay. */
+  variant?: "default" | "glass";
 };
 
 function UploadSuccessBadge() {
@@ -114,7 +117,9 @@ export function ConciergeDocumentsCard({
   onUploadsChange,
   mockUploadCounterRef,
   onlyDocs,
+  variant = "default",
 }: ConciergeDocumentsCardProps) {
+  const isGlass = variant === "glass";
   const [sourceSheetOpen, setSourceSheetOpen] = useState(false);
   const [activeDocument, setActiveDocument] = useState<KycDocumentKind | null>(null);
 
@@ -157,7 +162,12 @@ export function ConciergeDocumentsCard({
         </ShimmerInfoCard>
       ) : null}
 
-      <div className={cn("overflow-hidden rounded-2xl bg-white card-elevated", onlyDocs == null ? "mt-4" : undefined)}>
+      <div
+        className={cn(
+          isGlass ? OVERLAY_GLASS_CARD_CLASS : "overflow-hidden rounded-2xl bg-white card-elevated",
+          onlyDocs == null ? "mt-4" : undefined,
+        )}
+      >
         {showAadhaar ? (
           <DocumentRow
             title="Aadhaar card"

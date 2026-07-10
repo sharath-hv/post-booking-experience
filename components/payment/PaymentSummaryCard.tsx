@@ -4,6 +4,8 @@ import { useState } from "react";
 import { ChevronUp } from "lucide-react";
 
 import { BOOKING_PAYMENT_SUMMARY_INR } from "@/lib/payment-summary-demo";
+import { OVERLAY_GLASS_CARD_CLASS } from "@/lib/overlay-glass-card";
+import { cn } from "@/lib/utils";
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -27,6 +29,8 @@ export type PaymentSummaryCardProps = {
   paymentPaidInr?: number;
   /** Remaining due before the commitment is complete. */
   amountRemainingInr?: number;
+  /** `glass` — frosted gradient surface used on the manage-booking overlay. */
+  variant?: "default" | "glass";
 };
 
 /**
@@ -36,6 +40,7 @@ export type PaymentSummaryCardProps = {
 export function PaymentSummaryCard({
   paymentPaidInr,
   amountRemainingInr,
+  variant = "default",
 }: PaymentSummaryCardProps = {}) {
   const [priceBreakdownOpen, setPriceBreakdownOpen] = useState(false);
   const showPaymentPaidRow =
@@ -45,9 +50,15 @@ export function PaymentSummaryCard({
     amountRemainingInr > 0 &&
     showPaymentPaidRow;
 
+  const isGlass = variant === "glass";
+
   return (
-    <div className="overflow-hidden rounded-2xl bg-white card-elevated">
-      <div className="bg-white px-4 pb-4 pt-4">
+    <div
+      className={cn(
+        isGlass ? OVERLAY_GLASS_CARD_CLASS : "overflow-hidden rounded-2xl bg-white card-elevated",
+      )}
+    >
+      <div className={cn("px-4 pb-4 pt-4", !isGlass && "bg-white")}>
         <button
           type="button"
           className="flex w-full items-center justify-between gap-2 text-left"
@@ -70,7 +81,7 @@ export function PaymentSummaryCard({
         </button>
 
         {priceBreakdownOpen ? (
-          <div className="mt-3 rounded-lg bg-[#f5f5f5] px-3 py-3">
+          <div className={cn("mt-3 rounded-lg bg-[#f5f5f5] px-3 py-3", isGlass && "border border-white")}>
             <div className="flex items-center justify-between gap-2">
               <span className="text-xs leading-[18px] text-[#4b4b4b]">On-road price</span>
               <span className="text-xs font-medium leading-[18px] text-[#121212]">
@@ -109,7 +120,12 @@ export function PaymentSummaryCard({
       </div>
 
       {showRemainingFooter || !showPaymentPaidRow ? (
-        <div className="flex items-center justify-between gap-2 border-t border-[#e8e8e8] bg-white px-4 py-4">
+        <div
+          className={cn(
+            "flex items-center justify-between gap-2 border-t border-[#e8e8e8] px-4 py-4",
+            !isGlass && "bg-white",
+          )}
+        >
           <span className="text-base font-medium leading-6 text-[#121212]">Amount to pay</span>
           <span className="text-base font-medium leading-6 text-[#121212]">
             {showRemainingFooter

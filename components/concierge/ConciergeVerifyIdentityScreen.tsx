@@ -66,6 +66,7 @@ export function ConciergeVerifyIdentityScreen() {
           uploads={uploads}
           onUploadsChange={setUploads}
           mockUploadCounterRef={mockUploadCounterRef}
+          variant="glass"
         />
       }
     />

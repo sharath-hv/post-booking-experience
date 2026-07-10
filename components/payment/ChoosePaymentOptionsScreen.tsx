@@ -1,5 +1,6 @@
 "use client";
 
+import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
@@ -191,13 +192,15 @@ function OptionCard({
   flow,
   flowBankLogosOnStep,
 }: OptionCardProps) {
+  const reduceMotion = useReducedMotion();
+
   return (
     <button
       type="button"
       id={`payment-option-${id}`}
       onClick={onSelect}
       aria-pressed={selected}
-      className={`w-full rounded-2xl border p-[15px] text-left transition-colors card-elevated ${
+      className={`w-full rounded-2xl border p-4 text-left transition-colors card-elevated ${
         selected
           ? "border-[#bda6e8] bg-white bg-[linear-gradient(to_bottom,#f4eefe,rgba(244,238,254,0))]"
           : "border-transparent bg-white"
@@ -230,9 +233,9 @@ function OptionCard({
         </span>
       </div>
 
-      <p className="mt-2.5 text-[13px] leading-[19px] text-[#4b4b4b]">{blurb}</p>
+      <p className="mt-3 text-[13px] leading-[19px] text-[#4b4b4b]">{blurb}</p>
 
-      <div className="mt-3 flex w-full">
+      <div className="mt-4 flex w-full">
         {stats.map((stat, idx) => (
           <div
             key={stat.caption}
@@ -251,18 +254,23 @@ function OptionCard({
       </div>
 
       {/* Selected → the thin how-it-works strip expands; collapsed cards stay compact. */}
-      <div
-        className={`grid transition-[grid-template-rows,opacity] duration-500 ease-in-out ${
-          selected ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-        }`}
+      <motion.div
+        initial={false}
+        animate={{
+          height: selected ? "auto" : 0,
+          opacity: selected ? 1 : 0,
+        }}
+        transition={{
+          duration: reduceMotion ? 0 : 0.5,
+          ease: [0.22, 1, 0.36, 1],
+        }}
+        className="overflow-hidden"
         aria-hidden={!selected}
       >
-        <div className="overflow-hidden">
-          <div className="mt-3 border-t border-dashed border-[#dcdbe1] pt-3">
-            <FlowStrip steps={flow} active={selected} bankLogosOnStep={flowBankLogosOnStep} />
-          </div>
+        <div className="mt-3 border-t border-dashed border-[#dcdbe1] pt-3">
+          <FlowStrip steps={flow} active={selected} bankLogosOnStep={flowBankLogosOnStep} />
         </div>
-      </div>
+      </motion.div>
     </button>
   );
 }
@@ -325,7 +333,7 @@ export function ChoosePaymentOptionsScreen() {
           "Pick what suits you. I'll make any of these painless.",
         ]}
         artifact={
-          <div className="flex w-full flex-col gap-4">
+          <div className="flex w-full flex-col gap-4 [overflow-anchor:none]">
             <div className="payment-success-stagger w-full">
               <OptionCard
                 id="acko_drive"

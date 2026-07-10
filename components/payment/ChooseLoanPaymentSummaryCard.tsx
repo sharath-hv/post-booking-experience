@@ -9,6 +9,8 @@ import {
   ON_ROAD_PRICE_INR,
 } from "@/components/payment/loan-amount-demo-constants";
 import { BOOKING_PAYMENT_SUMMARY_INR } from "@/lib/payment-summary-demo";
+import { OVERLAY_GLASS_CARD_CLASS } from "@/lib/overlay-glass-card";
+import { cn } from "@/lib/utils";
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -26,6 +28,8 @@ export type ChooseLoanPaymentSummaryCardProps = {
   downPaymentPaidInr?: number;
   /** Hides the footer when the full down payment is received. */
   downPaymentFullyPaid?: boolean;
+  /** `glass` — frosted gradient surface used on the manage-booking overlay. */
+  variant?: "default" | "glass";
 };
 
 /**
@@ -37,15 +41,22 @@ export function ChooseLoanPaymentSummaryCard({
   downPaymentAmountInr,
   downPaymentPaidInr,
   downPaymentFullyPaid = false,
+  variant = "default",
 }: ChooseLoanPaymentSummaryCardProps) {
   const [priceBreakdownOpen, setPriceBreakdownOpen] = useState(false);
   const showDownPaymentPaidRow =
     downPaymentPaidInr != null && downPaymentPaidInr > 0;
   const showRemainingFooter = showDownPaymentPaidRow && !downPaymentFullyPaid;
 
+  const isGlass = variant === "glass";
+
   return (
-    <div className="overflow-hidden rounded-2xl bg-white card-elevated">
-      <div className="bg-white px-4 pb-4 pt-4">
+    <div
+      className={cn(
+        isGlass ? OVERLAY_GLASS_CARD_CLASS : "overflow-hidden rounded-2xl bg-white card-elevated",
+      )}
+    >
+      <div className={cn("px-4 pb-4 pt-4", !isGlass && "bg-white")}>
         <button
           type="button"
           className="flex w-full items-center justify-between gap-2 text-left"
@@ -68,7 +79,7 @@ export function ChooseLoanPaymentSummaryCard({
         </button>
 
         {priceBreakdownOpen ? (
-          <div className="mt-3 rounded-lg bg-[#f5f5f5] px-3 py-3">
+          <div className={cn("mt-3 rounded-lg bg-[#f5f5f5] px-3 py-3", isGlass && "border border-white")}>
             <div className="flex items-center justify-between gap-2">
               <span className="text-xs leading-[18px] text-[#4b4b4b]">On-road price</span>
               <span className="text-xs font-medium leading-[18px] text-[#121212]">
@@ -116,7 +127,12 @@ export function ChooseLoanPaymentSummaryCard({
       </div>
 
       {showRemainingFooter || !showDownPaymentPaidRow ? (
-        <div className="flex items-center justify-between gap-2 bg-[#f5f5f5] px-4 py-4">
+        <div
+          className={cn(
+            "flex items-center justify-between gap-2 px-4 py-4",
+            isGlass ? "border-t border-dashed border-[#e8e8e8]" : "bg-[#f5f5f5]",
+          )}
+        >
           <span className="text-base font-medium leading-6 text-[#121212]">
             {showRemainingFooter ? "Remaining down payment" : "Down payment amount"}
           </span>

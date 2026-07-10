@@ -50,6 +50,7 @@ import {
   INSURANCE_PAYMENT_KIND,
 } from "@/lib/paymentUrls";
 import { cn } from "@/lib/utils";
+import { OVERLAY_GLASS_CARD_CLASS } from "@/lib/overlay-glass-card";
 
 /** Keeps parity with other bottom sheets in the app */
 const SHEET_TRANSITION_MS = 280;
@@ -231,7 +232,38 @@ export type ManageBookingSectionsProps = {
   surface?: "sheet" | "overlay";
   /** Extra section rendered between the payment summary and “Make a change” (e.g. receipts). */
   beforeChange?: React.ReactNode;
+  /** When true, the hero car card is omitted (rendered elsewhere in the overlay layout). */
+  hideCarCard?: boolean;
 };
+
+/**
+ * Booked-car hero card with live snapshot from session storage.
+ */
+export function ManageBookingCarCard({
+  showVehicleIdentification = false,
+}: {
+  showVehicleIdentification?: boolean;
+}) {
+  const [activeBooking, setActiveBooking] = useState<ReturnType<
+    typeof readActiveBookingSnapshot
+  >>(null);
+
+  useEffect(() => {
+    setActiveBooking(readActiveBookingSnapshot());
+  }, []);
+
+  return (
+    <BookingCarSummaryCard
+      showVehicleIdentification={showVehicleIdentification}
+      cardDetails={
+        activeBooking != null ? activeBookingCardDetails(activeBooking) : undefined
+      }
+      carCutoutSrc={
+        activeBooking != null ? activeBookingCarCutoutSrc(activeBooking) : undefined
+      }
+    />
+  );
+}
 
 /**
  * The manage-booking content (car card, payment summary, make-a-change) with
@@ -243,6 +275,7 @@ export function ManageBookingSections({
   showVehicleIdentification = false,
   surface = "sheet",
   beforeChange,
+  hideCarCard = false,
 }: ManageBookingSectionsProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -321,25 +354,11 @@ export function ManageBookingSections({
     router.push(`${JOURNEY_PATHS.kyc.cancelBooking}?paid=${totalPaidInr}&stage=${stage}`);
   }, [onClose, router, modifyFeeTier, totalPaidInr]);
 
-  const [activeBooking, setActiveBooking] = useState<ReturnType<
-    typeof readActiveBookingSnapshot
-  >>(null);
-
-  useEffect(() => {
-    setActiveBooking(readActiveBookingSnapshot());
-  }, []);
-
   return (
     <div className="flex flex-col gap-8">
-      <BookingCarSummaryCard
-        showVehicleIdentification={showVehicleIdentification}
-        cardDetails={
-          activeBooking != null ? activeBookingCardDetails(activeBooking) : undefined
-        }
-        carCutoutSrc={
-          activeBooking != null ? activeBookingCarCutoutSrc(activeBooking) : undefined
-        }
-      />
+      {hideCarCard ? null : (
+        <ManageBookingCarCard showVehicleIdentification={showVehicleIdentification} />
+      )}
 
       <section aria-labelledby="manage-booking-payment-heading">
         <h3
@@ -354,11 +373,13 @@ export function ManageBookingSections({
             downPaymentAmountInr={confirmedLoanPlan.downPaymentAmountInr}
             downPaymentPaidInr={confirmedLoanPlan.downPaymentPaidInr}
             downPaymentFullyPaid={confirmedLoanPlan.downPaymentFullyPaid}
+            variant={surface === "overlay" ? "glass" : "default"}
           />
         ) : (
           <PaymentSummaryCard
             paymentPaidInr={fullPaymentPlan?.paymentPaidInr}
             amountRemainingInr={fullPaymentPlan?.amountRemainingInr}
+            variant={surface === "overlay" ? "glass" : "default"}
           />
         )}
       </section>
@@ -375,8 +396,9 @@ export function ManageBookingSections({
         </h3>
         <div
           className={cn(
-            "overflow-hidden rounded-2xl bg-white",
-            surface === "overlay" ? "card-elevated" : "border border-[#e8e8e8]",
+            surface === "overlay"
+              ? OVERLAY_GLASS_CARD_CLASS
+              : "overflow-hidden rounded-2xl bg-white border border-[#e8e8e8]",
           )}
         >
           <ModifyBookingActionRow

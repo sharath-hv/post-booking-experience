@@ -341,6 +341,13 @@ export function ConciergeTurnShell({
 
   const hasFooter = Boolean(replies?.length || timeSkip || footnote || callLabel || footerExtra);
 
+  /** Room for the fixed footer — taller when footnote + CTA + call link stack. */
+  const mainBottomPad = !hasFooter
+    ? "pb-16"
+    : footnote && !footnoteInline && replies?.length && callLabel
+      ? "pb-[calc(16rem+env(safe-area-inset-bottom))]"
+      : "pb-[calc(12rem+env(safe-area-inset-bottom))]";
+
   return (
     <div className="relative min-h-dvh overflow-x-clip bg-[#F1F5FD]">
       <AuroraLightLayer />
@@ -376,7 +383,7 @@ export function ConciergeTurnShell({
       <main
         className={cn(
           "relative z-10 mx-auto flex w-full max-w-[640px] flex-col px-5 pt-3",
-          hasFooter ? "pb-56" : "pb-16"
+          mainBottomPad
         )}
       >
         {dayStamp ? (

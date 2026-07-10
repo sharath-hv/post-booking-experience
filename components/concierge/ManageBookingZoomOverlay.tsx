@@ -8,7 +8,7 @@ import invoiceIcon from "@/assets/Invoice.svg";
 
 import { PlanList } from "@/components/concierge/artifacts";
 import { DEMO_BOOKING_ID } from "@/components/kyc/booking-car-card-content";
-import { ManageBookingSections } from "@/components/kyc/ManageBookingBottomSheet";
+import { ManageBookingCarCard, ManageBookingSections } from "@/components/kyc/ManageBookingBottomSheet";
 import { BottomSheetPortal } from "@/components/ui/BottomSheetPortal";
 import { readExperienceFlow, type ExperienceFlow } from "@/lib/experience-flow";
 import {
@@ -17,6 +17,7 @@ import {
   getJourneyStageSteps,
 } from "@/lib/journey-stage";
 import { cn } from "@/lib/utils";
+import { OVERLAY_GLASS_CARD_CLASS } from "@/lib/overlay-glass-card";
 
 /** Matches the page-recede transition in ConciergeTurnShell. */
 export const ZOOM_OVERLAY_MS = 650;
@@ -136,28 +137,32 @@ export function ManageBookingZoomOverlay({
               </p>
             </div>
 
-            {/* The living delivery date — the one number this purchase is about. */}
-            <div className="flex items-center justify-between gap-3 rounded-2xl border border-white bg-[linear-gradient(0deg,rgba(255,255,255,1)_0%,rgba(255,255,255,0.1)_100%)] px-4 py-3.5 shadow-[0_4px_12px_0_rgba(0,0,0,0.15)] backdrop-blur-[24px]">
-              <div className="min-w-0">
-                <p className="text-[10px] font-semibold uppercase leading-4 tracking-[0.08em] text-[#8f8e92]">
-                  Arriving
-                </p>
-                <p className="text-xl font-semibold leading-7 tracking-[-0.2px] text-[#121212]">
-                  {deliveryDate}
-                </p>
+            <div className="flex flex-col gap-4">
+              {/* The living delivery date — the one number this purchase is about. */}
+              <div className={cn("flex items-center justify-between gap-3 px-4 py-3.5", OVERLAY_GLASS_CARD_CLASS)}>
+                <div className="min-w-0">
+                  <p className="text-xs font-medium uppercase leading-[18px] tracking-[0.08em] text-[#8f8e92]">
+                    Arriving
+                  </p>
+                  <p className="text-xl font-semibold leading-7 tracking-[-0.2px] text-[#121212]">
+                    {deliveryDate}
+                  </p>
+                </div>
+                <span
+                  className={cn(
+                    "shrink-0 rounded-full px-2.5 py-1 text-[11px] font-medium leading-4",
+                    dateHolder === "you"
+                      ? "bg-[#fff7e5] text-[#a76406]"
+                      : "bg-[#e7f6ee] text-[#0c7a42]"
+                  )}
+                >
+                  {dateHolder === "you"
+                    ? `Waiting on you — ${nowStep?.title.toLowerCase() ?? "this step"}`
+                    : "On track ✓"}
+                </span>
               </div>
-              <span
-                className={cn(
-                  "shrink-0 rounded-full px-2.5 py-1 text-[11px] font-medium leading-4",
-                  dateHolder === "you"
-                    ? "bg-[#fff7e5] text-[#a76406]"
-                    : "bg-[#e7f6ee] text-[#0c7a42]"
-                )}
-              >
-                {dateHolder === "you"
-                  ? `Waiting on you — ${nowStep?.title.toLowerCase() ?? "this step"}`
-                  : "On track ✓"}
-              </span>
+
+              <ManageBookingCarCard showVehicleIdentification={showVehicleIdentification} />
             </div>
 
             <section aria-labelledby="purchase-state-timeline-heading" className="mt-8">
@@ -167,7 +172,7 @@ export function ManageBookingZoomOverlay({
               >
                 Where we are
               </h3>
-              <PlanList items={steps} />
+              <PlanList items={steps} variant="glass" />
             </section>
 
             <div className="mt-8">
@@ -176,20 +181,21 @@ export function ManageBookingZoomOverlay({
                   onClose={onClose}
                   showVehicleIdentification={showVehicleIdentification}
                   surface="overlay"
+                  hideCarCard
                   beforeChange={
                     <section aria-labelledby="purchase-state-receipts-heading">
                       <h3
                         id="purchase-state-receipts-heading"
                         className="mb-4 text-base font-medium leading-6 text-[#121212]"
                       >
-                        Receipts &amp; documents
+                        Receipts and documents
                       </h3>
-                      <div className="overflow-hidden rounded-2xl bg-white card-elevated">
+                      <div className={OVERLAY_GLASS_CARD_CLASS}>
                         {receipts.map((receipt, idx) => (
                           <div
                             key={receipt.title}
                             className={cn(
-                              "flex items-center gap-3 px-4 py-3",
+                              "flex items-center gap-3 px-4 py-4",
                               idx > 0 && "border-t border-dashed border-[#ececec]"
                             )}
                           >
@@ -205,7 +211,7 @@ export function ManageBookingZoomOverlay({
                               </p>
                             </div>
                             <span className="shrink-0 rounded-full bg-[#e7f6ee] px-2 py-0.5 text-[11px] font-medium leading-4 text-[#0c7a42]">
-                              Saved ✓
+                              Saved
                             </span>
                           </div>
                         ))}
