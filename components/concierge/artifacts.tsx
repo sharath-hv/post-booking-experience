@@ -411,7 +411,7 @@ export function NextStepCard({ title, body, etaLabel }: NextStepCardProps) {
           </span>
         </span>
         <div className="min-w-0">
-          <p className="text-base font-medium leading-6 text-[#121212]">{title}</p>
+          <p className="text-base font-semibold leading-6 text-[#121212]">{title}</p>
           <p className="mt-1 text-[13px] leading-[19px] text-[#757575]">{body}</p>
           {etaLabel ? (
             <p className="mt-1 text-[13px] leading-[19px] text-[#757575]">{etaLabel}</p>

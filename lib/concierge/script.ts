@@ -141,8 +141,8 @@ const EXPRESS_SCRIPT: Record<ConciergeMomentId, TurnWords> = {
 
   dealerFound: {
     says: [
-      "Found it, Sharath. This is your exact car.",
-      "I've reserved a fresh Creta for you, with its engine and chassis numbers below. One quick code confirms it's yours. I'll notify you the moment it's ready to enter.",
+      "Found a match, Sharath.",
+      "Share the one-time code when our partner calls — that's how Hyundai assigns this exact car to you. I'll put the engine and chassis numbers on the card once it's locked.",
     ],
     timeSkipLabel: "After the call",
     callLabel: "Questions? I can call you",

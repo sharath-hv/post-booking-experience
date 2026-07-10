@@ -281,16 +281,12 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
                 title={car.title}
                 variant={car.variant}
                 colour={car.colour}
-                statusChip="Reserved"
-                statusChipVariant="blue"
                 deliveryLine={deliveryLine}
                 deliveryLineClassName={deliveryLineClass}
                 deliveryStripClassName={deliveryStripClass}
                 deliveryIconSrc={deliveryIconSrc}
                 dealerName={CAR_SOURCE_NAME}
                 dealerDetail={CAR_SOURCE_DETAIL}
-                engineNo={DEMO_VEHICLE_ENGINE_NO}
-                chassisNo={DEMO_VEHICLE_CHASSIS_NO}
               />
               <NextStepCard
                 title="Confirm with a one-time code"
