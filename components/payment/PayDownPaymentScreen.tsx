@@ -39,8 +39,8 @@ export function PayDownPaymentScreen() {
     const hasRemainingFlow =
       Number.isFinite(d) && d > 0 && Number.isFinite(o) && o > 0 && o > d;
 
-    // `down_payment` is the NET cash due now — already excludes the price lock
-    // and insurance (the price identity: lock + disbursement + insurance + DP = total).
+    // `down_payment` is the NET cash due now — already excludes the booking amount
+    // and insurance (the price identity: booking amount + disbursement + insurance + DP = total).
     const dueInr = Number.isFinite(d) && d > 0 ? Math.round(d) : ACKO_LOAN_DOWN_PAYMENT_INR;
 
     if (hasRemainingFlow) {

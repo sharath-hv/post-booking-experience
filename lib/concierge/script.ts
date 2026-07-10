@@ -91,7 +91,7 @@ const EXPRESS_SCRIPT: Record<ConciergeMomentId, TurnWords> = {
     ],
     replyLabel: "Let's do the paper work",
     replyEcho: "Let's do the paper work",
-    footnote: "Worth doing now, so your price lock and delivery date hold.",
+    footnote: "Worth doing now, so your booking amount and delivery date hold.",
   },
 
   documentsReceived: {
@@ -142,7 +142,7 @@ const EXPRESS_SCRIPT: Record<ConciergeMomentId, TurnWords> = {
   dealerFound: {
     says: [
       "Found a match, Sharath.",
-      "Share the one-time code when our partner calls — that's how Hyundai assigns this exact car to you. I'll put the engine and chassis numbers on the card once it's locked.",
+      "I've reserved a fresh Creta for you. Share the one-time code when our partner calls — that's how Hyundai assigns this exact car to you. I'll put the engine and chassis numbers on the card once it's locked.",
     ],
     timeSkipLabel: "After the call",
     callLabel: "Questions? I can call you",

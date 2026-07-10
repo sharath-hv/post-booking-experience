@@ -27,7 +27,7 @@ export const PAYMENT_CHOOSE_ASSETS = {
   document: asset("Document.svg"),
   /** Proforma card icon (dark stroke). */
   documentBlack: asset("Document_black.svg"),
-  /** Price-lock receipt / invoice icon. */
+  /** Booking amount receipt / invoice icon. */
   invoice: asset("Invoice.svg"),
   /** Proforma invoice document icon. */
   proformaInvoice: asset("Proforma Invoice.svg"),

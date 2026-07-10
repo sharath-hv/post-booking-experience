@@ -15,7 +15,7 @@ export type ProformaInvoiceCardProps = {
 };
 
 /**
- * Price-lock receipt / proforma invoice callout card.
+ * Booking amount receipt / proforma invoice callout card.
  */
 export function ProformaInvoiceCard({
   title = "Proforma Invoice",

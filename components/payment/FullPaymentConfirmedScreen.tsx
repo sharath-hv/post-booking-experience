@@ -42,7 +42,7 @@ export function FullPaymentConfirmedScreen() {
   const says = useMemo(
     () => [
       "Here's what you're paying, Sharath.",
-      `Your ₹10,000 lock already counts toward the price. ${PARTNER_DEALER_LABEL_CAPITALIZED} will call you to arrange the transfer. Pay the car amount directly to them.`,
+      `Your ₹10,000 booking amount already counts toward the price. ${PARTNER_DEALER_LABEL_CAPITALIZED} will call you to arrange the transfer. Pay the car amount directly to them.`,
     ],
     [],
   );
@@ -63,7 +63,7 @@ export function FullPaymentConfirmedScreen() {
             iconBgClassName="bg-[#f0f0f0]"
             rows={[
               {
-                label: "Price lock",
+                label: "Booking amount",
                 value: `− ${formatInr(BOOKING_AMOUNT_PAID_INR)}`,
                 tag: { text: "Paid ✓", variant: "green" },
               },
@@ -83,7 +83,6 @@ export function FullPaymentConfirmedScreen() {
           echo: "I've transferred the amount",
         },
       ]}
-      timeSkip={{ label: "After you've transferred the amount", href: VERIFICATION_HREF }}
       callLabel="Questions? I can call you"
       showMenu
     />

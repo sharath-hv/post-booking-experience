@@ -63,7 +63,7 @@ export function LoanSanctionedScreen() {
             title={`Approved by ${bank.name}`}
             rows={[
               { label: "Disburses to", value: PARTNER_DEALER_LABEL },
-              { label: "Price lock (already paid)", value: formatInr(BOOKING_AMOUNT_PAID_INR) },
+              { label: "Booking amount (already paid)", value: formatInr(BOOKING_AMOUNT_PAID_INR) },
             ]}
             note={`${bank.name} releases the remaining funds to ${PARTNER_DEALER_LABEL} once they confirm your down payment.`}
           />

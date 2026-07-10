@@ -147,7 +147,7 @@ function MockRazorpayPaymentPageContent() {
           ? isFullPayment
             ? "Full payment · incl. applicable taxes"
             : "Down payment · incl. applicable taxes"
-          : "Price lock amount · incl. applicable taxes",
+          : "Booking amount · incl. applicable taxes",
       isDownPaymentFromUrl: hasDownPaymentParam,
       isBookingLockCheckout,
       bookingLockDue,

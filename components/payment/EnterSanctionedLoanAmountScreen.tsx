@@ -73,7 +73,7 @@ export function EnterSanctionedLoanAmountScreen() {
 
   /** Straight to checkout — this screen already shows the full split. */
   const navigateToPayment = useCallback(() => {
-    // Net cash due now — the price identity already excludes lock + insurance.
+    // Net cash due now — the price identity already excludes booking amount + insurance.
     router.push(
       buildDownPaymentCheckoutHref(
         SELF_FINANCE_BANK_QUERY,
@@ -163,7 +163,7 @@ export function EnterSanctionedLoanAmountScreen() {
 
             <div className="flex items-start justify-between gap-3">
               <span className="min-w-0 max-w-[196px] text-sm font-normal leading-5 text-[#121212]">
-                Price lock (paid)
+                Booking amount (paid)
               </span>
               <span className="w-20 shrink-0 text-right text-sm font-medium leading-5 text-[#121212] tabular-nums">
                 − {formatInr(BOOKING_LOCK_AMOUNT_INR)}

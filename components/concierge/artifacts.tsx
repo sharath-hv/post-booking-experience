@@ -4,6 +4,7 @@ import Image, { type StaticImageData } from "next/image";
 import type { CSSProperties } from "react";
 
 import cretaCutout from "@/assets/Hyundai Creta.png";
+import ackoDriveWordmark from "@/assets/ACKO Drive wordmark.svg";
 import carIcon from "@/assets/Car.svg";
 import identityIcon from "@/assets/Identity.svg";
 import moneyRoundIcon from "@/assets/Money round.svg";
@@ -11,6 +12,11 @@ import newCarIcon from "@/assets/New car.svg";
 import phoneIcon from "@/assets/Phone.svg";
 import tickIcon from "@/assets/tick.svg";
 import { ShimmerInfoCard } from "@/components/ui/ShimmerInfoCard";
+import { BookingCarCardDetails } from "@/components/kyc/BookingCarCardDetails";
+import {
+  BOOKING_CAR_SUMMARY_PANEL_CLASS,
+  BookingCarSummaryCardVisualStage,
+} from "@/components/kyc/BookingCarSummaryCard";
 import { cn } from "@/lib/utils";
 
 const TICK_ICON_MASK_STYLE = {
@@ -105,33 +111,28 @@ export function AmountReceivedCard({
       </div>
       {rows?.length ? (
         <div className="border-t border-dashed border-[#e8e8e8] px-4 py-4">
-          {rows.map((row, i) => (
-            <div
-              key={row.label}
-              className={cn(
-                "flex items-center justify-between gap-3",
-                i > 0 && "border-t border-dashed border-[#efefef] pt-3",
-                i < rows.length - 1 && "pb-3",
-              )}
-            >
-              <span className="flex min-w-0 items-center gap-1.5 text-sm leading-5 text-[#4b4b4b]">
-                {row.label}
-                {row.tag ? (
-                  <span
-                    className={cn(
-                      "shrink-0 rounded-full px-2 py-0.5 text-[11px] font-medium leading-4",
-                      ROW_TAG_CLASS[row.tag.variant],
-                    )}
-                  >
-                    {row.tag.text}
-                  </span>
-                ) : null}
-              </span>
-              <span className="text-sm font-medium leading-5 text-[#121212] tabular-nums">
-                {row.value}
-              </span>
-            </div>
-          ))}
+          <div className="flex flex-col gap-3">
+            {rows.map((row) => (
+              <div key={row.label} className="flex items-center justify-between gap-3">
+                <span className="flex min-w-0 items-center gap-1.5 text-sm leading-5 text-[#4b4b4b]">
+                  {row.label}
+                  {row.tag ? (
+                    <span
+                      className={cn(
+                        "shrink-0 rounded-full px-2 py-0.5 text-[11px] font-medium leading-4",
+                        ROW_TAG_CLASS[row.tag.variant],
+                      )}
+                    >
+                      {row.tag.text}
+                    </span>
+                  ) : null}
+                </span>
+                <span className="text-sm font-medium leading-5 text-[#121212] tabular-nums">
+                  {row.value}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
       ) : null}
       {note ? (
@@ -281,7 +282,7 @@ export function NoteCallout({ children }: NoteCalloutProps) {
 export type CarPriceBreakupCardProps = {
   /** The locked/promised price the four parts add up to. */
   totalInr: number;
-  /** Price-lock amount already paid. */
+  /** Booking amount already paid. */
   bookingPaidInr: number;
   /** Bank row — omitted for full payment. */
   disbursementLabel?: string;
@@ -293,7 +294,7 @@ export type CarPriceBreakupCardProps = {
 };
 
 /**
- * The price identity, visible: lock + disbursement + insurance + down payment
+ * The price identity, visible: booking amount + disbursement + insurance + down payment
  * = locked price. The bank's number is the bank's number; what's due now is
  * derived — and insurance explicitly waits until just before delivery (RTO).
  */
@@ -318,7 +319,7 @@ export function CarPriceBreakupCard({
       <div className="flex flex-col px-4 py-1">
         <div className="flex items-center justify-between gap-3 py-3">
           <span className="flex min-w-0 items-center gap-1.5 text-sm leading-5 text-[#4b4b4b]">
-            Price lock
+            Booking amount
             <span className="shrink-0 rounded-full bg-[#e7f6ee] px-2 py-0.5 text-[11px] font-medium leading-4 text-[#0c7a42]">
               Paid ✓
             </span>
@@ -380,25 +381,23 @@ export type NextStepCardProps = {
   /** Tight imperative — e.g. “Pick up my call”. */
   title: string;
   body: string;
-  /** Expectation row — e.g. “Expected today, before 6:00 PM”. */
-  etaLabel?: string;
 };
 
 /**
- * The user's single pending action. Action grammar: elevated white card with a
- * slow radar pulse on the node — something is coming for you. Stakes go in a
- * ShimmerInfoCard next to it, not in here.
+ * The user's single pending action. Action grammar: purple outline +
+ * lavender fill, with a slow radar pulse on the node — something is coming
+ * for you. Stakes go in a ShimmerInfoCard next to it, not in here.
  */
-export function NextStepCard({ title, body, etaLabel }: NextStepCardProps) {
+export function NextStepCard({ title, body }: NextStepCardProps) {
   return (
-    <div className="rounded-2xl bg-white card-elevated px-4 py-4">
-      <div className="flex items-start gap-3.5">
+    <div className="rounded-2xl border border-[#efe9fb] bg-[#f9f6ff] px-4 py-4">
+      <div className="flex items-center gap-3.5">
         <span className="relative flex h-9 w-9 shrink-0 items-center justify-center">
           <span
             aria-hidden
-            className="absolute inset-0 animate-ping rounded-full bg-[#0fa457]/20 [animation-duration:2.4s] motion-reduce:hidden"
+            className="absolute inset-0 animate-ping rounded-full bg-[#5920c5]/25 [animation-duration:2.4s] motion-reduce:hidden"
           />
-          <span className="relative flex h-9 w-9 items-center justify-center rounded-full bg-[#0fa457] text-white ring-4 ring-[#dcfce7]">
+          <span className="relative flex h-9 w-9 items-center justify-center rounded-full bg-[#5920c5] text-white ring-4 ring-[#efe9fb]">
             <Image
               src={phoneIcon}
               alt=""
@@ -413,9 +412,6 @@ export function NextStepCard({ title, body, etaLabel }: NextStepCardProps) {
         <div className="min-w-0">
           <p className="text-base font-semibold leading-6 text-[#121212]">{title}</p>
           <p className="mt-1 text-[13px] leading-[19px] text-[#757575]">{body}</p>
-          {etaLabel ? (
-            <p className="mt-1 text-[13px] leading-[19px] text-[#757575]">{etaLabel}</p>
-          ) : null}
         </div>
       </div>
     </div>
@@ -455,6 +451,17 @@ function statusChipLabel(chip: string) {
   return chip.replace(/\s*✓\s*$/, "").trim();
 }
 
+function deliveryIconPath(src?: StaticImageData | string) {
+  if (!src) return undefined;
+  return typeof src === "string" ? src : src.src;
+}
+
+/** ACKO Drive attribution row on CarSummaryCardLite — flip to restore. */
+const SHOW_CAR_SOURCE_HEADER = false;
+
+/** Match showroom backdrop floor — avoids pure white seam below the hero. */
+const CAR_SHOWROOM_FLOOR_CLASS = "bg-[#f0f0f0]";
+
 /** Compact car card — her find, your car. */
 export function CarSummaryCardLite({
   title,
@@ -472,147 +479,160 @@ export function CarSummaryCardLite({
   engineNo,
   chassisNo,
 }: CarSummaryCardLiteProps) {
-  const dealerLeads = hero === "dealer" && dealerName != null;
-  return (
-    <div className="overflow-hidden rounded-2xl bg-white card-elevated">
-      {dealerLeads ? (
-        <>
-          <div className="flex items-start gap-3 px-4 py-3.5">
-            <div className="min-w-0 flex-1">
-              <p className="text-sm font-medium leading-5 text-[#121212]">{dealerName}</p>
-              {dealerDetail ? (
-                <p className="mt-0.5 text-xs leading-[18px] text-[#757575]">{dealerDetail}</p>
-              ) : null}
-            </div>
-            <span className="inline-flex h-6 w-fit shrink-0 items-center gap-1 rounded-full bg-[#e7f6ee] px-2 text-[11px] font-medium leading-4 text-[#0c7a42]">
-              <span
-                aria-hidden
-                className="h-5 w-5 shrink-0 bg-[#0c7a42] [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center] [-webkit-mask-size:contain] [-webkit-mask-repeat:no-repeat] [-webkit-mask-position:center]"
-                style={TICK_ICON_MASK_STYLE}
-              />
-              Reserved
+  const showHeroLayout = dealerName != null;
+
+  if (!showHeroLayout) {
+    return (
+      <div className="overflow-hidden rounded-2xl bg-white card-elevated">
+        <div
+          className={cn(
+            "flex flex-col px-4",
+            statusChip ? "gap-1 pt-3.5 pb-3.5" : "gap-3 py-4"
+          )}
+        >
+          {statusChip ? (
+            <span
+              className={
+                statusChipVariant === "blue"
+                  ? "inline-flex h-6 w-fit items-center rounded-full bg-[#e8f0fe] px-2 py-1 text-[11px] font-medium leading-4 text-[#1a56db]"
+                  : "inline-flex h-6 w-fit items-center gap-1 rounded-full bg-[#e7f6ee] px-2 py-1 text-[11px] font-medium leading-4 text-[#0c7a42]"
+              }
+            >
+              {statusChipVariant === "blue" ? null : (
+                <span
+                  aria-hidden
+                  className="h-5 w-5 shrink-0 bg-[#0c7a42] [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center] [-webkit-mask-size:contain] [-webkit-mask-repeat:no-repeat] [-webkit-mask-position:center]"
+                  style={TICK_ICON_MASK_STYLE}
+                />
+              )}
+              {statusChipLabel(statusChip)}
             </span>
-          </div>
-          <div className="flex items-center gap-3 border-t border-[#f0f0f0] bg-white px-4 py-3">
-            <div className="relative h-[48px] w-[84px] shrink-0">
+          ) : null}
+          <div className="flex items-center gap-3">
+            <div className="min-w-0 flex-1">
+              <p className="text-base font-semibold leading-6 text-[#121212]">{title}</p>
+              <p className="mt-0.5 text-xs leading-[18px] text-[#757575]">
+                {variant} · {colour}
+              </p>
+            </div>
+            <div className="relative h-[64px] w-[110px] shrink-0">
               <Image
                 src={cretaCutout}
                 alt={title}
                 fill
                 className="object-contain"
                 unoptimized
-                sizes="84px"
+                sizes="110px"
               />
             </div>
-            <div className="min-w-0">
-              <p className="text-sm font-semibold leading-5 text-[#121212]">{title}</p>
-              <p className="mt-0.5 text-xs leading-[18px] text-[#757575]">
-                {variant} · {colour}
-              </p>
-            </div>
+          </div>
+        </div>
+        {engineNo || chassisNo ? (
+          <div className="border-t border-dashed border-[#e8e8e8] px-4 py-3">
+            {engineNo ? (
+              <div className="flex items-center justify-between gap-3 py-1">
+                <span className="text-sm leading-5 text-[#4b4b4b]">Engine no.</span>
+                <span className="text-sm font-medium leading-5 text-[#121212] tabular-nums">
+                  {engineNo}
+                </span>
+              </div>
+            ) : null}
+            {chassisNo ? (
+              <div className="flex items-center justify-between gap-3 py-1">
+                <span className="text-sm leading-5 text-[#4b4b4b]">Chassis no.</span>
+                <span className="text-sm font-medium leading-5 text-[#121212] tabular-nums">
+                  {chassisNo}
+                </span>
+              </div>
+            ) : null}
+          </div>
+        ) : null}
+        {deliveryLine ? (
+          <div
+            className={cn(
+              "flex items-center justify-center gap-1.5 border-t px-4 py-2",
+              deliveryStripClassName,
+              deliveryLineClassName
+            )}
+          >
+            {deliveryIconSrc ? (
+              <Image
+                src={deliveryIconSrc}
+                alt=""
+                width={14}
+                height={14}
+                className="h-3.5 w-3.5 shrink-0 object-contain"
+                unoptimized
+                aria-hidden
+              />
+            ) : (
+              <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden className="shrink-0">
+                <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z" fill="currentColor" />
+              </svg>
+            )}
+            <span className="text-xs font-medium leading-[18px]">{deliveryLine}</span>
+          </div>
+        ) : null}
+      </div>
+    );
+  }
+
+  const showVehicleIdentification = Boolean(engineNo && chassisNo);
+  const carDetails = (
+    <BookingCarCardDetails
+      carTitle={title}
+      carVariant={variant}
+      carColor={colour}
+      deliveryLine={deliveryLine}
+      deliveryTextClass={deliveryLineClassName}
+      deliveryIconSrc={deliveryIconPath(deliveryIconSrc)}
+      engineNo={engineNo}
+      chassisNo={chassisNo}
+    />
+  );
+
+  return (
+    <div className={cn("overflow-hidden rounded-2xl card-elevated", CAR_SHOWROOM_FLOOR_CLASS)}>
+      {SHOW_CAR_SOURCE_HEADER ? (
+        <div className="flex items-center gap-3 px-4 py-3">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#f5f5f5]">
+            <Image src={ackoDriveWordmark} alt="" width={20} height={15} className="h-[15px] w-5 object-contain" unoptimized />
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-medium leading-5 text-[#121212]">{dealerName}</p>
+            {dealerDetail ? (
+              <p className="mt-0.5 text-xs leading-[18px] text-[#757575]">{dealerDetail}</p>
+            ) : null}
+          </div>
+          <span
+            className={
+              statusChip && statusChipVariant === "blue"
+                ? "shrink-0 rounded-full bg-[#e8f0fe] px-2 py-0.5 text-[11px] font-medium leading-4 text-[#1a56db]"
+                : "shrink-0 rounded-full bg-[#e7f6ee] px-2 py-0.5 text-[11px] font-medium leading-4 text-[#0c7a42]"
+            }
+          >
+            {statusChip ? statusChipLabel(statusChip) : "Reserved"}
+          </span>
+        </div>
+      ) : null}
+
+      {showVehicleIdentification ? (
+        <>
+          <div className={cn("relative h-[228px] w-full", CAR_SHOWROOM_FLOOR_CLASS)}>
+            <BookingCarSummaryCardVisualStage />
+          </div>
+          <div className={`relative z-10 mx-2 -mt-24 mb-2 ${BOOKING_CAR_SUMMARY_PANEL_CLASS}`}>
+            {carDetails}
           </div>
         </>
       ) : (
-        <>
-          <div
-            className={cn(
-              "flex flex-col px-4",
-              statusChip ? "gap-1 pt-3.5 pb-3.5" : "gap-3 py-3.5"
-            )}
-          >
-            {statusChip ? (
-              <span
-                className={
-                  statusChipVariant === "blue"
-                    ? "inline-flex h-6 w-fit items-center rounded-full bg-[#e8f0fe] px-2 py-1 text-[11px] font-medium leading-4 text-[#1a56db]"
-                    : "inline-flex h-6 w-fit items-center gap-1 rounded-full bg-[#e7f6ee] px-2 py-1 text-[11px] font-medium leading-4 text-[#0c7a42]"
-                }
-              >
-                {statusChipVariant === "blue" ? null : (
-                  <span
-                    aria-hidden
-                    className="h-5 w-5 shrink-0 bg-[#0c7a42] [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center] [-webkit-mask-size:contain] [-webkit-mask-repeat:no-repeat] [-webkit-mask-position:center]"
-                    style={TICK_ICON_MASK_STYLE}
-                  />
-                )}
-                {statusChipLabel(statusChip)}
-              </span>
-            ) : null}
-            <div className="flex items-center gap-3">
-              <div className="min-w-0 flex-1">
-                <p className="text-base font-semibold leading-6 text-[#121212]">{title}</p>
-                <p className="mt-0.5 text-xs leading-[18px] text-[#757575]">
-                  {variant} · {colour}
-                </p>
-              </div>
-              <div className="relative h-[64px] w-[110px] shrink-0">
-                <Image
-                  src={cretaCutout}
-                  alt={title}
-                  fill
-                  className="object-contain"
-                  unoptimized
-                  sizes="110px"
-                />
-              </div>
-            </div>
+        <div className={cn("relative h-[228px] w-full", CAR_SHOWROOM_FLOOR_CLASS)}>
+          <BookingCarSummaryCardVisualStage />
+          <div className={`absolute inset-x-2 bottom-2 ${BOOKING_CAR_SUMMARY_PANEL_CLASS}`}>
+            {carDetails}
           </div>
-          {dealerName ? (
-            <div className="flex flex-wrap items-baseline gap-x-1.5 border-t border-dashed border-[#ececec] px-4 py-2.5">
-              <span className="text-sm font-medium leading-5 text-[#121212]">{dealerName}</span>
-              {dealerDetail ? (
-                <span className="text-xs leading-[18px] text-[#757575]">· {dealerDetail}</span>
-              ) : null}
-            </div>
-          ) : null}
-        </>
+        </div>
       )}
-      {engineNo || chassisNo ? (
-        <div className="border-t border-dashed border-[#e8e8e8] px-4 py-3">
-          {engineNo ? (
-            <div className="flex items-center justify-between gap-3 py-1">
-              <span className="text-sm leading-5 text-[#4b4b4b]">Engine no.</span>
-              <span className="text-sm font-medium leading-5 text-[#121212] tabular-nums">
-                {engineNo}
-              </span>
-            </div>
-          ) : null}
-          {chassisNo ? (
-            <div className="flex items-center justify-between gap-3 py-1">
-              <span className="text-sm leading-5 text-[#4b4b4b]">Chassis no.</span>
-              <span className="text-sm font-medium leading-5 text-[#121212] tabular-nums">
-                {chassisNo}
-              </span>
-            </div>
-          ) : null}
-        </div>
-      ) : null}
-      {deliveryLine ? (
-        <div
-          className={cn(
-            "flex items-center justify-center gap-1.5 border-t px-4 py-2",
-            deliveryStripClassName,
-            deliveryLineClassName
-          )}
-        >
-          {deliveryIconSrc ? (
-            <Image
-              src={deliveryIconSrc}
-              alt=""
-              width={14}
-              height={14}
-              className="h-3.5 w-3.5 shrink-0 object-contain"
-              unoptimized
-              aria-hidden
-            />
-          ) : (
-            <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden className="shrink-0">
-              <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z" fill="currentColor" />
-            </svg>
-          )}
-          <span className="text-xs font-medium leading-[18px]">{deliveryLine}</span>
-        </div>
-      ) : null}
     </div>
   );
 }

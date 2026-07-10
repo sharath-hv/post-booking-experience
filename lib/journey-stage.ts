@@ -114,7 +114,7 @@ export type JourneyReceipt = {
 export function getJourneyReceipts(pathname: string): JourneyReceipt[] {
   const stage = resolveJourneyStageIndex(pathname);
   const receipts: JourneyReceipt[] = [
-    { title: "Price-lock receipt", meta: "₹10,000 · paid" },
+    { title: "Booking amount receipt", meta: "₹10,000 · paid" },
   ];
   if (stage >= 2) {
     receipts.push(

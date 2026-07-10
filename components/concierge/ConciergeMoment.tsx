@@ -75,7 +75,7 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
   const searchParams = useSearchParams();
   const [flow, setFlow] = useState<ExperienceFlow>(DEFAULT_EXPERIENCE_FLOW);
   const [flowReady, setFlowReady] = useState(false);
-  /** Arrival only — the price-lock payment settles while Shivi talks. */
+  /** Arrival only — the booking amount payment settles while Shivi talks. */
   const [arrivalPaid, setArrivalPaid] = useState(false);
 
   useEffect(() => {
@@ -290,7 +290,7 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
               />
               <NextStepCard
                 title="Confirm with a one-time code"
-                body="Our partner will call you shortly. Share the OTP with them, this is how Hyundai registers the Creta in your name. Expected today, before 6:00 PM."
+                body="Our partner will call you shortly. Share the OTP with them."
               />
               <p className="px-1 text-xs leading-[18px] text-[#757575]">
                 <span className="font-semibold">Having second thoughts?</span> A change costs ₹5,000 and

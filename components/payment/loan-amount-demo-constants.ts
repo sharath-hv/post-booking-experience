@@ -13,12 +13,12 @@ export const DEFAULT_TENURE_MONTHS = 60;
 /** Insurance portion of full / down payment — Figma 2331:10371 (aligned with enter-sanctioned screen). */
 export const FULL_PAYMENT_INSURANCE_INR = 37_000;
 
-/** Price-lock amount already paid at the start of the journey. */
+/** Booking amount already paid at the start of the journey. */
 export const BOOKING_AMOUNT_PAID_INR = 10_000;
 
 /**
  * THE PRICE IDENTITY (business rule):
- * price lock + bank disbursement + insurance + down payment = promised price.
+ * booking amount + bank disbursement + insurance + down payment = promised price.
  * The bank's disbursement is the bank's decision — never a slider; the down
  * payment is DERIVED from this identity, not chosen.
  */

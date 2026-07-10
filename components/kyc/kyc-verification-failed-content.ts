@@ -8,7 +8,7 @@ export type KycVerificationFailureReason =
   | "address_mismatch";
 
 export const KYC_VERIFICATION_FAILED_CTA_WARNING =
-  "1 attempt left — fix this now and your price lock and delivery date stay safe";
+  "1 attempt left — fix this now and your booking amount and delivery date stay safe";
 
 export type KycVerificationFailedCopy = {
   /** Short label for the on-screen reason switcher. */

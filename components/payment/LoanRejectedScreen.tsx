@@ -127,7 +127,7 @@ export function LoanRejectedScreen() {
             echo: null,
           },
         ]}
-        footnote="Your price lock and delivery date are untouched. The switch costs nothing."
+        footnote="Your booking amount and delivery date are untouched. The switch costs nothing."
         callLabel="Rather talk it through? I can call you"
       />
       <BankSelectionBottomSheet
