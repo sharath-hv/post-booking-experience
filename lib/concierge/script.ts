@@ -1,4 +1,5 @@
 import type { ExperienceFlow } from "@/lib/experience-flow";
+import { isStandardDeliveryFlow } from "@/lib/experience-flow-content";
 import { getDeliveryDateFull, getDeliveryDateShort } from "@/lib/journey-stage";
 
 /**
@@ -15,8 +16,9 @@ import { getDeliveryDateFull, getDeliveryDateShort } from "@/lib/journey-stage";
  *   dates with event anchors ("Wed 23 Apr · after the dealer's call") — never
  *   journey bookkeeping like "Day 1"; omit them when no time has passed.
  *   Day-boundary turns greet the return ("Morning, Sharath —", "Welcome back —").
- * - Never the word "booking". The user paid, the price is locked, a car is
- *   being found, money gets sorted, the car arrives.
+ * - Never the word "booking". Express: the user paid and the price is locked.
+ *   Standard: the booking amount is in and the car goes into the queue. Money
+ *   gets sorted, the car arrives.
  */
 
 export type ConciergeMomentId =
@@ -79,21 +81,58 @@ export const VERIFY_IDENTITY_WORDS: TurnWords = {
   callLabel: "Stuck? I can call you",
 };
 
+const EXPRESS_ARRIVAL: TurnWords = {
+  says: [
+    "Hi Sharath, I'm Shivi. Your payment is in and your price is locked.",
+    "You're almost there. One short paperwork step comes next, then I can lock in your delivery date.",
+    "Here's how the next few days look",
+  ],
+  replyLabel: "Let's do the paper work",
+  replyEcho: "Let's do the paper work",
+  footnote: "Worth doing now, so your booking amount and delivery date hold.",
+};
+
+const STANDARD_ARRIVAL: TurnWords = {
+  says: [
+    "Hi Sharath, I'm Shivi. Your booking amount is in.",
+    "You're almost there. One short paperwork step comes next — then I'll get your Creta into the queue.",
+    "Here's what happens next",
+  ],
+  replyLabel: "Let's do the paper work",
+  replyEcho: "Let's do the paper work",
+  footnote: "Worth doing now, so nothing slows down your delivery.",
+};
+
 /** Arrival lead — identical before and after payment so the headline never reflows. */
-export const ARRIVAL_LEAD_PAID =
-  "Hi Sharath, I'm Shivi. Your payment is in and your price is locked.";
+export function getArrivalLeadPaid(flow: ExperienceFlow): string {
+  return (isStandardDeliveryFlow(flow) ? STANDARD_ARRIVAL : EXPRESS_ARRIVAL).says[0]!;
+}
+
+/**
+ * Standard-only — unlike express, every nearby dealer already knows the car is
+ * headed into the manufacturing queue either way, so there's no "who can
+ * deliver soonest" race and no overnight suspense. Resolves live, in-session.
+ */
+const STANDARD_DEALER_SEARCH: TurnWords = {
+  says: [
+    "That's the paperwork done, Sharath.",
+    "I'm lining up a dealer partner for your exact Creta, the 1.5 X-Line AT in Starry Night. This won't take long.",
+  ],
+  workingLines: [
+    "Checking nearby partners",
+    "Assigning your Creta to one",
+  ],
+  workingDoneLabel: "Partner assigned for your Creta.",
+  replyLabel: "What's next?",
+  replyEcho: "What's next?",
+  callLabel: "Questions? I can call you",
+  footnoteLead: "A quick heads-up:",
+  footnote:
+    "Changes and cancellation are free until I lock in a dealer. After that, a change costs ₹5,000 and cancelling holds back half of what you've paid.",
+};
 
 const EXPRESS_SCRIPT: Record<ConciergeMomentId, TurnWords> = {
-  arrival: {
-    says: [
-      "Hi Sharath, I'm Shivi. Your payment is in and your price is locked.",
-      "You're almost there. One short paperwork step comes next, then I can lock in your delivery date.",
-      "Here's how the next few days look",
-    ],
-    replyLabel: "Let's do the paper work",
-    replyEcho: "Let's do the paper work",
-    footnote: "Worth doing now, so your booking amount and delivery date hold.",
-  },
+  arrival: EXPRESS_ARRIVAL,
 
   documentsReceived: {
     says: [
@@ -177,12 +216,11 @@ const EXPRESS_SCRIPT: Record<ConciergeMomentId, TurnWords> = {
   /** Standard-only in practice — express never routes here (see `dealerFound`'s time-skip). */
   allocationPending: {
     says: [
-      "Your code checked out, Sharath. This Creta is confirmed.",
-      "Our partner's opened it on Hyundai's system, and your exact Creta now goes into manufacturing. Nothing needed from you until it's built.",
+      "Your code checked out, Sharath.",
+      "This Creta is confirmed. Our partner's opened it on Hyundai's system, and your exact Creta now goes into manufacturing. Nothing needed from you until it's built.",
     ],
     workingLines: [
       "Confirmed with our partner on Hyundai's system",
-      "Manufacturing slot scheduled",
       "Building your Creta, fresh off the line",
     ],
     workingMode: "ongoing",
@@ -221,8 +259,14 @@ function allocationPendingEta(flow: ExperienceFlow): string {
   return `Estimated by ${getDeliveryDateFull(flow)}`;
 }
 
-/** Words for a turn — express and standard share the same copy; only date call-outs differ. */
+/** Words for a turn — most moments share copy; flow-specific overrides live here. */
 export function getTurnWords(moment: ConciergeMomentId, flow: ExperienceFlow): TurnWords {
+  if (moment === "arrival") {
+    return isStandardDeliveryFlow(flow) ? STANDARD_ARRIVAL : EXPRESS_ARRIVAL;
+  }
+  if (moment === "dealerSearch" && isStandardDeliveryFlow(flow)) {
+    return STANDARD_DEALER_SEARCH;
+  }
   const base = EXPRESS_SCRIPT[moment];
   if (moment === "moneyIntro") {
     return { ...base, footnote: moneyIntroFootnote(flow) };

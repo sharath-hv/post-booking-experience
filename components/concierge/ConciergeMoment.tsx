@@ -24,7 +24,7 @@ import {
 } from "@/components/kyc/demo-vehicle-identification";
 import { PaymentSummaryCard } from "@/components/payment/PaymentSummaryCard";
 import { readActiveBookingSnapshot } from "@/lib/active-booking-snapshot";
-import { ARRIVAL_LEAD_PAID, getTurnWords, type ConciergeMomentId } from "@/lib/concierge/script";
+import { getArrivalLeadPaid, getTurnWords, type ConciergeMomentId } from "@/lib/concierge/script";
 import {
   DEFAULT_EXPERIENCE_FLOW,
   isCancelNoChargesFlow,
@@ -137,8 +137,10 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
           },
           {
             icon: "car",
-            title: "I find your exact car",
-            detail: "Your variant and colour, reserved in your name with a dealer.",
+            title: isStandardDeliveryFlow(flow) ? "Your exact car gets built" : "I find your exact car",
+            detail: isStandardDeliveryFlow(flow)
+              ? "Your variant and colour, built fresh and assigned to you."
+              : "Your variant and colour, reserved in your name with a dealer.",
           },
           {
             icon: "money",
@@ -153,7 +155,7 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
         ];
         return {
           ...base,
-          says: arrivalPaid ? [ARRIVAL_LEAD_PAID, ...base.says.slice(1)] : base.says,
+          says: arrivalPaid ? [getArrivalLeadPaid(flow), ...base.says.slice(1)] : base.says,
           hideBack: true,
           afterLead: (
             <AmountReceivedCard
@@ -286,6 +288,9 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
           ...base,
           working,
           footnoteInline: true,
+          // Standard resolves live (any nearby dealer works, no overnight wait), so it
+          // gets a reply button instead of the express-only "Next morning" time-skip.
+          replies: primaryReply(JOURNEY_PATHS.kyc.bookingAccepted),
           timeSkip: words.timeSkipLabel
             ? { label: words.timeSkipLabel, href: JOURNEY_PATHS.kyc.bookingAccepted }
             : undefined,
@@ -374,6 +379,7 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
               dealerDetail={CAR_SOURCE_DETAIL}
             />
           ),
+          workingBeforeArtifact: true,
           working,
           timeSkip: words.timeSkipLabel
             ? { label: words.timeSkipLabel, href: JOURNEY_PATHS.carAllocation.confirmed }

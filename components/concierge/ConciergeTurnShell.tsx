@@ -48,6 +48,8 @@ export type ConciergeTurn = {
   headingLastLine?: boolean;
   /** What she hands you — card(s) below her words. */
   artifact?: ReactNode;
+  /** Render the working narration above the artifact instead of below it (e.g. a status card ahead of the car card). */
+  workingBeforeArtifact?: boolean;
   /** Her visible activity for working turns. */
   working?: {
     lines: readonly string[];
@@ -279,6 +281,7 @@ export function ConciergeTurnShell({
   afterBody,
   headingLastLine,
   artifact,
+  workingBeforeArtifact = false,
   working,
   replies,
   timeSkip,
@@ -409,36 +412,57 @@ export function ConciergeTurnShell({
           onComplete={() => setDialogueDone(true)}
         />
 
-        {contentShown && (artifact || children) ? (
-          <div className={cn("kyc-stagger flex flex-col gap-2", headingLastLine ? "mt-4" : "mt-8")}>
-            {artifact}
-            {children}
-          </div>
-        ) : null}
-
-        {working || (footnote && footnoteInline && ready) ? (
-          <div className="mt-8 flex flex-col gap-6">
-            {working ? (
-              <WorkingNarration
-                lines={working.lines}
-                mode={working.mode}
-                doneLabel={working.doneLabel}
-                doneTone={working.doneTone}
-                etaLabel={working.etaLabel}
-                ongoingDoneCount={working.doneCount}
-                startWhen={contentShown}
-                onAllDone={() => setReady(true)}
-              />
-            ) : null}
-            {footnote && footnoteInline && ready ? (
-              <div className="kyc-stagger">
-                <ShimmerInfoCard icon="info" lead={footnoteLead}>
-                  {footnote}
-                </ShimmerInfoCard>
+        {(() => {
+          const artifactBlock =
+            contentShown && (artifact || children) ? (
+              <div
+                className={cn(
+                  "kyc-stagger flex flex-col gap-2",
+                  headingLastLine ? "mt-4" : workingBeforeArtifact ? "mt-5" : "mt-8"
+                )}
+              >
+                {artifact}
+                {children}
               </div>
-            ) : null}
-          </div>
-        ) : null}
+            ) : null;
+
+          const workingBlock =
+            working || (footnote && footnoteInline && ready) ? (
+              <div className="mt-8 flex flex-col gap-6">
+                {working ? (
+                  <WorkingNarration
+                    lines={working.lines}
+                    mode={working.mode}
+                    doneLabel={working.doneLabel}
+                    doneTone={working.doneTone}
+                    etaLabel={working.etaLabel}
+                    ongoingDoneCount={working.doneCount}
+                    startWhen={contentShown}
+                    onAllDone={() => setReady(true)}
+                  />
+                ) : null}
+                {footnote && footnoteInline && ready ? (
+                  <div className="kyc-stagger">
+                    <ShimmerInfoCard icon="info" lead={footnoteLead}>
+                      {footnote}
+                    </ShimmerInfoCard>
+                  </div>
+                ) : null}
+              </div>
+            ) : null;
+
+          return workingBeforeArtifact ? (
+            <>
+              {workingBlock}
+              {artifactBlock}
+            </>
+          ) : (
+            <>
+              {artifactBlock}
+              {workingBlock}
+            </>
+          );
+        })()}
       </main>
       </div>
 
