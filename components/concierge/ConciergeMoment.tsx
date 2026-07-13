@@ -83,6 +83,19 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
     setFlowReady(true);
   }, []);
 
+  // kyc_failed (fresh submission, not a re-upload) skips the inline OCR-failure
+  // choice screen entirely — straight to manual review.
+  const shouldRedirectToManualVerification =
+    moment === "documentsReceived" &&
+    !searchParams.has("reason") &&
+    getKycVerificationNextHref() === KYC_VERIFICATION_FAILED_HREF;
+
+  useEffect(() => {
+    if (shouldRedirectToManualVerification) {
+      router.replace(JOURNEY_PATHS.kyc.manualVerification);
+    }
+  }, [shouldRedirectToManualVerification, router]);
+
   const words = useMemo(() => getTurnWords(moment, flow), [moment, flow]);
 
   /** Car details — honour an updated selection from the modify flows. */
@@ -172,12 +185,12 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
       }
 
       case "documentsReceived": {
-        // OCR verifies in-session — no queue screen. Failure surfaces right here;
+        // OCR verifies in-session — no queue screen. kyc_failed (fresh submission)
+        // redirects to manual review before this ever renders (see effect above);
         // the cancel-no-charges demo still parks on the holding turn.
         // Reset the retry counter on every fresh submission so demo reruns don't
         // accidentally exhaust retries from a previous session.
         resetKycVerificationFailureCount();
-        const failed = getKycVerificationNextHref() === KYC_VERIFICATION_FAILED_HREF;
 
         // Tailor dialogue + working lines to whichever doc(s) were (re-)submitted.
         const reuploadReason = resolveKycVerificationFailureReason(searchParams.get("reason"));
@@ -209,33 +222,8 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
         return {
           ...base,
           ...(overrideSays ? { says: overrideSays } : {}),
-          working:
-            workingWithOverride && failed && !isReupload
-              ? {
-                  ...workingWithOverride,
-                  doneLabel: "One detail needs a second look",
-                  doneTone: "warning",
-                }
-              : workingWithOverride,
-          replies: failed && !isReupload
-            ? [
-                {
-                  label: "Show me what's wrong",
-                  echo: "Show me what's wrong",
-                  onClick: () => {
-                    recordKycVerificationFailure();
-                    router.push(KYC_VERIFICATION_FAILED_HREF);
-                  },
-                },
-              ]
-            : primaryReply(nextHref),
-          altTimeSkip:
-            failed && !isReupload
-              ? {
-                  label: "If manual review is needed",
-                  href: JOURNEY_PATHS.kyc.manualVerification,
-                }
-              : undefined,
+          working: workingWithOverride,
+          replies: primaryReply(nextHref),
         };
       }
 
@@ -253,7 +241,11 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
           dateHolder: "shivi",
           working: manualWorking,
           timeSkip: words.timeSkipLabel
-            ? { label: words.timeSkipLabel, href: JOURNEY_PATHS.kyc.processing }
+            ? {
+                label: words.timeSkipLabel,
+                href: KYC_VERIFICATION_FAILED_HREF,
+                onBeforeNavigate: recordKycVerificationFailure,
+              }
             : undefined,
         };
       }
@@ -418,7 +410,9 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
           replies: primaryReply(JOURNEY_PATHS.payment.choose),
         };
     }
-  }, [moment, words, flow, car, deliveryLine, deliveryLineClass, deliveryStripClass, deliveryIconSrc, arrivalPaid, router, searchParams]);
+  }, [moment, words, flow, car, deliveryLine, deliveryLineClass, deliveryStripClass, deliveryIconSrc, arrivalPaid, searchParams]);
+
+  if (shouldRedirectToManualVerification) return null;
 
   const { hideBack, ...turnProps } = turn;
 
