@@ -10,7 +10,7 @@ import {
   FULL_PAYMENT_INSURANCE_INR,
   SELF_FINANCE_LOAN_DEFAULT_INR,
 } from "@/components/payment/loan-amount-demo-constants";
-import { PARTNER_DEALER_LABEL } from "@/lib/dealer-attribution-content";
+import { PARTNER_DEALER_LABEL, PARTNER_DEALER_LABEL_CAPITALIZED } from "@/lib/dealer-attribution-content";
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -60,7 +60,7 @@ export function SelfFinanceTransferVerificationScreen() {
             title="Bank transfer - verifying with dealer"
             status="processing"
             rows={[
-              { label: "Sent to", value: PARTNER_DEALER_LABEL },
+              { label: "Sent to", value: PARTNER_DEALER_LABEL_CAPITALIZED },
             ]}
             note="Confirmation typically takes 1-2 business days."
           />

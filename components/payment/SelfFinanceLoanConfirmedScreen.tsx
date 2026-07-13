@@ -7,7 +7,7 @@ import { AmountReceivedCard, NextStepCard } from "@/components/concierge/artifac
 import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
 import { SELF_FINANCE_LOAN_DEFAULT_INR } from "@/components/payment/loan-amount-demo-constants";
 import { buildMarginMoneySlipActionHref } from "@/lib/paymentUrls";
-import { PARTNER_DEALER_LABEL } from "@/lib/dealer-attribution-content";
+import { PARTNER_DEALER_LABEL, PARTNER_DEALER_LABEL_CAPITALIZED } from "@/lib/dealer-attribution-content";
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -60,7 +60,7 @@ export function SelfFinanceLoanConfirmedScreen() {
             amountInr={loanAmountInr}
             title="Loan amount confirmed"
             rows={[
-              { label: "Shared with", value: PARTNER_DEALER_LABEL },
+              { label: "Shared with", value: PARTNER_DEALER_LABEL_CAPITALIZED },
             ]}
           />
         </div>

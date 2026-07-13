@@ -13,7 +13,7 @@ import {
   FULL_PAYMENT_INSURANCE_INR,
 } from "@/components/payment/loan-amount-demo-constants";
 import { buildPayInsurancePremiumHref } from "@/lib/paymentUrls";
-import { PARTNER_DEALER_LABEL } from "@/lib/dealer-attribution-content";
+import { PARTNER_DEALER_LABEL, PARTNER_DEALER_LABEL_CAPITALIZED } from "@/lib/dealer-attribution-content";
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -81,8 +81,9 @@ export function LoanDisbursementReceivedScreen({
             amountInr={disbursedAmountInr}
             title={`Disbursed by ${bank.name}`}
             status="received"
+            variant="glass"
             rows={[
-              { label: "Transferred to", value: PARTNER_DEALER_LABEL },
+              { label: "Transferred to", value: PARTNER_DEALER_LABEL_CAPITALIZED },
               { label: "Transaction ID", value: transactionId },
             ]}
             note="Funds are with the dealer. Delivery prep is now underway."

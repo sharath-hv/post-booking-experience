@@ -1,5 +1,5 @@
 import type { ExperienceFlow } from "@/lib/experience-flow";
-import { getDeliveryDateShort } from "@/lib/journey-stage";
+import { getDeliveryDateFull, getDeliveryDateShort } from "@/lib/journey-stage";
 
 /**
  * Shivi's script — every word she says on the converted journey, in one place.
@@ -168,42 +168,43 @@ const EXPRESS_SCRIPT: Record<ConciergeMomentId, TurnWords> = {
   carReserved: {
     says: [
       "Your code checked out, Sharath. This Creta is yours.",
-      "Its engine and chassis numbers are on the card below. Next, let's sort the payment — the last big thing between you and your delivery date.",
+      "Its engine and chassis numbers are on the card below. Next, let's sort the payment, the last big thing between you and your delivery date.",
     ],
     replyLabel: "Start the payment",
     replyEcho: "Let's start the payment",
   },
 
+  /** Standard-only in practice — express never routes here (see `dealerFound`'s time-skip). */
   allocationPending: {
     says: [
-      "Picking your exact unit.",
-      "I'm sourcing the newest manufacture date in stock for you. Units get assigned through the day. Nothing needed from you. The moment yours is locked, the engine and chassis numbers are yours.",
+      "Your code checked out, Sharath. This Creta is confirmed.",
+      "Our partner's opened it on Hyundai's system, and your exact Creta now goes into manufacturing. Nothing needed from you until it's built.",
     ],
     workingLines: [
-      "Sourcing request placed",
-      "Reviewing incoming stock and manufacture dates…",
-      "Your unit gets assigned. Engine & chassis in your name",
+      "Confirmed with our partner on Hyundai's system",
+      "Manufacturing slot scheduled",
+      "Building your Creta, fresh off the line",
     ],
     workingMode: "ongoing",
     workingDoneCount: 1,
-    workingEtaLabel: "Expect the assignment by this evening",
-    timeSkipLabel: "Later that day",
-    callLabel: "Questions while you wait? I can call you",
+    timeSkipLabel: "A few months later",
+    callLabel: "Questions while it's built? I can call you",
   },
 
+  /** Standard-only in practice — the manufacturing reveal, mirrors `carReserved`'s payment hand-off. */
   allocationDone: {
     says: [
-      "This one's yours, Sharath.",
-      "I heard back this evening. A fresh unit, newest manufacture date in stock, is now yours. Engine and chassis below.",
+      "Your Creta is built, Sharath.",
+      "Fresh off the line. Its engine and chassis numbers are on the card below. Next, let's sort the payment, the last big thing between you and your delivery date.",
     ],
-    replyLabel: "What's next?",
-    replyEcho: "What's next?",
+    replyLabel: "Start the payment",
+    replyEcho: "Let's start the payment",
   },
 
   moneyIntro: {
     says: [
       "Morning, Sharath. Let's sort out the payment.",
-      "₹13,63,780 is left to pay on your Creta. You can finance it through me, at rates I've already negotiated with five banks, or arrange it yourself. Whichever you prefer.",
+      "₹13,63,780 is left to pay on your Creta. You can finance it through me, or arrange it yourself. Whichever you prefer.",
     ],
     replyLabel: "Show me my options",
     replyEcho: "Show me my options",
@@ -216,11 +217,18 @@ function moneyIntroFootnote(flow: ExperienceFlow): string {
   return `Your ${date} delivery holds once payment is set up. Every day this waits moves it back.`;
 }
 
+function allocationPendingEta(flow: ExperienceFlow): string {
+  return `Estimated by ${getDeliveryDateFull(flow)}`;
+}
+
 /** Words for a turn — express and standard share the same copy; only date call-outs differ. */
 export function getTurnWords(moment: ConciergeMomentId, flow: ExperienceFlow): TurnWords {
   const base = EXPRESS_SCRIPT[moment];
   if (moment === "moneyIntro") {
     return { ...base, footnote: moneyIntroFootnote(flow) };
+  }
+  if (moment === "allocationPending") {
+    return { ...base, workingEtaLabel: allocationPendingEta(flow) };
   }
   return base;
 }

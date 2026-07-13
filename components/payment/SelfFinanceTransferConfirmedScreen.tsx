@@ -68,7 +68,7 @@ export function SelfFinanceTransferConfirmedScreen() {
             title={`Received by ${PARTNER_DEALER_LABEL}`}
             status="received"
             rows={[
-              { label: "Transferred to", value: PARTNER_DEALER_LABEL },
+              { label: "Transferred to", value: PARTNER_DEALER_LABEL_CAPITALIZED },
             ]}
             note="Funds are with the dealer. Delivery prep is now underway."
           />

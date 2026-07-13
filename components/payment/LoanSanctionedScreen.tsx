@@ -53,7 +53,7 @@ export function LoanSanctionedScreen() {
     <ConciergeTurnShell
       says={says}
       artifact={
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-4">
           <NextStepCard
             title={`Watch for ${PARTNER_DEALER_LABEL}'s call`}
             body="Pick up their call. They'll share the payment details so you can pay them directly."
@@ -61,11 +61,16 @@ export function LoanSanctionedScreen() {
           <AmountReceivedCard
             amountInr={BANK_DISBURSEMENT_INR}
             title={`Approved by ${bank.name}`}
+            variant="glass"
             rows={[
-              { label: "Disburses to", value: PARTNER_DEALER_LABEL },
-              { label: "Booking amount (already paid)", value: formatInr(BOOKING_AMOUNT_PAID_INR) },
+              { label: "Disburses to", value: PARTNER_DEALER_LABEL_CAPITALIZED },
+              {
+                label: "Booking amount",
+                value: `− ${formatInr(BOOKING_AMOUNT_PAID_INR)}`,
+                tag: { text: "Paid", variant: "green" },
+              },
             ]}
-            note={`${bank.name} releases the remaining funds to ${PARTNER_DEALER_LABEL} once they confirm your down payment.`}
+            note={`${bank.name} releases the remaining funds to ${PARTNER_DEALER_LABEL_CAPITALIZED} once they confirm your down payment.`}
           />
         </div>
       }

@@ -17,7 +17,7 @@ import { BOOKING_LOCK_AMOUNT_INR } from "@/lib/paymentUrls";
 import { cn } from "@/lib/utils";
 
 import bookingCancelledIllustration from "@/assets/Booking cancelled.svg";
-import carDeliveryIllustration from "@/assets/Car delivery.svg";
+import standardDeliveryIllustration from "@/assets/standard delivery.svg";
 import changeCarIllustration from "@/assets/Change car.svg";
 import radioOffIcon from "@/assets/Radio button off.svg";
 import clockIcon from "@/assets/Time.svg";
@@ -163,7 +163,7 @@ export function ConciergeAllocationFailedScreen() {
           <AllocationFailedOptionCard
             selected={choice === "standard_delivery"}
             onSelect={() => setChoice("standard_delivery")}
-            illustrationSrc={carDeliveryIllustration}
+            illustrationSrc={standardDeliveryIllustration}
             title="Wait for standard delivery"
             subtitle="The exact same Creta, same spec, sourced on the standard timeline instead of express."
             detailIcon={clockIcon}

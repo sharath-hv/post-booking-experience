@@ -72,9 +72,10 @@ export function LoanDealerDownPaymentConfirmedScreen() {
             amountInr={loanAmountInr}
             title={`${bank.name} disbursement · in progress`}
             status="processing"
+            variant="glass"
             rows={[
               { label: "Down payment confirmed", value: formatInr(downPaymentInr) },
-              { label: "Releasing to", value: PARTNER_DEALER_LABEL },
+              { label: "Releasing to", value: PARTNER_DEALER_LABEL_CAPITALIZED },
             ]}
             note="Typically completes within 1–2 business days."
           />

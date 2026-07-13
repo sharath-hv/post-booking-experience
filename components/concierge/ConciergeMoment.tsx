@@ -326,7 +326,12 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
             </div>
           ),
           timeSkip: words.timeSkipLabel
-            ? { label: words.timeSkipLabel, href: JOURNEY_PATHS.kyc.bookingConfirmed }
+            ? {
+                label: words.timeSkipLabel,
+                href: isStandardDeliveryFlow(flow)
+                  ? JOURNEY_PATHS.carAllocation.pending
+                  : JOURNEY_PATHS.kyc.bookingConfirmed,
+              }
             : undefined,
         };
       }
@@ -356,6 +361,19 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
       case "allocationPending":
         return {
           ...base,
+          artifact: (
+            <CarSummaryCardLite
+              title={car.title}
+              variant={car.variant}
+              colour={car.colour}
+              deliveryLine={deliveryLine}
+              deliveryLineClassName={deliveryLineClass}
+              deliveryStripClassName={deliveryStripClass}
+              deliveryIconSrc={deliveryIconSrc}
+              dealerName={CAR_SOURCE_NAME}
+              dealerDetail={CAR_SOURCE_DETAIL}
+            />
+          ),
           working,
           timeSkip: words.timeSkipLabel
             ? { label: words.timeSkipLabel, href: JOURNEY_PATHS.carAllocation.confirmed }

@@ -244,7 +244,7 @@ function OptionCard({
       </div>
 
       {/* How-it-works strip — always visible and cycling on every card. */}
-      <div className="mt-3 border-t border-dashed border-[#dcdbe1] pt-3">
+      <div className="mt-4 border-t border-dashed border-[#dcdbe1] pt-4">
         <FlowStrip steps={flow} bankLogosOnStep={flowBankLogosOnStep} />
       </div>
     </button>

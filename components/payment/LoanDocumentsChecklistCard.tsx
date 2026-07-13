@@ -144,7 +144,7 @@ export function LoanDocumentsChecklistCard() {
             aria-controls="loan-documents-checklist"
             onClick={() => setTab(option.id)}
             className={cn(
-              "h-8 flex-1 rounded-full text-xs font-medium leading-4 transition-colors",
+              "h-8 flex-1 rounded-full text-sm font-medium leading-4 transition-colors",
               tab === option.id
                 ? "bg-white text-[#121212] shadow-[0_1px_3px_rgba(0,0,0,0.1)]"
                 : "text-[#757575] hover:text-[#4b4b4b]"

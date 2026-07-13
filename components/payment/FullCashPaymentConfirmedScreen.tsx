@@ -63,7 +63,7 @@ export function FullCashPaymentConfirmedScreen() {
             amountInr={carAmountInr}
             title={`Received by ${PARTNER_DEALER_LABEL}`}
             status="received"
-            rows={[{ label: "Paid to", value: PARTNER_DEALER_LABEL }]}
+            rows={[{ label: "Paid to", value: PARTNER_DEALER_LABEL_CAPITALIZED }]}
           />
           <ShimmerInfoCard icon="info">
             <strong>One thing still ahead:</strong>{` your ${formatInr(FULL_PAYMENT_INSURANCE_INR)} insurance. The RTO won't register your car without a live policy, and I'll ask you at exactly the right moment.`}

@@ -4,12 +4,10 @@ import Image from "next/image";
 
 import {
   DOCUMENT_UPLOAD_CARD_TITLE_CLASS,
-  KYC_UPLOAD_ADD_MORE_COLOR,
 } from "@/components/kyc/kyc-upload-content";
 
 import deleteIcon from "@/assets/Delete.svg";
 import done01Icon from "@/assets/done 01.png";
-import squarePlusIcon from "@/assets/square-plus.svg";
 import uploadIcon from "@/assets/upload.svg";
 
 /** Figma 2506:17851 — gap from description to first upload row. */
@@ -107,20 +105,9 @@ export function DocumentUploadSection({
         <button
           type="button"
           onClick={handleAddMore}
-          className={`${UPLOAD_TO_ADD_MORE_GAP_CLASS} flex h-5 items-center gap-2 self-start p-0 text-sm font-medium leading-5 focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#1b73e8]/30 focus-visible:ring-offset-2`}
-          style={{ color: KYC_UPLOAD_ADD_MORE_COLOR }}
+          className={`${UPLOAD_TO_ADD_MORE_GAP_CLASS} self-start text-[13px] font-medium leading-[18px] text-[#1b73e8] focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#1b73e8]/30 focus-visible:ring-offset-2`}
         >
-          <span className="relative h-5 w-5 shrink-0">
-            <Image
-              src={squarePlusIcon}
-              alt=""
-              fill
-              className="object-contain"
-              unoptimized
-              sizes="20px"
-            />
-          </span>
-          <span>Add more</span>
+          + Add more
         </button>
       ) : null}
     </section>

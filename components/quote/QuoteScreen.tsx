@@ -13,7 +13,9 @@ import {
   type ExperienceFlow,
 } from "@/lib/experience-flow";
 import { resetChangePolicy } from "@/lib/change-policy";
+import { isStandardDeliveryFlow } from "@/lib/experience-flow-content";
 import { resetKycVerificationFailureCount } from "@/lib/kyc-verification-attempts";
+import { BOOKING_LOCK_AMOUNT_INR } from "@/lib/paymentUrls";
 import { QUOTE_ASSETS } from "./quote-assets";
 
 function MenuIconButton({ onClick }: { onClick: () => void }) {
@@ -67,6 +69,10 @@ export function QuoteScreen() {
     },
     [router],
   );
+
+  const bookingCtaLabel = isStandardDeliveryFlow(activeFlow)
+    ? `Book now at ₹${BOOKING_LOCK_AMOUNT_INR.toLocaleString("en-IN")}`
+    : `Lock this price at ₹${BOOKING_LOCK_AMOUNT_INR.toLocaleString("en-IN")}`;
 
   return (
     <div className="relative min-h-dvh bg-[#F7FAFF] pb-[140px]">
@@ -474,7 +480,7 @@ export function QuoteScreen() {
             onClick={() => router.push("/payment")}
             className="primary-cta focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/40"
           >
-            Lock this price at ₹10,000
+            {bookingCtaLabel}
           </button>
         </div>
       </div>

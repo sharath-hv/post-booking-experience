@@ -1,5 +1,6 @@
 import {
   getBookingDeliveryLine,
+  isStandardDeliveryFlow,
   splitBookingDeliveryLine,
 } from "@/lib/experience-flow-content";
 import type { ExperienceFlow } from "@/lib/experience-flow";
@@ -87,6 +88,13 @@ const STEP_COPY: readonly StepCopy[] = [
   },
 ] as const;
 
+/** "Your exact car" step, `now` state — standard sits in a months-long manufacturing wait, not an overnight dealer check. */
+function exactCarNowDetail(flow?: ExperienceFlow): string {
+  return isStandardDeliveryFlow(flow)
+    ? "Hyundai's manufacturing your exact car now"
+    : "Dealer news promised by tomorrow morning";
+}
+
 /** Timeline for the purchase-state layer, with the promise ledger in the details. */
 export function getJourneyStageSteps(
   pathname: string,
@@ -99,7 +107,7 @@ export function getJourneyStageSteps(
       status === "done"
         ? step.done
         : status === "now"
-          ? step.now
+          ? (idx === 1 ? exactCarNowDetail(flow) : step.now)
           : step.todo || getBookingDeliveryLine(flow);
     return { icon: step.icon, title: step.title, detail, status };
   });
