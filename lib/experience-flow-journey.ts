@@ -38,6 +38,7 @@ const MODIFY_NO_CHARGES_BLOCKED_PATHS = new Set<string>([
   JOURNEY_PATHS.kyc.documentsReceived,
   JOURNEY_PATHS.kyc.verificationInProgress,
   JOURNEY_PATHS.kyc.verificationFailed,
+  JOURNEY_PATHS.kyc.manualVerification,
   JOURNEY_PATHS.kyc.processing,
   JOURNEY_PATHS.kyc.bookingAccepted,
   JOURNEY_PATHS.kyc.bookingConfirmed,
@@ -48,6 +49,7 @@ const MODIFY_NO_CHARGES_BLOCKED_PATHS = new Set<string>([
 /** Paths beyond verification in progress that redirect in the cancel-no-charges demo flow. */
 const CANCEL_NO_CHARGES_BLOCKED_PATHS = new Set<string>([
   JOURNEY_PATHS.kyc.verificationFailed,
+  JOURNEY_PATHS.kyc.manualVerification,
   JOURNEY_PATHS.kyc.processing,
   JOURNEY_PATHS.kyc.bookingAccepted,
   JOURNEY_PATHS.kyc.bookingConfirmed,

@@ -22,6 +22,7 @@ import { getDeliveryDateShort } from "@/lib/journey-stage";
 export type ConciergeMomentId =
   | "arrival"
   | "documentsReceived"
+  | "manualVerification"
   | "verificationInProgress"
   | "dealerSearch"
   | "dealerFound"
@@ -87,7 +88,7 @@ const EXPRESS_SCRIPT: Record<ConciergeMomentId, TurnWords> = {
     says: [
       "Hi Sharath, I'm Shivi. Your payment is in and your price is locked.",
       "You're almost there. One short paperwork step comes next, then I can lock in your delivery date.",
-      "Here's how the next few days look:",
+      "Here's how the next few days look",
     ],
     replyLabel: "Let's do the paper work",
     replyEcho: "Let's do the paper work",
@@ -108,6 +109,22 @@ const EXPRESS_SCRIPT: Record<ConciergeMomentId, TurnWords> = {
     replyLabel: "What's next?",
     replyEcho: "What's next?",
     callLabel: "Questions? I can call you",
+  },
+
+  /** kyc_failed demo branch — OCR can't auto-resolve; a human reviews offline. */
+  manualVerification: {
+    says: [
+      "Got your documents, Sharath. I'm verifying them now.",
+      "This won't take long.",
+    ],
+    workingLines: [
+      "Reading your PAN",
+      "Matching your Aadhaar details",
+      "Checking your name and address",
+    ],
+    workingDoneLabel: "Taking a bit longer. I'll let you know when they're through.",
+    callLabel: "Questions while you wait? I can call you",
+    timeSkipLabel: "A little later",
   },
 
   /** Off the main path — the cancel-no-charges demo parks here (cancel via the ⋮ menu). */

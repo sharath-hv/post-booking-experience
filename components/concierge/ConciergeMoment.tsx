@@ -227,6 +227,32 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
                 },
               ]
             : primaryReply(nextHref),
+          altTimeSkip:
+            failed && !isReupload
+              ? {
+                  label: "If manual review is needed",
+                  href: JOURNEY_PATHS.kyc.manualVerification,
+                }
+              : undefined,
+        };
+      }
+
+      case "manualVerification": {
+        const manualWorking = words.workingLines
+          ? {
+              lines: words.workingLines,
+              doneLabel: words.workingDoneLabel,
+              doneTone: "warning" as const,
+            }
+          : undefined;
+
+        return {
+          ...base,
+          dateHolder: "shivi",
+          working: manualWorking,
+          timeSkip: words.timeSkipLabel
+            ? { label: words.timeSkipLabel, href: JOURNEY_PATHS.kyc.processing }
+            : undefined,
         };
       }
 

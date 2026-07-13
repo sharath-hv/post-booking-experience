@@ -9,6 +9,7 @@ export const JOURNEY_PATHS = {
     documentsReceived: "/kyc/documents-received",
     verificationInProgress: "/kyc/verification-in-progress",
     verificationFailed: "/kyc/verification-failed",
+    manualVerification: "/kyc/manual-verification",
     processing: "/kyc/processing",
     bookingConfirmed: "/kyc/booking-confirmed",
     bookingAccepted: "/kyc/booking-accepted",
@@ -52,6 +53,7 @@ const KYC_DOCUMENT_PATHS = new Set<string>([
   JOURNEY_PATHS.kyc.documentsReceived,
   JOURNEY_PATHS.kyc.verificationInProgress,
   JOURNEY_PATHS.kyc.verificationFailed,
+  JOURNEY_PATHS.kyc.manualVerification,
 ]);
 
 const BUYING_GUIDE_STEP_PATH = /^\/kyc\/buying-guide\/[1-3]$/;
