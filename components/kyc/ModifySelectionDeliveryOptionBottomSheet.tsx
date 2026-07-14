@@ -134,7 +134,7 @@ export function ModifySelectionDeliveryOptionBottomSheet({
               <button
                 type="button"
                 onClick={onClose}
-                className="cta-ghost -mr-1 flex size-10 shrink-0 items-center justify-center rounded-lg text-[#121212] focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/20 focus-visible:ring-offset-2"
+                className="cta-ghost -mr-1 -mt-1 flex size-10 shrink-0 items-center justify-center rounded-lg text-[#121212] focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/20 focus-visible:ring-offset-2"
                 aria-label="Close"
               >
                 <BottomSheetCloseIcon />

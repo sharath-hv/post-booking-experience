@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 
+import { modifySelectionSelectableCardClass } from "@/components/kyc/modify-selection-option-card-ui";
 import type { ModifySelectionCarBrandOption } from "@/lib/modify-selection-car-brands-content";
 import { cn } from "@/lib/utils";
 
@@ -25,8 +26,8 @@ export function ModifySelectionCarBrandCard({
       onClick={onSelect}
       aria-pressed={selected}
       className={cn(
-        "flex h-[88px] w-full flex-col items-center overflow-hidden rounded-xl border bg-white px-2 pb-2 pt-2 text-center transition-colors card-elevated",
-        selected ? "border-[#121212]" : "border-transparent",
+        "flex h-[88px] w-full flex-col items-center overflow-hidden rounded-2xl border bg-white px-2 pb-2 pt-2 text-center transition-[background-color,border-color,transform] active:scale-[0.96] motion-reduce:active:scale-100",
+        modifySelectionSelectableCardClass(selected),
       )}
     >
       <div className="flex h-12 w-[82px] shrink-0 items-center justify-center overflow-hidden rounded-lg bg-[#f5f5f5]">

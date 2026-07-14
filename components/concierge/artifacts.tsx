@@ -124,7 +124,7 @@ export function AmountReceivedCard({
         </div>
       </div>
       {rows?.length ? (
-        <div className="border-t border-dashed border-[#e8e8e8] px-4 py-4">
+        <div className="border-t border-dashed border-[#e0e0e0] px-4 py-4">
           <div className="flex flex-col gap-3">
             {rows.map((row) => (
               <div key={row.label} className="flex items-center justify-between gap-3">
@@ -150,7 +150,7 @@ export function AmountReceivedCard({
         </div>
       ) : null}
       {note ? (
-        <div className={cn("border-t border-[#f0f0f0] px-4 py-2.5", !isGlass && "bg-[#fafafa]")}>
+        <div className={cn("border-t border-[#e0e0e0] px-4 py-2.5", !isGlass && "bg-[#fafafa]")}>
           <p className="text-xs leading-[18px] text-[#757575]">{note}</p>
         </div>
       ) : null}

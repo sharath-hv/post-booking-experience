@@ -37,6 +37,8 @@ export type KycTopNavHeaderProps = {
   noSticky?: boolean;
   /** Override default `router.back()` for the back chevron. */
   onBack?: () => void;
+  /** Sticky fade matches page surface — modify-selection routes use white. */
+  surface?: "default" | "white";
   className?: string;
 };
 
@@ -52,6 +54,7 @@ export function KycTopNavHeader({
   inverted = false,
   noSticky = false,
   onBack,
+  surface = "default",
   className,
 }: KycTopNavHeaderProps = {}) {
   const router = useRouter();
@@ -82,8 +85,11 @@ export function KycTopNavHeader({
         <span
           aria-hidden
           className={cn(
-            "pointer-events-none absolute inset-x-0 top-0 -z-[1] h-[84px] bg-[linear-gradient(to_bottom,#F7FAFF_50%,rgba(247,250,255,0)_100%)] transition-opacity duration-200 ease-out",
-            transparent && !solidOnScroll ? "opacity-0" : "opacity-100"
+            "pointer-events-none absolute inset-x-0 top-0 -z-[1] h-[84px] transition-opacity duration-200 ease-out",
+            surface === "white"
+              ? "bg-[linear-gradient(to_bottom,#ffffff_50%,rgba(255,255,255,0)_100%)]"
+              : "bg-[linear-gradient(to_bottom,#F7FAFF_50%,rgba(247,250,255,0)_100%)]",
+            transparent && !solidOnScroll ? "opacity-0" : "opacity-100",
           )}
         />
       ) : null}

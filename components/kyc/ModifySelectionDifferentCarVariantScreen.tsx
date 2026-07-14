@@ -3,7 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { KycTopNavHeader } from "@/components/kyc/KycTopNavHeader";
+import { ModifySelectionPageHeading } from "@/components/kyc/ModifySelectionPageHeading";
+import { ModifySelectionScreenHeader } from "@/components/kyc/ModifySelectionScreenHeader";
 import { ModifySelectionVariantCard } from "@/components/kyc/ModifySelectionVariantCard";
 import { ModifySelectionVariantFilterChips } from "@/components/kyc/ModifySelectionVariantFilterChips";
 import {
@@ -14,7 +15,11 @@ import {
   getModifySelectionCarModelById,
   modifySelectionCarModelPath,
 } from "@/lib/modify-selection-car-models-content";
-import { modifySelectionDifferentCarVariantScreenTitle } from "@/lib/modify-selection-different-car-content";
+import {
+  modifySelectionDifferentCarVariantScreenTitle,
+  MODIFY_SELECTION_DIFFERENT_CAR_VARIANT_SCREEN_SUBLINE,
+} from "@/lib/modify-selection-different-car-content";
+import { MODIFY_SELECTION_PAGE_SHELL_CLASS } from "@/lib/modify-selection-content";
 import { modifySelectionDifferentCarColourPath } from "@/lib/modify-selection-different-car-paths";
 import { writeModifySelectionDifferentCarVariantChoice } from "@/lib/modify-selection-different-car-variant-choice";
 import {
@@ -29,6 +34,7 @@ import {
 
 const {
   title: STAGGER_TITLE_MS,
+  subtext: STAGGER_SUBTEXT_MS,
   filters: STAGGER_FILTERS_MS,
   firstListItem: STAGGER_FIRST_VARIANT_MS,
 } = MODIFY_SELECTION_STAGGER_MS;
@@ -91,19 +97,19 @@ export function ModifySelectionDifferentCarVariantScreen({
   const title = modifySelectionDifferentCarVariantScreenTitle(model.name);
 
   return (
-    <div className="min-h-dvh bg-[#F7FAFF] font-sans">
-      <KycTopNavHeader />
+    <div className={MODIFY_SELECTION_PAGE_SHELL_CLASS}>
+      <ModifySelectionScreenHeader />
 
       <main className="mx-auto flex w-full max-w-[640px] flex-1 flex-col px-5 pb-[calc(7rem+env(safe-area-inset-bottom))] pt-2">
-        <h1
-          className="payment-success-stagger text-2xl font-semibold leading-8 tracking-tight text-[#121212]"
-          style={{ animationDelay: `${STAGGER_TITLE_MS}ms` }}
-        >
-          {title}
-        </h1>
+        <ModifySelectionPageHeading
+          title={title}
+          subline={MODIFY_SELECTION_DIFFERENT_CAR_VARIANT_SCREEN_SUBLINE}
+          titleDelayMs={STAGGER_TITLE_MS}
+          sublineDelayMs={STAGGER_SUBTEXT_MS}
+        />
 
         <div
-          className="payment-success-stagger mt-6"
+          className="payment-success-stagger mt-8"
           style={{ animationDelay: `${STAGGER_FILTERS_MS}ms` }}
         >
           <ModifySelectionVariantFilterChips
@@ -116,7 +122,7 @@ export function ModifySelectionDifferentCarVariantScreen({
         </div>
 
         <div
-          className="mt-4 flex flex-col gap-3"
+          className="mt-4 flex flex-col gap-4"
           role="group"
           aria-label={title}
         >

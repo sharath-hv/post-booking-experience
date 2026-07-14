@@ -1,9 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
+import phoneIcon from "@/assets/Phone.svg";
+import moneyIcon from "@/assets/money.svg";
 import { PAYMENT_CHOOSE_ASSETS } from "@/components/payment/payment-choose-assets";
+import type { BottomSheetConfirmBulletPoint } from "@/components/ui/BottomSheetConfirmBulletList";
 import {
   BOTTOM_SHEET_BODY_BEFORE_CTA_CLASS,
   BOTTOM_SHEET_CTA_STRIP_TOP_CLASS,
@@ -18,13 +21,25 @@ import { PARTNER_DEALER_LABEL_CAPITALIZED } from "@/lib/dealer-attribution-conte
 /** Enter/exit slide duration — keep in sync with `SelfFinanceConfirmBottomSheet` */
 const SHEET_TRANSITION_MS = 280;
 
-const BEFORE_YOU_PROCEED_POINTS: readonly ReactNode[] = [
-  <>You pay the full ACKO Drive price upfront. No loan or EMI involved.</>,
-  <>{PARTNER_DEALER_LABEL_CAPITALIZED} will call you to share the payment details. Transfer the car amount directly to them.</>,
-  <>
-    Complete your full payment by <span className="font-semibold">30 May</span> to keep your booking
-    active.
-  </>,
+const BEFORE_YOU_PROCEED_POINTS: readonly BottomSheetConfirmBulletPoint[] = [
+  {
+    content: (
+      <>
+        {PARTNER_DEALER_LABEL_CAPITALIZED} will call you to share the payment details. Transfer the
+        car amount directly to them.
+      </>
+    ),
+    icon: phoneIcon,
+  },
+  {
+    content: (
+      <>
+        Complete your full payment by <span className="font-semibold">30 May</span> to keep your
+        booking active.
+      </>
+    ),
+    icon: moneyIcon,
+  },
 ];
 
 type FullPaymentConfirmBottomSheetProps = {

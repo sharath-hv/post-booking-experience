@@ -2,6 +2,9 @@ export function modifySelectionDifferentCarVariantScreenTitle(modelName: string)
   return `Which variant of ${modelName}?`;
 }
 
+export const MODIFY_SELECTION_DIFFERENT_CAR_VARIANT_SCREEN_SUBLINE =
+  "Pick one and I'll show you the price and delivery date.";
+
 export const MODIFY_SELECTION_DIFFERENT_CAR_CONFIRM_TITLE = "Confirm your selection";
 
 export const MODIFY_SELECTION_DIFFERENT_CAR_CONFIRM_SUBLINE =

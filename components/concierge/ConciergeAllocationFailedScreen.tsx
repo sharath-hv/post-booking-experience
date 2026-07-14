@@ -97,10 +97,10 @@ function AllocationFailedOptionCard({
         </span>
       </div>
 
-      <p className="mt-3 text-[17px] font-semibold leading-6 tracking-[-0.1px] text-[#121212]">
+      <p className="mt-3 text-base font-medium leading-6 text-[#121212]">
         {title}
       </p>
-      <p className="mt-1 text-[13px] leading-[19px] text-[#4b4b4b]">{subtitle}</p>
+      <p className="mt-1 text-xs leading-4 text-[#4b4b4b]">{subtitle}</p>
 
       {/* Decision-driving fact — same dashed-separator slot the payment cards use for their steps. */}
       <div className="mt-3 flex items-center gap-2 border-t border-dashed border-[#dcdbe1] pt-3">

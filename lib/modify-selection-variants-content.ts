@@ -108,6 +108,8 @@ export const MODIFY_SELECTION_VARIANT_OPTIONS: readonly ModifySelectionVariantOp
 ] as const;
 
 export const MODIFY_SELECTION_VARIANT_SCREEN_TITLE = "Which variant would you like?";
+export const MODIFY_SELECTION_VARIANT_SCREEN_SUBLINE =
+  "Pick one and I'll show you how it changes your price and delivery.";
 
 export const MODIFY_SELECTION_AVAILABLE_VARIANTS_HEADING = "Other available variants";
 
@@ -117,6 +119,9 @@ export const MODIFY_SELECTION_VARIANT_COLOUR_PATH = "/kyc/modify-selection/varia
 export function modifySelectionVariantColourScreenTitle(variantName: string): string {
   return `Choose colour for ${variantName}`;
 }
+
+export const MODIFY_SELECTION_VARIANT_COLOUR_SCREEN_SUBLINE =
+  "Same variant, your pick of colour.";
 
 export const MODIFY_SELECTION_VARIANT_CONFIRM_PATH = "/kyc/modify-selection/variant/confirm";
 
@@ -130,7 +135,7 @@ export const MODIFY_SELECTION_VARIANT_CONFIRM_CTA = "Confirm change";
 export function formatModifySelectionVariantSpecs(option: ModifySelectionVariantOption): string {
   const fuelLabel = option.fuel === "petrol" ? "Petrol" : "Diesel";
   const transmissionLabel = option.transmission === "manual" ? "Manual" : "Automatic";
-  return `${fuelLabel} • ${transmissionLabel} • ${option.mileageLabel}`;
+  return `${fuelLabel} • ${transmissionLabel}`;
 }
 
 export function modifySelectionVariantSavingsInr(option: ModifySelectionVariantOption): number {

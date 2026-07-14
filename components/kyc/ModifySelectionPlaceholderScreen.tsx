@@ -2,9 +2,10 @@
 
 import { useRouter } from "next/navigation";
 
-import { KycTopNavHeader } from "@/components/kyc/KycTopNavHeader";
+import { ModifySelectionPageHeading } from "@/components/kyc/ModifySelectionPageHeading";
+import { ModifySelectionScreenHeader } from "@/components/kyc/ModifySelectionScreenHeader";
 import { BookingCarSummaryCard } from "@/components/kyc/BookingCarSummaryCard";
-import { MODIFY_SELECTION_PATH, modifySelectionChoiceLabel } from "@/lib/modify-selection-content";
+import { MODIFY_SELECTION_PAGE_SHELL_CLASS, MODIFY_SELECTION_PATH, modifySelectionChoiceLabel } from "@/lib/modify-selection-content";
 import { MODIFY_SELECTION_STAGGER_MS } from "@/lib/modify-selection-stagger";
 
 /** Stagger: nav + footer CTA immediate; then title → summary card. */
@@ -20,18 +21,13 @@ export function ModifySelectionPlaceholderScreen({ choiceSlug }: ModifySelection
   const label = modifySelectionChoiceLabel(choiceSlug) ?? "Modify your booking";
 
   return (
-    <div className="min-h-dvh bg-[#F7FAFF] font-sans">
-      <KycTopNavHeader />
+    <div className={MODIFY_SELECTION_PAGE_SHELL_CLASS}>
+      <ModifySelectionScreenHeader />
 
       <main className="mx-auto flex w-full max-w-[640px] flex-1 flex-col px-5 pb-[calc(7rem+env(safe-area-inset-bottom))] pt-2">
-        <h1
-          className="payment-success-stagger text-2xl font-semibold leading-8 tracking-tight text-[#121212]"
-          style={{ animationDelay: `${STAGGER_TITLE_MS}ms` }}
-        >
-          {label}
-        </h1>
+        <ModifySelectionPageHeading title={label} titleDelayMs={STAGGER_TITLE_MS} />
         <div
-          className="payment-success-stagger mt-4"
+          className="payment-success-stagger mt-8"
           style={{ animationDelay: `${STAGGER_SECTION_MS}ms` }}
         >
           <BookingCarSummaryCard variant="detailsOnly" />

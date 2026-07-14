@@ -4,16 +4,21 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { BookingCarSummaryCard } from "@/components/kyc/BookingCarSummaryCard";
-import { KycTopNavHeader } from "@/components/kyc/KycTopNavHeader";
+import { ModifySelectionPageHeading } from "@/components/kyc/ModifySelectionPageHeading";
+import { ModifySelectionScreenHeader } from "@/components/kyc/ModifySelectionScreenHeader";
 import { ModifySelectionVariantCard } from "@/components/kyc/ModifySelectionVariantCard";
 import { ModifySelectionVariantFilterChips } from "@/components/kyc/ModifySelectionVariantFilterChips";
 import { writeModifySelectionVariantChoice } from "@/lib/modify-selection-variant-choice";
-import { MODIFY_SELECTION_CURRENT_SELECTION_HEADING } from "@/lib/modify-selection-content";
+import {
+  MODIFY_SELECTION_CURRENT_SELECTION_HEADING,
+  MODIFY_SELECTION_PAGE_SHELL_CLASS,
+} from "@/lib/modify-selection-content";
 import {
   filterModifySelectionVariants,
   getModifySelectionAvailableVariantOptions,
   MODIFY_SELECTION_AVAILABLE_VARIANTS_HEADING,
   MODIFY_SELECTION_VARIANT_COLOUR_PATH,
+  MODIFY_SELECTION_VARIANT_SCREEN_SUBLINE,
   MODIFY_SELECTION_VARIANT_SCREEN_TITLE,
   type ModifySelectionVariantFilters,
 } from "@/lib/modify-selection-variants-content";
@@ -24,6 +29,7 @@ import {
 
 const {
   title: STAGGER_TITLE_MS,
+  subtext: STAGGER_SUBTEXT_MS,
   section: STAGGER_CAR_SUMMARY_MS,
   heading: STAGGER_SECTION_HEADING_MS,
   filters: STAGGER_FILTERS_MS,
@@ -61,19 +67,19 @@ export function ModifySelectionVariantScreen() {
   }, [router, selectedVariantId]);
 
   return (
-    <div className="min-h-dvh bg-[#F7FAFF] font-sans">
-      <KycTopNavHeader />
+    <div className={MODIFY_SELECTION_PAGE_SHELL_CLASS}>
+      <ModifySelectionScreenHeader />
 
       <main className="mx-auto flex w-full max-w-[640px] flex-1 flex-col px-5 pb-[calc(7rem+env(safe-area-inset-bottom))] pt-2">
-        <h1
-          className="payment-success-stagger text-2xl font-semibold leading-8 tracking-tight text-[#121212]"
-          style={{ animationDelay: `${STAGGER_TITLE_MS}ms` }}
-        >
-          {MODIFY_SELECTION_VARIANT_SCREEN_TITLE}
-        </h1>
+        <ModifySelectionPageHeading
+          title={MODIFY_SELECTION_VARIANT_SCREEN_TITLE}
+          subline={MODIFY_SELECTION_VARIANT_SCREEN_SUBLINE}
+          titleDelayMs={STAGGER_TITLE_MS}
+          sublineDelayMs={STAGGER_SUBTEXT_MS}
+        />
 
         <section
-          className="payment-success-stagger mb-6 mt-5"
+          className="payment-success-stagger mb-6 mt-8"
           style={{ animationDelay: `${STAGGER_CAR_SUMMARY_MS}ms` }}
           aria-labelledby="modify-selection-variant-current-selection-heading"
         >
@@ -109,7 +115,7 @@ export function ModifySelectionVariantScreen() {
         </div>
 
         <div
-          className="mt-4 flex flex-col gap-3"
+          className="mt-4 flex flex-col gap-4"
           role="group"
           aria-label={MODIFY_SELECTION_AVAILABLE_VARIANTS_HEADING}
         >

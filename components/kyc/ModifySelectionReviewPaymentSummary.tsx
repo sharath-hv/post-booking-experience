@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ChevronUp } from "lucide-react";
 
+import { MODIFY_SELECTION_SUMMARY_CARD_CLASS } from "@/components/kyc/modify-selection-option-card-ui";
 import {
   formatModifySelectionInr,
   formatModifySelectionInrSigned,
@@ -76,7 +77,7 @@ export function ModifySelectionReviewPaymentSummary({
         Price summary
       </h2>
 
-      <div className="mt-3 overflow-hidden rounded-2xl bg-white card-elevated">
+      <div className={`mt-3 ${MODIFY_SELECTION_SUMMARY_CARD_CLASS}`}>
         <div className="px-4 py-4">
         <div className="flex items-center justify-between gap-2">
           <span className="text-sm leading-5 text-[#121212]">Ex-showroom price</span>

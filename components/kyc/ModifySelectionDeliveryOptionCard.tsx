@@ -3,6 +3,11 @@
 import Image from "next/image";
 
 import { splitBookingDeliveryLine } from "@/lib/experience-flow-content";
+import {
+  modifySelectionSelectableCardClass,
+  MODIFY_SELECTION_SELECTABLE_CARD_BASE_CLASS,
+  ModifySelectionRadioIndicator,
+} from "@/components/kyc/modify-selection-option-card-ui";
 import { formatModifySelectionInr } from "@/lib/modify-selection-review-pay-content";
 import { cn } from "@/lib/utils";
 
@@ -34,36 +39,44 @@ export function ModifySelectionDeliveryOptionCard({
       onClick={onSelect}
       aria-pressed={selected}
       className={cn(
-        "flex w-full flex-col rounded-xl border p-[15px] text-left transition-colors",
-        selected ? "border-[#121212] bg-[#f5f5f5]" : "border-[#e8e8e8] bg-white",
+        MODIFY_SELECTION_SELECTABLE_CARD_BASE_CLASS,
+        "p-4",
+        modifySelectionSelectableCardClass(selected),
       )}
     >
-      <div className="flex items-center gap-1">
-        <p className={cn("text-sm font-normal leading-5", deliveryLineClass)}>
-          {deliveryParts ? (
-            <>
-              {deliveryParts.prefix}
-              <span className="font-semibold">{deliveryParts.date}</span>
-            </>
-          ) : (
-            deliveryLine
-          )}
-        </p>
-        <span className="relative size-4 shrink-0" aria-hidden>
-          <Image
-            src={iconSrc}
-            alt=""
-            width={16}
-            height={16}
-            className="size-4 object-contain"
-            unoptimized
-            sizes="16px"
-          />
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-1">
+            <p className={cn("text-sm font-normal leading-5", deliveryLineClass)}>
+              {deliveryParts ? (
+                <>
+                  {deliveryParts.prefix}
+                  <span className="font-semibold">{deliveryParts.date}</span>
+                </>
+              ) : (
+                deliveryLine
+              )}
+            </p>
+            <span className="relative size-4 shrink-0" aria-hidden>
+              <Image
+                src={iconSrc}
+                alt=""
+                width={16}
+                height={16}
+                className="size-4 object-contain"
+                unoptimized
+                sizes="16px"
+              />
+            </span>
+          </div>
+          <p className="mt-2 text-base font-medium leading-6 text-[#121212]">
+            {formatModifySelectionInr(priceInr)}
+          </p>
+        </div>
+        <span className="mt-0.5 flex shrink-0">
+          <ModifySelectionRadioIndicator selected={selected} />
         </span>
       </div>
-      <p className="mt-2 text-sm font-medium leading-5 text-[#121212]">
-        {formatModifySelectionInr(priceInr)}
-      </p>
     </button>
   );
 }

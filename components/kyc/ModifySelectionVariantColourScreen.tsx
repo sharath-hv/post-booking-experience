@@ -3,13 +3,15 @@
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { KycTopNavHeader } from "@/components/kyc/KycTopNavHeader";
+import { ModifySelectionPageHeading } from "@/components/kyc/ModifySelectionPageHeading";
+import { ModifySelectionScreenHeader } from "@/components/kyc/ModifySelectionScreenHeader";
 import { ModifySelectionColourCard } from "@/components/kyc/ModifySelectionColourCard";
 import { ModifySelectionDeliveryOptionBottomSheet } from "@/components/kyc/ModifySelectionDeliveryOptionBottomSheet";
 import {
   getModifySelectionAvailableColourOptions,
   type ModifySelectionDeliveryChoice,
 } from "@/lib/modify-selection-colours-content";
+import { MODIFY_SELECTION_PAGE_SHELL_CLASS } from "@/lib/modify-selection-content";
 import {
   clearModifySelectionVariantChoice,
   readModifySelectionVariantChoice,
@@ -18,6 +20,7 @@ import { writeModifySelectionVariantPending } from "@/lib/modify-selection-varia
 import {
   findModifySelectionVariantOption,
   modifySelectionVariantColourScreenTitle,
+  MODIFY_SELECTION_VARIANT_COLOUR_SCREEN_SUBLINE,
   MODIFY_SELECTION_VARIANT_CONFIRM_PATH,
 } from "@/lib/modify-selection-variants-content";
 import {
@@ -25,7 +28,11 @@ import {
   MODIFY_SELECTION_STAGGER_MS,
 } from "@/lib/modify-selection-stagger";
 
-const { title: STAGGER_TITLE_MS, section: STAGGER_FIRST_COLOUR_MS } = MODIFY_SELECTION_STAGGER_MS;
+const {
+  title: STAGGER_TITLE_MS,
+  subtext: STAGGER_SUBTEXT_MS,
+  section: STAGGER_FIRST_COLOUR_MS,
+} = MODIFY_SELECTION_STAGGER_MS;
 
 const COLOUR_LIST_ARIA_LABEL = "Available colours";
 
@@ -97,19 +104,19 @@ export function ModifySelectionVariantColourScreen() {
   }
 
   return (
-    <div className="min-h-dvh bg-[#F7FAFF] font-sans">
-      <KycTopNavHeader />
+    <div className={MODIFY_SELECTION_PAGE_SHELL_CLASS}>
+      <ModifySelectionScreenHeader />
 
       <main className="mx-auto flex w-full max-w-[640px] flex-1 flex-col px-5 pb-[calc(7rem+env(safe-area-inset-bottom))] pt-2">
-        <h1
-          className="payment-success-stagger text-2xl font-semibold leading-8 tracking-tight text-[#121212]"
-          style={{ animationDelay: `${STAGGER_TITLE_MS}ms` }}
-        >
-          {modifySelectionVariantColourScreenTitle(selectedVariant.name)}
-        </h1>
+        <ModifySelectionPageHeading
+          title={modifySelectionVariantColourScreenTitle(selectedVariant.name)}
+          subline={MODIFY_SELECTION_VARIANT_COLOUR_SCREEN_SUBLINE}
+          titleDelayMs={STAGGER_TITLE_MS}
+          sublineDelayMs={STAGGER_SUBTEXT_MS}
+        />
 
         <div
-          className="mt-5 flex flex-col gap-3"
+          className="mt-8 flex flex-col gap-4"
           role="group"
           aria-label={COLOUR_LIST_ARIA_LABEL}
         >

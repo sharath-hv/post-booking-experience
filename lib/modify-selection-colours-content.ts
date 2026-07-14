@@ -86,6 +86,8 @@ export const MODIFY_SELECTION_AVAILABLE_COLOURS_HEADING = "Available colours";
 
 /** Page title on `/kyc/modify-selection/colour`. */
 export const MODIFY_SELECTION_COLOUR_SCREEN_TITLE = "Which colour would you like?";
+export const MODIFY_SELECTION_COLOUR_SCREEN_SUBLINE =
+  "Pick one and I'll show you how it changes your price and delivery.";
 
 /** Delivery option sheet — Figma 2674:8617. */
 export const MODIFY_SELECTION_DELIVERY_SHEET_TITLE = "How soon do you want it?";

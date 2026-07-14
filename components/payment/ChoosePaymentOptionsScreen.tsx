@@ -214,7 +214,7 @@ function OptionCard({
               {chip}
             </span>
           ) : null}
-          <p className={`text-base font-semibold leading-6 text-[#121212]${chip ? " mt-1" : ""}`}>
+          <p className={`text-base font-medium leading-6 text-[#121212]${chip ? " mt-1" : ""}`}>
             {title}
           </p>
         </div>
@@ -223,7 +223,7 @@ function OptionCard({
         </span>
       </div>
 
-      <p className="mt-3 text-[13px] leading-[19px] text-[#4b4b4b]">{blurb}</p>
+      <p className="mt-3 text-xs leading-4 text-[#4b4b4b]">{blurb}</p>
 
       <div className="mt-4 flex w-full">
         {stats.map((stat, idx) => (

@@ -2,6 +2,10 @@
 
 import Image from "next/image";
 
+import {
+  ModifySelectionRadioIndicator,
+  modifySelectionSelectableCardClassName,
+} from "@/components/kyc/modify-selection-option-card-ui";
 import { BOOKING_CONFIRMED_ASSETS } from "@/components/kyc/kyc-booking-confirmed-assets";
 import {
   BOOKING_EXPRESS_DELIVERY_TEXT_CLASS,
@@ -47,55 +51,60 @@ export function ModifySelectionColourCard({
     ? BOOKING_EXPRESS_DELIVERY_TEXT_CLASS
     : BOOKING_STANDARD_DELIVERY_TEXT_CLASS;
 
-  const cardClassName = cn(
-    "flex w-full gap-3 rounded-xl border p-[15px] text-left transition-colors card-elevated",
-    selected ? "border-[#121212] bg-[#f5f5f5]" : "border-transparent bg-white",
-  );
+  const cardClassName = modifySelectionSelectableCardClassName(selected, readOnly, "p-4");
 
   const cardBody = (
-    <>
-      <div
-        className="size-12 shrink-0 overflow-hidden rounded-lg bg-white card-elevated"
-        aria-hidden
-      >
-        <div className="size-full" style={{ background: option.swatchBackground }} />
-      </div>
+    <div className="flex items-start justify-between gap-3">
+      <div className="flex min-w-0 flex-1 items-center gap-3">
+        <div
+          className="size-12 shrink-0 overflow-hidden rounded-full border border-[#e8e8e8] bg-white card-elevated"
+          aria-hidden
+        >
+          <div className="size-full" style={{ background: option.swatchBackground }} />
+        </div>
 
-      <div className="min-w-0 flex-1">
-        <p className="text-sm font-medium leading-5 text-[#121212]">{option.name}</p>
+        <div className="min-w-0 flex-1">
+          <p className="text-base font-medium leading-6 text-[#121212]">{option.name}</p>
 
-        <div className="mt-1 flex flex-wrap items-center gap-1">
-          <span className="text-xs font-medium leading-[18px] text-[#121212]">
-            {formatInr(option.ackoDrivePriceInr)}
-          </span>
-          <span className="text-[10px] font-normal leading-[14px] text-[#757575] line-through">
-            {formatInr(option.onRoadListPriceInr)}
-          </span>
-          {savingsInr > 0 ? (
-            <span className="text-[10px] font-medium leading-[14px] text-[#0fa457]">
-              Save {formatInr(savingsInr)}
+          <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
+            <span className="text-sm font-semibold leading-5 text-[#121212]">
+              {formatInr(option.ackoDrivePriceInr)}
             </span>
-          ) : null}
-        </div>
+            <span className="text-xs font-normal leading-4 text-[#757575] line-through">
+              {formatInr(option.onRoadListPriceInr)}
+            </span>
+            {savingsInr > 0 ? (
+              <span className="text-xs font-medium leading-4 text-[#0fa457]">
+                Save {formatInr(savingsInr)}
+              </span>
+            ) : null}
+          </div>
 
-        <div className="mt-2 flex items-center gap-1">
-          <p className={cn("text-xs font-normal leading-[18px]", deliveryTextClass)}>
-            {option.deliveryLine}
-          </p>
-          <span className="relative size-4 shrink-0" aria-hidden>
-            <Image
-              src={deliveryIconSrc}
-              alt=""
-              width={16}
-              height={16}
-              className="size-4 object-contain"
-              unoptimized
-              sizes="16px"
-            />
-          </span>
+          <div className="mt-2 flex items-center gap-1">
+            <p className={cn("text-xs font-normal leading-4", deliveryTextClass)}>
+              {option.deliveryLine}
+            </p>
+            <span className="relative size-4 shrink-0" aria-hidden>
+              <Image
+                src={deliveryIconSrc}
+                alt=""
+                width={16}
+                height={16}
+                className="size-4 object-contain"
+                unoptimized
+                sizes="16px"
+              />
+            </span>
+          </div>
         </div>
       </div>
-    </>
+
+      {!readOnly ? (
+        <span className="mt-0.5 flex shrink-0">
+          <ModifySelectionRadioIndicator selected={selected} />
+        </span>
+      ) : null}
+    </div>
   );
 
   if (readOnly) {

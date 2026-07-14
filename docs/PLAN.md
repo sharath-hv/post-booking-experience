@@ -340,6 +340,23 @@ Post-allocation car card is enabled when `manageBookingShowVehicleIdentification
 
 **Entry:** manage booking → **Change selection** when `isModifyNoChargesFlow()` (from `/kyc`) or `isModifyWithChargesFlow()` + `isChangeSelectionAvailablePhase` (from booking accepted) → `/kyc/modify-selection` (`ChooseModifyBookingScreen`).
 
+### White page surface & card shadows
+
+All `/kyc/modify-selection/*` screens use **`MODIFY_SELECTION_PAGE_SHELL_CLASS`** (`min-h-dvh bg-white font-sans`). Sticky nav uses `ModifySelectionScreenHeader` → `KycTopNavHeader` with **`surface="white"`** (white scroll fade — not the blue `#F7FAFF` gradient used elsewhere).
+
+**No card shadows on modify-selection pages.** Cards on the white background are **flat bordered** shells — **`border border-[#e8e8e8]`**, **never** `card-elevated`. Shared tokens in `components/kyc/modify-selection-option-card-ui.tsx`:
+
+| Token | Use |
+|-------|-----|
+| `MODIFY_SELECTION_SELECTABLE_CARD_BASE_CLASS` | Hub + downstream picker option cards (purple selected state, `#e8e8e8` border when unselected) |
+| `MODIFY_SELECTION_SUMMARY_CARD_CLASS` | Review selection, booking amount summary, price summary |
+
+Sticky/fixed footers may still use **`footer-elevated`**; bottom sheets use **`sheet-elevated`**.
+
+**Shivi concierge pages unchanged** — turns on **`#F1F5FD` / `#F7FAFF`** keep **`card-elevated`** (and glass variants where specified) per `.cursor/rules/concierge-spacing.mdc`. Do not remove shadows from concierge artifacts to match modify-selection.
+
+**Get help:** every modify-selection screen uses `ModifySelectionGetHelpButton` → **`ShiviCallSheet`** (callback confirmation).
+
 **Booking amount (modify-with-charges):** `bookingAmountToPayInr` = max(0, new booking lock − paid lock) + **`MODIFY_BOOKING_CHANGE_FEE_INR`** (₹5,000); shown as “Booking change fee” on `ModifySelectionReviewBookingAmountCard`.
 
 **Chooser primary CTA** (`lib/modify-selection-content.ts` → `continueCtaLabel`; updates when the selected radio option changes):
@@ -390,7 +407,7 @@ The card renders an edit control only when the matching callback is non-null (or
 | **modify_no_charges** | Verify your identity | Continue to verification | `/kyc` |
 | **modify_with_charges** | *(none — identity already done)* | Continue | `/kyc/processing` (processing your booking) |
 
-**Key files:** `components/kyc/ModifySelectionReviewPayScreen.tsx`, `ModifySelectionReviewSelectionCard.tsx`, `KycBookingConfirmedScreen.tsx`, `lib/modify-selection-*-pending.ts`, `lib/active-booking-snapshot.ts`, `lib/paymentUrls.ts`.
+**Key files:** `components/kyc/modify-selection-option-card-ui.tsx`, `ModifySelectionScreenHeader.tsx`, `ModifySelectionReviewPayScreen.tsx`, `ModifySelectionReviewSelectionCard.tsx`, `KycBookingConfirmedScreen.tsx`, `lib/modify-selection-*-pending.ts`, `lib/active-booking-snapshot.ts`, `lib/paymentUrls.ts`.
 
 ---
 

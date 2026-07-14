@@ -11,6 +11,9 @@ import { MODIFY_BOOKING_CHANGE_FEE_INR } from "@/lib/manage-booking-modify";
 
 export const MODIFY_SELECTION_PATH = "/kyc/modify-selection";
 
+/** White page shell for modify-selection routes — not concierge `#F7FAFF`. */
+export const MODIFY_SELECTION_PAGE_SHELL_CLASS = "min-h-dvh bg-white font-sans";
+
 export const MODIFY_SELECTION_TITLE = "What would you like to change, Sharath?";
 
 export const MODIFY_SELECTION_SUBLINE_NO_CHARGES =

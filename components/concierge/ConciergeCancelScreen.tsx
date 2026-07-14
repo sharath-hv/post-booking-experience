@@ -43,10 +43,12 @@ export function ConciergeCancelScreen() {
   const chargeInr = postConfirmation && !ourFailure ? Math.round(paidInr / 2) : 0;
   const refundInr = paidInr - chargeInr;
 
-  const refundCard = (title: string, note: string) => (
+  const refundCard = (title: string, note: string, status?: "received" | "processing") => (
     <AmountReceivedCard
       amountInr={refundInr}
       title={title}
+      variant="glass"
+      status={status}
       rows={[
         { label: "Paid so far", value: formatInr(paidInr) },
         {
@@ -62,12 +64,13 @@ export function ConciergeCancelScreen() {
     return (
       <ConciergeTurnShell
         says={[
-          "It's done, Sharath.",
-          `${formatInr(refundInr)} is on its way back to your account. 5 to 7 business days. I'm sorry this one didn't work out. Whenever you're ready to try again, you know where I am.`,
+          "On its way, Sharath.",
+          `${formatInr(refundInr)} is heading back to your account. 5 to 7 business days. Whenever you're ready to try again, you know where I am.`,
         ]}
         artifact={refundCard(
           "Refund initiated",
-          "Refunds go to the original payment method within 5–7 business days."
+          "Refunds go to the original payment method within 5–7 business days.",
+          "processing"
         )}
         timeSkip={{ label: "Back to the start", href: "/quote" }}
         showMenu={false}
@@ -81,8 +84,8 @@ export function ConciergeCancelScreen() {
         says={
           ourFailure
             ? [
-                "Full refund. Every rupee, no questions.",
-                "We couldn't hold up our side, so no rule applies to you: 100% of what you've paid comes back. I'm sorry, Sharath. Whenever you're ready to try again, I'd love another shot.",
+                "This one's on me, Sharath.",
+                "I couldn't deliver, so every rupee you've paid comes back, no questions asked. I'd love another shot whenever you're ready.",
               ]
             : secondChange
             ? [

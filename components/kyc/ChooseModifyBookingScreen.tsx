@@ -1,15 +1,20 @@
 "use client";
 
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { GetHelpPillButton } from "@/components/kyc/GetHelpPillButton";
-import { KycTopNavHeader } from "@/components/kyc/KycTopNavHeader";
+import { ModifySelectionPageHeading } from "@/components/kyc/ModifySelectionPageHeading";
 import { ModifySelectionConfirmBottomSheet } from "@/components/kyc/ModifySelectionConfirmBottomSheet";
-import { PAYMENT_CHOOSE_ASSETS } from "@/components/payment/payment-choose-assets";
+import { ModifySelectionScreenHeader } from "@/components/kyc/ModifySelectionScreenHeader";
+import {
+  modifySelectionSelectableCardClass,
+  MODIFY_SELECTION_SELECTABLE_CARD_BASE_CLASS,
+  ModifySelectionRadioIndicator,
+} from "@/components/kyc/modify-selection-option-card-ui";
 import {
   MODIFY_SELECTION_OPTIONS,
+  MODIFY_SELECTION_PAGE_SHELL_CLASS,
   MODIFY_SELECTION_TITLE,
   resolveModifySelectionConfirmPoints,
   resolveModifySelectionSubline,
@@ -23,20 +28,11 @@ import {
 const { title: STAGGER_TITLE_MS, subtext: STAGGER_SUBTEXT_MS, firstCard: STAGGER_FIRST_OPTION_MS } =
   MODIFY_SELECTION_STAGGER_MS;
 
-function RadioIndicator({ selected }: { selected: boolean }) {
-  const src = selected ? PAYMENT_CHOOSE_ASSETS.radioOn : PAYMENT_CHOOSE_ASSETS.radioOff;
-  return (
-    <span className="relative h-4 w-4 shrink-0" aria-hidden>
-      <Image src={src} alt="" fill className="object-contain" unoptimized sizes="16px" />
-    </span>
-  );
-}
-
 type ModifyOptionCardProps = {
   id: ModifySelectionChoiceId;
   selected: boolean;
   onSelect: () => void;
-  illustrationSrc: string | import("next/image").StaticImageData;
+  illustrationSrc: string | StaticImageData;
   title: string;
   description: string;
 };
@@ -55,29 +51,26 @@ function ModifyOptionCard({
       id={`modify-option-${id}`}
       onClick={onSelect}
       aria-pressed={selected}
-      className={`w-full rounded-2xl border p-[15px] text-left transition-colors card-elevated ${
-        selected ? "border-[#121212] bg-[#F5F5F5]" : "border-transparent bg-white"
-      }`}
+      className={`${MODIFY_SELECTION_SELECTABLE_CARD_BASE_CLASS} p-4 ${modifySelectionSelectableCardClass(selected)}`}
     >
-      <div className="flex flex-col gap-3">
-        <div className="flex items-start justify-between gap-3">
-          <div className="relative h-12 w-12 shrink-0">
-            <Image
-              src={illustrationSrc}
-              alt=""
-              fill
-              className="object-contain"
-              unoptimized
-              sizes="48px"
-            />
-          </div>
-          <RadioIndicator selected={selected} />
+      <div className="flex items-start justify-between">
+        <div className="relative h-12 w-12 shrink-0">
+          <Image
+            src={illustrationSrc}
+            alt=""
+            fill
+            className="object-contain object-left"
+            unoptimized
+            sizes="48px"
+          />
         </div>
-        <div className="min-w-0">
-          <p className="text-base font-medium leading-6 text-[#121212]">{title}</p>
-          <p className="mt-2 text-xs leading-[18px] text-[#4b4b4b]">{description}</p>
-        </div>
+        <span className="mt-0.5 flex shrink-0">
+          <ModifySelectionRadioIndicator selected={selected} />
+        </span>
       </div>
+
+      <p className="mt-3 text-base font-medium leading-6 text-[#121212]">{title}</p>
+      <p className="mt-1 text-xs leading-4 text-[#4b4b4b]">{description}</p>
     </button>
   );
 }
@@ -112,26 +105,19 @@ export function ChooseModifyBookingScreen() {
   }, [router, selectedOption.continuePath]);
 
   return (
-    <div className="min-h-dvh bg-[#F7FAFF] font-sans">
-      <KycTopNavHeader endSlot={<GetHelpPillButton />} />
+    <div className={MODIFY_SELECTION_PAGE_SHELL_CLASS}>
+      <ModifySelectionScreenHeader />
 
       <main className="mx-auto w-full max-w-[640px] px-5 pb-[calc(7rem+env(safe-area-inset-bottom))] pt-2">
-        <h1
-          className="payment-success-stagger text-2xl font-semibold leading-8 tracking-tight text-[#121212]"
-          style={{ animationDelay: `${STAGGER_TITLE_MS}ms` }}
-        >
-          {MODIFY_SELECTION_TITLE}
-        </h1>
-
-        <p
-          className="payment-success-stagger mt-2 text-sm font-normal leading-[22px] text-[#4b4b4b]"
-          style={{ animationDelay: `${STAGGER_SUBTEXT_MS}ms` }}
-        >
-          {subline}
-        </p>
+        <ModifySelectionPageHeading
+          title={MODIFY_SELECTION_TITLE}
+          subline={subline}
+          titleDelayMs={STAGGER_TITLE_MS}
+          sublineDelayMs={STAGGER_SUBTEXT_MS}
+        />
 
         <div
-          className="mt-5 flex flex-col gap-4"
+          className="mt-8 flex flex-col gap-4"
           role="group"
           aria-label="Modification options"
         >

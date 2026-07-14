@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import infoIcon from "@/assets/Info.svg";
-import { GetHelpPillButton } from "@/components/kyc/GetHelpPillButton";
-import { KycTopNavHeader } from "@/components/kyc/KycTopNavHeader";
+import { ModifySelectionPageHeading } from "@/components/kyc/ModifySelectionPageHeading";
+import { ModifySelectionScreenHeader } from "@/components/kyc/ModifySelectionScreenHeader";
 import {
   MODIFY_SELECTION_BOOKING_AMOUNT_SECTION_ID,
   ModifySelectionReviewBookingAmountCard,
@@ -30,6 +30,7 @@ import {
   resolveModifySelectionColourQuote,
   type ModifySelectionDeliveryChoice,
 } from "@/lib/modify-selection-colours-content";
+import { MODIFY_SELECTION_PAGE_SHELL_CLASS } from "@/lib/modify-selection-content";
 import {
   clearModifySelectionDifferentCarPending,
   readModifySelectionDifferentCarPending,
@@ -259,19 +260,17 @@ export function ModifySelectionReviewPayScreen({
   const expressQuote = resolveModifySelectionColourQuote(resolved.option, "express");
 
   return (
-    <div className="min-h-dvh bg-[#F7FAFF] font-sans">
-      <KycTopNavHeader endSlot={<GetHelpPillButton />} />
+    <div className={MODIFY_SELECTION_PAGE_SHELL_CLASS}>
+      <ModifySelectionScreenHeader />
 
       <main className="mx-auto flex w-full max-w-[640px] flex-1 flex-col px-5 pb-[calc(5rem+32px+env(safe-area-inset-bottom))] pt-2">
-        <h1
-          className="payment-success-stagger text-2xl font-semibold leading-8 tracking-[-0.1px] text-[#121212]"
-          style={{ animationDelay: `${STAGGER_TITLE_MS}ms` }}
-        >
-          {MODIFY_SELECTION_REVIEW_PAY_TITLE}
-        </h1>
+        <ModifySelectionPageHeading
+          title={MODIFY_SELECTION_REVIEW_PAY_TITLE}
+          titleDelayMs={STAGGER_TITLE_MS}
+        />
 
         <div
-          className="payment-success-stagger mt-5"
+          className="payment-success-stagger mt-8"
           style={{ animationDelay: `${STAGGER_SELECTION_MS}ms` }}
         >
           <ModifySelectionReviewSelectionCard
