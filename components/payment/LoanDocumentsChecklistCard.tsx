@@ -161,7 +161,7 @@ export function LoanDocumentsChecklistCard() {
         ))}
       </ul>
 
-      <div className="border-t border-[#f0f0f0] bg-[#fafafa] px-4 py-2.5">
+      <div className="border-t border-[#e8e8e8] bg-[#fafafa] px-4 py-2.5">
         <p className="text-xs leading-[18px] text-[#757575]">
           Missing one? Start anyway. You can add it while I keep the rest moving.
         </p>

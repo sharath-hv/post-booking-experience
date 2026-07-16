@@ -99,7 +99,7 @@ export function LoanRejectedScreen() {
               Pre-approved
             </span>
           </div>
-          <div className="border-t border-dashed border-[#e0e0e0] px-4 py-4">
+          <div className="border-t border-dashed border-[#e8e8e8] px-4 py-4">
             <div className="flex flex-col gap-3">
               <div className="flex items-center justify-between gap-3">
                 <span className="text-sm leading-5 text-[#4b4b4b]">Interest rate</span>

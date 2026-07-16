@@ -216,7 +216,7 @@ export function InsuranceCoverageBottomSheet({
                       <div
                         key={fact.label}
                         className={`flex items-center justify-between gap-3 bg-white px-4 py-3 ${
-                          idx > 0 ? "border-t border-[#f0f0f0]" : ""
+                          idx > 0 ? "border-t border-[#e8e8e8]" : ""
                         }`}
                       >
                         <p className="text-sm leading-5 text-[#4b4b4b]">{fact.label}</p>

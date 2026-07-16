@@ -72,7 +72,7 @@ export type MoneyPlanCardProps = {
 export function MoneyPlanCard({ heading, subheading, steps }: MoneyPlanCardProps) {
   return (
     <div className="overflow-hidden rounded-2xl bg-white card-elevated text-left">
-      <div className="border-b border-[#f0f0f0] px-4 py-3">
+      <div className="border-b border-[#e8e8e8] px-4 py-3">
         <p className="text-sm font-semibold leading-5 text-[#121212]">{heading}</p>
         {subheading ? (
           <p className="mt-0.5 text-xs leading-[18px] text-[#757575]">{subheading}</p>

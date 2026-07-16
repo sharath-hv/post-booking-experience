@@ -179,7 +179,7 @@ export function ConciergeDocumentsCard({
             onRemove={(fileId) => handleRemove("aadhaar", fileId)}
           />
         ) : null}
-        {showBothRows ? <hr className="mx-4 border-0 border-t border-dashed border-[#ececec]" /> : null}
+        {showBothRows ? <hr className="mx-4 border-0 border-t border-dashed border-[#e8e8e8]" /> : null}
         {showPan ? (
           <DocumentRow
             title="PAN card"

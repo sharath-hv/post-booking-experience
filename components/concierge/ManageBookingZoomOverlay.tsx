@@ -198,7 +198,7 @@ export function ManageBookingZoomOverlay({
                             type="button"
                             className={cn(
                               "flex w-full items-center gap-3 px-4 py-4 text-left transition-colors hover:bg-[#fafafa] active:bg-[#f5f5f5]",
-                              idx > 0 && "border-t border-dashed border-[#ececec]"
+                              idx > 0 && "border-t border-dashed border-[#e8e8e8]"
                             )}
                           >
                             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#f5f5f5] text-[#75747a]">

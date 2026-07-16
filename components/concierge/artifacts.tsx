@@ -124,7 +124,7 @@ export function AmountReceivedCard({
         </div>
       </div>
       {rows?.length ? (
-        <div className="border-t border-dashed border-[#e0e0e0] px-4 py-4">
+        <div className="border-t border-dashed border-[#e8e8e8] px-4 py-4">
           <div className="flex flex-col gap-3">
             {rows.map((row) => (
               <div key={row.label} className="flex items-center justify-between gap-3">
@@ -150,7 +150,7 @@ export function AmountReceivedCard({
         </div>
       ) : null}
       {note ? (
-        <div className={cn("border-t border-[#e0e0e0] px-4 py-2.5", !isGlass && "bg-[#fafafa]")}>
+        <div className={cn("border-t border-[#e8e8e8] px-4 py-2.5", !isGlass && "bg-[#fafafa]")}>
           <p className="text-xs leading-[18px] text-[#757575]">{note}</p>
         </div>
       ) : null}
@@ -351,7 +351,7 @@ export function CarPriceBreakupCard({
         </div>
 
         {disbursementLabel != null && disbursementInr != null ? (
-          <div className="flex items-center justify-between gap-3 border-t border-dashed border-[#efefef] py-3">
+          <div className="flex items-center justify-between gap-3 border-t border-dashed border-[#e8e8e8] py-3">
             <span className="flex min-w-0 items-center gap-1.5 text-sm leading-5 text-[#4b4b4b]">
               {disbursementLabel}
               <span className="shrink-0 rounded-full bg-[#f5f5f5] px-2 py-0.5 text-[11px] font-medium leading-4 text-[#757575]">
@@ -364,7 +364,7 @@ export function CarPriceBreakupCard({
           </div>
         ) : null}
 
-        <div className="flex items-center justify-between gap-3 border-t border-dashed border-[#efefef] py-3">
+        <div className="flex items-center justify-between gap-3 border-t border-dashed border-[#e8e8e8] py-3">
           <span className="flex min-w-0 items-center gap-1.5 text-sm leading-5 text-[#4b4b4b]">
             Insurance
             <span className="shrink-0 rounded-full bg-[#fff7e5] px-2 py-0.5 text-[11px] font-medium leading-4 text-[#a76406]">
@@ -384,7 +384,7 @@ export function CarPriceBreakupCard({
         </span>
       </div>
 
-      <div className="border-t border-[#f0f0f0] bg-[#fafafa] px-4 py-2.5">
+      <div className="border-t border-[#e8e8e8] bg-[#fafafa] px-4 py-2.5">
         <p className="text-xs leading-[18px] text-[#757575]">
           These parts always add up to your locked price. Nothing extra, ever. Insurance is
           paid just before delivery, for RTO registration.
