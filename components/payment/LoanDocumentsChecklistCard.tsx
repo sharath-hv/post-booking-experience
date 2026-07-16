@@ -118,7 +118,7 @@ export function LoanDocumentsChecklistCard() {
     <div className="overflow-hidden rounded-2xl bg-white card-elevated text-left">
       <div className="flex items-start justify-between gap-3 px-4 pt-4">
         <div className="min-w-0">
-          <p className="text-sm font-semibold leading-5 text-[#121212]">Keep these ready</p>
+          <p className="text-base font-medium leading-6 text-[#121212]">Keep these ready</p>
           <p className="mt-0.5 text-xs leading-[18px] text-[#757575]">
             Photos or PDFs. Nothing needs printing.
           </p>

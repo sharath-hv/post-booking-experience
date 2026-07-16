@@ -4,6 +4,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 
+import arrowRightIcon from "@/assets/Arrow_right.svg";
 import invoiceIcon from "@/assets/Invoice.svg";
 
 import { PlanList } from "@/components/concierge/artifacts";
@@ -192,28 +193,36 @@ export function ManageBookingZoomOverlay({
                       </h3>
                       <div className={OVERLAY_GLASS_CARD_CLASS}>
                         {receipts.map((receipt, idx) => (
-                          <div
+                          <button
                             key={receipt.title}
+                            type="button"
                             className={cn(
-                              "flex items-center gap-3 px-4 py-4",
+                              "flex w-full items-center gap-3 px-4 py-4 text-left transition-colors hover:bg-[#fafafa] active:bg-[#f5f5f5]",
                               idx > 0 && "border-t border-dashed border-[#ececec]"
                             )}
                           >
                             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#f5f5f5] text-[#75747a]">
                               <ReceiptGlyph />
                             </span>
-                            <div className="min-w-0 flex-1">
-                              <p className="text-sm font-medium leading-5 text-[#121212]">
+                            <span className="min-w-0 flex-1">
+                              <span className="block text-sm font-medium leading-5 text-[#121212]">
                                 {receipt.title}
-                              </p>
-                              <p className="mt-0.5 text-xs leading-[18px] text-[#757575]">
+                              </span>
+                              <span className="mt-0.5 block text-xs leading-[18px] text-[#757575]">
                                 {receipt.meta}
-                              </p>
-                            </div>
-                            <span className="shrink-0 rounded-full bg-[#e7f6ee] px-2 py-0.5 text-[11px] font-medium leading-4 text-[#0c7a42]">
-                              Saved
+                              </span>
                             </span>
-                          </div>
+                            <span className="relative h-5 w-5 shrink-0" aria-hidden>
+                              <Image
+                                src={arrowRightIcon}
+                                alt=""
+                                fill
+                                className="object-contain"
+                                unoptimized
+                                sizes="20px"
+                              />
+                            </span>
+                          </button>
                         ))}
                       </div>
                     </section>

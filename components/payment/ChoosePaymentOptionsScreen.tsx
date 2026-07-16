@@ -5,9 +5,8 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
 import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
-import { bankForQueryParam } from "@/components/payment/acko-drive-finance-bank";
+import { ackoDriveFinanceActionPath } from "@/components/payment/acko-drive-finance-bank";
 import { writeConciergeEcho } from "@/lib/concierge/echo";
-import { BankSelectionBottomSheet } from "@/components/payment/BankSelectionBottomSheet";
 import { FullPaymentConfirmBottomSheet } from "@/components/payment/FullPaymentConfirmBottomSheet";
 import { SelfFinanceConfirmBottomSheet } from "@/components/payment/SelfFinanceConfirmBottomSheet";
 import {
@@ -21,6 +20,7 @@ import {
   PAYMENT_CHOOSE_ASSETS,
 } from "@/components/payment/payment-choose-assets";
 import { estimateMonthlyEmiInr, parseAnnualRateFromLabel } from "@/lib/loan-emi";
+import { bankIdToken, bankNameToken, bankSelectionPath } from "@/lib/payment/bank-selection-urls";
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -259,13 +259,17 @@ function OptionCard({
 export function ChoosePaymentOptionsScreen() {
   const router = useRouter();
   const [choice, setChoice] = useState<PaymentOptionId>("acko_drive");
-  const [bankSheetOpen, setBankSheetOpen] = useState(false);
   const [selfFinanceConfirmOpen, setSelfFinanceConfirmOpen] = useState(false);
   const [fullPaymentConfirmOpen, setFullPaymentConfirmOpen] = useState(false);
 
   const onContinue = useCallback(() => {
     if (choice === "acko_drive") {
-      setBankSheetOpen(true);
+      router.push(
+        bankSelectionPath({
+          next: ackoDriveFinanceActionPath(bankIdToken()),
+          echo: `Let's finance via ${bankNameToken()}`,
+        }),
+      );
       return;
     }
     if (choice === "self_finance") {
@@ -273,7 +277,7 @@ export function ChoosePaymentOptionsScreen() {
       return;
     }
     setFullPaymentConfirmOpen(true);
-  }, [choice]);
+  }, [choice, router]);
 
   // Straight into Shivi's action turns — no “Payment option confirmed” interstitials.
   const onFullPaymentConfirm = useCallback(() => {
@@ -286,12 +290,6 @@ export function ChoosePaymentOptionsScreen() {
     setSelfFinanceConfirmOpen(false);
     writeConciergeEcho("I'll arrange the loan myself");
     router.push("/payment/self-finance-action");
-  }, [router]);
-
-  const onBankSheetConfirm = useCallback((bankId: string) => {
-    setBankSheetOpen(false);
-    writeConciergeEcho(`Let's finance via ${bankForQueryParam(bankId).name}`);
-    router.push(`/payment/acko-drive-finance-action?bank=${encodeURIComponent(bankId)}`);
   }, [router]);
 
   const ctaLabel =
@@ -388,12 +386,6 @@ export function ChoosePaymentOptionsScreen() {
         footnote="Your delivery date locks in once the money plan is set. Best done now."
         callLabel="Not sure? I can call you"
         manageShowVehicleIdentification
-      />
-
-      <BankSelectionBottomSheet
-        open={bankSheetOpen}
-        onClose={() => setBankSheetOpen(false)}
-        onConfirm={onBankSheetConfirm}
       />
 
       <SelfFinanceConfirmBottomSheet

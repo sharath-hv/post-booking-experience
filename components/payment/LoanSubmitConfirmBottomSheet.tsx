@@ -16,7 +16,7 @@ import { BottomSheetPortal } from "@/components/ui/BottomSheetPortal";
 import { FULL_PAYMENT_INSURANCE_INR } from "@/components/payment/loan-amount-demo-constants";
 import { publicAssetPath } from "@/lib/public-asset-path";
 
-/** Enter/exit slide duration — keep in sync with `BankSelectionBottomSheet` */
+/** Enter/exit slide duration — keep in sync with `BankLoanDetailBottomSheet` */
 const SHEET_TRANSITION_MS = 280;
 
 /** Illustration + list marker from `public/assets` (`doc search.svg` + `tick.svg`). */
@@ -60,7 +60,7 @@ type LoanSubmitConfirmBottomSheetProps = {
 
 /**
  * “Things to know before you continue!” — informational sheet before continuing (loan / payment).
- * Behaviour aligned with {@link BankSelectionBottomSheet}.
+ * Behaviour aligned with {@link BankLoanDetailBottomSheet}.
  */
 export function LoanSubmitConfirmBottomSheet({
   open,

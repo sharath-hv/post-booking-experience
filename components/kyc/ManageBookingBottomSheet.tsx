@@ -76,7 +76,7 @@ function ModifyBookingActionRow({
       disabled={disabled}
       onClick={disabled ? undefined : onClick}
       className={cn(
-        "flex w-full items-start gap-3.5 px-4 py-4 text-left transition-colors",
+        "flex w-full items-center gap-3.5 px-4 py-4 text-left transition-colors",
         disabled
           ? "cursor-not-allowed opacity-60"
           : "hover:bg-[#fafafa] active:bg-[#f5f5f5]",
@@ -85,11 +85,11 @@ function ModifyBookingActionRow({
       <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#f5f5f5]">
         <Image src={iconSrc} alt="" width={20} height={20} className="shrink-0" unoptimized aria-hidden />
       </span>
-      <span className="min-w-0 flex-1 pt-0.5">
+      <span className="min-w-0 flex-1">
         <span className="block text-sm font-medium leading-5 text-[#121212]">{title}</span>
         <span className="mt-1 block text-xs leading-[18px] text-[#757575]">{description}</span>
       </span>
-      <span className="relative mt-0.5 h-5 w-5 shrink-0">
+      <span className="relative h-5 w-5 shrink-0">
         <Image
           src={arrowRightIcon}
           alt=""

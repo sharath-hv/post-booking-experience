@@ -14,7 +14,7 @@ import {
 import { bottomSheetTitleWidthWithIllustration } from "@/components/ui/bottom-sheet-title-layout";
 import { BottomSheetCloseIcon } from "@/components/ui/BottomSheetCloseIcon";
 
-/** Enter/exit slide duration — keep in sync with `BankSelectionBottomSheet` */
+/** Enter/exit slide duration — keep in sync with `BankLoanDetailBottomSheet` */
 const SHEET_TRANSITION_MS = 280;
 
 type SelfFinanceConfirmBottomSheetProps = {
@@ -25,7 +25,7 @@ type SelfFinanceConfirmBottomSheetProps = {
 
 /**
  * Self finance — confirm before navigating to payment. Behaviour aligned with
- * {@link BankSelectionBottomSheet} / {@link LoanSubmitConfirmBottomSheet}.
+ * {@link BankLoanDetailBottomSheet} / {@link LoanSubmitConfirmBottomSheet}.
  */
 export function SelfFinanceConfirmBottomSheet({
   open,

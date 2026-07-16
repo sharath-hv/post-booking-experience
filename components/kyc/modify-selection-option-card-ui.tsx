@@ -17,9 +17,12 @@ export const MODIFY_SELECTION_SELECTABLE_CARD_BASE_CLASS =
 export const MODIFY_SELECTION_SUMMARY_CARD_CLASS =
   "overflow-hidden rounded-2xl border border-[#e8e8e8] bg-white";
 
-/** Page lead + body — matches `ShiviDialogue` on concierge turns. */
+/**
+ * Page lead + body for standalone screens (modify selection, etc.).
+ * Lead is semibold — distinct from concierge `ShiviDialogue` (medium).
+ */
 export const MODIFY_SELECTION_LEAD_CLASS =
-  "text-2xl font-medium leading-8 tracking-[-0.2px] text-[#121212]";
+  "text-2xl font-semibold leading-8 tracking-[-0.2px] text-[#121212]";
 export const MODIFY_SELECTION_BODY_CLASS =
   "text-base font-normal leading-6 text-[#4b4b4b]";
 

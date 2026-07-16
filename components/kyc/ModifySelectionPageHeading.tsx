@@ -11,7 +11,7 @@ type ModifySelectionPageHeadingProps = {
   sublineDelayMs?: number;
 };
 
-/** Page title block — lead + optional body, matches concierge `ShiviDialogue` typography. */
+/** Page title block — lead + optional body for standalone screens (not Shivi concierge). */
 export function ModifySelectionPageHeading({
   title,
   subline,

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
 
 import { KycBookingProcessingScreen } from "@/components/kyc/KycBookingProcessingScreen";
 import { AckoDriveBankPartnerRow } from "@/components/payment/AckoDriveBankPartnerRow";
@@ -11,7 +11,7 @@ import {
   bankForQueryParam,
 } from "@/components/payment/acko-drive-finance-bank";
 import { loanApplicationEntryPath } from "@/lib/loan-application-urls";
-import { BankSelectionBottomSheet } from "@/components/payment/BankSelectionBottomSheet";
+import { bankIdToken, bankSelectionPath } from "@/lib/payment/bank-selection-urls";
 
 const HEADLINE_LINE_1 = "Good choice.";
 const HEADLINE_LINE_2 = "I'll run your loan from here.";
@@ -28,19 +28,15 @@ export function AckoDriveFinanceActionScreen() {
   const searchParams = useSearchParams();
   const bankId = searchParams.get("bank");
   const bank = useMemo(() => bankForQueryParam(bankId), [bankId]);
-  const [bankSheetOpen, setBankSheetOpen] = useState(false);
 
   const uploadHref = useMemo(() => loanApplicationEntryPath(bank.id, { fresh: true }), [bank.id]);
 
-  const onBankChange = useCallback(() => setBankSheetOpen(true), []);
-
-  const onBankSheetConfirm = useCallback(
-    (nextBankId: string) => {
-      setBankSheetOpen(false);
-      router.replace(ackoDriveFinanceActionPath(nextBankId));
-    },
-    [router],
+  const changeBankHref = useMemo(
+    () => bankSelectionPath({ next: ackoDriveFinanceActionPath(bankIdToken()) }),
+    [],
   );
+
+  const onBankChange = useCallback(() => router.push(changeBankHref), [router, changeBankHref]);
 
   const belowHeadline = useMemo(
     () => <AckoDriveBankPartnerRow bank={bank} onChange={onBankChange} />,
@@ -50,24 +46,16 @@ export function AckoDriveFinanceActionScreen() {
   const heroSummaryCard = useMemo(() => <LoanDocumentsChecklistCard />, []);
 
   return (
-    <>
-      <KycBookingProcessingScreen
-        headline={HEADLINE_LINE_1}
-        headlineLine2={HEADLINE_LINE_2}
-        belowHeadline={belowHeadline}
-        subline={SUBLINE}
-        heroSummaryCard={heroSummaryCard}
-        nextHref={uploadHref}
-        prefetchHref={uploadHref}
-        nextCtaLabel="Start my loan application"
-        manageBookingShowVehicleIdentification
-      />
-      <BankSelectionBottomSheet
-        open={bankSheetOpen}
-        onClose={() => setBankSheetOpen(false)}
-        onConfirm={onBankSheetConfirm}
-        initialBankId={bank.id}
-      />
-    </>
+    <KycBookingProcessingScreen
+      headline={HEADLINE_LINE_1}
+      headlineLine2={HEADLINE_LINE_2}
+      belowHeadline={belowHeadline}
+      subline={SUBLINE}
+      heroSummaryCard={heroSummaryCard}
+      nextHref={uploadHref}
+      prefetchHref={uploadHref}
+      nextCtaLabel="Start my loan application"
+      manageBookingShowVehicleIdentification
+    />
   );
 }

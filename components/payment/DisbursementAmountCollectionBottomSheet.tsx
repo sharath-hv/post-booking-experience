@@ -21,7 +21,7 @@ import {
 import { bottomSheetTitleWidthWithIllustration } from "@/components/ui/bottom-sheet-title-layout";
 import { BottomSheetCloseIcon } from "@/components/ui/BottomSheetCloseIcon";
 
-/** Parity with `SelfFinanceConfirmBottomSheet` / `BankSelectionBottomSheet`. */
+/** Parity with `SelfFinanceConfirmBottomSheet` / `BankLoanDetailBottomSheet`. */
 const SHEET_TRANSITION_MS = 280;
 
 const MAX_DISBURSEMENT_INR = ON_ROAD_PRICE_INR - MIN_DOWN_PAYMENT_INR;
