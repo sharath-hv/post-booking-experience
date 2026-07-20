@@ -53,6 +53,11 @@ export function loanProcessingPath(bankId: string) {
   return `/payment/loan-processing?bank=${encodeURIComponent(bankId)}`;
 }
 
+/** Bank asked for an extra document mid-review — demo branch off loan processing. */
+export function loanAdditionalDocumentsPath(bankId: string) {
+  return `/payment/loan-additional-documents?bank=${encodeURIComponent(bankId)}`;
+}
+
 export function loanApplicationSubmittedPath(bankId: string) {
   return `/payment/loan-application/submitted?bank=${encodeURIComponent(bankId)}`;
 }

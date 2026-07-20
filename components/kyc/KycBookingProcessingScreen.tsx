@@ -38,8 +38,8 @@ export type KycBookingProcessingScreenProps = {
   ctaWarningLine?: string;
   /** Primary CTA label (default “Next” → renders as a demo time-skip). */
   nextCtaLabel?: string;
-  /** Alternate demo branch under the time skip (e.g. the failure path). */
-  altTimeSkip?: { label: string; href: string };
+  /** Alternate demo branch(es) under the time skip (e.g. failure / more-docs paths). */
+  altTimeSkip?: { label: string; href: string } | readonly { label: string; href: string }[];
   /**
    * When set, primary CTA invokes this instead of navigating to `nextHref` (e.g. open a confirm sheet).
    */
