@@ -67,8 +67,11 @@ export type ConciergeTurn = {
   replies?: readonly ConciergeReply[];
   /** Demo time travel to the next turn (fixed footer, below replies). */
   timeSkip?: { label: string; href: string; onBeforeNavigate?: () => void };
-  /** Alternate demo branch (e.g. the failure path) — second pill under the time skip. */
-  altTimeSkip?: { label: string; href: string };
+  /**
+   * Alternate demo branch(es) under the time skip — e.g. failure or
+   * “bank needs more docs”. Pass one object or a list.
+   */
+  altTimeSkip?: { label: string; href: string } | readonly { label: string; href: string }[];
   /** Orange commitment line above the footer (deadlines, expectations). */
   footnote?: string;
   /** Semibold prefix for the footnote card. */
@@ -343,7 +346,15 @@ export function ConciergeTurnShell({
     onContentShownRef.current?.();
   }, [contentShown]);
 
-  const hasFooter = Boolean(replies?.length || timeSkip || footnote || callLabel || footerExtra);
+  const altTimeSkips = altTimeSkip
+    ? Array.isArray(altTimeSkip)
+      ? altTimeSkip
+      : [altTimeSkip]
+    : [];
+
+  const hasFooter = Boolean(
+    replies?.length || timeSkip || altTimeSkips.length || footnote || callLabel || footerExtra,
+  );
 
   /** Room for the fixed footer — taller when footnote + CTA + call link stack. */
   const mainBottomPad = !hasFooter
@@ -510,9 +521,14 @@ export function ConciergeTurnShell({
                 className={replies?.length || callLabel ? styles.mt_4_10 : undefined}
               />
             ) : null}
-            {altTimeSkip ? (
-              <TimeSkipChip label={altTimeSkip.label} href={altTimeSkip.href} className={styles.mt_2_20} />
-            ) : null}
+            {altTimeSkips.map((skip) => (
+              <TimeSkipChip
+                key={`${skip.label}-${skip.href}`}
+                label={skip.label}
+                href={skip.href}
+                className={styles.mt_2_20}
+              />
+            ))}
           </div>
         </div>
       ) : null}

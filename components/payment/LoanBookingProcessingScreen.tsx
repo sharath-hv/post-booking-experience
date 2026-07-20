@@ -6,6 +6,9 @@ import { useSearchParams } from "next/navigation";
 import { NextStepCard } from "@/components/concierge/artifacts";
 import { bankForQueryParam } from "@/components/payment/acko-drive-finance-bank";
 import { KycBookingProcessingScreen } from "@/components/kyc/KycBookingProcessingScreen";
+import {
+  loanAdditionalDocumentsPath,
+} from "@/lib/loan-application-urls";
 import styles from "./LoanBookingProcessingScreen.module.scss";
 
 
@@ -21,6 +24,7 @@ function loanSanctionedHref(bank: string | null) {
  * Loan under review — bank reviews take days (honest time), and the bank's
  * verification call is the user's pending action (NextStepCard with stakes).
  * “Skip ahead” goes to `/payment/loan-sanctioned` (preserves `?bank=`).
+ * Demo branches: bank declines, or bank asks for one more document.
  */
 export function LoanBookingProcessingScreen() {
   const searchParams = useSearchParams();
@@ -47,12 +51,20 @@ export function LoanBookingProcessingScreen() {
       }
       nextHref={nextHref}
       prefetchHref={nextHref}
-      altTimeSkip={{
-        label: "If the bank declines",
-        href: bankId
-          ? `/payment/loan-rejected?bank=${encodeURIComponent(bankId)}`
-          : "/payment/loan-rejected",
-      }}
+      altTimeSkip={[
+        {
+          label: "If the bank needs more docs",
+          href: bankId
+            ? loanAdditionalDocumentsPath(bankId)
+            : "/payment/loan-additional-documents",
+        },
+        {
+          label: "If the bank declines",
+          href: bankId
+            ? `/payment/loan-rejected?bank=${encodeURIComponent(bankId)}`
+            : "/payment/loan-rejected",
+        },
+      ]}
       callLabel="Anxious about the loan? I can call you"
       manageBookingShowVehicleIdentification
     />

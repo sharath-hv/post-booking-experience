@@ -4,7 +4,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 
-import arrowRightIcon from "@/assets/Arrow_right.svg";
+import downloadIcon from "@/assets/Download.svg";
 import invoiceIcon from "@/assets/Invoice.svg";
 
 import { PlanList } from "@/components/concierge/artifacts";
@@ -215,7 +215,7 @@ export function ManageBookingZoomOverlay({
                             </span>
                             <span className={styles.relative_16} aria-hidden>
                               <Image
-                                src={arrowRightIcon}
+                                src={downloadIcon}
                                 alt=""
                                 fill
                                 className={styles.object_contain_17}
