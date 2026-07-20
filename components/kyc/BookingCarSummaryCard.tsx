@@ -12,26 +12,28 @@ import {
 } from "@/components/kyc/demo-vehicle-identification";
 import { BOOKING_CONFIRMED_ASSETS } from "@/components/kyc/kyc-booking-confirmed-assets";
 import { cn } from "@/lib/utils";
+import styles from "./BookingCarSummaryCard.module.scss";
+
 
 type CarCutoutSrc = string | StaticImageData;
 
 /** Figma 2903:8621 — outer card shell. */
-export const BOOKING_CAR_CARD_SHELL_CLASS =
-  "relative overflow-hidden rounded-2xl border border-white card-elevated";
+export const BOOKING_CAR_CARD_SHELL_CLASS = styles.bookingCarCardShell + " card-elevated";
 
 /** Figma 2903:8621 — non-VIN hero card height. */
-export const BOOKING_CAR_HERO_HEIGHT_CLASS = "h-[244px]";
+export const BOOKING_CAR_HERO_HEIGHT_CLASS = styles.bookingCarHeroHeight;
 
 /** Figma 2903:8621 — VIN card minimum height. */
-export const BOOKING_CAR_HERO_HEIGHT_VIN_CLASS = "min-h-[318px]";
+export const BOOKING_CAR_HERO_HEIGHT_VIN_CLASS = styles.bookingCarHeroHeightVin;
 
 /** Figma 2903:8655 — floating details panel. */
-export const BOOKING_CAR_SUMMARY_PANEL_CLASS =
-  "overflow-hidden rounded-xl border border-[#e8e8e8] bg-white p-[11px] backdrop-blur-[12px]";
+export const BOOKING_CAR_SUMMARY_PANEL_CLASS = styles.bookingCarSummaryPanel;
 
 /** Figma 2903:8655 — panel anchored above card bottom (8px inset matches 304px on 320px frame). */
-export const BOOKING_CAR_SUMMARY_PANEL_POSITION_CLASS =
-  "absolute bottom-[7px] inset-x-2 z-10";
+export const BOOKING_CAR_SUMMARY_PANEL_POSITION_CLASS = styles.bookingCarSummaryPanelPosition;
+
+/** VIN / tall hero — floating panel over the cutout (negative margin). */
+export const BOOKING_CAR_SUMMARY_PANEL_OVER_HERO_CLASS = styles.relative_1;
 
 /** Figma 2903:8649 — showroom backdrop fade. */
 export const BOOKING_CAR_BACKDROP_GRADIENT =
@@ -41,18 +43,18 @@ export function BookingCarCardBackdrop() {
   return (
     <div
       aria-hidden
-      className="pointer-events-none absolute inset-x-0 top-[-1px] h-[362px] overflow-hidden"
+      className={styles.pointer_events_none_0}
     >
       {/* Scale by width only — top edge stays fixed as the card grows wider. */}
       <Image
         src={BOOKING_CONFIRMED_ASSETS.cardBackdrop}
         alt=""
-        className="block h-auto w-full max-w-none"
+        className={styles.block_1}
         sizes="(max-width: 640px) 100vw, 640px"
         unoptimized
       />
       <div
-        className="absolute inset-0"
+        className={styles.absolute_2}
         style={{ backgroundImage: BOOKING_CAR_BACKDROP_GRADIENT }}
       />
     </div>
@@ -71,13 +73,13 @@ export function BookingCarSummaryCardVisualStage({
     <>
       {showBackdrop ? <BookingCarCardBackdrop /> : null}
 
-      <div className="absolute left-1/2 top-10 z-[2] h-[85px] w-[150px] -translate-x-1/2 overflow-hidden">
-        <div className="relative mx-auto h-full w-full max-w-[150px]">
+      <div className={styles.absolute_3}>
+        <div className={styles.relative_4}>
           <Image
             src={carCutoutSrc}
             alt=""
             fill
-            className="object-contain object-bottom"
+            className={styles.object_contain_5}
             sizes="150px"
             unoptimized
           />
@@ -127,7 +129,7 @@ export function BookingCarSummaryCard({
   if (variant === "detailsOnly") {
     return (
       <section
-        className="w-full rounded-xl bg-[#f5f5f5] p-4"
+        className={styles.w_full_6}
         aria-label="Your booked car"
       >
         {details}
@@ -138,13 +140,13 @@ export function BookingCarSummaryCard({
   if (showVehicleIdentification) {
     return (
       <div
-        className={cn(BOOKING_CAR_CARD_SHELL_CLASS, "w-full shrink-0", BOOKING_CAR_HERO_HEIGHT_VIN_CLASS)}
+        className={cn(BOOKING_CAR_CARD_SHELL_CLASS, styles.w_full_7, BOOKING_CAR_HERO_HEIGHT_VIN_CLASS)}
       >
         <BookingCarCardBackdrop />
-        <div className={`relative w-full ${BOOKING_CAR_HERO_HEIGHT_CLASS}`}>
+        <div className={cn(styles.relative_0, BOOKING_CAR_HERO_HEIGHT_CLASS)}>
           <BookingCarSummaryCardVisualStage carCutoutSrc={carCutoutSrc} showBackdrop={false} />
         </div>
-        <div className={`relative z-10 mx-2 -mt-24 mb-2 ${BOOKING_CAR_SUMMARY_PANEL_CLASS}`}>
+        <div className={cn(styles.relative_1, BOOKING_CAR_SUMMARY_PANEL_CLASS)}>
           {details}
         </div>
       </div>
@@ -153,10 +155,10 @@ export function BookingCarSummaryCard({
 
   return (
     <div
-      className={cn(BOOKING_CAR_CARD_SHELL_CLASS, "w-full shrink-0", BOOKING_CAR_HERO_HEIGHT_CLASS)}
+      className={cn(BOOKING_CAR_CARD_SHELL_CLASS, styles.w_full_7, BOOKING_CAR_HERO_HEIGHT_CLASS)}
     >
       <BookingCarSummaryCardVisualStage carCutoutSrc={carCutoutSrc} />
-      <div className={`${BOOKING_CAR_SUMMARY_PANEL_POSITION_CLASS} ${BOOKING_CAR_SUMMARY_PANEL_CLASS}`}>
+      <div className={cn(BOOKING_CAR_SUMMARY_PANEL_POSITION_CLASS, BOOKING_CAR_SUMMARY_PANEL_CLASS)}>
         {details}
       </div>
     </div>

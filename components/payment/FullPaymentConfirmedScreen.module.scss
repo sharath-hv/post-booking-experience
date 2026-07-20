@@ -1,0 +1,12 @@
+/* Component styles */
+
+.flex_0 {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing) * 4);
+}
+
+
+.bgGray {
+  background-color: #f0f0f0;
+}

@@ -3,6 +3,7 @@ import { ModifyNoChargesGatedPage } from "@/components/kyc/ModifyNoChargesGatedP
 
 /**
  * Exact unit assigned — engine + chassis in the user's name.
+ * Demo: `?early=1` for manufacturing finished ahead of the estimated date.
  */
 export default function CarAllocationConfirmedPage() {
   return (

@@ -75,7 +75,7 @@ Use a **subtle vertical fade** from brand tint into the page surface — not raw
 
 ## Dark Mode
 
-CSS variable-based theming. **Never** use Tailwind `dark:` modifier. Disable transitions during theme switch to prevent flash:
+CSS variable-based theming. **Never** use `dark` theme modifier. Disable transitions during theme switch to prevent flash:
 
 ```js
 function setTheme(theme) {

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
@@ -17,13 +18,15 @@ import { isStandardDeliveryFlow } from "@/lib/experience-flow-content";
 import { resetKycVerificationFailureCount } from "@/lib/kyc-verification-attempts";
 import { BOOKING_LOCK_AMOUNT_INR } from "@/lib/paymentUrls";
 import { QUOTE_ASSETS } from "./quote-assets";
+import styles from "./QuoteScreen.module.scss";
+
 
 function MenuIconButton({ onClick }: { onClick: () => void }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-[#f0f0f0] bg-white shadow-[0_4px_16px_rgba(0,0,0,0.12)] transition-transform active:scale-[0.98] focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/20 focus-visible:ring-offset-2"
+      className={styles.flex_0}
       aria-label="Switch experience flow"
     >
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden>
@@ -41,7 +44,7 @@ function MenuIconButton({ onClick }: { onClick: () => void }) {
 function DottedRule() {
   return (
     <hr
-      className="my-4 w-full border-0 border-t border-dotted"
+      className={styles.my_4_1}
       style={{ borderColor: "var(--quote-border-light)" }}
     />
   );
@@ -75,45 +78,45 @@ export function QuoteScreen() {
     : `Lock this price at ₹${BOOKING_LOCK_AMOUNT_INR.toLocaleString("en-IN")}`;
 
   return (
-    <div className="relative min-h-dvh bg-[#F7FAFF] pb-[140px]">
+    <div className={styles.relative_2}>
       {/* Floating flow menu — sits above header / content */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 z-30 mx-auto max-w-[640px] px-5 pt-4">
-        <div className="pointer-events-auto">
+      <div className={styles.pointer_events_none_3}>
+        <div className={styles.pointer_events_auto_4}>
           <MenuIconButton onClick={() => setFlowMenuOpen(true)} />
         </div>
       </div>
 
       {/* Dark header */}
       <header
-        className="relative mx-auto w-full max-w-[640px] overflow-hidden bg-[var(--quote-header)] pb-6 pt-4 text-white"
+        className={styles.relative_5}
         style={{ minHeight: 240 }}
       >
-        <div className="relative z-[1] h-10 px-5 pt-2" aria-hidden />
-        <div className="relative z-[1] mt-4 flex gap-4 px-5">
-          <div className="min-w-0 flex-1">
-            <h1 className="text-base font-semibold leading-6 tracking-[-0.1px] text-white">
+        <div className={styles.relative_6} aria-hidden />
+        <div className={styles.relative_7}>
+          <div className={styles.min_w_0_8}>
+            <h1 className={styles.text_base_9}>
               Kia Seltos 1.0 HTX
             </h1>
-            <p className="mt-1 text-xs leading-[18px] text-[#a6a6a6]">
+            <p className={styles.mt_1_10}>
               Petrol • Manual
             </p>
-            <div className="mt-3 flex items-center gap-2">
+            <div className={styles.mt_3_11}>
               <span
-                className="inline-block h-4 w-4 shrink-0 rounded-full border border-white/30"
+                className={styles.inline_block_12}
                 style={{ background: "#c41e3a" }}
                 aria-hidden
               />
-              <span className="text-xs leading-[18px] text-white">
+              <span className={styles.text_xs_13}>
                 Intense Red - Metallic
               </span>
             </div>
           </div>
-          <div className="relative h-[75px] w-[128px] shrink-0 overflow-hidden rounded-xl bg-[#1a1a1a]">
+          <div className={styles.relative_14}>
             <Image
               src={QUOTE_ASSETS.carHero}
               alt="Kia Seltos"
               fill
-              className="object-cover"
+              className={styles.object_cover_15}
               sizes="128px"
               unoptimized
               priority
@@ -122,22 +125,22 @@ export function QuoteScreen() {
         </div>
       </header>
 
-      <div className="relative z-[2] mx-auto w-full max-w-[640px] -mt-16 px-5">
+      <div className={styles.relative_16}>
         {/* Price hero card */}
-        <section className="overflow-hidden rounded-xl bg-white card-elevated tabular-nums">
-          <div className="px-3 pb-2 pt-5 text-center">
-            <p className="text-sm leading-5 text-[var(--quote-text-body)]">
+        <section className={[styles.overflow_hidden_17, "card-elevated"].filter(Boolean).join(" ")}>
+          <div className={styles.px_3_18}>
+            <p className={styles.text_sm_19}>
               Your ACKO Drive price for Bengaluru
             </p>
-            <p className="mt-1 text-2xl font-semibold tracking-tight text-[#121212]">
+            <p className={styles.mt_1_20}>
               ₹13,63,780
             </p>
-            <p className="mt-1 text-xs font-medium text-[var(--quote-green)]">
+            <p className={styles.mt_1_21}>
               Your total savings ₹76,043
             </p>
           </div>
           <div
-            className="flex items-center justify-center gap-2 py-3"
+            className={styles.flex_22}
             style={{ background: "var(--quote-purple-tint)" }}
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
@@ -149,7 +152,7 @@ export function QuoteScreen() {
               />
             </svg>
             <span
-              className="text-xs font-medium leading-[18px]"
+              className={styles.text_xs_23}
               style={{ color: "var(--quote-purple-text)" }}
             >
               Express Delivery by 25 Nov 2025
@@ -158,32 +161,32 @@ export function QuoteScreen() {
         </section>
 
         {/* Insurance coverage */}
-        <h2 className="mb-3 mt-8 text-base font-semibold leading-[22px] text-[#121212]">
+        <h2 className={styles.mb_3_24}>
           ACKO Insurance coverage included
         </h2>
         <button
           type="button"
-          className="flex w-full cursor-pointer items-center gap-5 rounded-xl bg-white card-elevated px-3 py-4 text-left transition-colors hover:bg-[#fafafa] active:bg-[#f5f5f5]"
+          className={[styles.flex_25, "card-elevated"].filter(Boolean).join(" ")}
         >
-          <div className="min-w-0 flex-1">
-            <p className="text-sm font-medium text-[#121212]">3 year</p>
-            <p className="text-xs text-[var(--quote-text-body)]">Third Party cover</p>
+          <div className={styles.min_w_0_8}>
+            <p className={styles.text_sm_26}>3 year</p>
+            <p className={styles.text_xs_27}>Third Party cover</p>
           </div>
           <div
-            className="flex h-10 w-px shrink-0 items-stretch bg-[var(--quote-border-light)]"
+            className={styles.flex_28}
             aria-hidden
           />
-          <div className="relative min-w-0 flex-1 pr-6">
-            <span className="absolute right-0 top-1/2 flex h-4 w-4 -translate-y-1/2 items-center justify-center rounded-full bg-[#e8e8e8]">
-              <span className="text-xs leading-none text-[#121212]">+</span>
+          <div className={styles.relative_29}>
+            <span className={styles.absolute_30}>
+              <span className={styles.text_xs_31}>+</span>
             </span>
-            <p className="text-sm font-medium text-[#121212]">1 year</p>
-            <p className="text-xs text-[var(--quote-text-body)]">
+            <p className={styles.text_sm_26}>1 year</p>
+            <p className={styles.text_xs_27}>
               Zero depreciation cover
             </p>
           </div>
           <svg
-            className="h-4 w-4 shrink-0 text-[#121212]"
+            className={styles.h_4_32}
             viewBox="0 0 24 24"
             fill="none"
             aria-hidden
@@ -198,32 +201,32 @@ export function QuoteScreen() {
         </button>
 
         {/* Price quote */}
-        <h2 className="mb-3 mt-10 text-base font-semibold leading-[22px] text-[#121212]">
+        <h2 className={styles.mb_3_33}>
           Price quote
         </h2>
-        <div className="overflow-hidden rounded-xl bg-white card-elevated tabular-nums">
-          <div className="flex items-start justify-between gap-2 px-3 py-4">
-            <span className="text-sm text-[#121212]">Ex-Showroom Price</span>
-            <span className="shrink-0 text-sm font-medium text-[#121212]">
+        <div className={[styles.overflow_hidden_17, "card-elevated"].filter(Boolean).join(" ")}>
+          <div className={styles.flex_34}>
+            <span className={styles.text_sm_35}>Ex-Showroom Price</span>
+            <span className={styles.shrink_0_36}>
               ₹9,54,900
             </span>
           </div>
 
-          <div className="border-t border-[var(--quote-border-light)] px-3 py-3">
+          <div className={styles.border_t_37}>
             <button
               type="button"
               onClick={() => setOtherOpen((o) => !o)}
-              className="-mx-1 flex w-[calc(100%+8px)] cursor-pointer items-center justify-between gap-2 rounded-lg px-1 py-1 text-left transition-colors hover:bg-[#fafafa] active:bg-[#f5f5f5]"
+              className={styles._mx_1_38}
             >
-              <span className="text-sm text-[#121212]">Other charges</span>
-              <span className="flex items-center gap-1">
-                <span className="text-sm font-medium text-[#121212]">₹3,72,177</span>
+              <span className={styles.text_sm_35}>Other charges</span>
+              <span className={styles.flex_39}>
+                <span className={styles.text_sm_26}>₹3,72,177</span>
                 <svg
                   width="16"
                   height="16"
                   viewBox="0 0 24 24"
                   fill="none"
-                  className={`shrink-0 transition-transform ${otherOpen ? "rotate-180" : ""}`}
+                  className={cn(styles.shrink_0_0, otherOpen ? styles.rotate_180_0 : "")}
                   aria-hidden
                 >
                   <path
@@ -237,7 +240,7 @@ export function QuoteScreen() {
             </button>
             {otherOpen ? (
               <div
-                className="mt-3 space-y-3 rounded-lg p-3"
+                className={styles.mt_3_40}
                 style={{ background: "var(--quote-nested-bg)" }}
               >
                 <Row label="Registration amount" value="₹1,50,261" small />
@@ -249,15 +252,15 @@ export function QuoteScreen() {
 
           <DottedRule />
 
-          <div className="px-3 pt-2">
-            <p className="text-xs font-medium text-[var(--quote-text-tertiary)]">
+          <div className={styles.px_3_41}>
+            <p className={styles.text_xs_42}>
               Insurance
             </p>
-            <div className="mt-2 flex gap-2">
-              <p className="min-w-0 flex-1 text-sm leading-5 text-[#121212]">
+            <div className={styles.mt_2_43}>
+              <p className={styles.min_w_0_44}>
                 ACKO Comprehensive Insurance (1year OD + 3 years TP)
               </p>
-              <span className="shrink-0 text-sm font-medium text-[#121212]">
+              <span className={styles.shrink_0_36}>
                 ₹36,488
               </span>
             </div>
@@ -265,53 +268,53 @@ export function QuoteScreen() {
 
           <DottedRule />
 
-          <div className="px-3 py-3">
-            <p className="text-xs font-medium text-[var(--quote-text-tertiary)]">FASTag</p>
-            <div className="mt-2 flex items-start justify-between gap-2">
+          <div className={styles.px_3_45}>
+            <p className={styles.text_xs_42}>FASTag</p>
+            <div className={styles.mt_2_46}>
               <div>
-                <p className="text-sm text-[#121212]">HDFC FASTag</p>
+                <p className={styles.text_sm_35}>HDFC FASTag</p>
                 <button
                   type="button"
-                  className="mt-1 cursor-pointer text-xs font-medium text-[var(--quote-red)] underline-offset-2 transition-opacity hover:opacity-80 hover:underline active:opacity-100"
+                  className={styles.mt_1_47}
                 >
                   Remove
                 </button>
               </div>
-              <span className="text-sm font-medium text-[#121212]">₹500</span>
+              <span className={styles.text_sm_26}>₹500</span>
             </div>
           </div>
 
           <DottedRule />
 
-          <div className="px-3 py-3">
-            <p className="text-xs font-medium text-[var(--quote-text-tertiary)]">
+          <div className={styles.px_3_45}>
+            <p className={styles.text_xs_42}>
               Accessories
             </p>
-            <div className="mt-2 flex items-start justify-between gap-2">
+            <div className={styles.mt_2_46}>
               <div>
-                <p className="text-sm text-[#121212]">Premium package</p>
+                <p className={styles.text_sm_35}>Premium package</p>
                 <button
                   type="button"
-                  className="mt-1 cursor-pointer text-xs font-medium text-[var(--quote-red)] underline-offset-2 transition-opacity hover:opacity-80 hover:underline active:opacity-100"
+                  className={styles.mt_1_47}
                 >
                   Remove
                 </button>
               </div>
-              <span className="text-sm font-medium text-[#121212]">₹9,750</span>
+              <span className={styles.text_sm_26}>₹9,750</span>
             </div>
           </div>
 
           <DottedRule />
 
-          <div className="px-3 py-3">
+          <div className={styles.px_3_45}>
             <button
               type="button"
               onClick={() => setDiscountOpen((d) => !d)}
-              className="-mx-1 flex w-[calc(100%+8px)] cursor-pointer items-center justify-between rounded-lg px-1 py-1 transition-colors hover:bg-[#fafafa] active:bg-[#f5f5f5]"
+              className={styles._mx_1_48}
             >
-              <span className="text-sm text-[#121212]">Total discount</span>
-              <span className="flex items-center gap-1">
-                <span className="text-sm font-medium text-[var(--quote-green)]">
+              <span className={styles.text_sm_35}>Total discount</span>
+              <span className={styles.flex_39}>
+                <span className={styles.text_sm_49}>
                   -₹76,043
                 </span>
                 <svg
@@ -319,7 +322,7 @@ export function QuoteScreen() {
                   height="16"
                   viewBox="0 0 24 24"
                   fill="none"
-                  className={`transition-transform ${discountOpen ? "rotate-180" : ""}`}
+                  className={cn(styles.transition_transform_1, discountOpen ? styles.rotate_180_1 : "")}
                   aria-hidden
                 >
                   <path
@@ -333,85 +336,85 @@ export function QuoteScreen() {
             </button>
             {discountOpen ? (
               <div
-                className="mt-3 space-y-3 rounded-lg p-3"
+                className={styles.mt_3_40}
                 style={{ background: "var(--quote-nested-bg)" }}
               >
-                <div className="flex justify-between gap-2 text-xs">
-                  <span className="text-[var(--quote-text-body)]">ACKO Drive discount</span>
-                  <span className="font-medium text-[var(--quote-green)]">-₹53,835</span>
+                <div className={styles.flex_50}>
+                  <span className={styles.text_var_quote_text_body_51}>ACKO Drive discount</span>
+                  <span className={styles.font_medium_52}>-₹53,835</span>
                 </div>
-                <p className="text-[11px] leading-[14px] text-[var(--quote-text-tertiary)]">
+                <p className={styles.text_11px__53}>
                   (
-                  <span className="font-medium text-[var(--quote-green)]">₹5,000</span> New car
+                  <span className={styles.font_medium_52}>₹5,000</span> New car
                   savings balance applied)
                 </p>
-                <div className="flex justify-between gap-2 text-xs">
-                  <span className="text-[var(--quote-text-body)]">Loan discount</span>
-                  <span className="font-medium text-[var(--quote-green)]">-₹10,000</span>
+                <div className={styles.flex_50}>
+                  <span className={styles.text_var_quote_text_body_51}>Loan discount</span>
+                  <span className={styles.font_medium_52}>-₹10,000</span>
                 </div>
-                <div className="flex justify-between gap-2 text-xs">
-                  <span className="text-[var(--quote-text-body)]">Exchange discount</span>
-                  <span className="font-medium text-[var(--quote-green)]">-₹10,000</span>
+                <div className={styles.flex_50}>
+                  <span className={styles.text_var_quote_text_body_51}>Exchange discount</span>
+                  <span className={styles.font_medium_52}>-₹10,000</span>
                 </div>
               </div>
             ) : null}
           </div>
 
           <div
-            className="px-3 py-4"
+            className={styles.px_3_54}
             style={{
               background:
                 "linear-gradient(94.92deg, #deffe5 0%, #d7fdff 99.43%)",
             }}
           >
-            <div className="flex items-start justify-between gap-2">
-              <p className="text-base font-medium leading-6 text-[var(--quote-acko-title)]">
+            <div className={styles.flex_55}>
+              <p className={styles.text_base_56}>
                 ACKO Drive price
               </p>
-              <p className="text-base font-semibold leading-[22px] text-[var(--quote-acko-title)]">
+              <p className={styles.text_base_57}>
                 ₹13,63,780
               </p>
             </div>
-            <p className="mt-3 text-xs leading-[18px] text-[var(--quote-text-body)]">
-              <span className="font-medium text-[#121212]">Did you know?</span> Our prices are
+            <p className={styles.mt_3_58}>
+              <span className={styles.font_medium_59}>Did you know?</span> Our prices are
               lower than dealership price as we don&apos;t charge any commissions
             </p>
           </div>
         </div>
 
         {/* Cancellation policy — mirrors the booking policy: confirmation is the lock point */}
-        <h2 className="mb-3 mt-10 text-base font-semibold leading-[22px] text-[#121212]">
+        <h2 className={styles.mb_3_33}>
           Cancellation policy
         </h2>
-        <div className="overflow-hidden rounded-xl border border-[var(--quote-border-light)]">
-          <div className="flex border-b border-[var(--quote-border-light)]">
-            <div className="w-[128px] shrink-0 border-r border-[var(--quote-border-light)] bg-[var(--quote-nested-bg)] p-4 text-sm text-[#121212]">
+        <div className={styles.overflow_hidden_60}>
+          <div className={styles.flex_61}>
+            <div className={styles.w_128px__62}>
               Before your car is confirmed
             </div>
-            <div className="flex flex-1 items-center p-4 text-sm font-medium text-[var(--quote-green)]">
+            <div className={styles.flex_63}>
               Free. Every rupee comes back.
             </div>
           </div>
-          <div className="flex border-b border-[var(--quote-border-light)]">
-            <div className="w-[128px] shrink-0 border-r border-[var(--quote-border-light)] bg-[var(--quote-nested-bg)] p-4 text-sm text-[#121212]">
+          <div className={styles.flex_61}>
+            <div className={styles.w_128px__62}>
               After your car is confirmed
             </div>
-            <div className="flex flex-1 items-center p-4 text-sm font-medium text-[var(--quote-red)]">
-              50% of whatever you&apos;ve paid is retained
+            <div className={styles.flex_64}>
+              50% of your booking amount is retained
             </div>
           </div>
-          <div className="flex">
-            <div className="w-[128px] shrink-0 border-r border-[var(--quote-border-light)] bg-[var(--quote-nested-bg)] p-4 text-sm text-[#121212]">
+          <div className={styles.flex_65}>
+            <div className={styles.w_128px__62}>
               If we can&apos;t deliver
             </div>
-            <div className="flex flex-1 items-center p-4 text-sm font-medium text-[var(--quote-green)]">
+            <div className={styles.flex_63}>
               100% refund. Our failure is never your cost.
             </div>
           </div>
         </div>
 
         <div
-          className="mt-4 flex gap-3 rounded-xl border p-4"
+          className={styles.mt_4_66}
           style={{
             background: "var(--quote-info-bg)",
             borderColor: "var(--quote-info-border)",
@@ -422,14 +425,14 @@ export function QuoteScreen() {
             alt=""
             width={24}
             height={24}
-            className="shrink-0"
+            className={styles.shrink_0_67}
             unoptimized
           />
-          <div className="min-w-0 text-xs leading-[18px]">
-            <p className="font-medium text-[#121212]">
+          <div className={styles.min_w_0_68}>
+            <p className={styles.font_medium_59}>
               When does &ldquo;confirmed&rdquo; happen?
             </p>
-            <p className="mt-1 text-[var(--quote-text-body)]">
+            <p className={styles.mt_1_69}>
               After your paperwork clears and we lock your exact car with a dealer, you&apos;ll
               be told clearly before that happens. Until then you can walk away free, and even
               after, you can change colour or model once for ₹5,000 instead of cancelling.
@@ -439,7 +442,7 @@ export function QuoteScreen() {
 
         <button
           type="button"
-          className="mt-4 flex cursor-pointer items-center gap-1 text-sm font-medium text-[var(--quote-link)] underline-offset-2 transition-opacity hover:opacity-80 hover:underline active:opacity-100"
+          className={styles.mt_4_70}
         >
           Learn more about cancellation policies
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
@@ -455,9 +458,9 @@ export function QuoteScreen() {
       </div>
 
       {/* Sticky footer */}
-        <div className="fixed bottom-0 left-0 right-0 z-20 mx-auto w-full max-w-[640px] bg-white footer-elevated tabular-nums">
+        <div className={[styles.fixed_71, "footer-elevated"].filter(Boolean).join(" ")}>
         <div
-          className="flex items-center justify-center gap-2 py-2 text-xs font-medium leading-[18px]"
+          className={styles.flex_72}
           style={{
             background: "var(--quote-timer-bg)",
             color: "var(--quote-timer-text)",
@@ -474,11 +477,11 @@ export function QuoteScreen() {
           </svg>
           Offer expires in 24hr 53min
         </div>
-        <div className="px-5 py-4">
+        <div className={styles.px_5_73}>
           <button
             type="button"
             onClick={() => router.push("/payment")}
-            className="primary-cta focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/40"
+            className={[styles.primary_cta_74, "primary-cta"].filter(Boolean).join(" ")}
           >
             {bookingCtaLabel}
           </button>
@@ -505,11 +508,11 @@ function Row({
   small?: boolean;
 }) {
   return (
-    <div className="flex items-center justify-between gap-2 text-xs">
-      <span className={small ? "text-[var(--quote-text-body)]" : "text-[#121212]"}>
+    <div className={styles.flex_75}>
+      <span className={small ? styles.text_var_quote_text_body_2 : styles.text_121212__3}>
         {label}
       </span>
-      <span className="font-medium text-[#121212]">{value}</span>
+      <span className={styles.font_medium_59}>{value}</span>
     </div>
   );
 }

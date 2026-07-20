@@ -1,0 +1,54 @@
+/* Component styles */
+
+.chip {
+  border-radius: var(--radius-lg);
+  border-style: var(--tw-border-style);
+  border-width: 1px;
+  font-size: 14px;
+  line-height: var(--tw-leading, 20px);
+  --tw-font-weight: var(--font-weight-normal);
+  font-weight: var(--font-weight-normal);
+  --tw-leading: calc(var(--spacing) * 5);
+  line-height: calc(var(--spacing) * 5);
+  transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
+  transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+  transition-duration: var(--tw-duration, var(--default-transition-duration));
+}
+.chip:focus-visible {
+  outline-style: var(--tw-outline-style);
+  outline-width: 1px;
+  --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
+  box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  --tw-ring-color: color-mix(in oklab, #121212 20%, transparent);
+  --tw-ring-offset-width: 2px;
+  --tw-ring-offset-shadow: var(--tw-ring-inset,) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+}
+
+.h_employment {
+  height: calc(var(--spacing) * 12);
+}
+
+.h_tenure {
+  height: calc(var(--spacing) * 10);
+}
+
+.selected {
+  border-color: #121212;
+  background-color: color-mix(in oklab, #121212 10%, transparent);
+  --tw-font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-medium);
+  color: #040222;
+}
+
+.unselected {
+  border-color: #e8e8e8;
+  background-color: var(--color-white);
+  --tw-font-weight: var(--font-weight-normal);
+  font-weight: var(--font-weight-normal);
+  color: #040222;
+}
+@media (hover: hover) {
+  .unselected:hover {
+    background-color: #fafafa;
+  }
+}

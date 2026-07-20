@@ -1,5 +1,8 @@
 "use client";
 
+import styles from "./DownPaymentSummaryCard.module.scss";
+
+
 export type DownPaymentSummaryCardProps = {
   /** When `full_payment`, row labels match the full-payment journey. */
   variant?: "down_payment" | "full_payment" | "booking_payment";
@@ -52,34 +55,34 @@ export function DownPaymentSummaryCard({
 
   return (
     <section
-      className="w-full rounded-xl bg-white card-elevated px-3 py-3 text-left"
+      className={[styles.w_full_0, "card-elevated"].filter(Boolean).join(" ")}
       aria-label={ariaLabel}
     >
-      <dl className="m-0 flex flex-col gap-3">
-        <div className="flex items-center justify-between gap-3">
-          <dt className="text-xs font-normal leading-[18px] text-[#121212]">
+      <dl className={styles.m_0_1}>
+        <div className={styles.flex_2}>
+          <dt className={styles.text_xs_3}>
             {totalLabel}
           </dt>
-          <dd className="text-xs font-medium leading-[18px] text-[#121212]">
+          <dd className={styles.text_xs_4}>
             {formatInr(downPaymentTotalInr)}
           </dd>
         </div>
-        <div className="flex items-center justify-between gap-3">
-          <dt className="text-xs font-normal leading-[18px] text-[#121212]">
+        <div className={styles.flex_2}>
+          <dt className={styles.text_xs_3}>
             {paidLabel}
           </dt>
-          <dd className="text-xs font-medium leading-[18px] text-[#121212]">
+          <dd className={styles.text_xs_4}>
             {formatInr(amountPaidInr)}
           </dd>
         </div>
 
-        <hr className="my-0 border-0 border-t border-dashed border-[#e8e8e8]" />
+        <hr className={styles.my_0_5} />
 
-        <div className="flex items-center justify-between gap-3">
-          <dt className="text-sm font-normal leading-5 text-[#121212]">
+        <div className={styles.flex_2}>
+          <dt className={styles.text_sm_6}>
             {remainingLabel}
           </dt>
-          <dd className="text-sm font-semibold leading-5 text-[#121212]">
+          <dd className={styles.text_sm_7}>
             {formatInr(remainingAmountInr)}
           </dd>
         </div>

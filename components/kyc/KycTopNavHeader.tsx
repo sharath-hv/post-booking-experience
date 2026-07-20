@@ -5,12 +5,14 @@ import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 
 import { cn } from "@/lib/utils";
+import styles from "./KycTopNavHeader.module.scss";
+
 
 const SCROLL_SOLID_THRESHOLD_PX = 8;
 
 export function BackChevron() {
   return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="block h-6 w-6" aria-hidden>
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className={styles.block_0} aria-hidden>
       <path
         d="M15 18l-6-6 6-6"
         stroke="currentColor"
@@ -75,9 +77,9 @@ export function KycTopNavHeader({
   return (
     <header
       className={cn(
-        "mx-auto flex h-14 w-full max-w-[640px] shrink-0 items-center justify-between gap-2 pl-3.5 pr-5",
-        !noSticky && "sticky top-0",
-        transparent || inverted ? "z-20" : "z-10",
+        styles.mx_auto_3,
+        !noSticky && styles.sticky_4,
+        transparent || inverted ? styles.z_20_5 : styles.z_10_6,
         className
       )}
     >
@@ -85,48 +87,48 @@ export function KycTopNavHeader({
         <span
           aria-hidden
           className={cn(
-            "pointer-events-none absolute inset-x-0 top-0 -z-[1] h-[84px] transition-opacity duration-200 ease-out",
+            styles.pointer_events_none_7,
             surface === "white"
-              ? "bg-[linear-gradient(to_bottom,#ffffff_50%,rgba(255,255,255,0)_100%)]"
-              : "bg-[linear-gradient(to_bottom,#F7FAFF_50%,rgba(247,250,255,0)_100%)]",
-            transparent && !solidOnScroll ? "opacity-0" : "opacity-100",
+              ? styles.bg_linear_gradient_to_bo_0
+              : styles.bg_linear_gradient_to_bo_0_0,
+            transparent && !solidOnScroll ? styles.opacity0 : styles.opacity100,
           )}
         />
       ) : null}
       <div
         className={cn(
-          "flex min-h-0 min-w-0 flex-1 items-center",
-          afterBack != null ? "gap-6" : "gap-2"
+          styles.flex_1,
+          afterBack != null ? styles.gap_6_9 : styles.gap_2_10
         )}
       >
         <button
           type="button"
           onClick={() => (onBack != null ? onBack() : router.back())}
           className={cn(
-            "cta-ghost -ml-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg focus-visible:outline focus-visible:ring-2 focus-visible:ring-offset-2",
+            styles.cta_ghost_11, "cta-ghost",
             inverted
-              ? "text-white focus-visible:ring-white/30"
-              : "text-[#121212] focus-visible:ring-[#121212]/20"
+              ? styles.text_white_12
+              : styles.text_121212__13
           )}
           aria-label="Go back"
         >
           <BackChevron />
         </button>
         {afterBack != null ? (
-          <div className="flex min-h-0 min-w-0 flex-1 items-center">{afterBack}</div>
+          <div className={styles.flex_1}>{afterBack}</div>
         ) : null}
         {title ? (
           <h1
             className={cn(
-              "min-w-0 truncate text-base font-semibold leading-6",
-              inverted ? "text-white" : "text-[#121212]"
+              styles.min_w_0_14,
+              inverted ? styles.text_white_15 : styles.text_121212__16
             )}
           >
             {title}
           </h1>
         ) : null}
       </div>
-      {endSlot ? <div className="flex shrink-0 items-center">{endSlot}</div> : null}
+      {endSlot ? <div className={styles.flex_2}>{endSlot}</div> : null}
     </header>
   );
 }

@@ -4,6 +4,8 @@ import type { ReactNode } from "react";
 
 import { DocumentUploadSection, type DocumentUploadFile } from "@/components/kyc/DocumentUploadSection";
 import { DigilockerFetchButton } from "@/components/kyc/DigilockerFetchButton";
+import styles from "./DocumentUploadDocumentCards.module.scss";
+
 
 export type DocumentUploadCardDefinition = {
   kind: string;
@@ -38,7 +40,7 @@ export function DocumentUploadDocumentCards({
   wrapCard,
 }: DocumentUploadDocumentCardsProps) {
   return (
-    <div className="flex flex-col gap-4">
+    <div className={styles.flex_0}>
       {documents.map((doc) => {
         const card = (
           <>

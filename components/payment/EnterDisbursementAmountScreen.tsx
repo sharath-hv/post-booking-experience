@@ -13,6 +13,8 @@ import {
   SLIDER_STEP,
 } from "@/components/payment/loan-amount-demo-constants";
 import { formatInrAmountDigits, parseInrAmountInput } from "@/lib/loan-emi";
+import styles from "./EnterDisbursementAmountScreen.module.scss";
+
 
 
 const STAGGER_TITLE_MS = 90;
@@ -93,35 +95,35 @@ export function EnterDisbursementAmountScreen() {
   }, [router]);
 
   return (
-    <div className="min-h-dvh bg-white font-sans">
+    <div className={styles.min_h_dvh_0}>
       <KycTopNavHeader endSlot={<GetHelpPillButton onClick={() => setShiviSheetOpen(true)} />} />
 
-      <main className="mx-auto w-full max-w-[640px] px-5 pb-[calc(7rem+env(safe-area-inset-bottom))] pt-2">
+      <main className={styles.mx_auto_1}>
         <h1
           id="enter-disbursement-amount-title"
-          className="payment-success-stagger text-2xl font-semibold leading-8 tracking-[-0.1px] text-[#121212]"
+          className={[styles.payment_success_stagger_2, "payment-success-stagger"].filter(Boolean).join(" ")}
           style={{ animationDelay: `${STAGGER_TITLE_MS}ms` }}
         >
           What&apos;s the loan amount your bank approved?
         </h1>
 
         <p
-          className="payment-success-stagger mt-4 text-sm font-normal leading-5 text-[#4b4b4b]"
+          className={[styles.payment_success_stagger_3, "payment-success-stagger"].filter(Boolean).join(" ")}
           style={{ animationDelay: `${STAGGER_SUBTEXT_MS}ms` }}
         >
           Just enter it here. I&apos;ll pass it on to the dealer so they know how much the bank is sending.
         </p>
 
         <div
-          className="payment-success-stagger mt-8"
+          className={[styles.payment_success_stagger_4, "payment-success-stagger"].filter(Boolean).join(" ")}
           style={{ animationDelay: `${STAGGER_AMOUNT_MS}ms` }}
         >
-          <div className="flex h-12 min-h-12 w-[174px] max-w-full shrink-0 items-center rounded-lg border border-[#e8e8e8] bg-white px-4">
-            <label htmlFor="self-finance-loan-amount-input" className="sr-only">
+          <div className={styles.flex_5}>
+            <label htmlFor="self-finance-loan-amount-input" className={styles.sr_only_6}>
               Loan amount in rupees
             </label>
             <span
-              className="shrink-0 text-base font-medium leading-6 text-[#040222]"
+              className={styles.shrink_0_7}
               aria-hidden
             >
               ₹{loanAmountInput.length > 0 ? "\u00a0" : ""}
@@ -134,20 +136,20 @@ export function EnterDisbursementAmountScreen() {
               value={loanAmountInput}
               onChange={(e) => onLoanAmountInputChange(e.target.value)}
               onBlur={onLoanAmountBlur}
-              className="min-w-0 flex-1 border-0 bg-transparent p-0 text-base font-medium leading-6 text-[#040222] outline-none focus:ring-0 tabular-nums"
+              className={styles.min_w_0_8}
             />
           </div>
         </div>
 
         <div
-          className="payment-success-stagger mt-8"
+          className={[styles.payment_success_stagger_4, "payment-success-stagger"].filter(Boolean).join(" ")}
           style={{ animationDelay: `${STAGGER_SLIDER_MS}ms` }}
         >
-          <label className="block" htmlFor="self-finance-loan-range">
+          <label className={styles.block_9} htmlFor="self-finance-loan-range">
             <input
               id="self-finance-loan-range"
               type="range"
-              className="choose-loan-down-range h-2 w-full cursor-pointer rounded-full"
+              className={[styles.choose_loan_down_range_10, "choose-loan-down-range"].filter(Boolean).join(" ")}
               min={MIN_LOAN_INR}
               max={ON_ROAD_PRICE_INR}
               step={SLIDER_STEP}
@@ -157,18 +159,24 @@ export function EnterDisbursementAmountScreen() {
                 background: `linear-gradient(to right, #121212 0%, #121212 ${fillPct}%, #e7e7e7 ${fillPct}%, #e7e7e7 100%)`,
               }}
             />
-            <div className="mt-2 flex justify-between text-xs leading-[18px] text-[#4b4b4b]">
+            <div className={styles.mt_2_11}>
               <span>{formatInrLakhLabel(MIN_LOAN_INR)}</span>
-              <span className="text-right">{formatInrLakhLabel(ON_ROAD_PRICE_INR)}</span>
+              <span className={styles.text_right_12}>{formatInrLakhLabel(ON_ROAD_PRICE_INR)}</span>
             </div>
           </label>
         </div>
       </main>
 
-      <div className="fixed bottom-0 left-0 right-0 z-10 mx-auto w-full max-w-[640px] px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-3">
-        <button type="button" onClick={navigateNext} className="primary-cta w-full">
-          Confirm loan amount
-        </button>
+      <div className={[styles.fixed_13, "footer-elevated"].filter(Boolean).join(" ")}>
+        <div className={styles.footerInner}>
+          <button
+            type="button"
+            onClick={navigateNext}
+            className={[styles.primary_cta_14, "primary-cta"].filter(Boolean).join(" ")}
+          >
+            Confirm loan amount
+          </button>
+        </div>
       </div>
 
       <ShiviCallSheet open={shiviSheetOpen} onClose={() => setShiviSheetOpen(false)} />

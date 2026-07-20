@@ -54,8 +54,6 @@ NEVER change font weight on hover or selected state.
 
 NEVER reference a primitive token directly in a component — always go through semantics.
 
-NEVER add an app-level `@theme` / `index.css` override for Tailwind’s `--spacing` when `@acko/tokens` is imported. `@acko/tokens` already defines `--spacing` (1px-per-unit base). A second definition desyncs packaged `@acko/*` component CSS from your utilities and breaks layouts. See **Tailwind spacing and @acko/tokens** below and primitives.md “Spacing & Sizing”.
-
 NEVER place a card primary title and supporting body in a left/right split row — use vertical reading order. See cards.md.
 
 NEVER place a title-reference Badge beside or below the title — only above the title (top-edge overlap allowed). See cards.md.
@@ -63,19 +61,13 @@ NEVER place a title-reference Badge beside or below the title — only above the
 
 ---
 
-## Tailwind spacing and @acko/tokens
+## Styling in this repo (SCSS)
 
-**What ships:** `@acko/tokens` includes `theme.css`, which sets `--spacing: 0.0625rem` so Tailwind v4 utilities use a **1px-per-unit** scale (`p-16` = 16px, `gap-8` = 8px). That value is intentional and is the single source of truth.
+This project styles with **SCSS / CSS modules** (`*.module.scss`, `styles/_*.scss`). Do **not** introduce utility-class strings in JSX or a utility CSS build step.
 
-**What breaks things:** Defining `--spacing` again in your app (e.g. another `@theme inline { --spacing: … }` in `index.css`, or “restoring” the classic 0.25rem base) overrides the token package. Packaged components were built assuming the shipped base; utilities and component CSS then disagree → wrong padding, gaps, and icon sizes.
-
-**What to do instead:**
-
-1. Import `@acko/tokens/tokens.css` and `@acko/tokens/theme.css` as documented — do not override `--spacing` after them.
-2. Use Tailwind spacing utilities with the **1px mapping** from primitives.md (e.g. gutters `px-16 md:px-32 lg:px-40`, not old `px-4` expectations).
-3. If migrating from the old 0.25rem mental model, use the **multiply by 4** table in primitives.md (“Migration from 0.25rem base”).
-
-**Not the problem:** Leaving `@acko/tokens` as the only `--spacing` definition. **Is the problem:** Any extra `--spacing` override in application CSS.
+- Prefer `Component.module.scss` next to the component
+- Shared surfaces/CTAs live in `styles/_components.scss` (e.g. `primary-cta`, `card-elevated`)
+- Tokens and reset live in `styles/_theme.scss`, `styles/_tokens.scss`, `styles/_preflight.scss`
 
 ---
 
@@ -122,7 +114,7 @@ Before shipping any UI:
 - [ ] No layout shift on dynamic content
 - [ ] No `transition: all`
 - [ ] z-index uses defined scale tokens only
-- [ ] No app-level `--spacing` override — must match `@acko/tokens` only (see **Tailwind spacing and @acko/tokens**)
+- [ ] No app-level `--spacing` override — must match `@acko/tokens` only (see **spacing scale spacing and @acko/tokens**)
 - [ ] Cards: title + body/subtext stack vertically — not title left / subtext right
 - [ ] Title-reference badge above title only (top-edge overlap OK); unrelated badges use their own slot
 - [ ] Card grids: primary CTAs align to the same vertical position (equal-height / footer pinned)

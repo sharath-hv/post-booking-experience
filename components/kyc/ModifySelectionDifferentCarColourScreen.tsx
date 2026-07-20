@@ -18,16 +18,20 @@ import {
   clearModifySelectionDifferentCarVariantChoice,
   readModifySelectionDifferentCarVariantChoice,
 } from "@/lib/modify-selection-different-car-variant-choice";
-import { writeModifySelectionDifferentCarPending } from "@/lib/modify-selection-different-car-pending";
+import {
+  readModifySelectionDifferentCarPending,
+  writeModifySelectionDifferentCarPending,
+} from "@/lib/modify-selection-different-car-pending";
 import {
   getModifySelectionAvailableColourOptions,
   type ModifySelectionDeliveryChoice,
 } from "@/lib/modify-selection-colours-content";
 import { MODIFY_SELECTION_PAGE_SHELL_CLASS } from "@/lib/modify-selection-content";
+import styles from "./ModifySelectionDifferentCarColourScreen.module.scss";
+
 import {
   findModifySelectionVariantOption,
   modifySelectionVariantColourScreenTitle,
-  MODIFY_SELECTION_VARIANT_COLOUR_SCREEN_SUBLINE,
 } from "@/lib/modify-selection-variants-content";
 import {
   modifySelectionListStaggerDelay,
@@ -36,7 +40,6 @@ import {
 
 const {
   title: STAGGER_TITLE_MS,
-  subtext: STAGGER_SUBTEXT_MS,
   section: STAGGER_FIRST_COLOUR_MS,
 } = MODIFY_SELECTION_STAGGER_MS;
 
@@ -63,8 +66,15 @@ export function ModifySelectionDifferentCarColourScreen({
     [brandId, modelId],
   );
   const availableColours = useMemo(() => getModifySelectionAvailableColourOptions(), []);
-  const [selectedColourId, setSelectedColourId] = useState<string | null>(null);
+  const [selectedColourId, setSelectedColourId] = useState<string | null>(() => {
+    const pending = readModifySelectionDifferentCarPending();
+    return pending?.colourId ?? null;
+  });
   const [deliverySheetOpen, setDeliverySheetOpen] = useState(false);
+  const pendingDeliveryChoice = useMemo(
+    () => readModifySelectionDifferentCarPending()?.deliveryChoice,
+    [],
+  );
 
   const selectedVariant = useMemo(
     () => (variantId != null ? findModifySelectionVariantOption(variantId) : undefined),
@@ -131,23 +141,21 @@ export function ModifySelectionDifferentCarColourScreen({
     <div className={MODIFY_SELECTION_PAGE_SHELL_CLASS}>
       <ModifySelectionScreenHeader />
 
-      <main className="mx-auto flex w-full max-w-[640px] flex-1 flex-col px-5 pb-[calc(7rem+env(safe-area-inset-bottom))] pt-2">
+      <main className={styles.mx_auto_0}>
         <ModifySelectionPageHeading
           title={modifySelectionVariantColourScreenTitle(selectedVariant.name)}
-          subline={MODIFY_SELECTION_VARIANT_COLOUR_SCREEN_SUBLINE}
           titleDelayMs={STAGGER_TITLE_MS}
-          sublineDelayMs={STAGGER_SUBTEXT_MS}
         />
 
         <div
-          className="mt-8 flex flex-col gap-4"
+          className={styles.mt_8_1}
           role="group"
           aria-label={COLOUR_LIST_ARIA_LABEL}
         >
           {availableColours.map((option, index) => (
             <div
               key={option.id}
-              className="payment-success-stagger w-full"
+              className={[styles.payment_success_stagger_2, "payment-success-stagger"].filter(Boolean).join(" ")}
               style={{
                 animationDelay: `${modifySelectionListStaggerDelay(index, STAGGER_FIRST_COLOUR_MS)}ms`,
               }}
@@ -162,13 +170,13 @@ export function ModifySelectionDifferentCarColourScreen({
         </div>
       </main>
 
-      <div className="fixed bottom-0 left-0 right-0 z-10 pb-[env(safe-area-inset-bottom)] footer-elevated">
-        <div className="mx-auto w-full max-w-[640px] bg-white px-5 py-4">
+      <div className={[styles.fixed_3, "footer-elevated"].filter(Boolean).join(" ")}>
+        <div className={styles.mx_auto_4}>
           <button
             type="button"
             disabled={selectedColourId == null}
             onClick={onContinue}
-            className="primary-cta w-full focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/30 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-[#a0a0a0] disabled:opacity-100 disabled:hover:bg-[#a0a0a0]"
+            className={[styles.primary_cta_5, "primary-cta"].filter(Boolean).join(" ")}
           >
             Continue
           </button>
@@ -180,6 +188,7 @@ export function ModifySelectionDifferentCarColourScreen({
           open={deliverySheetOpen}
           onClose={() => setDeliverySheetOpen(false)}
           onConfirm={onDeliveryConfirm}
+          initialDeliveryChoice={pendingDeliveryChoice}
           expressDeliveryPriceInr={selectedColour.ackoDrivePriceInr}
           expressDeliveryLine={selectedColour.deliveryLine}
         />

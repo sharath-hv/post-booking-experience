@@ -19,11 +19,13 @@ import {
 } from "@/lib/journey-stage";
 import { cn } from "@/lib/utils";
 import { OVERLAY_GLASS_CARD_CLASS } from "@/lib/overlay-glass-card";
+import styles from "./ManageBookingZoomOverlay.module.scss";
+
 
 /** Matches the page-recede transition in ConciergeTurnShell. */
 export const ZOOM_OVERLAY_MS = 650;
-/** Tailwind v4 `scale-*`/`blur-*` set `scale`/`filter` — they must be named here. */
-const ZOOM_TRANSITION = "transition-[scale,filter,opacity] duration-[650ms] ease-in-out";
+/** Transition names `scale`/`filter` explicitly for the zoom overlay. */
+const ZOOM_TRANSITION = styles.zoomTransition;
 
 export type ManageBookingZoomOverlayProps = {
   /** Layer is in the DOM (mount before animating so layout/decode never eats animation frames). */
@@ -43,7 +45,7 @@ function ReceiptGlyph() {
       alt=""
       width={20}
       height={20}
-      className="shrink-0"
+      className={styles.shrink_0_0}
       unoptimized
       aria-hidden
     />
@@ -108,53 +110,52 @@ export function ManageBookingZoomOverlay({
 
   return (
     <BottomSheetPortal>
-      <div className="fixed inset-0 z-[100]" role="dialog" aria-modal="true" aria-label="Your car">
+      <div className={styles.fixed_1} role="dialog" aria-modal="true" aria-label="Your car">
         {/* Light veil over the aurora surface — the page itself fades out fully. */}
         <div
           aria-hidden
           className={cn(
-            "absolute inset-0 bg-[#F7FAFF]/45 transition-opacity duration-[500ms]",
-            shown ? "opacity-100" : "opacity-0"
+            styles.absolute_18,
+            shown ? styles.opacity_100_19 : styles.opacity_0_20
           )}
         />
         <div
-          className="absolute inset-0 overflow-y-auto overscroll-contain"
+          className={styles.absolute_2}
           onClick={onScrimClick}
         >
           <div
-            className={cn(
-              "relative mx-auto w-full max-w-[640px] px-5 pb-[max(4rem,env(safe-area-inset-bottom))] pt-[72px]",
-              `${ZOOM_TRANSITION} will-change-[scale,filter,opacity]`,
-              "motion-reduce:transition-none",
-              shown ? "scale-100 opacity-100 blur-none" : "scale-[1.12] opacity-0 blur-[6px]"
+            className={cn(styles.relative_0,
+              cn(ZOOM_TRANSITION, styles.willChangeZoom),
+              styles.motionReduceNone,
+              shown ? styles.zoomShown : styles.zoomHidden
             )}
           >
-            <div className="mb-5">
-              <h2 className="text-[20px] font-semibold leading-7 tracking-[-0.1px] text-[#121212]">
+            <div className={styles.mb_5_3}>
+              <h2 className={styles.text_20px__4}>
                 Your car
               </h2>
-              <p className="mt-1 text-sm leading-5 text-[#4b4b4b]">
+              <p className={styles.mt_1_5}>
                 Reference ID: {DEMO_BOOKING_ID}
               </p>
             </div>
 
-            <div className="flex flex-col gap-4">
+            <div className={styles.flex_6}>
               {/* The living delivery date — the one number this purchase is about. */}
-              <div className={cn("flex items-center justify-between gap-3 px-4 py-3.5", OVERLAY_GLASS_CARD_CLASS)}>
-                <div className="min-w-0">
-                  <p className="text-xs font-medium uppercase leading-[18px] tracking-[0.08em] text-[#8f8e92]">
+              <div className={cn(styles.flex_21, OVERLAY_GLASS_CARD_CLASS)}>
+                <div className={styles.min_w_0_7}>
+                  <p className={styles.text_xs_8}>
                     Arriving
                   </p>
-                  <p className="text-xl font-semibold leading-7 tracking-[-0.2px] text-[#121212]">
+                  <p className={styles.text_xl_9}>
                     {deliveryDate}
                   </p>
                 </div>
                 <span
                   className={cn(
-                    "shrink-0 rounded-full px-2.5 py-1 text-[11px] font-medium leading-4",
+                    styles.shrink_0_22,
                     dateHolder === "you"
-                      ? "bg-[#fff7e5] text-[#a76406]"
-                      : "bg-[#e7f6ee] text-[#0c7a42]"
+                      ? styles.bg_fff7e5__24
+                      : styles.bg_e7f6ee__25
                   )}
                 >
                   {dateHolder === "you"
@@ -166,17 +167,17 @@ export function ManageBookingZoomOverlay({
               <ManageBookingCarCard showVehicleIdentification={showVehicleIdentification} />
             </div>
 
-            <section aria-labelledby="purchase-state-timeline-heading" className="mt-8">
+            <section aria-labelledby="purchase-state-timeline-heading" className={styles.mt_8_10}>
               <h3
                 id="purchase-state-timeline-heading"
-                className="mb-4 text-base font-medium leading-6 text-[#121212]"
+                className={styles.mb_4_11}
               >
                 Where we are
               </h3>
               <PlanList items={steps} variant="glass" />
             </section>
 
-            <div className="mt-8">
+            <div className={styles.mt_8_10}>
               <Suspense fallback={null}>
                 <ManageBookingSections
                   onClose={onClose}
@@ -187,7 +188,7 @@ export function ManageBookingZoomOverlay({
                     <section aria-labelledby="purchase-state-receipts-heading">
                       <h3
                         id="purchase-state-receipts-heading"
-                        className="mb-4 text-base font-medium leading-6 text-[#121212]"
+                        className={styles.mb_4_11}
                       >
                         Receipts and documents
                       </h3>
@@ -197,27 +198,27 @@ export function ManageBookingZoomOverlay({
                             key={receipt.title}
                             type="button"
                             className={cn(
-                              "flex w-full items-center gap-3 px-4 py-4 text-left transition-colors hover:bg-[#fafafa] active:bg-[#f5f5f5]",
-                              idx > 0 && "border-t border-dashed border-[#e8e8e8]"
+                              styles.flex_26,
+                              idx > 0 && styles.border_t_27
                             )}
                           >
-                            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#f5f5f5] text-[#75747a]">
+                            <span className={styles.flex_12}>
                               <ReceiptGlyph />
                             </span>
-                            <span className="min-w-0 flex-1">
-                              <span className="block text-sm font-medium leading-5 text-[#121212]">
+                            <span className={styles.min_w_0_13}>
+                              <span className={styles.block_14}>
                                 {receipt.title}
                               </span>
-                              <span className="mt-0.5 block text-xs leading-[18px] text-[#757575]">
+                              <span className={styles.mt_0_5_15}>
                                 {receipt.meta}
                               </span>
                             </span>
-                            <span className="relative h-5 w-5 shrink-0" aria-hidden>
+                            <span className={styles.relative_16} aria-hidden>
                               <Image
                                 src={arrowRightIcon}
                                 alt=""
                                 fill
-                                className="object-contain"
+                                className={styles.object_contain_17}
                                 unoptimized
                                 sizes="20px"
                               />

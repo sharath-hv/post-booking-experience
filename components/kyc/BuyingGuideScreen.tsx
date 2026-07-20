@@ -11,10 +11,11 @@ import { PaymentSuccessStagger } from "@/components/ui/stagger-container";
 import { buyingGuideNextPath } from "@/lib/buying-guide-urls";
 import { primaryOrDemoNavCtaClass } from "@/lib/demo-nav-cta";
 import { cn } from "@/lib/utils";
+import styles from "./BuyingGuideScreen.module.scss";
+
 
 /** Reserve space for fixed CTA: pt-3 + 48px button + bottom safe padding. */
-const MAIN_BOTTOM_PADDING_CLASS =
-  "pb-[calc(0.75rem+48px+max(1.25rem,env(safe-area-inset-bottom)))]";
+const MAIN_BOTTOM_PADDING_CLASS = styles.mainBottomPadding;
 
 /** Sequential reveal — image → copy → fixed CTA. */
 const STAGGER_IMAGE = 0.1;
@@ -37,45 +38,45 @@ export function BuyingGuideScreen({ step }: BuyingGuideScreenProps) {
   return (
     <>
       <div
-        className={`mx-auto flex min-h-0 w-full max-w-[640px] flex-1 flex-col overflow-y-auto px-5 pt-2 ${MAIN_BOTTOM_PADDING_CLASS}`}
+        className={cn(styles.mx_auto_0, MAIN_BOTTOM_PADDING_CLASS)}
       >
         <PaymentSuccessStagger
           key={`image-${step.step}`}
-          className="relative w-full shrink-0 overflow-hidden rounded-2xl bg-[#f5f5f5]"
+          className={styles.relative_0}
           delay={STAGGER_IMAGE}
         >
           {step.imageSrc != null ? (
             <Image
               src={step.imageSrc}
               alt=""
-              className="h-auto w-full object-contain"
+              className={styles.h_auto_1}
               sizes="(max-width: 640px) 100vw, 640px"
               priority={step.step === 1}
             />
           ) : null}
         </PaymentSuccessStagger>
 
-        <div className="mt-8 flex shrink-0 flex-col gap-3" key={`copy-${step.step}`}>
+        <div className={styles.mt_8_2} key={`copy-${step.step}`}>
           <PaymentSuccessStagger delay={STAGGER_STEP_LABEL}>
-            <p className="text-xs font-medium uppercase leading-4 text-[#0fa457]">
+            <p className={styles.text_xs_3}>
               Step {step.step} of {BUYING_GUIDE_STEP_COUNT}
             </p>
           </PaymentSuccessStagger>
           <PaymentSuccessStagger delay={STAGGER_TITLE}>
-            <h1 className="text-[20px] font-semibold leading-7 tracking-[-0.1px] text-[#121212]">
+            <h1 className={styles.text_20px__4}>
               {step.title}
             </h1>
           </PaymentSuccessStagger>
           <PaymentSuccessStagger delay={STAGGER_BODY}>
-            <p className="text-sm font-normal leading-5 text-[#4b4b4b]">{step.body}</p>
+            <p className={styles.text_sm_5}>{step.body}</p>
           </PaymentSuccessStagger>
         </div>
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 z-10 border-t border-transparent bg-white px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-3">
+      <div className={styles.fixed_6}>
         <PaymentSuccessStagger
           key={`cta-${step.step}`}
-          className="mx-auto w-full max-w-[640px]"
+          className={styles.mx_auto_7}
           delay={STAGGER_CTA}
         >
           <button

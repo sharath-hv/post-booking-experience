@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
+import { cn } from "@/lib/utils";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { LoanApplicationBankSummaryCard } from "@/components/payment/loan-application/LoanApplicationBankSummaryCard";
@@ -33,6 +34,8 @@ import {
   parseInrAmountInput,
 } from "@/lib/loan-emi";
 import { createDefaultLoanApplicationState } from "@/lib/loan-application-state";
+import styles from "./LoanApplicationLoanDetailsScreen.module.scss";
+
 
 const MIN_LOAN_INR = 1_00_000;
 const MAX_LOAN_INR = 50_00_000;
@@ -121,10 +124,10 @@ export function LoanApplicationLoanDetailsScreen() {
         </LoanApplicationPageStagger>
 
         <LoanApplicationPageStagger delayMs={loanApplicationStaggerAfterCard(1)}>
-          <p className={`${LOAN_APPLICATION_SECTION_GAP_CLASS} ${LOAN_APPLICATION_SECTION_LABEL_CLASS}`}>
+          <p className={cn(LOAN_APPLICATION_SECTION_GAP_CLASS, LOAN_APPLICATION_SECTION_LABEL_CLASS)}>
             Select your employment type
           </p>
-          <div className={`${LOAN_APPLICATION_FIELD_GAP_CLASS} grid grid-cols-2 gap-2`}>
+          <div className={cn(LOAN_APPLICATION_FIELD_GAP_CLASS, styles.grid_1)}>
             {EMPLOYMENT_OPTIONS.map((option) => (
               <LoanApplicationSegmentChip
                 key={option.id}
@@ -138,16 +141,16 @@ export function LoanApplicationLoanDetailsScreen() {
         </LoanApplicationPageStagger>
 
         <LoanApplicationPageStagger delayMs={loanApplicationStaggerAfterCard(2)}>
-          <p className={`${LOAN_APPLICATION_SECTION_GAP_CLASS} ${LOAN_APPLICATION_SECTION_LABEL_CLASS}`}>
+          <p className={cn(LOAN_APPLICATION_SECTION_GAP_CLASS, LOAN_APPLICATION_SECTION_LABEL_CLASS)}>
             Enter your loan amount
           </p>
           <div className={LOAN_APPLICATION_FIELD_GAP_CLASS}>
-            <label htmlFor="loan-amount-input" className="sr-only">
+            <label htmlFor="loan-amount-input" className={styles.sr_only_0}>
               Loan amount in rupees
             </label>
-            <div className="flex h-12 w-full items-center rounded-lg border border-[#e8e8e8] bg-white px-4">
+            <div className={styles.flex_1}>
               <span
-                className={`shrink-0 ${LOAN_APPLICATION_CONTROL_TEXT_CLASS} text-[#040222]`}
+                className={cn(styles.shrink_0_3, LOAN_APPLICATION_CONTROL_TEXT_CLASS, styles.text_040222__3)}
                 aria-hidden
               >
                 ₹{loanAmountInput.length > 0 ? " " : ""}
@@ -159,22 +162,22 @@ export function LoanApplicationLoanDetailsScreen() {
                 autoComplete="off"
                 value={loanAmountInput}
                 onChange={(e) => onLoanAmountChange(e.target.value)}
-                className={`min-w-0 flex-1 border-0 bg-transparent p-0 ${LOAN_APPLICATION_CONTROL_TEXT_CLASS} text-[#040222] outline-none placeholder:text-[#9e9e9e] focus:ring-0 tabular-nums`}
+                className={cn(styles.min_w_0_4, LOAN_APPLICATION_CONTROL_TEXT_CLASS, styles.amountInput)}
                 aria-describedby="loan-amount-hint"
               />
             </div>
           </div>
-          <p id="loan-amount-hint" className="mt-2 text-xs font-normal leading-[18px] text-[#757575]">
+          <p id="loan-amount-hint" className={styles.mt_2_2}>
             Bank will confirm the final amount
           </p>
         </LoanApplicationPageStagger>
 
         <LoanApplicationPageStagger delayMs={loanApplicationStaggerAfterCard(3)}>
-          <p className={`${LOAN_APPLICATION_SECTION_GAP_CLASS} ${LOAN_APPLICATION_SECTION_LABEL_CLASS}`}>
+          <p className={cn(LOAN_APPLICATION_SECTION_GAP_CLASS, LOAN_APPLICATION_SECTION_LABEL_CLASS)}>
             Loan tenure (in months)
           </p>
           <div
-            className={`${LOAN_APPLICATION_FIELD_GAP_CLASS} grid grid-cols-6 gap-2`}
+            className={cn(LOAN_APPLICATION_FIELD_GAP_CLASS, styles.grid_6)}
             role="group"
             aria-label="Loan tenure in months"
           >
@@ -185,15 +188,15 @@ export function LoanApplicationLoanDetailsScreen() {
                 selected={tenureMonths === months}
                 onClick={() => setTenureMonths(months)}
                 size="tenure"
-                className="min-w-0 px-0"
+                className={styles.min_w_0_3}
               />
             ))}
           </div>
 
           {isFilled && estimatedEmi > 0 ? (
-            <p className="mt-4 text-xs font-normal leading-[18px] text-[#757575]">
+            <p className={styles.mt_4_4}>
               Estimated EMI:{" "}
-              <span className="font-medium text-[#121212]">{formatInrCompact(estimatedEmi)}</span>
+              <span className={styles.font_medium_5}>{formatInrCompact(estimatedEmi)}</span>
             </p>
           ) : null}
         </LoanApplicationPageStagger>

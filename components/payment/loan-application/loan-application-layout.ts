@@ -1,37 +1,34 @@
+import styles from "./loan-application-layout.module.scss";
 /** Dark green hero — [Figma 2841:8477](https://www.figma.com/design/nW5SWmJdxxsCEDlqBN7C0L/Post-booking-experience?node-id=2841-8477). */
-export const LOAN_APPLICATION_HEADER_CLASS =
-  "relative shrink-0 bg-gradient-to-b from-[#044328] to-[#022717] text-white";
+export const LOAN_APPLICATION_HEADER_CLASS = styles.loanApplicationHeader;
 
 /** Milestone rail sits below the 56px nav bar. */
-export const LOAN_APPLICATION_HERO_MILESTONE_CLASS = "w-full shrink-0 pb-4 pt-1";
+export const LOAN_APPLICATION_HERO_MILESTONE_CLASS = styles.loanApplicationHeroMilestone;
 
 /** Page title starts 24px below where the hero gradient ends. */
-export const LOAN_APPLICATION_PAGE_TITLE_CLASS =
-  "mt-6 text-xl font-semibold leading-7 tracking-[-0.1px] text-[#121212]";
+export const LOAN_APPLICATION_PAGE_TITLE_CLASS = styles.loanApplicationPageTitle;
 
-export const LOAN_APPLICATION_MAIN_CLASS = "relative z-10 flex-1 px-5 pb-32";
+export const LOAN_APPLICATION_MAIN_CLASS = styles.loanApplicationMain;
 
-export const LOAN_APPLICATION_SECTION_LABEL_CLASS =
-  "text-sm font-medium leading-5 text-[#121212]";
+export const LOAN_APPLICATION_SECTION_LABEL_CLASS = styles.loanApplicationSectionLabel;
 
 /** 24px between major sections (Figma). */
-export const LOAN_APPLICATION_SECTION_GAP_CLASS = "mt-6";
+export const LOAN_APPLICATION_SECTION_GAP_CLASS = styles.loanApplicationSectionGap;
 
 /** 32px between stacked placeholder fields (Figma personal screen). */
-export const LOAN_APPLICATION_FIELD_STACK_GAP_CLASS = "mt-8";
+export const LOAN_APPLICATION_FIELD_STACK_GAP_CLASS = styles.loanApplicationFieldStackGap;
 
 /** Divider between personal and work blocks — full bleed within main, dashed. */
-export const LOAN_APPLICATION_SECTION_DIVIDER_CLASS =
-  "mt-8 -mx-5 border-t border-dashed border-[#e8e8e8]";
+export const LOAN_APPLICATION_SECTION_DIVIDER_CLASS = styles.loanApplicationSectionDivider;
 
 /** 12px from section label to field/chips. */
-export const LOAN_APPLICATION_FIELD_GAP_CLASS = "mt-3";
+export const LOAN_APPLICATION_FIELD_GAP_CLASS = styles.loanApplicationFieldGap;
 
 /** 20px from page title to content below. */
-export const LOAN_APPLICATION_TITLE_TO_CARD_GAP_CLASS = "mt-5";
+export const LOAN_APPLICATION_TITLE_TO_CARD_GAP_CLASS = styles.loanApplicationTitleToCardGap;
 
 /** 14px — inputs, amount field, and segment chips. */
-export const LOAN_APPLICATION_CONTROL_TEXT_CLASS = "text-sm font-normal leading-5";
+export const LOAN_APPLICATION_CONTROL_TEXT_CLASS = styles.loanApplicationControlText;
 
 /**
  * Page load sequence — nav, milestone rail, and fixed CTA stay immediate;

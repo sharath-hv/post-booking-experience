@@ -20,6 +20,8 @@ import {
 } from "@/components/ui/success-screen-layout";
 import { isModifyNoChargesFlow } from "@/lib/experience-flow";
 import { cn } from "@/lib/utils";
+import styles from "./KycPendingScreen.module.scss";
+
 
 const KYC_HEADLINE = "Verify your identity, Sharath";
 
@@ -34,7 +36,7 @@ const DEADLINE_LINE = "Complete by 24 Apr, 3:00 PM to avoid cancellation";
 /** Word cadence for the hero headline. */
 const HEADLINE_WORD_DELAY_MS = 135;
 /** Shared opacity transition duration (headline words + subline + CTA + warning). */
-const HERO_FADE_DURATION_CLASS = "duration-[450ms]";
+const HERO_FADE_DURATION_CLASS = styles.heroFadeDuration;
 /** Matches {@link HERO_FADE_DURATION_CLASS} — wait for opacity transition to finish. */
 const CONTENT_FADE_MS = 450;
 /** Delay after subline appears before the CTA fades in. */
@@ -45,7 +47,7 @@ const CTA_TO_WARNING_DELAY_MS = 480;
 const SHIVI_INTRO_DELAY_MS = 200;
 
 /** Hero block (header + aurora + content) fills at least 90% of the viewport; uses `dvh` for mobile browser chrome. */
-const HERO_MIN_HEIGHT = "min-h-[90dvh]";
+const HERO_MIN_HEIGHT = styles.heroMinHeight;
 
 function MenuOptionsButton({ onClick }: { onClick: () => void }) {
   return (
@@ -53,10 +55,10 @@ function MenuOptionsButton({ onClick }: { onClick: () => void }) {
       type="button"
       aria-label="More options"
       onClick={onClick}
-      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#e8e8e8] bg-white text-[#121212] transition-colors hover:bg-[#fafafa] focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/20 focus-visible:ring-offset-2"
+      className={styles.flex_0}
     >
-      <span className="relative h-6 w-6" aria-hidden>
-        <Image src={menuIcon} alt="" fill className="object-contain" unoptimized sizes="24px" />
+      <span className={styles.relative_1} aria-hidden>
+        <Image src={menuIcon} alt="" fill className={styles.object_contain_2} unoptimized sizes="24px" />
       </span>
     </button>
   );
@@ -136,16 +138,16 @@ export function KycPendingScreen() {
   }, []);
 
   return (
-    <div className="flex min-h-dvh flex-col bg-[#F7FAFF] font-sans">
-      <div className="mx-auto flex w-full max-w-[640px] flex-1 flex-col">
+    <div className={styles.flex_3}>
+      <div className={styles.mx_auto_4}>
         <div
-          className={`kyc-pending-hero-card relative isolate mx-auto flex min-h-0 w-full flex-1 flex-col ${HERO_MIN_HEIGHT}`}
+          className={cn(styles.kyc_pending_hero_card_0, "kyc-pending-hero-card", HERO_MIN_HEIGHT)}
         >
           <KycTopNavHeader
             transparent
             endSlot={
-              <div className="flex shrink-0 items-center gap-2">
-                <div className={cn(shiviIntroOpen && "invisible")} aria-hidden={shiviIntroOpen}>
+              <div className={styles.flex_5}>
+                <div className={cn(shiviIntroOpen && styles.invisible_12)} aria-hidden={shiviIntroOpen}>
                   <GetHelpPillButton />
                 </div>
                 <MenuOptionsButton onClick={() => setManageBookingOpen(true)} />
@@ -153,24 +155,24 @@ export function KycPendingScreen() {
             }
           />
           <AuroraLightLayer />
-          <div className={`relative z-10 flex min-h-0 w-full flex-1 flex-col items-center px-5 pb-10 ${HERO_ICON_TOP_PT}`}>
-            <div className="relative h-20 w-20 shrink-0">
+          <div className={cn(styles.relative_1_0, HERO_ICON_TOP_PT)}>
+            <div className={styles.relative_6}>
               <Image
                 src={KYC_ASSETS.kycHero}
                 alt=""
                 width={80}
                 height={80}
-                className="h-20 w-20"
+                className={styles.h_20_7}
                 priority
                 unoptimized
                 onLoad={() => setHeroImageLoaded(true)}
               />
             </div>
 
-            <div className={`${HERO_ILLUSTRATION_TO_COPY_MT} flex w-full flex-col text-center`}>
-              <div className={`flex w-full flex-col ${HERO_ACTION_HEADLINE_SUBLINE_GAP_CLASS}`}>
+            <div className={cn(HERO_ILLUSTRATION_TO_COPY_MT, styles.flex_2)}>
+              <div className={cn(styles.flex_3_0, HERO_ACTION_HEADLINE_SUBLINE_GAP_CLASS)}>
                 {reduceMotion ? (
-                  <h1 className="text-2xl font-semibold leading-8 tracking-tight text-[#121212]">
+                  <h1 className={styles.text_2xl_8}>
                     {KYC_HEADLINE}
                   </h1>
                 ) : (
@@ -180,24 +182,20 @@ export function KycPendingScreen() {
                     text={KYC_HEADLINE}
                     wordDelayMs={HEADLINE_WORD_DELAY_MS}
                     wordOpacityDurationClassName={HERO_FADE_DURATION_CLASS}
-                    className="text-2xl font-semibold leading-8 tracking-tight text-[#121212]"
+                    className={styles.text_2xl_8}
                     onComplete={onHeadlineComplete}
                     startWhen={heroImageLoaded}
                   />
                 )}
                 <p
-                  className={`text-sm font-normal leading-[22px] text-[#4b4b4b] transition-opacity ${HERO_FADE_DURATION_CLASS} ease-out ${
-                    showSubline ? "opacity-100" : "opacity-0"
-                  }`}
+                  className={cn(styles.text_sm_4, HERO_FADE_DURATION_CLASS, styles.ease_out_4, showSubline ? styles.opacity_100_4 : styles.opacity_0_4)}
                   aria-hidden={!showSubline}
                 >
                   {KYC_SUBLINE}
                 </p>
               </div>
               <div
-                className={`mt-6 flex items-center gap-3 rounded-2xl bg-white card-elevated px-3 py-3 text-left transition-opacity ${HERO_FADE_DURATION_CLASS} ease-out ${
-                  showSubline ? "opacity-100" : "opacity-0"
-                }`}
+                className={cn(styles.mt_6_5, "card-elevated", HERO_FADE_DURATION_CLASS, styles.ease_out_5, showSubline ? styles.opacity_100_5 : styles.opacity_0_5)}
                 aria-hidden={!showSubline}
               >
                 <Image
@@ -205,27 +203,23 @@ export function KycPendingScreen() {
                   alt=""
                   width={20}
                   height={20}
-                  className="size-5 shrink-0 object-contain"
+                  className={styles.size_5_9}
                   unoptimized
                 />
-                <p className="text-xs leading-[18px] text-[#121212]">{KYC_INFO_BOX}</p>
+                <p className={styles.text_xs_10}>{KYC_INFO_BOX}</p>
               </div>
             </div>
 
-            <div className="mt-auto w-full pt-8">
+            <div className={styles.mt_auto_11}>
               <p
-                className={`text-center text-xs font-medium leading-[18px] text-[#d16900] transition-opacity ${HERO_FADE_DURATION_CLASS} ease-out ${
-                  showWarning ? "opacity-100" : "opacity-0"
-                }`}
+                className={cn(styles.text_center_6, HERO_FADE_DURATION_CLASS, styles.ease_out_6, showWarning ? styles.opacity_100_6 : styles.opacity_0_6)}
                 aria-hidden={!showWarning}
               >
                 {DEADLINE_LINE}
               </p>
               <button
                 type="button"
-                className={`primary-cta mt-4 transition-opacity ${HERO_FADE_DURATION_CLASS} ease-out focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/30 focus-visible:ring-offset-2 ${
-                  showCta ? "opacity-100" : "pointer-events-none opacity-0"
-                }`}
+                className={cn(styles.primary_cta_7, "primary-cta", HERO_FADE_DURATION_CLASS, styles.ease_out_7, showCta ? styles.opacity_100_7 : styles.pointer_events_none_7)}
                 tabIndex={showCta ? 0 : -1}
                 onClick={() => {
                   if (modifyNoChargesFlow) {

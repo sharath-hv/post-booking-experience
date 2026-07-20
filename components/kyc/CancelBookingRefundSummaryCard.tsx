@@ -1,3 +1,4 @@
+import styles from "./CancelBookingRefundSummaryCard.module.scss";
 import {
   CANCEL_BOOKING_REFUND_AMOUNT_LABEL,
   CANCEL_BOOKING_REFUND_BOOKING_AMOUNT_LABEL,
@@ -17,35 +18,35 @@ export function CancelBookingRefundSummaryCard() {
   const refundAmount = cancelBookingRefundAmountInr();
 
   return (
-    <div className="overflow-hidden rounded-2xl bg-white card-elevated">
-      <div className="px-4 py-4">
-        <div className="flex items-center justify-between gap-4">
-          <p className="text-sm leading-5 text-[#121212]">
+    <div className={[styles.overflow_hidden_0, "card-elevated"].filter(Boolean).join(" ")}>
+      <div className={styles.px_4_1}>
+        <div className={styles.flex_2}>
+          <p className={styles.text_sm_3}>
             {CANCEL_BOOKING_REFUND_BOOKING_AMOUNT_LABEL}
           </p>
-          <p className="shrink-0 text-sm font-medium leading-5 text-[#121212]">
+          <p className={styles.shrink_0_4}>
             {formatCancelBookingInr(bookingAmount)}
           </p>
         </div>
-        <div className="mt-4 flex items-center justify-between gap-4">
-          <p className="text-sm leading-5 text-[#121212]">
+        <div className={styles.mt_4_5}>
+          <p className={styles.text_sm_3}>
             {CANCEL_BOOKING_REFUND_CANCELLATION_FEE_LABEL}
           </p>
-          <p className="shrink-0 text-sm font-medium leading-5 text-[#121212]">
+          <p className={styles.shrink_0_4}>
             {cancelBookingRefundCancellationFeeDisplay()}
           </p>
         </div>
       </div>
-      <div className="bg-[#f5f5f5] px-4 py-4">
-        <div className="flex items-start justify-between gap-4">
-          <p className="text-base font-medium leading-6 text-[#121212]">
+      <div className={styles.bg_f5f5f5__6}>
+        <div className={styles.flex_7}>
+          <p className={styles.text_base_8}>
             {CANCEL_BOOKING_REFUND_AMOUNT_LABEL}
           </p>
-          <p className="shrink-0 text-base font-medium leading-6 text-[#121212]">
+          <p className={styles.shrink_0_9}>
             {formatCancelBookingInr(refundAmount)}
           </p>
         </div>
-        <p className="mt-1 text-xs leading-[18px] text-[#4b4b4b]">
+        <p className={styles.mt_1_10}>
           {CANCEL_BOOKING_REFUND_TIMELINE}
         </p>
       </div>

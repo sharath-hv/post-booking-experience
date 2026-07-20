@@ -1,0 +1,40 @@
+/* Component styles */
+
+.mx_auto_0 {
+  margin-inline: auto;
+  display: flex;
+  width: 100%;
+  max-width: 640px;
+  flex: 1;
+  flex-direction: column;
+  padding-inline: calc(var(--spacing) * 5);
+  padding-bottom: calc(7rem + env(safe-area-inset-bottom));
+  padding-top: calc(var(--spacing) * 2);
+}
+
+.payment_success_stagger_1 {
+  margin-top: calc(var(--spacing) * 8);
+}
+
+.fixed_2 {
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  z-index: 10;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.mx_auto_3 {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 640px;
+  background-color: var(--color-white);
+  padding-inline: calc(var(--spacing) * 5);
+  padding-block: calc(var(--spacing) * 4);
+}
+
+.primary_cta_4 {
+  width: 100%;
+}
+

@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { AmountReceivedCard } from "@/components/concierge/artifacts";
 import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
 import { CancelBookingReasonBottomSheet } from "@/components/kyc/CancelBookingReasonBottomSheet";
+import { MODIFY_BOOKING_CANCEL_FEE_INR } from "@/lib/manage-booking-modify";
 import { BOOKING_LOCK_AMOUNT_INR } from "@/lib/paymentUrls";
 
 function formatInr(amount: number) {
@@ -18,8 +19,9 @@ function formatInr(amount: number) {
 
 /**
  * Cancellation — policy-correct at every stage:
- * - Before Booking Confirmation (the dealer lock): full refund, no questions.
- * - After: 50% of the TOTAL amount paid is retained (the global rule).
+ * - Before a dealer is identified: full refund, no questions.
+ * - From booking accepted onward (even before OTP): 50% of the booking amount
+ *   is retained; other payments come back.
  * Shivi tries to save the deal first; the refund math is shown before any
  * commitment; reasons are collected in her voice; the farewell keeps the door open.
  */
@@ -40,8 +42,9 @@ export function ConciergeCancelScreen() {
   /** ACKO couldn't deliver — policy §1.14: 100% refund at any stage. */
   const ourFailure = searchParams.get("reason") === "our-failure";
 
-  const chargeInr = postConfirmation && !ourFailure ? Math.round(paidInr / 2) : 0;
-  const refundInr = paidInr - chargeInr;
+  const chargeInr =
+    postConfirmation && !ourFailure ? MODIFY_BOOKING_CANCEL_FEE_INR : 0;
+  const refundInr = Math.max(0, paidInr - chargeInr);
 
   const refundCard = (title: string, note: string, status?: "received" | "processing") => (
     <AmountReceivedCard
@@ -90,12 +93,12 @@ export function ConciergeCancelScreen() {
             : secondChange
             ? [
                 "A second change means starting over, Sharath.",
-                "You've used your one change. That's the line in the policy I can't move. Changing again works as a cancel-and-rebook: 50% of what you've paid is held back, and you start fresh with the car you actually want. Your call entirely.",
+                "You've used your one change. That's the line in the policy I can't move. Changing again works as a cancel-and-rebook: 50% of your booking amount is held back, and you start fresh with the car you actually want. Your call entirely.",
               ]
             : postConfirmation
               ? [
                   "Before I cancel anything, Sharath…",
-                  "We're past the lock point, so cancelling holds back 50% of everything you've paid. That's the one rule I can't bend. If it's the car that's wrong, a colour or model change costs just ₹5,000. If it's anything else, talk to me first. I can usually fix it.",
+                  "We're past the lock point, so cancelling holds back 50% of your booking amount. That's the one rule I can't bend. If it's the car that's wrong, a colour or model change costs just ₹5,000. If it's anything else, talk to me first. I can usually fix it.",
                 ]
               : [
                   "Want to stop here, Sharath?",

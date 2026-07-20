@@ -1,6 +1,7 @@
 "use client";
 
 import checkboxSelected from "@/assets/Checkbox selected.svg";
+import { cn } from "@/lib/utils";
 import checkboxUnselected from "@/assets/Checkbox unselected.svg";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -24,6 +25,8 @@ import { useLoanApplicationBank } from "@/components/payment/loan-application/us
 import { useLoanApplicationState } from "@/components/payment/loan-application/use-loan-application-state";
 import type { LoanApplicationAddressFields } from "@/lib/loan-application-state";
 import { loanApplicationNextPath } from "@/lib/loan-application-urls";
+import styles from "./LoanApplicationAddressScreen.module.scss";
+
 
 function isAddressComplete(address: LoanApplicationAddressFields) {
   return (
@@ -65,10 +68,10 @@ function AddressFieldsBlock({
         value={value.pincode}
         onChange={set("pincode")}
         autoComplete="postal-code"
-        className={`${firstFieldClassName} max-w-[154px]`}
+        className={[firstFieldClassName, styles.pincode_field].filter(Boolean).join(" ")}
       />
 
-      <div className={`${LOAN_APPLICATION_FIELD_STACK_GAP_CLASS} grid grid-cols-2 gap-3`}>
+      <div className={[LOAN_APPLICATION_FIELD_STACK_GAP_CLASS, styles.city_row].filter(Boolean).join(" ")}>
         <LoanApplicationFormField
           {...field}
           id={`${prefix}-city`}
@@ -158,18 +161,18 @@ export function LoanApplicationAddressScreen() {
         <LoanApplicationPageStagger delayMs={loanApplicationStaggerAfterCard(1)}>
           <div className={LOAN_APPLICATION_SECTION_DIVIDER_CLASS} role="separator" />
 
-          <p className={`${LOAN_APPLICATION_SECTION_GAP_CLASS} ${LOAN_APPLICATION_SECTION_LABEL_CLASS}`}>
+          <p className={cn(LOAN_APPLICATION_SECTION_GAP_CLASS, LOAN_APPLICATION_SECTION_LABEL_CLASS)}>
             Current address
           </p>
 
           <label
-            className={`${LOAN_APPLICATION_TITLE_TO_CARD_GAP_CLASS} flex cursor-pointer items-center gap-2 rounded-lg bg-[#f5f5f5] p-3`}
+            className={cn(LOAN_APPLICATION_TITLE_TO_CARD_GAP_CLASS, styles.flex_1)}
           >
             <input
               type="checkbox"
               checked={sameAsPermanent}
               onChange={(e) => setSameAsPermanent(e.target.checked)}
-              className="sr-only"
+              className={styles.sr_only_0}
             />
             <Image
               src={sameAsPermanent ? checkboxSelected : checkboxUnselected}
@@ -179,7 +182,7 @@ export function LoanApplicationAddressScreen() {
               unoptimized
               aria-hidden
             />
-            <span className="text-sm font-normal leading-5 text-[#121212]">
+            <span className={styles.text_sm_1}>
               Same as permanent address
             </span>
           </label>

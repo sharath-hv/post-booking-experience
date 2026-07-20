@@ -11,6 +11,8 @@ import { BankLoanDetailBottomSheet } from "@/components/payment/BankLoanDetailBo
 import { BANK_LOAN_TERMS, bankLoanTermsForId } from "@/components/payment/bank-loan-terms";
 import { writeConciergeEcho } from "@/lib/concierge/echo";
 import { resolveBankIdToken, resolveBankNameToken } from "@/lib/payment/bank-selection-urls";
+import styles from "./BankSelectionScreen.module.scss";
+
 
 /** First card lands right after the heading; each next card follows by this much. */
 const FIRST_CARD_DELAY_MS = 220;
@@ -53,28 +55,28 @@ export function BankSelectionScreen() {
   );
 
   return (
-    <div className="min-h-dvh bg-white font-sans">
+    <div className={styles.min_h_dvh_0}>
       <KycTopNavHeader
         surface="white"
         endSlot={<GetHelpPillButton onClick={() => setCallSheetOpen(true)} />}
       />
 
-      <main className="mx-auto flex w-full max-w-[640px] flex-col px-5 pb-12 pt-2">
-        <h1 className="payment-success-stagger text-2xl font-semibold leading-8 tracking-[-0.2px] text-[#121212]">
+      <main className={styles.mx_auto_1}>
+        <h1 className={[styles.payment_success_stagger_2, "payment-success-stagger"].filter(Boolean).join(" ")}>
           {"Here's who's ready to finance your car"}
         </h1>
         <p
-          className="payment-success-stagger mt-2 text-sm leading-5 text-[#4b4b4b]"
+          className={[styles.payment_success_stagger_3, "payment-success-stagger"].filter(Boolean).join(" ")}
           style={{ animationDelay: "60ms" }}
         >
           {"Take a look at the rates and terms, then let me know who you'd like to go with."}
         </p>
 
-        <div className="mt-8 flex flex-col gap-3">
+        <div className={styles.mt_8_4}>
           {BANK_LOAN_TERMS.map((bank, index) => (
             <div
               key={bank.id}
-              className="payment-success-stagger"
+              className={[styles.payment_success_stagger_5, "payment-success-stagger"].filter(Boolean).join(" ")}
               style={{ animationDelay: `${FIRST_CARD_DELAY_MS + index * CARD_STEP_MS}ms` }}
             >
               <BankLoanCard bank={bank} onOpen={() => setOpenBankId(bank.id)} />

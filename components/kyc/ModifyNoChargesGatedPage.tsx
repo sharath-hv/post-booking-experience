@@ -32,8 +32,9 @@ function ModifyNoChargesGatedPageInner({ children }: ModifyNoChargesGatedPagePro
 }
 
 /**
- * Redirects when modify-no-charges or cancel-no-charges demo flows hit disallowed routes.
- * Modify-no-charges → `/kyc`; cancel-no-charges → `/kyc/verification-in-progress`.
+ * Redirects when modify/cancel demo flows hit disallowed routes.
+ * Modify-no-charges → `/kyc`; cancel-no-charges → `/kyc/verification-in-progress`;
+ * cancel-with-charges → `/kyc/processing`.
  * Allows `/kyc/booking-confirmed?source=payment&return_source=modify-selection` after modify-selection pay.
  */
 export function ModifyNoChargesGatedPage({ children }: ModifyNoChargesGatedPageProps) {

@@ -3,6 +3,7 @@
 import Image from "next/image";
 
 import closeIcon from "@/assets/Close.svg";
+import styles from "./BottomSheetCloseIcon.module.scss";
 
 /**
  * Standard close control for bottom sheet header/absolute close buttons.
@@ -15,7 +16,7 @@ export function BottomSheetCloseIcon() {
       alt=""
       width={24}
       height={24}
-      className="block shrink-0"
+      className={styles.icon}
       unoptimized
       aria-hidden
     />

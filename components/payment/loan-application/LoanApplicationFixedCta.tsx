@@ -3,6 +3,8 @@
 import type { ReactNode } from "react";
 
 import { LoanApplicationPageStagger } from "@/components/payment/loan-application/LoanApplicationPageStagger";
+import styles from "./LoanApplicationFixedCta.module.scss";
+
 
 type LoanApplicationFixedCtaProps = {
   label: string;
@@ -21,13 +23,13 @@ export function LoanApplicationFixedCta({
   staggerDelayMs,
 }: LoanApplicationFixedCtaProps) {
   const inner = (
-    <div className="mx-auto w-full max-w-[640px] space-y-3">
+    <div className={styles.mx_auto_0}>
       {children}
       <button
           type="button"
           disabled={disabled}
           onClick={onClick}
-          className="primary-cta w-full focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/30 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-[#a0a0a0] disabled:opacity-100"
+          className={[styles.primary_cta_1, "primary-cta"].filter(Boolean).join(" ")}
         >
           {label}
         </button>
@@ -35,7 +37,7 @@ export function LoanApplicationFixedCta({
   );
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-10 bg-white px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-3 footer-elevated">
+    <div className={[styles.fixed_2, "footer-elevated"].filter(Boolean).join(" ")}>
       {staggerDelayMs != null ? (
         <LoanApplicationPageStagger delayMs={staggerDelayMs}>{inner}</LoanApplicationPageStagger>
       ) : (

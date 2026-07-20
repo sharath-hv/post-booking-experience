@@ -1,6 +1,8 @@
 import Image from "next/image";
 
 import tickIcon from "@/assets/tick.svg";
+import styles from "./DocumentUploadVerifiedBanner.module.scss";
+
 
 type DocumentUploadVerifiedBannerProps = {
   message: string;
@@ -9,16 +11,16 @@ type DocumentUploadVerifiedBannerProps = {
 /** Green verified strip — loan wizard (PAN/Aadhaar already done) and similar flows. */
 export function DocumentUploadVerifiedBanner({ message }: DocumentUploadVerifiedBannerProps) {
   return (
-    <div className="flex items-center gap-[8px] rounded-2xl bg-[#ebfbee] px-4 py-2">
+    <div className={styles.flex_0}>
       <Image
         src={tickIcon}
         alt=""
         width={20}
         height={20}
-        className="shrink-0 object-contain"
+        className={styles.shrink_0_1}
         unoptimized
       />
-      <p className="text-sm font-normal leading-5 text-[#121212]">{message}</p>
+      <p className={styles.text_sm_2}>{message}</p>
     </div>
   );
 }

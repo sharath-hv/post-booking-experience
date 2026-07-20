@@ -15,6 +15,8 @@ import { writeConciergeEcho } from "@/lib/concierge/echo";
 import { estimateMonthlyEmiInr, parseAnnualRateFromLabel } from "@/lib/loan-emi";
 import { OVERLAY_GLASS_CARD_CLASS } from "@/lib/overlay-glass-card";
 import { bankIdToken, bankNameToken, bankSelectionPath } from "@/lib/payment/bank-selection-urls";
+import styles from "./LoanRejectedScreen.module.scss";
+
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -80,34 +82,34 @@ export function LoanRejectedScreen() {
       ]}
       artifact={
         <div className={OVERLAY_GLASS_CARD_CLASS}>
-          <div className="flex items-start gap-3 px-4 py-4">
-            <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full bg-[#f5f5f5]">
+          <div className={styles.flex_0}>
+            <span className={styles.relative_1}>
               <Image
                 src={alt.logoSrc}
                 alt=""
                 fill
-                className="object-contain p-1.5"
+                className={styles.object_contain_2}
                 unoptimized
                 sizes="36px"
               />
             </span>
-            <div className="min-w-0 flex-1">
-              <p className="text-base font-semibold leading-6 text-[#121212]">{alt.name}</p>
-              <p className="text-xs leading-[18px] text-[#757575]">Same loan, better rate</p>
+            <div className={styles.min_w_0_3}>
+              <p className={styles.text_base_4}>{alt.name}</p>
+              <p className={styles.text_xs_5}>Same loan, better rate</p>
             </div>
-            <span className="shrink-0 rounded-full bg-[#e7f6ee] px-2.5 py-1 text-[11px] font-medium leading-4 text-[#0c7a42]">
+            <span className={styles.shrink_0_6}>
               Pre-approved
             </span>
           </div>
-          <div className="border-t border-dashed border-[#e8e8e8] px-4 py-4">
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center justify-between gap-3">
-                <span className="text-sm leading-5 text-[#4b4b4b]">Interest rate</span>
-                <span className="text-sm font-medium leading-5 text-[#121212]">{alt.rate}</span>
+          <div className={styles.border_t_7}>
+            <div className={styles.flex_8}>
+              <div className={styles.flex_9}>
+                <span className={styles.text_sm_10}>Interest rate</span>
+                <span className={styles.text_sm_11}>{alt.rate}</span>
               </div>
-              <div className="flex items-center justify-between gap-3">
-                <span className="text-sm leading-5 text-[#4b4b4b]">EMI from</span>
-                <span className="text-sm font-medium leading-5 text-[#121212] tabular-nums">
+              <div className={styles.flex_9}>
+                <span className={styles.text_sm_10}>EMI from</span>
+                <span className={styles.text_sm_12}>
                   {formatInr(altEmi)}/mo
                 </span>
               </div>

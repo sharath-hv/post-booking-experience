@@ -120,7 +120,7 @@ export {
 } from "@/lib/modify-selection-review-pay-content";
 
 export const MODIFY_SELECTION_COLOUR_CONFIRM_SUBLINE =
-  "Your ₹10,000 booking amount will carry forward to your new selection. Delivery date may change depending on the colour you pick.";
+  "Your ₹10,000 price lock carries forward. Delivery may shift with the colour you pick.";
 
 export const MODIFY_SELECTION_COLOUR_CONFIRM_PAY_CTA = "Pay";
 

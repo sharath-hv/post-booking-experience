@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Lottie from "lottie-react";
@@ -10,6 +11,8 @@ import {
   BOOKING_SUCCESS_LOTTIE_TICK_DATA,
 } from "@/components/payment/booking-success-shared";
 import { SUCCESS_SCREEN_HEADLINE_SUBTEXT_GAP_CLASS } from "@/components/ui/success-screen-layout";
+import styles from "./DownPaymentInstalmentSuccess.module.scss";
+
 
 /** Auto-advance: pay-down-payment (partial) or insurance setup (complete). */
 export const DOWN_PAYMENT_SUCCESS_AUTO_REDIRECT_MS = 3000;
@@ -18,7 +21,7 @@ export type DownPaymentInstalmentSuccessProps = {
   /** Detail under the main title. */
   subline: string;
   nextHref: string;
-  /** Page background. Defaults to booking success blue. */
+  /** Page background. Defaults to white. */
   backgroundClassName?: string;
 };
 
@@ -28,7 +31,7 @@ export type DownPaymentInstalmentSuccessProps = {
 export function DownPaymentInstalmentSuccess({
   subline,
   nextHref,
-  backgroundClassName = "bg-[#F7FAFF]",
+  backgroundClassName = styles.bgPage,
 }: DownPaymentInstalmentSuccessProps) {
   const router = useRouter();
 
@@ -40,34 +43,34 @@ export function DownPaymentInstalmentSuccess({
   }, [nextHref, router]);
 
   return (
-    <div className={`relative min-h-dvh overflow-hidden font-sans ${backgroundClassName}`}>
+    <div className={cn(styles.relative_0, backgroundClassName)}>
       <div
-        className="pointer-events-none absolute left-1/2 top-0 h-[240px] w-full max-w-[640px] -translate-x-1/2"
+        className={styles.pointer_events_none_0}
         aria-hidden
       >
         <Image
           src={BOOKING_PAYMENT_SUCCESS_HERO}
           alt=""
           fill
-          className="object-cover object-top"
+          className={styles.object_cover_1}
           priority
           sizes="(max-width: 640px) 100vw, 640px"
           unoptimized
         />
       </div>
-      <div className="relative z-10 flex min-h-dvh flex-col items-center justify-center px-4 pb-8 pt-8">
-        <div className="-translate-y-8 flex w-full flex-col items-center text-center">
-          <div className="relative flex h-[144px] w-[144px] shrink-0 items-center justify-center">
+      <div className={styles.relative_2}>
+        <div className={styles._translate_y_8_3}>
+          <div className={styles.relative_4}>
             {BOOKING_SUCCESS_LOTTIE_TICK_DATA ? (
               <Lottie
                 animationData={BOOKING_SUCCESS_LOTTIE_TICK_DATA}
                 loop={false}
-                className="h-full w-full"
+                className={styles.h_full_5}
                 aria-label="Payment received animation"
               />
             ) : (
               <div
-                className="flex h-full w-full items-center justify-center rounded-full bg-[#22c55e] text-4xl text-white shadow-[0_0_48px_rgba(34,197,94,0.45)]"
+                className={styles.flex_6}
                 aria-hidden
               >
                 ✓
@@ -75,12 +78,12 @@ export function DownPaymentInstalmentSuccess({
             )}
           </div>
           <div
-            className={`mt-2 flex w-full flex-col items-center ${SUCCESS_SCREEN_HEADLINE_SUBTEXT_GAP_CLASS}`}
+            className={cn(styles.mt_2_1, SUCCESS_SCREEN_HEADLINE_SUBTEXT_GAP_CLASS)}
           >
-            <h1 className="text-[24px] font-semibold leading-7 tracking-tight text-[#1a1a1a]">
+            <h1 className={styles.text_24px__7}>
               Payment received
             </h1>
-            <p className="max-w-sm text-sm font-normal leading-5 text-[#6b7280]">{subline}</p>
+            <p className={styles.max_w_sm_8}>{subline}</p>
           </div>
         </div>
       </div>

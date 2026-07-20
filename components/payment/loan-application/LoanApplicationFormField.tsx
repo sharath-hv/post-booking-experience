@@ -1,8 +1,11 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import { cn } from "@/lib/utils";
 
 import { LOAN_APPLICATION_CONTROL_TEXT_CLASS } from "@/components/payment/loan-application/loan-application-layout";
+import styles from "./LoanApplicationFormField.module.scss";
+
 
 type LoanApplicationFormFieldProps = {
   id: string;
@@ -20,22 +23,17 @@ type LoanApplicationFormFieldProps = {
   hint?: string;
 };
 
-const FLOAT_TRANSITION =
-  "transition-[top,transform,font-size,line-height,border-color] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none motion-reduce:duration-0";
+const FLOAT_TRANSITION = styles.floatTransition;
 
-const INPUT_WRAP_LABELED_CLASS =
-  "flex min-h-12 w-full items-center rounded-lg border border-[#e8e8e8] bg-white px-4";
-const LABELED_INNER_INPUT_CLASS =
-  "min-w-0 w-full border-0 bg-transparent p-0 text-base font-normal leading-6 text-[#121212] outline-none placeholder:text-[#9e9e9e] focus:ring-0";
-const MULTILINE_WRAP_LABELED_CLASS =
-  "flex h-24 w-full items-start rounded-lg border border-[#e8e8e8] bg-white px-4 py-3";
+const INPUT_WRAP_LABELED_CLASS = styles.inputWrapLabeled;
+const LABELED_INNER_INPUT_CLASS = styles.labeledInnerInput;
+const MULTILINE_WRAP_LABELED_CLASS = styles.multilineWrapLabeled;
 
-const FLOAT_LABEL_ACTIVE_CLASS =
-  "-top-0.5 -translate-y-1/2 bg-white px-0.5 text-xs leading-[18px]";
-const FLOAT_LABEL_INACTIVE_CLASS = "top-1/2 -translate-y-1/2 text-sm leading-5";
-const FLOAT_LABEL_INACTIVE_MULTILINE_CLASS = "top-3 translate-y-0 text-sm leading-5";
+const FLOAT_LABEL_ACTIVE_CLASS = styles.floatLabelActive;
+const FLOAT_LABEL_INACTIVE_CLASS = styles.floatLabelInactive;
+const FLOAT_LABEL_INACTIVE_MULTILINE_CLASS = styles.floatLabelInactiveMultiline;
 
-const PLACEHOLDER_VALUE_CLASS = `${LOAN_APPLICATION_CONTROL_TEXT_CLASS} text-[#121212]`;
+const PLACEHOLDER_VALUE_CLASS = cn(LOAN_APPLICATION_CONTROL_TEXT_CLASS, styles.textInk);
 
 type FloatingPlaceholderFieldProps = {
   id: string;
@@ -63,14 +61,14 @@ function FloatingPlaceholderField({
   const onBlur = useCallback(() => setFocused(false), []);
 
   const wrapClass = [
-    "relative w-full rounded-lg border bg-white px-4",
+    styles.relative_0,
     FLOAT_TRANSITION,
-    multiline ? "flex h-24 flex-col" : "flex h-12 items-center",
-    active ? "border-[#e0e0e1]" : "border-[#e8e8e8]",
+    multiline ? styles.flex_1 : styles.flex_0,
+    active ? styles.borderActive : styles.border_e8e8e8__2,
   ].join(" ");
 
   const floatLabelClass = [
-    "pointer-events-none absolute left-4 z-10 origin-left text-[#757575]",
+    styles.pointer_events_none_3,
     FLOAT_TRANSITION,
     active
       ? FLOAT_LABEL_ACTIVE_CLASS
@@ -80,9 +78,9 @@ function FloatingPlaceholderField({
   ].join(" ");
 
   const inputClass = [
-    "w-full min-w-0 border-0 bg-transparent p-0 outline-none focus:ring-0",
+    styles.w_full_4,
     PLACEHOLDER_VALUE_CLASS,
-    multiline ? "min-h-0 flex-1 resize-none pt-3" : "",
+    multiline ? styles.min_h_0_5 : "",
   ].join(" ");
 
   return (
@@ -134,7 +132,7 @@ export function LoanApplicationFormField({
 
   if (isPlaceholderVariant) {
     return (
-      <div className={`w-full ${className}`}>
+      <div className={cn(styles.w_full_0, className)}>
         <FloatingPlaceholderField
           id={id}
           label={placeholder ?? label}
@@ -145,14 +143,14 @@ export function LoanApplicationFormField({
           multiline={multiline}
         />
         {hint ? (
-          <p className="mt-2 text-xs font-normal leading-[18px] text-[#757575]">{hint}</p>
+          <p className={styles.mt_2_0}>{hint}</p>
         ) : null}
       </div>
     );
   }
 
   const labelEl = (
-    <label htmlFor={id} className="mb-2 block text-sm font-medium leading-5 text-[#121212]">
+    <label htmlFor={id} className={styles.mb_2_1}>
       {label}
     </label>
   );
@@ -166,7 +164,7 @@ export function LoanApplicationFormField({
         placeholder={placeholder}
         rows={3}
         autoComplete={autoComplete}
-        className={`${LABELED_INNER_INPUT_CLASS} h-full min-h-0 resize-none`}
+        className={cn(LABELED_INNER_INPUT_CLASS, styles.h_full_1)}
       />
     </div>
   ) : (
@@ -184,11 +182,11 @@ export function LoanApplicationFormField({
   );
 
   return (
-    <div className={`w-full ${className}`}>
+    <div className={cn(styles.w_full_2, className)}>
       {labelEl}
       {control}
       {hint ? (
-        <p className="mt-2 text-xs font-normal leading-[18px] text-[#757575]">{hint}</p>
+        <p className={styles.mt_2_0}>{hint}</p>
       ) : null}
     </div>
   );

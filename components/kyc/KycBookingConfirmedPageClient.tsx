@@ -14,7 +14,11 @@ import {
   readChangeEntryStage,
   recordPostLockChangeUsed,
 } from "@/lib/change-policy";
-import { isModifyWithChargesFlow } from "@/lib/experience-flow";
+import {
+  isModifyWithChargesFlow,
+  readExperienceFlow,
+  writeExperienceFlow,
+} from "@/lib/experience-flow";
 import {
   BOOKING_LOCK_AMOUNT_INR,
   MODIFY_SELECTION_RETURN_SOURCE,
@@ -42,8 +46,23 @@ export function KycBookingConfirmedPageClient() {
       setActiveBooking(null);
       return;
     }
-    setActiveBooking(syncModifySelectionBookingSnapshot(variant, paidAmountInr));
-    // One-time change rule (policy §1.9): a post-lock change consumes the allowance.
+    const snapshot = syncModifySelectionBookingSnapshot(variant, paidAmountInr);
+    setActiveBooking(snapshot);
+
+    // Express/standard journeys: spine delivery follows the selection just paid
+    // (e.g. allocation-failed → pick a different car → chose standard). Demo
+    // modify flows keep their flow id for journey guards / fee demos.
+    const flow = readExperienceFlow();
+    if (
+      snapshot != null &&
+      (flow === "express" || flow === "standard")
+    ) {
+      writeExperienceFlow(
+        snapshot.deliveryChoice === "standard" ? "standard" : "express",
+      );
+    }
+
+    // One-time change rule (policy §1.9): a post-allocation change consumes the allowance.
     if (readChangeEntryStage() === "post" || isModifyWithChargesFlow()) {
       recordPostLockChangeUsed();
     }
@@ -56,7 +75,7 @@ export function KycBookingConfirmedPageClient() {
   );
 
   // Spine (no checkout return) — the concierge “car reserved” turn.
-  // Checkout returns (initial lock legacy + modify-selection) keep the celebration screen.
+  // Modify-selection pay returns use auto-advance Payment received (journey-aware next).
   if (variant === "default" && !afterModifySelection) {
     return <ConciergeMoment moment="carReserved" />;
   }

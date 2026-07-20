@@ -16,6 +16,8 @@ import {
   splitBookingDeliveryLine,
 } from "@/lib/experience-flow-content";
 import { cn } from "@/lib/utils";
+import styles from "./BookingCarCardDetails.module.scss";
+
 
 export type BookingCarCardDetailsProps = {
   /** When set with `chassisNo`, shows engine/chassis below the delivery line. */
@@ -63,11 +65,11 @@ export function BookingCarCardDetails({
 
   return (
     <>
-      <p className="text-base font-medium leading-6 text-[#121212]">{titleLabel}</p>
-      <div className="mt-1 flex flex-wrap items-center gap-1 text-xs leading-[18px] text-[#4b4b4b]">
-        <span className="shrink-0">{variantLabel}</span>
+      <p className={styles.text_base_0}>{titleLabel}</p>
+      <div className={styles.mt_1_1}>
+        <span className={styles.shrink_0_2}>{variantLabel}</span>
         <span
-          className="inline-flex h-[18px] w-4 shrink-0 items-center justify-center"
+          className={styles.inline_flex_3}
           aria-hidden
         >
           <Image
@@ -75,15 +77,15 @@ export function BookingCarCardDetails({
             alt=""
             width={16}
             height={16}
-            className="block size-4 object-contain"
+            className={styles.block_4}
             unoptimized
             sizes="16px"
           />
         </span>
-        <span className="shrink-0">{colorLabel}</span>
+        <span className={styles.shrink_0_2}>{colorLabel}</span>
       </div>
-      <div className="mt-2 flex items-center gap-1">
-        <p className={cn("text-xs font-normal leading-[18px]", resolvedDeliveryTextClass)}>
+      <div className={styles.mt_2_5}>
+        <p className={cn(styles.text_xs_8, resolvedDeliveryTextClass)}>
           {deliveryParts ? (
             <>
               {deliveryParts.prefix}
@@ -93,13 +95,13 @@ export function BookingCarCardDetails({
             resolvedDeliveryLine
           )}
         </p>
-        <span className="relative h-4 w-4 shrink-0" aria-hidden>
+        <span className={styles.relative_6} aria-hidden>
           <Image
             src={resolvedDeliveryIconSrc}
             alt=""
             width={16}
             height={16}
-            className="h-4 w-4 object-contain"
+            className={styles.h_4_7}
             unoptimized
             sizes="16px"
           />

@@ -40,7 +40,7 @@ import { Typography } from "@acko/typography";
 | `align` | `TypographyAlign` | No | Use instead of inline textAlign |
 | `as` | `React.ElementType` | No | Override the rendered HTML tag |
 | `truncate` | `boolean` | No | Single-line truncation with ellipsis |
-| `className` | `string` | No | For Tailwind utility classes only |
+| `className` | `string` | No | For CSS module / style classes only |
 
 ---
 

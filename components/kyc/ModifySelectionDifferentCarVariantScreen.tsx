@@ -15,13 +15,13 @@ import {
   getModifySelectionCarModelById,
   modifySelectionCarModelPath,
 } from "@/lib/modify-selection-car-models-content";
-import {
-  modifySelectionDifferentCarVariantScreenTitle,
-  MODIFY_SELECTION_DIFFERENT_CAR_VARIANT_SCREEN_SUBLINE,
-} from "@/lib/modify-selection-different-car-content";
+import { modifySelectionDifferentCarVariantScreenTitle } from "@/lib/modify-selection-different-car-content";
 import { MODIFY_SELECTION_PAGE_SHELL_CLASS } from "@/lib/modify-selection-content";
 import { modifySelectionDifferentCarColourPath } from "@/lib/modify-selection-different-car-paths";
+import { readModifySelectionDifferentCarPending } from "@/lib/modify-selection-different-car-pending";
 import { writeModifySelectionDifferentCarVariantChoice } from "@/lib/modify-selection-different-car-variant-choice";
+import styles from "./ModifySelectionDifferentCarVariantScreen.module.scss";
+
 import {
   filterModifySelectionVariants,
   getModifySelectionAvailableVariantOptions,
@@ -34,7 +34,6 @@ import {
 
 const {
   title: STAGGER_TITLE_MS,
-  subtext: STAGGER_SUBTEXT_MS,
   filters: STAGGER_FILTERS_MS,
   firstListItem: STAGGER_FIRST_VARIANT_MS,
 } = MODIFY_SELECTION_STAGGER_MS;
@@ -62,7 +61,12 @@ export function ModifySelectionDifferentCarVariantScreen({
     fuel: null,
     transmission: null,
   });
-  const [selectedVariantId, setSelectedVariantId] = useState<string | null>(null);
+  const [selectedVariantId, setSelectedVariantId] = useState<string | null>(() => {
+    const pending = readModifySelectionDifferentCarPending();
+    return pending?.brandId === brandId && pending.modelId === modelId
+      ? pending.variantId
+      : null;
+  });
 
   const filteredVariants = useMemo(
     () => filterModifySelectionVariants(allVariants, filters),
@@ -100,16 +104,14 @@ export function ModifySelectionDifferentCarVariantScreen({
     <div className={MODIFY_SELECTION_PAGE_SHELL_CLASS}>
       <ModifySelectionScreenHeader />
 
-      <main className="mx-auto flex w-full max-w-[640px] flex-1 flex-col px-5 pb-[calc(7rem+env(safe-area-inset-bottom))] pt-2">
+      <main className={styles.mx_auto_0}>
         <ModifySelectionPageHeading
           title={title}
-          subline={MODIFY_SELECTION_DIFFERENT_CAR_VARIANT_SCREEN_SUBLINE}
           titleDelayMs={STAGGER_TITLE_MS}
-          sublineDelayMs={STAGGER_SUBTEXT_MS}
         />
 
         <div
-          className="payment-success-stagger mt-8"
+          className={[styles.payment_success_stagger_1, "payment-success-stagger"].filter(Boolean).join(" ")}
           style={{ animationDelay: `${STAGGER_FILTERS_MS}ms` }}
         >
           <ModifySelectionVariantFilterChips
@@ -122,19 +124,19 @@ export function ModifySelectionDifferentCarVariantScreen({
         </div>
 
         <div
-          className="mt-4 flex flex-col gap-4"
+          className={styles.mt_4_2}
           role="group"
           aria-label={title}
         >
           {filteredVariants.length === 0 ? (
-            <p className="text-sm font-normal leading-5 text-[#757575]">
+            <p className={styles.text_sm_3}>
               No variants match these filters. Try changing or clearing a filter.
             </p>
           ) : (
             filteredVariants.map((option, index) => (
               <div
                 key={option.id}
-                className="payment-success-stagger w-full"
+                className={[styles.payment_success_stagger_4, "payment-success-stagger"].filter(Boolean).join(" ")}
                 style={{
                   animationDelay: `${modifySelectionListStaggerDelay(index, STAGGER_FIRST_VARIANT_MS)}ms`,
                 }}
@@ -150,13 +152,13 @@ export function ModifySelectionDifferentCarVariantScreen({
         </div>
       </main>
 
-      <div className="fixed bottom-0 left-0 right-0 z-10 pb-[env(safe-area-inset-bottom)] footer-elevated">
-        <div className="mx-auto w-full max-w-[640px] bg-white px-5 py-4">
+      <div className={[styles.fixed_5, "footer-elevated"].filter(Boolean).join(" ")}>
+        <div className={styles.mx_auto_6}>
           <button
             type="button"
             disabled={selectedVariantId == null}
             onClick={onContinue}
-            className="primary-cta w-full focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/30 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-[#a0a0a0] disabled:opacity-100 disabled:hover:bg-[#a0a0a0]"
+            className={[styles.primary_cta_7, "primary-cta"].filter(Boolean).join(" ")}
           >
             Continue
           </button>

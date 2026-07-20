@@ -15,6 +15,8 @@ import {
   type CancelBookingReasonId,
 } from "@/lib/cancel-booking-content";
 import { cn } from "@/lib/utils";
+import styles from "./CancelBookingReasonBottomSheet.module.scss";
+
 
 const SHEET_TRANSITION_MS = 280;
 
@@ -35,23 +37,23 @@ function CancelBookingReasonOptionRow({
       onClick={onSelect}
       aria-pressed={selected}
       className={cn(
-        "flex w-full items-center gap-2 rounded-lg border p-3 text-left transition-colors",
+        styles.flex_10,
         selected
-          ? "border-[#121212] bg-[#f5f5f5]"
-          : "border-[#e8e8e8] bg-white hover:bg-[#fafafa]",
+          ? styles.border_121212__11
+          : styles.border_e8e8e8__12,
       )}
     >
-      <span className="relative h-4 w-4 shrink-0" aria-hidden>
+      <span className={styles.relative_0} aria-hidden>
         <Image
           src={selected ? checkboxSelected : checkboxUnselected}
           alt=""
           fill
-          className="object-contain"
+          className={styles.object_contain_1}
           unoptimized
           sizes="16px"
         />
       </span>
-      <span className="min-w-0 flex-1 text-sm leading-5 text-[#121212]">{label}</span>
+      <span className={styles.min_w_0_2}>{label}</span>
     </button>
   );
 }
@@ -124,43 +126,39 @@ export function CancelBookingReasonBottomSheet({
 
   return (
     <BottomSheetPortal>
-      <div className={`fixed inset-0 ${BOTTOM_SHEET_OVERLAY_Z_CLASS}`}>
+      <div className={cn(styles.fixed_0, BOTTOM_SHEET_OVERLAY_Z_CLASS)}>
         <button
           type="button"
-          className={`absolute inset-0 bg-black/90 transition-opacity duration-[280ms] ease-out motion-reduce:opacity-100 motion-reduce:transition-none ${
-            animateIn ? "opacity-100" : "opacity-0"
-          }`}
+          className={cn(styles.absolute_1, animateIn ? styles.opacity_100_1 : styles.opacity_0_1)}
           onClick={onClose}
           aria-label="Dismiss"
         />
         <div
-          className={`absolute bottom-0 left-1/2 z-10 flex w-full max-w-[640px] -translate-x-1/2 flex-col overflow-hidden rounded-t-[24px] bg-white sheet-elevated transition-transform duration-[280ms] ease-out motion-reduce:translate-y-0 motion-reduce:transition-none ${
-            animateIn ? "translate-y-0" : "translate-y-full"
-          }`}
+          className={cn(styles.absolute_2, "sheet-elevated", animateIn ? styles.translate_y_0_2 : styles.translate_y_full_2)}
           role="dialog"
           aria-modal="true"
           aria-labelledby={titleId}
         >
-          <div className="relative flex flex-col">
+          <div className={styles.relative_3}>
             <button
               type="button"
               onClick={onClose}
-              className="cta-ghost absolute right-5 top-6 z-10 flex h-10 w-10 items-center justify-center rounded-lg text-[#121212] focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/20 focus-visible:ring-offset-2"
+              className={[styles.cta_ghost_4, "cta-ghost"].filter(Boolean).join(" ")}
               aria-label="Close"
             >
               <BottomSheetCloseIcon />
             </button>
 
-            <div className="px-5 pb-5 pt-6">
+            <div className={styles.px_5_5}>
               <h2
                 id={titleId}
-                className="pr-10 text-left text-xl font-semibold leading-7 tracking-[-0.1px] text-[#121212]"
+                className={styles.pr_10_6}
               >
                 {CANCEL_BOOKING_REASON_SHEET_TITLE}
               </h2>
 
               <div
-                className="mt-4 flex flex-col gap-3"
+                className={styles.mt_4_7}
                 role="group"
                 aria-label="Cancellation reason"
               >
@@ -179,12 +177,12 @@ export function CancelBookingReasonBottomSheet({
               </div>
             </div>
 
-            <div className="shrink-0 px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
+            <div className={styles.shrink_0_8}>
               <button
                 type="button"
                 onClick={handleConfirm}
                 disabled={selectedReason == null}
-                className="primary-cta w-full disabled:cursor-not-allowed disabled:bg-[#a0a0a0] disabled:opacity-100"
+                className={[styles.primary_cta_9, "primary-cta"].filter(Boolean).join(" ")}
               >
                 {CANCEL_BOOKING_REASON_SHEET_CTA}
               </button>

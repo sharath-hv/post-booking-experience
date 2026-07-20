@@ -26,12 +26,11 @@ import { ChooseLoanPaymentSummaryCard } from "@/components/payment/ChooseLoanPay
 import { ON_ROAD_PRICE_INR } from "@/components/payment/loan-amount-demo-constants";
 import { PaymentSummaryCard } from "@/components/payment/PaymentSummaryCard";
 import {
-  isCancelNoChargesFlow,
+  isCancelDemoFlow,
   isModifyNoChargesFlow,
-  isModifyWithChargesFlow,
 } from "@/lib/experience-flow";
 import {
-  isChangeSelectionAvailablePhase,
+  isChangeSelectionAllowedPhase,
   JOURNEY_PATHS,
   resolveJourneyPhase,
 } from "@/lib/journey-routes";
@@ -40,8 +39,12 @@ import {
   writeChangeEntryStage,
 } from "@/lib/change-policy";
 import {
+  hasCarPaymentStarted,
+  isCancelBookingMenuVisible,
+  isChangeSelectionMenuVisible,
   modifyBookingCancelDescription,
   modifyBookingChangeDescription,
+  resolveChangeSelectionFeeTier,
   resolveModifyBookingFeeTier,
 } from "@/lib/manage-booking-modify";
 import {
@@ -51,6 +54,8 @@ import {
 } from "@/lib/paymentUrls";
 import { cn } from "@/lib/utils";
 import { OVERLAY_GLASS_CARD_CLASS } from "@/lib/overlay-glass-card";
+import styles from "./ManageBookingBottomSheet.module.scss";
+
 
 /** Keeps parity with other bottom sheets in the app */
 const SHEET_TRANSITION_MS = 280;
@@ -76,25 +81,25 @@ function ModifyBookingActionRow({
       disabled={disabled}
       onClick={disabled ? undefined : onClick}
       className={cn(
-        "flex w-full items-center gap-3.5 px-4 py-4 text-left transition-colors",
+        styles.flex_14,
         disabled
-          ? "cursor-not-allowed opacity-60"
-          : "hover:bg-[#fafafa] active:bg-[#f5f5f5]",
+          ? styles.cursor_not_allowed_15
+          : styles.hover_bg_fafafa__16,
       )}
     >
-      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#f5f5f5]">
-        <Image src={iconSrc} alt="" width={20} height={20} className="shrink-0" unoptimized aria-hidden />
+      <span className={styles.flex_0}>
+        <Image src={iconSrc} alt="" width={20} height={20} className={styles.shrink_0_1} unoptimized aria-hidden />
       </span>
-      <span className="min-w-0 flex-1">
-        <span className="block text-sm font-medium leading-5 text-[#121212]">{title}</span>
-        <span className="mt-1 block text-xs leading-[18px] text-[#757575]">{description}</span>
+      <span className={styles.min_w_0_2}>
+        <span className={styles.block_3}>{title}</span>
+        <span className={styles.mt_1_4}>{description}</span>
       </span>
-      <span className="relative h-5 w-5 shrink-0">
+      <span className={styles.relative_5}>
         <Image
           src={arrowRightIcon}
           alt=""
           fill
-          className="object-contain"
+          className={styles.object_contain_6}
           unoptimized
           sizes="20px"
         />
@@ -293,41 +298,58 @@ export function ManageBookingSections({
     () => resolveModifyBookingFeeTier(pathname),
     [pathname],
   );
+  const changeFeeTier = useMemo(
+    () => resolveChangeSelectionFeeTier(pathname),
+    [pathname],
+  );
 
-  /** Post-lock changes already used (policy §1.9 — exactly one allowed). */
+  /** Car payment beyond the ₹10k lock — hides Cancel (and the whole section if Change is gone). */
+  const carPaymentStarted = useMemo(
+    () =>
+      hasCarPaymentStarted({
+        pathname,
+        downPaymentPaidInr: confirmedLoanPlan?.downPaymentPaidInr,
+        downPaymentFullyPaid: confirmedLoanPlan?.downPaymentFullyPaid,
+        fullPaymentPaidInr: fullPaymentPlan?.paymentPaidInr,
+      }),
+    [pathname, confirmedLoanPlan, fullPaymentPlan],
+  );
+
+  const showChangeSelection = useMemo(
+    () => isChangeSelectionMenuVisible(pathname, showVehicleIdentification),
+    [pathname, showVehicleIdentification],
+  );
+  const showCancelBooking = useMemo(
+    () => isCancelBookingMenuVisible(carPaymentStarted),
+    [carPaymentStarted],
+  );
+  const showMakeAChangeSection = showChangeSelection || showCancelBooking;
+
+  /** Post–dealer-allocation changes already used (exactly one ₹5,000 change allowed). */
   const [changesUsed, setChangesUsed] = useState(0);
   useEffect(() => {
     setChangesUsed(readPostLockChangesUsed());
   }, []);
 
   const changeSelectionDescription = useMemo(() => {
-    if (modifyFeeTier === "free") return modifyBookingChangeDescription(modifyFeeTier);
-    return changesUsed >= 1
-      ? "Change used — another means cancel & rebook"
-      : "One change — ₹5,000 plus any price difference";
-  }, [modifyFeeTier, changesUsed]);
-
-  const changeSelectionEnabled = useMemo(() => {
-    if (isCancelNoChargesFlow()) return false;
-    if (isModifyNoChargesFlow()) return true;
-    if (isModifyWithChargesFlow()) {
-      return isChangeSelectionAvailablePhase(resolveJourneyPhase(pathname));
+    if (changeFeeTier !== "free" && changesUsed >= 1) {
+      return "Change used — another means cancel & rebook";
     }
-    // Express/standard — policy grants one post-lock change to every booking.
-    return true;
-  }, [pathname]);
+    return modifyBookingChangeDescription(changeFeeTier);
+  }, [changeFeeTier, changesUsed]);
 
   const changeSelectionClickable = useMemo(() => {
-    if (isCancelNoChargesFlow()) return false;
-    return changeSelectionEnabled;
-  }, [changeSelectionEnabled]);
+    if (!showChangeSelection) return false;
+    if (isCancelDemoFlow()) return false;
+    if (isModifyNoChargesFlow()) return true;
+    return isChangeSelectionAllowedPhase(resolveJourneyPhase(pathname));
+  }, [pathname, showChangeSelection]);
 
   const cancelBookingDescription = useMemo(
     () => modifyBookingCancelDescription(modifyFeeTier),
     [modifyFeeTier],
   );
 
-  /** Policy §7 — cancellation is the customer's right at every stage; 50% of total paid post-confirmation. */
   const totalPaidInr = useMemo(() => {
     const dpPaid = Math.max(0, confirmedLoanPlan?.downPaymentPaidInr ?? 0);
     const fullPaid = Math.max(0, fullPaymentPlan?.paymentPaidInr ?? 0);
@@ -336,8 +358,8 @@ export function ManageBookingSections({
 
   const onChangeSelection = useCallback(() => {
     onClose();
-    const stage = modifyFeeTier === "free" ? "pre" : "post";
-    // Second post-lock change = cancellation + rebook (policy §1.9).
+    const stage = changeFeeTier === "free" ? "pre" : "post";
+    // Second post–dealer-allocation change = cancellation + rebook.
     if (stage === "post" && readPostLockChangesUsed() >= 1) {
       router.push(
         `${JOURNEY_PATHS.kyc.cancelBooking}?paid=${totalPaidInr}&stage=post&reason=second-change`,
@@ -346,7 +368,7 @@ export function ManageBookingSections({
     }
     writeChangeEntryStage(stage);
     router.push(JOURNEY_PATHS.kyc.modifySelection);
-  }, [onClose, router, modifyFeeTier, totalPaidInr]);
+  }, [onClose, router, changeFeeTier, totalPaidInr]);
 
   const onCancelBooking = useCallback(() => {
     onClose();
@@ -355,7 +377,7 @@ export function ManageBookingSections({
   }, [onClose, router, modifyFeeTier, totalPaidInr]);
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className={styles.flex_7}>
       {hideCarCard ? null : (
         <ManageBookingCarCard showVehicleIdentification={showVehicleIdentification} />
       )}
@@ -363,7 +385,7 @@ export function ManageBookingSections({
       <section aria-labelledby="manage-booking-payment-heading">
         <h3
           id="manage-booking-payment-heading"
-          className="mb-4 text-base font-medium leading-6 text-[#121212]"
+          className={styles.mb_4_8}
         >
           Payment summary
         </h3>
@@ -386,36 +408,43 @@ export function ManageBookingSections({
 
       {beforeChange}
 
-      {/* Always rendered — cancellation is available at every stage (policy §7). */}
-      <section aria-labelledby="manage-booking-modify-heading">
-        <h3
-          id="manage-booking-modify-heading"
-          className="mb-4 text-base font-medium leading-6 text-[#121212]"
-        >
-          Make a change
-        </h3>
-        <div
-          className={cn(
-            surface === "overlay"
-              ? OVERLAY_GLASS_CARD_CLASS
-              : "overflow-hidden rounded-2xl bg-white border border-[#e8e8e8]",
-          )}
-        >
-          <ModifyBookingActionRow
-            iconSrc={changeSelectionIcon}
-            title="Change selection"
-            description={changeSelectionDescription}
-            onClick={changeSelectionClickable ? onChangeSelection : undefined}
-          />
-          <hr className="border-0 border-t border-dashed border-[#e8e8e8]" />
-          <ModifyBookingActionRow
-            iconSrc={cancelBookingIcon}
-            title="Cancel my purchase"
-            description={cancelBookingDescription}
-            onClick={onCancelBooking}
-          />
-        </div>
-      </section>
+      {showMakeAChangeSection ? (
+        <section aria-labelledby="manage-booking-modify-heading">
+          <h3
+            id="manage-booking-modify-heading"
+            className={styles.mb_4_8}
+          >
+            Make a change
+          </h3>
+          <div
+            className={cn(
+              surface === "overlay"
+                ? OVERLAY_GLASS_CARD_CLASS
+                : styles.overflow_hidden_18,
+            )}
+          >
+            {showChangeSelection ? (
+              <ModifyBookingActionRow
+                iconSrc={changeSelectionIcon}
+                title="Change selection"
+                description={changeSelectionDescription}
+                onClick={changeSelectionClickable ? onChangeSelection : undefined}
+              />
+            ) : null}
+            {showChangeSelection && showCancelBooking ? (
+              <hr className={styles.border_0_9} />
+            ) : null}
+            {showCancelBooking ? (
+              <ModifyBookingActionRow
+                iconSrc={cancelBookingIcon}
+                title="Cancel my purchase"
+                description={cancelBookingDescription}
+                onClick={onCancelBooking}
+              />
+            ) : null}
+          </div>
+        </section>
+      ) : null}
     </div>
   );
 }
@@ -476,39 +505,35 @@ function ManageBookingBottomSheetInner({
 
   return (
     <BottomSheetPortal>
-      <div className={`fixed inset-0 ${BOTTOM_SHEET_OVERLAY_Z_CLASS}`}>
+      <div className={cn(styles.fixed_0, BOTTOM_SHEET_OVERLAY_Z_CLASS)}>
       <button
         type="button"
-        className={`absolute inset-0 bg-black/90 transition-opacity duration-[280ms] ease-out motion-reduce:opacity-100 motion-reduce:transition-none ${
-          animateIn ? "opacity-100" : "opacity-0"
-        }`}
+        className={cn(styles.absolute_1, animateIn ? styles.opacity_100_1 : styles.opacity_0_1)}
         onClick={onBackdropClick}
         aria-label="Dismiss"
       />
       <div
-        className={`absolute bottom-0 left-1/2 z-10 flex ${BOTTOM_SHEET_MAX_HEIGHT_CLASS} w-full max-w-[640px] -translate-x-1/2 flex-col ${BOTTOM_SHEET_SCROLL_PANEL_CLASS} rounded-t-[24px] bg-white sheet-elevated transition-transform duration-[280ms] ease-out motion-reduce:translate-y-0 motion-reduce:transition-none ${
-          animateIn ? "translate-y-0" : "translate-y-full"
-        }`}
+        className={cn(styles.absolute_2, BOTTOM_SHEET_MAX_HEIGHT_CLASS, styles.w_full_2, BOTTOM_SHEET_SCROLL_PANEL_CLASS, styles.rounded_t_24px__2, "sheet-elevated", animateIn ? styles.translate_y_0_2 : styles.translate_y_full_2)}
         role="dialog"
         aria-modal="true"
         aria-labelledby="manage-booking-sheet-title"
       >
-        <header className="flex shrink-0 items-start justify-between gap-3 bg-white px-5 pb-4 pt-6">
-          <div className="min-w-0 flex-1">
+        <header className={styles.flex_10}>
+          <div className={styles.min_w_0_2}>
             <h2
               id="manage-booking-sheet-title"
-              className="text-left text-[20px] font-semibold leading-7 tracking-[-0.1px] text-[#121212]"
+              className={styles.text_left_11}
             >
               Your car
             </h2>
-            <p className="mt-1 text-sm font-normal leading-5 text-[#4b4b4b]">
+            <p className={styles.mt_1_12}>
               Reference ID: {DEMO_BOOKING_ID}
             </p>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="cta-ghost -mr-1 -mt-0.5 flex size-10 shrink-0 items-center justify-center rounded-lg text-[#121212] focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/20 focus-visible:ring-offset-2"
+            className={[styles.cta_ghost_13, "cta-ghost"].filter(Boolean).join(" ")}
             aria-label="Close"
           >
             <BottomSheetCloseIcon />
@@ -516,7 +541,7 @@ function ManageBookingBottomSheetInner({
         </header>
 
         <div
-          className={`${BOTTOM_SHEET_SCROLL_BODY_CLASS} px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-2`}
+          className={cn(BOTTOM_SHEET_SCROLL_BODY_CLASS, styles.px_5_3)}
         >
           <ManageBookingSections
             onClose={onClose}

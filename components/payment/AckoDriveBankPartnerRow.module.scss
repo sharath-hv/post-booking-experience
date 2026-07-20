@@ -1,0 +1,87 @@
+/* Component styles */
+
+.flex_0 {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: calc(var(--spacing) * 1.5);
+  row-gap: var(--spacing);
+  text-align: left;
+}
+
+.text_base_1 {
+  font-size: 16px;
+  line-height: var(--tw-leading, 24px);
+  --tw-font-weight: var(--font-weight-normal);
+  font-weight: var(--font-weight-normal);
+  --tw-leading: calc(var(--spacing) * 6);
+  line-height: calc(var(--spacing) * 6);
+  color: #4b4b4b;
+}
+
+.inline_flex_2 {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--spacing) * 3);
+}
+
+.inline_flex_3 {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing);
+}
+
+.relative_4 {
+  position: relative;
+  height: calc(var(--spacing) * 5);
+  width: calc(var(--spacing) * 5);
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-white);
+}
+
+.object_contain_5 {
+  object-fit: contain;
+}
+
+.text_base_6 {
+  font-size: 16px;
+  line-height: var(--tw-leading, 24px);
+  --tw-font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-medium);
+  --tw-leading: calc(var(--spacing) * 6);
+  line-height: calc(var(--spacing) * 6);
+  color: #121212;
+}
+
+.cursor_pointer_7 {
+  cursor: pointer;
+  border-style: var(--tw-border-style);
+  border-width: 0px;
+  background-color: transparent;
+  padding: 0px;
+  font-size: 14px;
+  line-height: var(--tw-leading, 20px);
+  --tw-font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-medium);
+  --tw-leading: calc(var(--spacing) * 6);
+  line-height: calc(var(--spacing) * 6);
+  color: #1b73e8;
+  text-underline-offset: 2px;
+  transition-property: opacity;
+  transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+  transition-duration: var(--tw-duration, var(--default-transition-duration));
+}
+.cursor_pointer_7:focus-visible {
+  outline-style: var(--tw-outline-style);
+  outline-width: 1px;
+  text-decoration-line: underline;
+}
+@media (hover: hover) {
+  .cursor_pointer_7:hover {
+    text-decoration-line: underline;
+  }
+}
+

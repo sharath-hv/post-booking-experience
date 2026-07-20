@@ -1,0 +1,102 @@
+/* Component styles */
+
+.mx_auto_0 {
+  margin-inline: auto;
+  display: flex;
+  width: 100%;
+  max-width: 640px;
+  flex: 1;
+  flex-direction: column;
+  padding-inline: calc(var(--spacing) * 5);
+  padding-bottom: calc(7rem + env(safe-area-inset-bottom));
+  padding-top: calc(var(--spacing) * 2);
+}
+
+/* Title + subline — one intro cluster before supporting/context content. */
+.lead {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Context: quieter than the colour picker that follows. */
+.currentSelection {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing) * 3);
+  margin-top: calc(var(--spacing) * 6);
+  margin-bottom: calc(var(--spacing) * 6);
+}
+
+.currentSelectionLabel {
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: var(--font-weight-medium);
+  color: #757575;
+}
+
+/* Primary task: same section label style as variant change flow. */
+.availableColours {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing) * 3);
+}
+
+.availableColoursHeading {
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: var(--font-weight-medium);
+  color: #757575;
+}
+
+.colourList {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing) * 4);
+}
+
+.colourListItem {
+  width: 100%;
+}
+
+.fixed_7 {
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  z-index: 10;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.mx_auto_8 {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 640px;
+  background-color: var(--color-white);
+  padding-inline: calc(var(--spacing) * 5);
+  padding-block: calc(var(--spacing) * 4);
+}
+
+.primary_cta_9 {
+  width: 100%;
+}
+.primary_cta_9:focus-visible {
+  outline-style: var(--tw-outline-style);
+  outline-width: 1px;
+  --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
+  box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  --tw-ring-color: color-mix(in oklab, #121212 30%, transparent);
+  --tw-ring-offset-width: 2px;
+  --tw-ring-offset-shadow: var(--tw-ring-inset,) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+}
+.primary_cta_9:disabled {
+  cursor: not-allowed;
+  background-color: #a0a0a0;
+  opacity: 100%;
+}
+@media (hover: hover) {
+  .primary_cta_9:disabled:hover {
+    background-color: #a0a0a0;
+  }
+}

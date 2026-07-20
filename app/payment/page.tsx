@@ -1,11 +1,14 @@
 "use client";
 
 import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { cn } from "@/lib/utils";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { KycTopNavHeader } from "@/components/kyc/KycTopNavHeader";
 
 import { FULL_PAYMENT_INSURANCE_INR } from "@/components/payment/loan-amount-demo-constants";
+import styles from "./page.module.scss";
+
 import {
   BOOKING_AMOUNT_QUERY,
   BOOKING_LOCK_AMOUNT_INR,
@@ -310,33 +313,33 @@ function MockRazorpayPaymentPageContent() {
 
   if (phase === "processing") {
     return (
-      <div className="fixed inset-0 z-50 flex min-h-dvh flex-col items-center justify-center bg-[#F7FAFF] font-sans">
+      <div className={styles.fixed_0}>
           <div
-            className="h-12 w-12 animate-spin rounded-full border-[3px] border-[#e6e8eb] border-t-[#3395ff]"
+            className={styles.h_12_1}
             aria-hidden
           />
-          <p className="mt-6 text-base font-medium text-[#1a1a1a]">Processing payment…</p>
-          <p className="mt-1 text-sm text-[#6b7280]">Please do not close this screen</p>
+          <p className={styles.mt_6_2}>Processing payment…</p>
+          <p className={styles.mt_1_3}>Please do not close this screen</p>
         </div>
     );
   }
 
   return (
-    <div className="min-h-dvh bg-[#F7FAFF] font-sans">
+    <div className={styles.min_h_dvh_4}>
         <KycTopNavHeader title="Checkout" />
 
-        <main className="mx-auto w-full px-4 pb-32 pt-4">
-        <div className="overflow-hidden rounded-xl bg-white card-elevated">
-          <div className="border-b border-[#e6e8eb] bg-[#fafbfc] px-4 py-4">
-            <div className="flex items-center justify-between gap-3">
+        <main className={styles.mx_auto_5}>
+        <div className={[styles.overflow_hidden_6, "card-elevated"].filter(Boolean).join(" ")}>
+          <div className={styles.border_b_7}>
+            <div className={styles.flex_8}>
               <div>
-                <p className="text-xs font-medium uppercase tracking-wide text-[#6b7280]">
+                <p className={styles.text_xs_9}>
                   Pay using Razorpay
                 </p>
-                <p className="mt-1 text-sm font-semibold text-[#1a1a1a]">ACKO Drive</p>
+                <p className={styles.mt_1_10}>ACKO Drive</p>
               </div>
               <div
-                className="flex h-10 w-10 items-center justify-center rounded-lg text-sm font-bold text-white"
+                className={styles.flex_11}
                 style={{ background: "linear-gradient(135deg, #3395ff 0%, #0b6bcb 100%)" }}
                 aria-hidden
               >
@@ -345,24 +348,24 @@ function MockRazorpayPaymentPageContent() {
             </div>
           </div>
 
-          <div className="px-4 py-6">
+          <div className={styles.px_4_12}>
             {isInsurancePayment ? (
               <>
-                <p className="text-center text-xs text-[#6b7280]">Insurance premium</p>
-                <p className="mt-1 text-center text-3xl font-semibold tabular-nums tracking-tight text-[#1a1a1a]">
+                <p className={styles.text_center_13}>Insurance premium</p>
+                <p className={styles.mt_1_14}>
                   {formatInr(FULL_PAYMENT_INSURANCE_INR)}
                 </p>
-                <p className="mt-2 text-center text-xs text-[#9ca3af]">{checkoutSubtitle}</p>
+                <p className={styles.mt_2_15}>{checkoutSubtitle}</p>
               </>
             ) : isDownPaymentFromUrl ? (
               <>
-                <p className="text-center text-xs text-[#6b7280]">Amount to pay now</p>
-                <div className="mt-2 flex justify-center">
-                  <label htmlFor="checkout-pay-amount" className="sr-only">
+                <p className={styles.text_center_13}>Amount to pay now</p>
+                <div className={styles.mt_2_16}>
+                  <label htmlFor="checkout-pay-amount" className={styles.sr_only_17}>
                     Amount to pay now in rupees
                   </label>
-                  <div className="flex items-baseline gap-1 rounded-xl border border-[#e6e8eb] bg-[#fafbfc] px-4 py-3">
-                    <span className="text-2xl font-semibold text-[#6b7280]" aria-hidden>
+                  <div className={styles.flex_18}>
+                    <span className={styles.text_2xl_19} aria-hidden>
                       ₹
                     </span>
                     <input
@@ -373,7 +376,7 @@ function MockRazorpayPaymentPageContent() {
                       value={amountInput}
                       onChange={(e) => handleAmountInputChange(e.target.value)}
                       disabled={remainingDue <= 0}
-                      className="w-[min(100%,12rem)] border-0 bg-transparent text-center text-3xl font-semibold tabular-nums tracking-tight text-[#1a1a1a] outline-none ring-0 placeholder:text-[#9ca3af] disabled:cursor-not-allowed disabled:opacity-50"
+                      className={styles.w_min_100_12rem__20}
                       placeholder="0"
                       aria-invalid={checkoutError != null}
                       aria-describedby={checkoutError ? "checkout-pay-error" : "checkout-pay-hint"}
@@ -384,26 +387,26 @@ function MockRazorpayPaymentPageContent() {
                   <p
                     id="checkout-pay-error"
                     role="alert"
-                    className="mt-2 text-center text-xs font-medium text-[#dc2626]"
+                    className={styles.mt_2_21}
                   >
                     {checkoutError}
                   </p>
                 ) : (
-                  <p id="checkout-pay-hint" className="mt-2 text-center text-xs text-[#9ca3af]">
+                  <p id="checkout-pay-hint" className={styles.mt_2_15}>
                     {remainingDue <= 0
                       ? "Nothing left to pay for this total."
                       : `Between ${formatInr(MIN_PAYMENT_INR)} and ${formatInr(remainingDue)}.`}
                   </p>
                 )}
-                <p className="mt-3 text-center text-xs text-[#6b7280]">{checkoutSubtitle}</p>
-                <div className="mt-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-center text-xs text-[#6b7280]">
+                <p className={styles.mt_3_22}>{checkoutSubtitle}</p>
+                <div className={styles.mt_3_23}>
                   <span>
                     {isFullPayment ? "Full amount due" : "Down payment (plan)"}{" "}
                     {formatInr(originalDownPayment)}
                   </span>
                   {remainingDue < originalDownPayment ? (
                     <>
-                      <span aria-hidden className="text-[#d1d5db]">
+                      <span aria-hidden className={styles.text_d1d5db__24}>
                         ·
                       </span>
                       <span>Remaining {formatInr(remainingDue)}</span>
@@ -411,18 +414,18 @@ function MockRazorpayPaymentPageContent() {
                   ) : null}
                 </div>
                 {remainingDue > MIN_PAYMENT_INR ? (
-                  <div className="mt-4 flex flex-wrap justify-center gap-2">
+                  <div className={styles.mt_4_25}>
                     <button
                       type="button"
                       onClick={handlePayFullChip}
-                      className="rounded-full border border-[#e6e8eb] bg-white px-3 py-1.5 text-xs font-medium text-[#1a1a1a] shadow-sm transition hover:border-[#3395ff] hover:bg-[#f0f7ff] focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#3395ff] focus-visible:ring-offset-2"
+                      className={styles.rounded_full_26}
                     >
                       Pay full ({formatInr(remainingDue)})
                     </button>
                     <button
                       type="button"
                       onClick={handlePayHalfChip}
-                      className="rounded-full border border-[#e6e8eb] bg-white px-3 py-1.5 text-xs font-medium text-[#1a1a1a] shadow-sm transition hover:border-[#3395ff] hover:bg-[#f0f7ff] focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#3395ff] focus-visible:ring-offset-2"
+                      className={styles.rounded_full_26}
                     >
                       Pay half
                     </button>
@@ -431,49 +434,45 @@ function MockRazorpayPaymentPageContent() {
               </>
             ) : (
               <>
-                <p className="text-center text-xs text-[#6b7280]">Amount payable</p>
-                <p className="mt-1 text-center text-3xl font-semibold tabular-nums tracking-tight text-[#1a1a1a]">
+                <p className={styles.text_center_13}>Amount payable</p>
+                <p className={styles.mt_1_14}>
                   {formatInr(isBookingLockCheckout ? bookingLockDue : BOOKING_LOCK_AMOUNT_INR)}
                 </p>
-                <p className="mt-2 text-center text-xs text-[#9ca3af]">{checkoutSubtitle}</p>
+                <p className={styles.mt_2_15}>{checkoutSubtitle}</p>
               </>
             )}
           </div>
 
-          <div className="border-t border-[#e6e8eb] px-4 py-4">
-            <p className="text-xs font-medium text-[#6b7280]">Payment method</p>
-            <div className="mt-3 flex gap-2">
+          <div className={styles.border_t_27}>
+            <p className={styles.text_xs_28}>Payment method</p>
+            <div className={styles.mt_3_29}>
               {(["Card", "UPI", "Netbanking"] as const).map((label, i) => (
                 <span
                   key={label}
-                  className={`rounded-lg border px-3 py-2 text-xs font-medium ${
-                    i === 0
-                      ? "border-[#3395ff] bg-[#f0f7ff] text-[#0b6bcb]"
-                      : "border-[#e6e8eb] bg-[#fafbfc] text-[#9ca3af]"
-                  }`}
+                  className={cn(styles.rounded_lg_0, i === 0 ? styles.border_3395ff__0 : styles.border_e6e8eb__0)}
                 >
                   {label}
                 </span>
               ))}
             </div>
-            <div className="mt-4 rounded-lg border border-dashed border-[#e6e8eb] bg-[#fafbfc] px-3 py-8 text-center text-sm text-[#9ca3af]">
+            <div className={styles.mt_4_30}>
               Card form (static mock)
             </div>
           </div>
         </div>
 
-        <p className="mt-6 text-center text-xs leading-relaxed text-[#9ca3af]">
+        <p className={styles.mt_6_31}>
           This is a non-functional demo screen. No payment is processed.
         </p>
       </main>
 
-      <div className="fixed bottom-0 left-0 right-0 border-t border-[#e6e8eb] bg-white px-4 py-4 footer-elevated">
-        <div className="mx-auto w-full max-w-[640px]">
+      <div className={[styles.fixed_32, "footer-elevated"].filter(Boolean).join(" ")}>
+        <div className={styles.mx_auto_33}>
           <button
             type="button"
             onClick={handlePay}
             disabled={!isPayAmountValid}
-            className="primary-cta focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#3395ff] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            className={[styles.primary_cta_34, "primary-cta"].filter(Boolean).join(" ")}
           >
             {isInsurancePayment
               ? `Pay ${formatInr(FULL_PAYMENT_INSURANCE_INR)}`

@@ -24,7 +24,7 @@ Inline text buttons and hyperlink-style actions use **`#1B73E8`** (`--color-link
 className="text-[var(--color-link)]"
 className="text-[#1b73e8]"
 
-// ❌ BAD — old blue-600 / tailwind blue
+// ❌ BAD — old blue-600
 className="text-blue-600"
 color: #2563eb;
 ```

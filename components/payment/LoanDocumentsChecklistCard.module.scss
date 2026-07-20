@@ -1,0 +1,145 @@
+/* LoanDocumentsChecklistCard — header → tabs → document list → footer */
+
+.card {
+  overflow: hidden;
+  border-radius: var(--radius-2xl);
+  background-color: var(--color-white);
+  text-align: left;
+}
+
+.header {
+  padding: 20px 20px 0;
+}
+
+.title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  color: #121212;
+}
+
+.subtitle {
+  margin: 4px 0 0;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18px;
+  color: #757575;
+}
+
+.tabs {
+  margin: 16px 20px 0;
+  display: flex;
+  border-radius: 9999px;
+  background-color: #f5f5f5;
+  padding: 4px;
+}
+
+.tab {
+  height: 36px;
+  flex: 1;
+  border: none;
+  border-radius: 9999px;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  cursor: pointer;
+  transition:
+    color 150ms ease,
+    background-color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.tabActive {
+  background-color: var(--color-white);
+  color: #121212;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.tabIdle {
+  color: #757575;
+}
+
+@media (hover: hover) {
+  .tabIdle:hover {
+    color: #4b4b4b;
+  }
+}
+
+.list {
+  display: flex;
+  list-style: none;
+  flex-direction: column;
+  margin: 0;
+  padding: 8px 20px 16px;
+}
+
+.docRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 0;
+}
+
+.docRow + .docRow {
+  border-top: 1px dashed #e8e8e8;
+}
+
+.docIcon {
+  display: flex;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background-color: #f5f5f5;
+  color: #4b4b4b;
+}
+
+.docIconAsset {
+  display: block;
+  object-fit: contain;
+}
+
+.docCopy {
+  min-width: 0;
+  flex: 1;
+  padding-top: 1px;
+}
+
+.docLabel {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  color: #121212;
+}
+
+.docReason {
+  margin: 2px 0 0;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  color: #757575;
+}
+
+.footer {
+  border-top: 1px solid #e8e8e8;
+  background-color: #f7faff;
+  padding: 14px 20px;
+}
+
+.footerText {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  color: #757575;
+}
+
+.footerLead {
+  font-weight: 600;
+  color: #121212;
+}

@@ -1,6 +1,8 @@
 import Image from "next/image";
 
 import { SELF_FINANCE_HOW_IT_WORKS_STEPS } from "@/components/payment/self-finance-confirmed-content";
+import styles from "./SelfFinanceHowItWorksCard.module.scss";
+
 
 type SelfFinanceHowItWorksCardProps = {
   /** When false, omit the inner heading (e.g. bottom sheet already has a title). */
@@ -18,29 +20,27 @@ export function SelfFinanceHowItWorksCard({
   const content = (
     <>
       {showTitle && (
-        <h2 className="mb-4 text-left text-sm font-medium leading-5 text-[#121212]">
+        <h2 className={styles.mb_4_0}>
           Here is how it works
         </h2>
       )}
-      <div className={isEmbedded ? "space-y-5" : "space-y-4"}>
+      <div className={isEmbedded ? styles.space_y_5 : styles.space_y_4}>
         {SELF_FINANCE_HOW_IT_WORKS_STEPS.map((step, index) => (
-          <div key={index} className="flex gap-3">
+          <div key={index} className={styles.flex_1}>
             <div
-              className="relative mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#f5f5f5]"
+              className={styles.relative_2}
             >
               <Image
                 src={step.icon}
                 alt=""
                 width={20}
                 height={20}
-                className="object-contain"
+                className={styles.object_contain_3}
                 unoptimized
               />
             </div>
             <p
-              className={`min-w-0 flex-1 text-left font-normal text-[#121212] ${
-                isEmbedded ? "text-sm leading-5" : "text-xs leading-[18px]"
-              }`}
+              className={isEmbedded ? styles.step_body_sm : styles.step_body_xs}
             >
               {step.description}
             </p>
@@ -51,11 +51,11 @@ export function SelfFinanceHowItWorksCard({
   );
 
   if (isEmbedded) {
-    return <div className="w-full">{content}</div>;
+    return <div className={styles.w_full_4}>{content}</div>;
   }
 
   return (
-    <div className="w-full rounded-2xl bg-white card-elevated p-5">
+    <div className={[styles.w_full_5, "card-elevated"].filter(Boolean).join(" ")}>
       {content}
     </div>
   );

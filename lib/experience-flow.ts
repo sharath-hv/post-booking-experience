@@ -5,7 +5,8 @@ export type ExperienceFlow =
   | "kyc_failed"
   | "modify_no_charges"
   | "modify_with_charges"
-  | "cancel_no_charges";
+  | "cancel_no_charges"
+  | "cancel_with_charges";
 
 export const EXPERIENCE_FLOW_STORAGE_KEY = "post-booking-experience-flow";
 
@@ -65,6 +66,14 @@ export const EXPERIENCE_FLOWS: readonly ExperienceFlowDefinition[] = [
     entryPath: "/quote",
     available: true,
   },
+  {
+    id: "cancel_with_charges",
+    label: "Cancellation with 50% charges",
+    description:
+      "Express path through dealer search (partner assigned) — cancel with ₹5,000 retained (50% of booking lock)",
+    entryPath: "/quote",
+    available: true,
+  },
 ] as const;
 
 export const DEFAULT_EXPERIENCE_FLOW: ExperienceFlow = "express";
@@ -76,7 +85,8 @@ export function isExperienceFlow(value: string | null | undefined): value is Exp
     value === "kyc_failed" ||
     value === "modify_no_charges" ||
     value === "modify_with_charges" ||
-    value === "cancel_no_charges"
+    value === "cancel_no_charges" ||
+    value === "cancel_with_charges"
   );
 }
 
@@ -117,6 +127,16 @@ export function isModifyWithChargesFlow(flow?: ExperienceFlow): boolean {
 export function isCancelNoChargesFlow(flow?: ExperienceFlow): boolean {
   const active = flow ?? readExperienceFlow();
   return active === "cancel_no_charges";
+}
+
+export function isCancelWithChargesFlow(flow?: ExperienceFlow): boolean {
+  const active = flow ?? readExperienceFlow();
+  return active === "cancel_with_charges";
+}
+
+/** Demo flows focused on cancellation (manage → cancel; change selection not clickable). */
+export function isCancelDemoFlow(flow?: ExperienceFlow): boolean {
+  return isCancelNoChargesFlow(flow) || isCancelWithChargesFlow(flow);
 }
 
 /** Flows that expose the modify-selection demo routes. */

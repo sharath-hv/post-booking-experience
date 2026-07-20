@@ -6,6 +6,8 @@ import { useSearchParams } from "next/navigation";
 import { NextStepCard } from "@/components/concierge/artifacts";
 import { bankForQueryParam } from "@/components/payment/acko-drive-finance-bank";
 import { KycBookingProcessingScreen } from "@/components/kyc/KycBookingProcessingScreen";
+import styles from "./LoanBookingProcessingScreen.module.scss";
+
 
 const LOAN_PROCESSING_HEADLINE = "Your application is with the bank.";
 
@@ -36,7 +38,7 @@ export function LoanBookingProcessingScreen() {
       headline={LOAN_PROCESSING_HEADLINE}
       subline={subline}
       heroSummaryCard={
-        <div className="flex flex-col gap-5">
+        <div className={styles.flex_0}>
           <NextStepCard
             title={`Pick up ${bank.name}'s call`}
             body="A bank representative will call within 2 business days to confirm your loan details. Share the OTP they ask for."

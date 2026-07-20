@@ -1,0 +1,49 @@
+/* Component styles */
+
+.min_h_dvh_0 {
+  min-height: 100dvh;
+  background-color: var(--color-white);
+  font-family: "Euclid Circular B", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.mx_auto_1 {
+  margin-inline: auto;
+  display: flex;
+  width: 100%;
+  max-width: 640px;
+  flex-direction: column;
+  padding-inline: calc(var(--spacing) * 5);
+  padding-bottom: calc(var(--spacing) * 12);
+  padding-top: calc(var(--spacing) * 2);
+}
+
+.payment_success_stagger_2 {
+  font-size: 24px;
+  line-height: var(--tw-leading, 32px);
+  --tw-font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-semibold);
+  --tw-leading: calc(var(--spacing) * 8);
+  line-height: calc(var(--spacing) * 8);
+  --tw-tracking: -0.2px;
+  letter-spacing: -0.2px;
+  color: #121212;
+}
+
+.payment_success_stagger_3 {
+  margin-top: calc(var(--spacing) * 2);
+  font-size: 14px;
+  line-height: var(--tw-leading, 20px);
+  --tw-leading: calc(var(--spacing) * 5);
+  line-height: calc(var(--spacing) * 5);
+  color: #4b4b4b;
+}
+
+.mt_8_4 {
+  margin-top: calc(var(--spacing) * 8);
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing) * 3);
+}
+
+.payment_success_stagger_5 {}
+

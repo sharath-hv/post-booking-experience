@@ -135,11 +135,11 @@ Between **1024px and 1280px**, only typography scales. Grid, spacing, and compon
 
 ## Spacing Rhythm
 
-Always use Tailwind spacing utilities from `primitives.md`. Never hardcode padding, margin, or gap values.
+Always use SCSS spacing tokens from `primitives.md`. Never hardcode padding, margin, or gap values.
 
 ### Rules
 
-(Default Tailwind scale — see `primitives.md`.)
+(Default spacing scale scale — see `primitives.md`.)
 
 - Related elements → less space between them
 - Unrelated elements → more space between them
@@ -209,7 +209,7 @@ Use no surface (spacing only) when:
 [Secondary action / escape hatch]
 ```
 
-Spacing uses **Tailwind’s default scale** (see `primitives.md`). Example: `gap-2` ≈ 8px, `gap-8` ≈ 32px.
+Spacing uses **the spacing scale** (see `primitives.md`). Example: `gap-2` ≈ 8px, `gap-8` ≈ 32px.
 
 ### Dashboard / Overview Screen
 
@@ -325,4 +325,4 @@ Never leave a user at a dead end.
 | `100vw` inside constrained containers | `100%` relative to parent |
 | Scale spacing between 1024–1280px | Only scale typography |
 | Skip inner container in full-bleed | Always use two-layer structure |
-| Hardcoded `padding: 16px` | `p-16` Tailwind utility |
+| Hardcoded `padding: 16px` | `p-16` SCSS class |

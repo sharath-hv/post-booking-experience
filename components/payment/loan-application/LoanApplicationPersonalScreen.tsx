@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
 import { useCallback, useEffect, useState } from "react";
 
 import { LoanApplicationFixedCta } from "@/components/payment/loan-application/LoanApplicationFixedCta";
@@ -21,6 +22,7 @@ import { useLoanApplicationBank } from "@/components/payment/loan-application/us
 import { useLoanApplicationState } from "@/components/payment/loan-application/use-loan-application-state";
 import type { LoanApplicationOfficialAddress } from "@/lib/loan-application-state";
 import { loanApplicationNextPath } from "@/lib/loan-application-urls";
+import styles from "./LoanApplicationPersonalScreen.module.scss";
 
 const MOTHER_NAME_HINT = "Required by the bank for verification";
 
@@ -148,7 +150,7 @@ export function LoanApplicationPersonalScreen() {
         <LoanApplicationPageStagger delayMs={LOAN_APPLICATION_STAGGER_MS.card}>
           <div className={LOAN_APPLICATION_SECTION_DIVIDER_CLASS} role="separator" />
 
-          <p className={`${LOAN_APPLICATION_SECTION_GAP_CLASS} ${LOAN_APPLICATION_SECTION_LABEL_CLASS}`}>
+          <p className={cn(LOAN_APPLICATION_SECTION_GAP_CLASS, LOAN_APPLICATION_SECTION_LABEL_CLASS)}>
             Work details
           </p>
 
@@ -174,7 +176,7 @@ export function LoanApplicationPersonalScreen() {
           />
 
           <p
-            className={`${LOAN_APPLICATION_FIELD_STACK_GAP_CLASS} ${LOAN_APPLICATION_SECTION_LABEL_CLASS}`}
+            className={cn(LOAN_APPLICATION_FIELD_STACK_GAP_CLASS, LOAN_APPLICATION_SECTION_LABEL_CLASS)}
           >
             Official address
           </p>
@@ -186,11 +188,11 @@ export function LoanApplicationPersonalScreen() {
             value={officialAddress.pincode}
             onChange={setOfficialField("pincode")}
             autoComplete="postal-code"
-            className={`${LOAN_APPLICATION_TITLE_TO_CARD_GAP_CLASS} max-w-[154px]`}
+            className={[LOAN_APPLICATION_TITLE_TO_CARD_GAP_CLASS, styles.pincode_field].filter(Boolean).join(" ")}
           />
 
           <div
-            className={`${LOAN_APPLICATION_FIELD_STACK_GAP_CLASS} grid grid-cols-2 gap-3`}
+            className={[LOAN_APPLICATION_FIELD_STACK_GAP_CLASS, styles.city_row].filter(Boolean).join(" ")}
           >
             <LoanApplicationFormField
               {...field}

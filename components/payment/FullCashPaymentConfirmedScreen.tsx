@@ -11,6 +11,8 @@ import {
   FULL_PAYMENT_INSURANCE_INR,
 } from "@/components/payment/loan-amount-demo-constants";
 import { buildPayInsurancePremiumHref, FULL_PAYMENT_BANK_ID } from "@/lib/paymentUrls";
+import styles from "./FullCashPaymentConfirmedScreen.module.scss";
+
 import {
   PARTNER_DEALER_LABEL,
   PARTNER_DEALER_LABEL_CAPITALIZED,
@@ -58,7 +60,7 @@ export function FullCashPaymentConfirmedScreen() {
     <ConciergeTurnShell
       says={says}
       artifact={
-        <div className="flex flex-col gap-4">
+        <div className={styles.flex_0}>
           <AmountReceivedCard
             amountInr={carAmountInr}
             title={`Received by ${PARTNER_DEALER_LABEL}`}

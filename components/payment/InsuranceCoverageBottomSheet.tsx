@@ -19,62 +19,59 @@ import {
 } from "@/components/payment/insurance-coverage-content";
 import { BottomSheetCloseIcon } from "@/components/ui/BottomSheetCloseIcon";
 import { BottomSheetPortal } from "@/components/ui/BottomSheetPortal";
-import { ShimmerInfoCard } from "@/components/ui/ShimmerInfoCard";
 import {
   BOTTOM_SHEET_BODY_BEFORE_CTA_CLASS,
   BOTTOM_SHEET_CTA_STRIP_TOP_CLASS,
   BOTTOM_SHEET_MAX_HEIGHT_CLASS,
   BOTTOM_SHEET_OVERLAY_Z_CLASS,
 } from "@/components/ui/bottom-sheet-layout";
+import { ShimmerInfoCard } from "@/components/ui/ShimmerInfoCard";
+import { cn } from "@/lib/utils";
+import styles from "./InsuranceCoverageBottomSheet.module.scss";
 
 /** Enter/exit slide duration — keep in sync with `LoanSubmitConfirmBottomSheet` */
 const SHEET_TRANSITION_MS = 280;
 
 function CoverageDetailRow({ iconSrc, title, description }: InsuranceCoverageItem) {
   return (
-    <div className="flex gap-3">
-      <div className="relative size-14 shrink-0" aria-hidden>
+    <li className={styles.coverageRow}>
+      <span className={styles.coverageIcon} aria-hidden>
         <Image
           src={iconSrc}
           alt=""
-          width={56}
-          height={56}
-          className="size-14 object-contain"
+          width={48}
+          height={48}
+          className={styles.coverageIconAsset}
           unoptimized
-          sizes="56px"
         />
+      </span>
+      <div className={styles.coverageCopy}>
+        <p className={styles.coverageTitle}>{title}</p>
+        <p className={styles.coverageDetail}>{description}</p>
       </div>
-      <div className="min-w-0 flex-1">
-        <p className="text-sm font-medium leading-5 text-[#121212]">{title}</p>
-        <p className="mt-2 text-xs font-normal leading-[18px] text-[#4b4b4b]">{description}</p>
-      </div>
-    </div>
+    </li>
   );
 }
 
-/** Shivi's framing below the sheet title — avatar + one-line copy. */
+/** Shivi's framing — avatar + one-line copy in a quiet chip. */
 function ShiviLine({ text }: { text: string }) {
   return (
-    <div className="flex items-start gap-3">
-      <span className="relative mt-0.5 h-9 w-9 shrink-0 overflow-hidden rounded-full bg-[#f5f5f5]">
-        <Image src={shiviAvatar} alt="" fill className="object-cover" unoptimized sizes="36px" />
+    <div className={styles.shiviLine}>
+      <span className={styles.shiviAvatar}>
+        <Image src={shiviAvatar} alt="" fill className={styles.shiviAvatarImg} unoptimized sizes="32px" />
       </span>
-      <p className="min-w-0 text-sm leading-5 text-[#4b4b4b]">{text}</p>
+      <p className={styles.shiviCopy}>{text}</p>
     </div>
   );
 }
 
-/** The one headline number — IDV with aurora wash and gradient value. */
+/** IDV fact panel — same hierarchy as ShieldPolicyCard. */
 function CoverHeroBand() {
   return (
-    <div className="rounded-2xl border border-[#eceaf4] px-4 py-4 [background:radial-gradient(130%_140%_at_0%_0%,#efe8fc_0%,rgba(239,232,252,0)_65%),radial-gradient(110%_120%_at_100%_0%,#fdeff3_0%,rgba(253,239,243,0)_55%)]">
-      <p className="text-[10px] font-medium uppercase leading-4 tracking-[0.09em] text-[#9a92ad]">
-        {INSURANCE_COVER_HERO.eyebrow}
-      </p>
-      <p className="mt-1 w-fit bg-[linear-gradient(105deg,#251c40_0%,#5920c5_100%)] bg-clip-text text-[26px] font-semibold leading-8 tracking-[-0.4px] text-transparent tabular-nums">
-        {INSURANCE_COVER_HERO.value}
-      </p>
-      <p className="mt-1.5 text-xs leading-[18px] text-[#6f697e]">{INSURANCE_COVER_HERO.caption}</p>
+    <div className={styles.idvPanel}>
+      <p className={styles.idvEyebrow}>{INSURANCE_COVER_HERO.eyebrow}</p>
+      <p className={styles.idvValue}>{INSURANCE_COVER_HERO.value}</p>
+      <p className={styles.idvCaption}>{INSURANCE_COVER_HERO.caption}</p>
     </div>
   );
 }
@@ -92,8 +89,8 @@ export type InsuranceCoverageBottomSheetProps = {
 };
 
 /**
- * ACKO Drive Shield coverage bottom sheet — IDV card plus four illustrated
- * cover rows, aligned to the 3+3 insurance upsell Figma (node 315:3152).
+ * ACKO Drive Shield coverage sheet — calmer header, IDV fact panel, and
+ * scannable cover rows. Same facts for purchase and owned modes.
  */
 export function InsuranceCoverageBottomSheet({
   open,
@@ -104,7 +101,10 @@ export function InsuranceCoverageBottomSheet({
   const tenureOption = INSURANCE_TENURE_OPTIONS.find((o) => o.id === tenure) ?? INSURANCE_TENURE_OPTIONS[0];
   const policyFacts = INSURANCE_POLICY_FACTS.map((fact) => {
     if (fact.label === "Zero depreciation") {
-      return { ...fact, value: `${tenureOption.ownDamageYears} year${tenureOption.ownDamageYears > 1 ? "s" : ""}` };
+      return {
+        ...fact,
+        value: `${tenureOption.ownDamageYears} year${tenureOption.ownDamageYears > 1 ? "s" : ""}`,
+      };
     }
     if (fact.label === "Third-party cover") {
       return { ...fact, value: `${tenureOption.thirdPartyYears} years` };
@@ -162,36 +162,34 @@ export function InsuranceCoverageBottomSheet({
 
   return (
     <BottomSheetPortal>
-      <div className={`fixed inset-0 ${BOTTOM_SHEET_OVERLAY_Z_CLASS}`}>
+      <div className={cn(styles.overlay, BOTTOM_SHEET_OVERLAY_Z_CLASS)}>
         <button
           type="button"
-          className={`absolute inset-0 bg-black/90 transition-opacity duration-[280ms] ease-out motion-reduce:opacity-100 motion-reduce:transition-none ${
-            animateIn ? "opacity-100" : "opacity-0"
-          }`}
+          className={cn(styles.scrim, animateIn ? styles.scrimVisible : styles.scrimHidden)}
           onClick={onBackdropClick}
           aria-label="Dismiss"
         />
         <div
-          className={`absolute bottom-0 left-1/2 z-10 flex ${BOTTOM_SHEET_MAX_HEIGHT_CLASS} w-full max-w-[640px] -translate-x-1/2 flex-col overflow-hidden rounded-t-[20px] bg-white sheet-elevated transition-transform duration-[280ms] ease-out motion-reduce:translate-y-0 motion-reduce:transition-none ${
-            animateIn ? "translate-y-0" : "translate-y-full"
-          }`}
+          className={cn(
+            styles.panel,
+            BOTTOM_SHEET_MAX_HEIGHT_CLASS,
+            "sheet-elevated",
+            animateIn ? styles.panelShown : styles.panelHidden
+          )}
           role="dialog"
           aria-modal="true"
           aria-labelledby="insurance-coverage-sheet-title"
         >
-          <div className="relative flex min-h-0 flex-1 flex-col">
-            <header className="relative z-10 flex shrink-0 flex-col gap-4 bg-white px-5 pb-0 pt-6">
-              <div className="flex items-start justify-between gap-4">
-                <h2
-                  id="insurance-coverage-sheet-title"
-                  className="min-w-0 flex-1 text-left text-xl font-semibold leading-7 tracking-[-0.1px] text-[#121212]"
-                >
+          <div className={styles.panelInner}>
+            <header className={styles.header}>
+              <div className={styles.titleRow}>
+                <h2 id="insurance-coverage-sheet-title" className={styles.title}>
                   {owned ? INSURANCE_OWNED_SHEET_TITLE : INSURANCE_COVERAGE_SHEET_TITLE}
                 </h2>
                 <button
                   type="button"
                   onClick={onClose}
-                  className="cta-ghost -mr-1 -mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-lg text-[#121212] focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/20 focus-visible:ring-offset-2"
+                  className={cn(styles.closeBtn, "cta-ghost")}
                   aria-label="Close"
                 >
                   <BottomSheetCloseIcon />
@@ -200,29 +198,20 @@ export function InsuranceCoverageBottomSheet({
               <ShiviLine
                 text={owned ? INSURANCE_OWNED_SHEET_SUBTITLE : INSURANCE_COVERAGE_SHEET_SUBTITLE}
               />
-              <div
-                aria-hidden
-                className="pointer-events-none absolute inset-x-0 top-full h-6 bg-[linear-gradient(to_bottom,#ffffff,rgba(255,255,255,0))]"
-              />
+              <div aria-hidden className={styles.headerFade} />
             </header>
 
-            <div
-              className={`min-h-0 flex-1 overflow-y-auto px-5 pt-6 ${BOTTOM_SHEET_BODY_BEFORE_CTA_CLASS}`}
-            >
-              <div className="flex flex-col gap-8">
+            <div className={cn(styles.body, BOTTOM_SHEET_BODY_BEFORE_CTA_CLASS)}>
+              <div className={styles.content}>
                 {owned ? (
-                  <div className="overflow-hidden rounded-xl border border-[#e8e8e8]">
+                  <div className={styles.factsCard}>
                     {policyFacts.map((fact, idx) => (
                       <div
                         key={fact.label}
-                        className={`flex items-center justify-between gap-3 bg-white px-4 py-3 ${
-                          idx > 0 ? "border-t border-[#e8e8e8]" : ""
-                        }`}
+                        className={cn(styles.factRow, idx > 0 && styles.factRowDivider)}
                       >
-                        <p className="text-sm leading-5 text-[#4b4b4b]">{fact.label}</p>
-                        <p className="shrink-0 text-sm font-medium leading-5 text-[#121212] tabular-nums">
-                          {fact.value}
-                        </p>
+                        <p className={styles.factLabel}>{fact.label}</p>
+                        <p className={styles.factValue}>{fact.value}</p>
                       </div>
                     ))}
                   </div>
@@ -230,28 +219,23 @@ export function InsuranceCoverageBottomSheet({
 
                 <CoverHeroBand />
 
-                <div className="flex flex-col gap-5">
+                <ul className={styles.coverageList}>
                   {INSURANCE_COVERAGE_ITEMS.map((item) => (
                     <CoverageDetailRow key={item.title} {...item} />
                   ))}
-                </div>
+                </ul>
 
-                {owned ? (
-                  <ShimmerInfoCard icon="info">
-                    {INSURANCE_CLAIMS_LINE}
-                  </ShimmerInfoCard>
-                ) : null}
+                {owned ? <ShimmerInfoCard icon="info">{INSURANCE_CLAIMS_LINE}</ShimmerInfoCard> : null}
               </div>
             </div>
 
-            <div
-              className={`relative shrink-0 bg-white px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] ${BOTTOM_SHEET_CTA_STRIP_TOP_CLASS}`}
-            >
-              <div
-                aria-hidden
-                className="pointer-events-none absolute inset-x-0 bottom-full h-6 bg-[linear-gradient(to_top,#ffffff,rgba(255,255,255,0))]"
-              />
-              <button type="button" onClick={onClose} className="primary-cta w-full">
+            <div className={cn(styles.footer, BOTTOM_SHEET_CTA_STRIP_TOP_CLASS)}>
+              <div aria-hidden className={styles.footerFade} />
+              <button
+                type="button"
+                onClick={onClose}
+                className={cn(styles.confirmCta, "primary-cta")}
+              >
                 {owned ? "Got it" : "Okay"}
               </button>
             </div>

@@ -8,15 +8,15 @@ import { ModifySelectionScreenHeader } from "@/components/kyc/ModifySelectionScr
 import { ModifySelectionCarBrandCard } from "@/components/kyc/ModifySelectionCarBrandCard";
 import {
   MODIFY_SELECTION_CAR_BRAND_OPTIONS,
-  MODIFY_SELECTION_CAR_BRAND_SCREEN_SUBLINE,
   MODIFY_SELECTION_CAR_BRAND_SCREEN_TITLE,
 } from "@/lib/modify-selection-car-brands-content";
 import { MODIFY_SELECTION_PAGE_SHELL_CLASS } from "@/lib/modify-selection-content";
 import { MODIFY_SELECTION_STAGGER_MS } from "@/lib/modify-selection-stagger";
+import styles from "./ModifySelectionCarBrandScreen.module.scss";
+
 
 const {
   title: STAGGER_TITLE_MS,
-  subtext: STAGGER_SUBTEXT_MS,
   brandGrid: STAGGER_GRID_MS,
   brandStep: STAGGER_BRAND_STEP_MS,
 } = MODIFY_SELECTION_STAGGER_MS;
@@ -38,16 +38,14 @@ export function ModifySelectionCarBrandScreen() {
     <div className={MODIFY_SELECTION_PAGE_SHELL_CLASS}>
       <ModifySelectionScreenHeader />
 
-      <main className="mx-auto flex w-full max-w-[640px] flex-1 flex-col px-5 pb-[env(safe-area-inset-bottom)] pt-2">
+      <main className={styles.mx_auto_0}>
         <ModifySelectionPageHeading
           title={MODIFY_SELECTION_CAR_BRAND_SCREEN_TITLE}
-          subline={MODIFY_SELECTION_CAR_BRAND_SCREEN_SUBLINE}
           titleDelayMs={STAGGER_TITLE_MS}
-          sublineDelayMs={STAGGER_SUBTEXT_MS}
         />
 
         <div
-          className="payment-success-stagger mt-8 grid grid-cols-3 gap-3"
+          className={[styles.payment_success_stagger_1, "payment-success-stagger"].filter(Boolean).join(" ")}
           style={{ animationDelay: `${STAGGER_GRID_MS}ms` }}
           role="group"
           aria-label={MODIFY_SELECTION_CAR_BRAND_SCREEN_TITLE}
@@ -55,7 +53,7 @@ export function ModifySelectionCarBrandScreen() {
           {MODIFY_SELECTION_CAR_BRAND_OPTIONS.map((brand, index) => (
             <div
               key={brand.id}
-              className="payment-success-stagger w-full"
+              className={[styles.payment_success_stagger_2, "payment-success-stagger"].filter(Boolean).join(" ")}
               style={{
                 animationDelay: `${STAGGER_GRID_MS + index * STAGGER_BRAND_STEP_MS}ms`,
               }}

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Lottie from "lottie-react";
@@ -11,6 +12,8 @@ import {
   BOOKING_SUCCESS_LOTTIE_TICK_DATA,
 } from "@/components/payment/booking-success-shared";
 import { SUCCESS_SCREEN_HEADLINE_SUBTEXT_GAP_CLASS } from "@/components/ui/success-screen-layout";
+import styles from "./KycDocumentsReceivedScreen.module.scss";
+
 
 type KycDocumentsReceivedScreenProps = {
   /** Auto-advance destination (KYC flow defaults to verification in progress). */
@@ -37,34 +40,34 @@ export function KycDocumentsReceivedScreen({
   }, [okayHref, router]);
 
   return (
-    <div className="relative min-h-dvh overflow-hidden bg-[#F7FAFF] font-sans">
+    <div className={styles.relative_0}>
       <div
-        className="pointer-events-none absolute left-1/2 top-0 h-[240px] w-full max-w-[640px] -translate-x-1/2"
+        className={styles.pointer_events_none_1}
         aria-hidden
       >
         <Image
           src={BOOKING_PAYMENT_SUCCESS_HERO}
           alt=""
           fill
-          className="object-cover object-top"
+          className={styles.object_cover_2}
           priority
           sizes="(max-width: 640px) 100vw, 640px"
           unoptimized
         />
       </div>
-      <div className="relative z-10 flex min-h-dvh flex-col items-center justify-center px-4 pb-8 pt-8">
-        <div className="-translate-y-8 flex w-full flex-col items-center text-center">
-          <div className="relative flex h-[144px] w-[144px] shrink-0 items-center justify-center">
+      <div className={styles.relative_3}>
+        <div className={styles._translate_y_8_4}>
+          <div className={styles.relative_5}>
             {BOOKING_SUCCESS_LOTTIE_TICK_DATA ? (
               <Lottie
                 animationData={BOOKING_SUCCESS_LOTTIE_TICK_DATA}
                 loop={false}
-                className="h-full w-full"
+                className={styles.h_full_6}
                 aria-label="Documents received animation"
               />
             ) : (
               <div
-                className="flex h-full w-full items-center justify-center rounded-full bg-[#22c55e] text-4xl text-white shadow-[0_0_48px_rgba(34,197,94,0.45)]"
+                className={styles.flex_7}
                 aria-hidden
               >
                 ✓
@@ -72,12 +75,12 @@ export function KycDocumentsReceivedScreen({
             )}
           </div>
           <div
-            className={`mt-2 flex w-full flex-col items-center ${SUCCESS_SCREEN_HEADLINE_SUBTEXT_GAP_CLASS}`}
+            className={cn(styles.mt_2_0, SUCCESS_SCREEN_HEADLINE_SUBTEXT_GAP_CLASS)}
           >
-            <h1 className="text-[24px] font-semibold leading-7 tracking-tight text-[#1a1a1a]">
+            <h1 className={styles.text_24px__8}>
               Documents received
             </h1>
-            <p className="max-w-sm text-sm font-normal leading-5 text-[#6b7280]">
+            <p className={styles.max_w_sm_9}>
               We are on it.
             </p>
           </div>

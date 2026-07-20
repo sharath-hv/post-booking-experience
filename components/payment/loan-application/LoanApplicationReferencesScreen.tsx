@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
 import { useCallback, useEffect, useState } from "react";
 
 import { LoanApplicationFixedCta } from "@/components/payment/loan-application/LoanApplicationFixedCta";
@@ -147,7 +148,7 @@ export function LoanApplicationReferencesScreen() {
         <LoanApplicationPageStagger delayMs={loanApplicationStaggerAfterCard(1)}>
           <div className={LOAN_APPLICATION_SECTION_DIVIDER_CLASS} role="separator" />
 
-          <p className={`${LOAN_APPLICATION_SECTION_GAP_CLASS} ${LOAN_APPLICATION_SECTION_LABEL_CLASS}`}>
+          <p className={cn(LOAN_APPLICATION_SECTION_GAP_CLASS, LOAN_APPLICATION_SECTION_LABEL_CLASS)}>
             Second reference
           </p>
           <ReferenceFields

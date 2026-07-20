@@ -17,8 +17,6 @@ export const MODIFY_SELECTION_CAR_BRAND_PATH = "/kyc/modify-selection/different-
 /** Figma 2686:11633 — car brand picker after “Agree and continue”. */
 export const MODIFY_SELECTION_CAR_BRAND_SCREEN_TITLE =
   "Which car brand are you looking for?";
-export const MODIFY_SELECTION_CAR_BRAND_SCREEN_SUBLINE =
-  "Pick one and I'll show you what's available.";
 
 export type ModifySelectionCarBrandOption = {
   id: string;

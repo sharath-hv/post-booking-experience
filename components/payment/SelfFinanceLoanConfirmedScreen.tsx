@@ -8,6 +8,8 @@ import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
 import { SELF_FINANCE_LOAN_DEFAULT_INR } from "@/components/payment/loan-amount-demo-constants";
 import { buildMarginMoneySlipActionHref } from "@/lib/paymentUrls";
 import { PARTNER_DEALER_LABEL, PARTNER_DEALER_LABEL_CAPITALIZED } from "@/lib/dealer-attribution-content";
+import styles from "./SelfFinanceLoanConfirmedScreen.module.scss";
+
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -51,7 +53,7 @@ export function SelfFinanceLoanConfirmedScreen() {
     <ConciergeTurnShell
       says={says}
       artifact={
-        <div className="flex flex-col gap-4">
+        <div className={styles.flex_0}>
           <NextStepCard
             title={`Watch for ${PARTNER_DEALER_LABEL}'s call`}
             body="Once they share the payment details, transfer the down payment directly to the dealer."

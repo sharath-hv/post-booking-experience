@@ -1,12 +1,15 @@
 "use client";
 
 import Image, { type StaticImageData } from "next/image";
+import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { ModifySelectionPageHeading } from "@/components/kyc/ModifySelectionPageHeading";
 import { ModifySelectionConfirmBottomSheet } from "@/components/kyc/ModifySelectionConfirmBottomSheet";
 import { ModifySelectionScreenHeader } from "@/components/kyc/ModifySelectionScreenHeader";
+import styles from "./ChooseModifyBookingScreen.module.scss";
+
 import {
   modifySelectionSelectableCardClass,
   MODIFY_SELECTION_SELECTABLE_CARD_BASE_CLASS,
@@ -51,26 +54,26 @@ function ModifyOptionCard({
       id={`modify-option-${id}`}
       onClick={onSelect}
       aria-pressed={selected}
-      className={`${MODIFY_SELECTION_SELECTABLE_CARD_BASE_CLASS} p-4 ${modifySelectionSelectableCardClass(selected)}`}
+      className={cn(MODIFY_SELECTION_SELECTABLE_CARD_BASE_CLASS, styles.p_4_0, modifySelectionSelectableCardClass(selected))}
     >
-      <div className="flex items-start justify-between">
-        <div className="relative h-12 w-12 shrink-0">
+      <div className={styles.flex_0}>
+        <div className={styles.relative_1}>
           <Image
             src={illustrationSrc}
             alt=""
             fill
-            className="object-contain object-left"
+            className={styles.object_contain_2}
             unoptimized
             sizes="48px"
           />
         </div>
-        <span className="mt-0.5 flex shrink-0">
+        <span className={styles.mt_0_5_3}>
           <ModifySelectionRadioIndicator selected={selected} />
         </span>
       </div>
 
-      <p className="mt-3 text-base font-medium leading-6 text-[#121212]">{title}</p>
-      <p className="mt-1 text-xs leading-4 text-[#4b4b4b]">{description}</p>
+      <p className={styles.mt_3_4}>{title}</p>
+      <p className={styles.mt_1_5}>{description}</p>
     </button>
   );
 }
@@ -108,7 +111,7 @@ export function ChooseModifyBookingScreen() {
     <div className={MODIFY_SELECTION_PAGE_SHELL_CLASS}>
       <ModifySelectionScreenHeader />
 
-      <main className="mx-auto w-full max-w-[640px] px-5 pb-[calc(7rem+env(safe-area-inset-bottom))] pt-2">
+      <main className={styles.mx_auto_6}>
         <ModifySelectionPageHeading
           title={MODIFY_SELECTION_TITLE}
           subline={subline}
@@ -117,14 +120,14 @@ export function ChooseModifyBookingScreen() {
         />
 
         <div
-          className="mt-8 flex flex-col gap-4"
+          className={styles.mt_8_7}
           role="group"
           aria-label="Modification options"
         >
           {MODIFY_SELECTION_OPTIONS.map((option, index) => (
             <div
               key={option.id}
-              className="payment-success-stagger w-full"
+              className={[styles.payment_success_stagger_8, "payment-success-stagger"].filter(Boolean).join(" ")}
               style={{
                 animationDelay: `${modifySelectionCardStaggerDelay(index, STAGGER_FIRST_OPTION_MS)}ms`,
               }}
@@ -142,9 +145,9 @@ export function ChooseModifyBookingScreen() {
         </div>
       </main>
 
-      <div className="fixed bottom-0 left-0 right-0 z-10 pb-[env(safe-area-inset-bottom)] footer-elevated">
-        <div className="mx-auto w-full max-w-[640px] bg-white px-5 py-4">
-          <button type="button" onClick={onContinue} className="primary-cta w-full">
+      <div className={[styles.fixed_9, "footer-elevated"].filter(Boolean).join(" ")}>
+        <div className={styles.mx_auto_10}>
+          <button type="button" onClick={onContinue} className={[styles.primary_cta_11, "primary-cta"].filter(Boolean).join(" ")}>
             {selectedOption.continueCtaLabel}
           </button>
         </div>

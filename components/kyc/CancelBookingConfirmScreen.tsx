@@ -20,6 +20,8 @@ import {
   type CancelBookingReasonId,
 } from "@/lib/cancel-booking-content";
 import { CANCEL_BOOKING_STAGGER_MS } from "@/lib/cancel-booking-stagger";
+import styles from "./CancelBookingConfirmScreen.module.scss";
+
 
 const {
   overline: STAGGER_OVERLINE_MS,
@@ -65,37 +67,37 @@ export function CancelBookingConfirmScreen() {
   );
 
   return (
-    <div className="relative min-h-dvh bg-[#F7FAFF] font-sans">
-      <div className="relative z-10 mx-auto flex w-full max-w-[640px] flex-1 flex-col">
+    <div className={styles.relative_0}>
+      <div className={styles.relative_1}>
         <KycTopNavHeader onBack={onGoBack} transparent />
 
-        <main className="flex min-h-0 flex-1 flex-col pb-[max(2rem,env(safe-area-inset-bottom))]">
-          <section className="px-5 pt-2 pb-5">
+        <main className={styles.flex_2}>
+          <section className={styles.px_5_3}>
             <p
-              className="payment-success-stagger text-base font-medium leading-6 text-[#D16900]"
+              className={[styles.payment_success_stagger_4, "payment-success-stagger"].filter(Boolean).join(" ")}
               style={{ animationDelay: `${STAGGER_OVERLINE_MS}ms` }}
             >
               {CANCEL_BOOKING_CONFIRM_OVERLINE}
             </p>
 
             <h1
-              className="payment-success-stagger mt-2 text-2xl font-semibold leading-8 tracking-[-0.1px] text-[#121212]"
+              className={[styles.payment_success_stagger_5, "payment-success-stagger"].filter(Boolean).join(" ")}
               style={{ animationDelay: `${STAGGER_HEADLINE_MS}ms` }}
             >
               {headline}
             </h1>
 
             <div
-              className="payment-success-stagger mt-6"
+              className={[styles.payment_success_stagger_6, "payment-success-stagger"].filter(Boolean).join(" ")}
               style={{ animationDelay: `${STAGGER_CAR_CARD_MS}ms` }}
             >
               <CancelBookingCarCard details={carDetails} />
             </div>
           </section>
 
-          <section className="px-5 pt-8">
+          <section className={styles.px_5_7}>
             <p
-              className="payment-success-stagger text-base font-medium leading-6 text-[#121212]"
+              className={[styles.payment_success_stagger_8, "payment-success-stagger"].filter(Boolean).join(" ")}
               style={{ animationDelay: `${STAGGER_MODIFY_PROMPT_MS}ms` }}
             >
               {CANCEL_BOOKING_MODIFY_PROMPT}
@@ -103,21 +105,21 @@ export function CancelBookingConfirmScreen() {
 
             <button
               type="button"
-              className="payment-success-stagger demo-nav-cta mt-4 w-full"
+              className={[styles.payment_success_stagger_9, "payment-success-stagger", "demo-nav-cta"].filter(Boolean).join(" ")}
               style={{ animationDelay: `${STAGGER_MODIFY_CTA_MS}ms` }}
             >
               {CANCEL_BOOKING_MODIFY_CTA}
             </button>
 
             <p
-              className="payment-success-stagger mt-8 text-base font-medium leading-6 text-[#121212]"
+              className={[styles.payment_success_stagger_10, "payment-success-stagger"].filter(Boolean).join(" ")}
               style={{ animationDelay: `${STAGGER_STILL_CANCEL_MS}ms` }}
             >
               {CANCEL_BOOKING_STILL_CANCEL_PROMPT}
             </p>
 
             <div
-              className="payment-success-stagger mt-4"
+              className={[styles.payment_success_stagger_11, "payment-success-stagger"].filter(Boolean).join(" ")}
               style={{ animationDelay: `${STAGGER_REFUND_CARD_MS}ms` }}
             >
               <CancelBookingRefundSummaryCard />
@@ -126,7 +128,7 @@ export function CancelBookingConfirmScreen() {
             <button
               type="button"
               onClick={onOpenReasonSheet}
-              className="payment-success-stagger demo-nav-cta mt-4 w-full"
+              className={[styles.payment_success_stagger_9, "payment-success-stagger", "demo-nav-cta"].filter(Boolean).join(" ")}
               style={{ animationDelay: `${STAGGER_CONFIRM_CTA_MS}ms` }}
             >
               {CANCEL_BOOKING_CONFIRM_CTA}

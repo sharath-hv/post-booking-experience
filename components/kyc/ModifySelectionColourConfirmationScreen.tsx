@@ -37,6 +37,8 @@ import {
   formatModifySelectionInr,
 } from "@/lib/modify-selection-review-pay-content";
 import { MODIFY_SELECTION_STAGGER_MS } from "@/lib/modify-selection-stagger";
+import styles from "./ModifySelectionColourConfirmationScreen.module.scss";
+
 
 /** Stagger: nav + footer CTA immediate; then title → selection → booking → price summary. */
 const { title: STAGGER_TITLE_MS, section: STAGGER_SELECTION_MS, bookingAmount: STAGGER_BOOKING_MS, priceSummary: STAGGER_PRICE_MS } =
@@ -132,14 +134,14 @@ export function ModifySelectionColourConfirmationScreen() {
     <div className={MODIFY_SELECTION_PAGE_SHELL_CLASS}>
       <ModifySelectionScreenHeader />
 
-      <main className="mx-auto flex w-full max-w-[640px] flex-1 flex-col px-5 pb-[calc(5rem+32px+env(safe-area-inset-bottom))] pt-2">
+      <main className={styles.mx_auto_0}>
         <ModifySelectionPageHeading
           title={MODIFY_SELECTION_COLOUR_CONFIRM_TITLE}
           titleDelayMs={STAGGER_TITLE_MS}
         />
 
         <div
-          className="payment-success-stagger mt-8"
+          className={[styles.payment_success_stagger_1, "payment-success-stagger"].filter(Boolean).join(" ")}
           style={{ animationDelay: `${STAGGER_SELECTION_MS}ms` }}
         >
           <ModifySelectionReviewSelectionCard
@@ -154,7 +156,7 @@ export function ModifySelectionColourConfirmationScreen() {
         </div>
 
         <div
-          className="payment-success-stagger"
+          className={[styles.payment_success_stagger_2, "payment-success-stagger"].filter(Boolean).join(" ")}
           style={{ animationDelay: `${STAGGER_BOOKING_MS}ms` }}
         >
           <ModifySelectionReviewBookingAmountCard
@@ -164,35 +166,35 @@ export function ModifySelectionColourConfirmationScreen() {
         </div>
 
         <div
-          className="payment-success-stagger"
+          className={[styles.payment_success_stagger_2, "payment-success-stagger"].filter(Boolean).join(" ")}
           style={{ animationDelay: `${STAGGER_PRICE_MS}ms` }}
         >
           <ModifySelectionReviewPaymentSummary summary={summary} />
         </div>
       </main>
 
-      <div className="fixed bottom-0 left-0 right-0 z-10 bg-white pb-[env(safe-area-inset-bottom)] footer-elevated">
-        <div className="mx-auto flex h-20 w-full max-w-[640px] items-center justify-between gap-3 px-5">
-          <div className="min-w-0">
-            <p className="text-xs leading-[18px] text-[#757575]">Booking amount</p>
-            <div className="mt-0.5 flex items-center gap-1.5">
-              <span className="text-lg font-semibold leading-6 text-[#121212]">
+      <div className={[styles.fixed_3, "footer-elevated"].filter(Boolean).join(" ")}>
+        <div className={styles.mx_auto_4}>
+          <div className={styles.min_w_0_5}>
+            <p className={styles.text_xs_6}>Booking amount</p>
+            <div className={styles.mt_0_5_7}>
+              <span className={styles.text_lg_8}>
                 {formatModifySelectionInr(summary.bookingAmountToPayInr)}
               </span>
               <button
                 type="button"
                 onClick={scrollToBookingAmount}
-                className="flex size-4 shrink-0 items-center justify-center rounded focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/20"
+                className={styles.flex_9}
                 aria-label="View booking amount breakdown"
               >
-                <Image src={infoIcon} alt="" width={16} height={16} className="size-4" unoptimized />
+                <Image src={infoIcon} alt="" width={16} height={16} className={styles.size_4_10} unoptimized />
               </button>
             </div>
           </div>
           <button
             type="button"
             onClick={onPay}
-            className="primary-cta ml-auto h-12 !w-[160px] shrink-0 px-2.5"
+            className={[styles.primary_cta_11, "primary-cta"].filter(Boolean).join(" ")}
           >
             {MODIFY_SELECTION_COLOUR_CONFIRM_PAY_CTA}
           </button>

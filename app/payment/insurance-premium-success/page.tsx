@@ -1,6 +1,7 @@
 "use client";
 
 import { Suspense, useMemo } from "react";
+import styles from "./page.module.scss";
 import { useSearchParams } from "next/navigation";
 
 import { DownPaymentInstalmentSuccess } from "@/components/payment/DownPaymentInstalmentSuccess";
@@ -44,7 +45,7 @@ function InsurancePremiumSuccessInner() {
       <DownPaymentInstalmentSuccess
         subline={subline}
         nextHref={nextHref}
-        backgroundClassName="bg-white"
+        backgroundClassName={styles.bgWhite}
       />
     </CelebrationPageTransition>
   );

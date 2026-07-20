@@ -1,0 +1,74 @@
+/* Component styles */
+
+.text_base_0 {
+  font-size: 16px;
+  line-height: var(--tw-leading, 24px);
+  --tw-font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-medium);
+  --tw-leading: calc(var(--spacing) * 6);
+  line-height: calc(var(--spacing) * 6);
+  color: #121212;
+}
+
+.mt_1_1 {
+  margin-top: var(--spacing);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing);
+  font-size: 12px;
+  line-height: var(--tw-leading, 16px);
+  --tw-leading: 18px;
+  line-height: 18px;
+  color: #4b4b4b;
+}
+
+.shrink_0_2 {
+  flex-shrink: 0;
+}
+
+.inline_flex_3 {
+  display: inline-flex;
+  height: 18px;
+  width: calc(var(--spacing) * 4);
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.block_4 {
+  display: block;
+  width: calc(var(--spacing) * 4);
+  height: calc(var(--spacing) * 4);
+  object-fit: contain;
+}
+
+.mt_2_5 {
+  margin-top: calc(var(--spacing) * 2);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing);
+}
+
+.relative_6 {
+  position: relative;
+  height: calc(var(--spacing) * 4);
+  width: calc(var(--spacing) * 4);
+  flex-shrink: 0;
+}
+
+.h_4_7 {
+  height: calc(var(--spacing) * 4);
+  width: calc(var(--spacing) * 4);
+  object-fit: contain;
+}
+
+.text_xs_8 {
+  font-size: 12px;
+  line-height: var(--tw-leading, 16px);
+  --tw-font-weight: var(--font-weight-normal);
+  font-weight: var(--font-weight-normal);
+  --tw-leading: 18px;
+  line-height: 18px;
+}
+

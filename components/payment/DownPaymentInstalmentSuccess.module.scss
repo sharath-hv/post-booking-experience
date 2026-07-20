@@ -1,0 +1,113 @@
+/* Component styles */
+
+.pointer_events_none_0 {
+  pointer-events: none;
+  position: absolute;
+  left: calc(1 / 2 * 100%);
+  top: 0px;
+  height: 240px;
+  width: 100%;
+  max-width: 640px;
+  --tw-translate-x: calc(calc(1 / 2 * 100%) * -1);
+  translate: var(--tw-translate-x) var(--tw-translate-y);
+}
+
+.object_cover_1 {
+  object-fit: cover;
+  object-position: top;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  min-height: 100dvh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-inline: calc(var(--spacing) * 4);
+  padding-bottom: calc(var(--spacing) * 8);
+  padding-top: calc(var(--spacing) * 8);
+}
+
+._translate_y_8_3 {
+  --tw-translate-y: calc(var(--spacing) * -8);
+  translate: var(--tw-translate-x) var(--tw-translate-y);
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.relative_4 {
+  position: relative;
+  display: flex;
+  height: 144px;
+  width: 144px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.h_full_5 {
+  height: 100%;
+  width: 100%;
+}
+
+.flex_6 {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  border-radius: calc(infinity * 1px);
+  background-color: #22c55e;
+  font-size: var(--text-4xl);
+  line-height: var(--tw-leading, var(--text-4xl--line-height));
+  color: var(--color-white);
+  box-shadow: 0 0 48px rgba(34, 197, 94, 0.45);
+
+}
+
+.text_24px__7 {
+  font-size: 24px;
+  --tw-font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-semibold);
+  --tw-leading: calc(var(--spacing) * 7);
+  line-height: calc(var(--spacing) * 7);
+  --tw-tracking: var(--tracking-tight);
+  letter-spacing: var(--tracking-tight);
+  color: #1a1a1a;
+}
+
+.max_w_sm_8 {
+  max-width: var(--container-sm);
+  font-size: 14px;
+  line-height: var(--tw-leading, 20px);
+  --tw-font-weight: var(--font-weight-normal);
+  font-weight: var(--font-weight-normal);
+  --tw-leading: calc(var(--spacing) * 5);
+  line-height: calc(var(--spacing) * 5);
+  color: #6b7280;
+}
+
+
+.relative_0 {
+  position: relative;
+  min-height: 100dvh;
+  overflow: hidden;
+  font-family: "Euclid Circular B", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.mt_2_1 {
+  margin-top: calc(var(--spacing) * 2);
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bgPage {
+  background-color: var(--color-white);
+}

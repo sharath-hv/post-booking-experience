@@ -404,7 +404,7 @@ Use **`plan-radio-card--plan-grid`**: `grid-template-columns: auto 1fr`; **`alig
 | `--color-card-elevated-bg` | Elevated card background |
 | `--color-card-demoted-bg` | Demoted/secondary card |
 
-### Spacing in cards (Tailwind default scale — see `primitives.md`)
+### Spacing in cards (spacing scale — see `primitives.md`)
 
 | Utility | ≈ Value (16px root) | Use |
 |---------|---------------------|-----|

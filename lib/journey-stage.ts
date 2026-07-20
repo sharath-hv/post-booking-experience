@@ -51,48 +51,49 @@ export function getDeliveryDateFull(flow?: ExperienceFlow): string {
 type StepCopy = {
   icon: JourneyStageStep["icon"];
   title: string;
-  /** The promise ledger lives in these lines — promised vs kept per status. */
+  /** Completed stages use generic copy; now/todo carry the live guidance. */
   done: string;
   now: string;
   todo: string;
 };
 
+/** Completed-stage copy is per-step — warm and specific to what actually wrapped, no SLA / outcome-specific promises. */
 const STEP_COPY: readonly StepCopy[] = [
   {
     icon: "documents",
     title: "Paperwork",
-    done: "Promised two minutes — verified in seconds",
-    now: "Two minutes from you — Shivi files the rest",
+    done: "Filed. Nothing more needed from you.",
+    now: "Two minutes from you, Shivi files the rest",
     todo: "PAN and Aadhaar open the purchase in your name",
   },
   {
     icon: "car",
     title: "Your exact car",
-    done: "Promised by morning — locked the same day",
-    now: "Dealer news promised by tomorrow morning",
-    todo: "Shivi reserves your variant and colour with a dealer",
+    done: "Reserved and confirmed with our partner",
+    now: "News from our partner promised by tomorrow morning",
+    todo: "Shivi reserves your variant and colour with our partner",
   },
   {
     icon: "money",
     title: "The money plan",
-    done: "Set — every receipt is saved below",
+    done: "Sorted. Payment's taken care of.",
     now: "Your delivery date locks the moment this is set",
-    todo: "Finance through Shivi or your own way — your pick",
+    todo: "Finance through Shivi or your own way, your pick",
   },
   {
     icon: "delivery",
     title: "To your door",
-    done: "Scheduled — driver details land the day before",
+    done: "Delivered. Enjoy the drive.",
     now: "Insurance, RTO, then your doorstep",
     todo: "", // filled with the live delivery line below
   },
 ] as const;
 
-/** "Your exact car" step, `now` state — standard sits in a months-long manufacturing wait, not an overnight dealer check. */
+/** "Your exact car" step, `now` state — standard sits in a months-long manufacturing wait, not an overnight partner check. */
 function exactCarNowDetail(flow?: ExperienceFlow): string {
   return isStandardDeliveryFlow(flow)
     ? "Hyundai's manufacturing your exact car now"
-    : "Dealer news promised by tomorrow morning";
+    : "News from our partner promised by tomorrow morning";
 }
 
 /** Timeline for the purchase-state layer, with the promise ledger in the details. */

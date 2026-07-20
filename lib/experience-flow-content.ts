@@ -1,6 +1,8 @@
 import timeDeliveryIcon from "@/assets/Time.svg";
 import { BOOKING_CONFIRMED_ASSETS } from "@/components/kyc/kyc-booking-confirmed-assets";
 import { BOOKING_EXPRESS_DELIVERY_LINE } from "@/components/kyc/booking-car-card-content";
+import styles from "./experience-flow-content.module.scss";
+
 import {
   readExperienceFlow,
   type ExperienceFlow,
@@ -10,8 +12,8 @@ import {
 export const BOOKING_STANDARD_DELIVERY_LINE = "Standard delivery by 25 Oct '26";
 
 /** Delivery line colour on car cards — standard vs express. */
-export const BOOKING_STANDARD_DELIVERY_TEXT_CLASS = "text-[#4B4B4B]";
-export const BOOKING_EXPRESS_DELIVERY_TEXT_CLASS = "text-[#5920c5]";
+export const BOOKING_STANDARD_DELIVERY_TEXT_CLASS = styles.bookingStandardDeliveryText;
+export const BOOKING_EXPRESS_DELIVERY_TEXT_CLASS = styles.bookingExpressDeliveryText;
 
 const BOOKING_DELIVERY_LINE_BY_DATE = /^(.*? by )(.+)$/;
 
@@ -48,7 +50,7 @@ export function getBookingDeliveryIconSrc(flow?: ExperienceFlow) {
     : BOOKING_CONFIRMED_ASSETS.expressDelivery;
 }
 
-/** Tailwind text colour for the delivery line on car cards. */
+/** Text colour class for the delivery line on car cards. */
 export function getBookingDeliveryTextClass(flow?: ExperienceFlow): string {
   return isStandardDeliveryFlow(flow)
     ? BOOKING_STANDARD_DELIVERY_TEXT_CLASS
@@ -56,8 +58,8 @@ export function getBookingDeliveryTextClass(flow?: ExperienceFlow): string {
 }
 
 /** Delivery strip on car cards — express lavender tint vs standard neutral. */
-export const BOOKING_EXPRESS_DELIVERY_STRIP_CLASS = "border-[#efe9fb] bg-[#f9f6ff]";
-export const BOOKING_STANDARD_DELIVERY_STRIP_CLASS = "border-[#ececec] bg-[#f5f5f5]";
+export const BOOKING_EXPRESS_DELIVERY_STRIP_CLASS = styles.bookingExpressDeliveryStrip;
+export const BOOKING_STANDARD_DELIVERY_STRIP_CLASS = styles.bookingStandardDeliveryStrip;
 
 export function getBookingDeliveryStripContainerClass(flow?: ExperienceFlow): string {
   return isStandardDeliveryFlow(flow)

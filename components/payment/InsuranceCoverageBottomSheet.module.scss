@@ -1,0 +1,322 @@
+/* InsuranceCoverageBottomSheet — aligned with ShieldPolicyCard + sheet family */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  border: none;
+  padding: 0;
+  background-color: rgb(0 0 0 / 0.9);
+  transition: opacity 280ms var(--ease-out, cubic-bezier(0, 0, 0.2, 1));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scrim {
+    transition: none;
+  }
+}
+
+.scrimVisible {
+  opacity: 1;
+}
+
+.scrimHidden {
+  opacity: 0;
+}
+
+.panel {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  z-index: 10;
+  display: flex;
+  width: 100%;
+  max-width: 640px;
+  translate: -50% 0;
+  flex-direction: column;
+  overflow: hidden;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  background-color: #fff;
+  transition: transform 280ms var(--ease-out, cubic-bezier(0, 0, 0.2, 1));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel {
+    transition: none;
+  }
+}
+
+.panelShown {
+  transform: translateY(0);
+}
+
+.panelHidden {
+  transform: translateY(100%);
+}
+
+.panelInner {
+  position: relative;
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+}
+
+.header {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px 20px 0;
+  background:
+    radial-gradient(130% 130% at 0% 0%, #efe8fc 0%, rgba(239, 232, 252, 0) 62%),
+    radial-gradient(110% 110% at 100% 0%, #fdeff3 0%, rgba(253, 239, 243, 0) 55%),
+    #fff;
+}
+
+.titleRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.title {
+  margin: 0;
+  min-width: 0;
+  flex: 1;
+  text-align: left;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 28px;
+  letter-spacing: -0.1px;
+  color: #121212;
+}
+
+.closeBtn {
+  display: flex;
+  height: 40px;
+  width: 40px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  margin: -4px -4px 0 0;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #121212;
+  cursor: pointer;
+}
+
+.closeBtn:focus-visible {
+  outline: 2px solid rgb(18 18 18 / 0.2);
+  outline-offset: 2px;
+}
+
+.shiviLine {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.shiviAvatar {
+  position: relative;
+  margin-top: 1px;
+  height: 32px;
+  width: 32px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 9999px;
+  background-color: #f5f5f5;
+}
+
+.shiviAvatarImg {
+  object-fit: cover;
+}
+
+.shiviCopy {
+  margin: 0;
+  min-width: 0;
+  flex: 1;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18px;
+  color: var(--quote-text-body);
+}
+
+.headerFade {
+  pointer-events: none;
+  position: absolute;
+  inset-inline: 0;
+  top: 100%;
+  height: 20px;
+  background-image: linear-gradient(to bottom, #fff, rgba(255, 255, 255, 0));
+}
+
+.body {
+  min-height: 0;
+  flex: 1;
+  overflow-y: auto;
+  padding-inline: 20px;
+  padding-top: 20px;
+  /* padding-bottom from BOTTOM_SHEET_BODY_BEFORE_CTA_CLASS */
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.factsCard {
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid #e8e8e8;
+  background-color: #fff;
+}
+
+.factRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  background-color: #fff;
+}
+
+.factRowDivider {
+  border-top: 1px dashed #e8e8e8;
+}
+
+.factLabel {
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--quote-text-body);
+}
+
+.factValue {
+  margin: 0;
+  flex-shrink: 0;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  color: #121212;
+  font-variant-numeric: tabular-nums;
+}
+
+.idvPanel {
+  border-radius: 14px;
+  border: 1px solid #efe9fb;
+  background-color: #f9f6ff;
+  padding: 14px 16px;
+}
+
+.idvEyebrow {
+  margin: 0;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 16px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.idvValue {
+  margin: 4px 0 0;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 28px;
+  letter-spacing: -0.2px;
+  color: #18141f;
+  font-variant-numeric: tabular-nums;
+}
+
+.idvCaption {
+  margin: 6px 0 0;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--quote-text-tertiary);
+}
+
+.coverageList {
+  display: flex;
+  list-style: none;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+}
+
+.coverageRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 0;
+}
+
+.coverageRow + .coverageRow {
+  border-top: 1px dashed #e8e8e8;
+}
+
+.coverageIcon {
+  display: flex;
+  flex-shrink: 0;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.coverageIconAsset {
+  display: block;
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
+.coverageCopy {
+  min-width: 0;
+  flex: 1;
+  padding-top: 2px;
+}
+
+.coverageTitle {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  color: #121212;
+}
+
+.coverageDetail {
+  margin: 4px 0 0;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  color: var(--quote-text-tertiary);
+}
+
+.footer {
+  position: relative;
+  flex-shrink: 0;
+  background-color: #fff;
+  padding: 0 20px max(1.25rem, env(safe-area-inset-bottom));
+}
+
+.footerFade {
+  pointer-events: none;
+  position: absolute;
+  inset-inline: 0;
+  bottom: 100%;
+  height: 20px;
+  background-image: linear-gradient(to top, #fff, rgba(255, 255, 255, 0));
+}
+
+.confirmCta {
+  width: 100%;
+}

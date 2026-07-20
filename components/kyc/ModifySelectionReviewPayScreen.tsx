@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import infoIcon from "@/assets/Info.svg";
 import { ModifySelectionPageHeading } from "@/components/kyc/ModifySelectionPageHeading";
@@ -12,6 +12,7 @@ import {
   ModifySelectionReviewBookingAmountCard,
 } from "@/components/kyc/ModifySelectionReviewBookingAmountCard";
 import { ModifySelectionDeliveryOptionBottomSheet } from "@/components/kyc/ModifySelectionDeliveryOptionBottomSheet";
+import { ModifySelectionReviewPayDemoSwitcher } from "@/components/kyc/ModifySelectionReviewPayDemoSwitcher";
 import { ModifySelectionReviewPaymentSummary } from "@/components/kyc/ModifySelectionReviewPaymentSummary";
 import { ModifySelectionReviewSelectionCard } from "@/components/kyc/ModifySelectionReviewSelectionCard";
 import { writeModifySelectionPendingFromSummary } from "@/lib/active-booking-snapshot";
@@ -40,27 +41,41 @@ import {
   modifySelectionDifferentCarColourPath,
   modifySelectionDifferentCarModelPath,
 } from "@/lib/modify-selection-different-car-paths";
+import { writeModifySelectionDifferentCarVariantChoice } from "@/lib/modify-selection-different-car-variant-choice";
 import {
   buildModifySelectionColourReviewPaySummary,
   formatModifySelectionInr,
+  MODIFY_SELECTION_REVIEW_PAY_DUE_TODAY_LABEL,
   MODIFY_SELECTION_REVIEW_PAY_TITLE,
 } from "@/lib/modify-selection-review-pay-content";
+import {
+  MODIFY_SELECTION_REVIEW_PAY_DEMO_QUERY_KEY,
+  resolveModifySelectionReviewPayDemoScenario,
+  writeModifySelectionReviewPayDemoScenario,
+  type ModifySelectionReviewPayDemoScenario,
+} from "@/lib/modify-selection-review-pay-demo";
 import { MODIFY_SELECTION_STAGGER_MS } from "@/lib/modify-selection-stagger";
+import { writeModifySelectionVariantChoice } from "@/lib/modify-selection-variant-choice";
 import {
   clearModifySelectionVariantPending,
   readModifySelectionVariantPending,
   writeModifySelectionVariantPending,
 } from "@/lib/modify-selection-variant-pending";
 import { findModifySelectionVariantOption } from "@/lib/modify-selection-variants-content";
+import styles from "./ModifySelectionReviewPayScreen.module.scss";
+
 import {
   buildBookingLockCheckoutHref,
   MODIFY_SELECTION_RETURN_SOURCE,
 } from "@/lib/paymentUrls";
 
-const MODIFY_SELECTION_REVIEW_PAY_CTA = "Pay";
-
 const { title: STAGGER_TITLE_MS, section: STAGGER_SELECTION_MS, bookingAmount: STAGGER_BOOKING_MS, priceSummary: STAGGER_PRICE_MS } =
   MODIFY_SELECTION_STAGGER_MS;
+
+function reviewPayCtaLabel(amountToPayInr: number): string {
+  if (amountToPayInr <= 0) return "Confirm";
+  return `Pay ${formatModifySelectionInr(amountToPayInr)}`;
+}
 
 type ModifySelectionReviewPayFlow = "colour" | "variant" | "different-car";
 
@@ -72,15 +87,49 @@ type ModifySelectionReviewPayScreenProps = {
 
 /**
  * Review selection and pay — shared by colour, variant, and different-car modify flows.
+ * Demo booking-amount scenarios via `?demo_booking=` (QA only).
  */
-export function ModifySelectionReviewPayScreen({
+export function ModifySelectionReviewPayScreen(props: ModifySelectionReviewPayScreenProps) {
+  return (
+    <Suspense>
+      <ModifySelectionReviewPayScreenInner {...props} />
+    </Suspense>
+  );
+}
+
+function ModifySelectionReviewPayScreenInner({
   flow,
   brandId,
   modelId,
 }: ModifySelectionReviewPayScreenProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const bookingAmountSectionRef = useRef<HTMLElement>(null);
   const [deliverySheetOpen, setDeliverySheetOpen] = useState(false);
+
+  const demoScenario = useMemo(
+    () =>
+      resolveModifySelectionReviewPayDemoScenario(
+        searchParams.get(MODIFY_SELECTION_REVIEW_PAY_DEMO_QUERY_KEY),
+      ),
+    [searchParams],
+  );
+
+  const onDemoScenarioChange = useCallback(
+    (next: ModifySelectionReviewPayDemoScenario) => {
+      writeModifySelectionReviewPayDemoScenario(next);
+      const q = new URLSearchParams(searchParams.toString());
+      q.set(MODIFY_SELECTION_REVIEW_PAY_DEMO_QUERY_KEY, next);
+      const path =
+        flow === "different-car" && brandId != null && modelId != null
+          ? `/kyc/modify-selection/different-car/${brandId}/${modelId}/confirm`
+          : flow === "variant"
+            ? "/kyc/modify-selection/variant/confirm"
+            : "/kyc/modify-selection/colour/confirm";
+      router.replace(`${path}?${q.toString()}`, { scroll: false });
+    },
+    [brandId, flow, modelId, router, searchParams],
+  );
 
   const [colourPending, setColourPending] = useState(() =>
     flow === "colour" ? readModifySelectionColourPending() : null,
@@ -98,6 +147,12 @@ export function ModifySelectionReviewPayScreen({
     if (flow === "different-car") setDifferentCarPending(readModifySelectionDifferentCarPending());
   }, [flow]);
 
+  useEffect(() => {
+    writeModifySelectionReviewPayDemoScenario(demoScenario);
+  }, [demoScenario]);
+
+  const summaryOptions = useMemo(() => ({ demoScenario }), [demoScenario]);
+
   const resolved = useMemo(() => {
     if (flow === "colour" && colourPending != null) {
       const option = findModifySelectionColourOption(colourPending.colourId);
@@ -107,7 +162,11 @@ export function ModifySelectionReviewPayScreen({
         colourName: option.name,
         deliveryChoice: colourPending.deliveryChoice,
         option,
-        summary: buildModifySelectionColourReviewPaySummary(option, colourPending.deliveryChoice),
+        summary: buildModifySelectionColourReviewPaySummary(
+          option,
+          colourPending.deliveryChoice,
+          summaryOptions,
+        ),
         missingRedirect: "/kyc/modify-selection/colour",
         editColourPath: "/kyc/modify-selection/colour",
         carTitle: undefined as string | undefined,
@@ -127,6 +186,7 @@ export function ModifySelectionReviewPayScreen({
         summary: buildModifySelectionColourReviewPaySummary(
           option,
           variantPending.deliveryChoice,
+          summaryOptions,
         ),
         missingRedirect: "/kyc/modify-selection/variant/colour",
         editColourPath: "/kyc/modify-selection/variant/colour",
@@ -157,6 +217,7 @@ export function ModifySelectionReviewPayScreen({
         summary: buildModifySelectionColourReviewPaySummary(
           option,
           differentCarPending.deliveryChoice,
+          summaryOptions,
         ),
         missingRedirect: modifySelectionDifferentCarColourPath(brandId, modelId),
         editColourPath: modifySelectionDifferentCarColourPath(brandId, modelId),
@@ -168,7 +229,15 @@ export function ModifySelectionReviewPayScreen({
     }
 
     return null;
-  }, [brandId, colourPending, differentCarPending, flow, modelId, variantPending]);
+  }, [
+    brandId,
+    colourPending,
+    differentCarPending,
+    flow,
+    modelId,
+    summaryOptions,
+    variantPending,
+  ]);
 
   useEffect(() => {
     if (resolved == null) {
@@ -213,10 +282,25 @@ export function ModifySelectionReviewPayScreen({
     window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
   }, []);
 
+  /**
+   * Edit cascades from review:
+   * - Delivery → sheet only (in place)
+   * - Colour → colour → delivery → confirm
+   * - Variant → variant → colour → delivery → confirm
+   * - Make/model → brand → model → variant → colour → delivery → confirm
+   *
+   * Colour step after confirm needs the intermediate variant choice re-seeded
+   * (cleared when pending was written).
+   */
   const onEditColour = useCallback(() => {
     if (resolved == null) return;
+    if (flow === "variant" && variantPending != null) {
+      writeModifySelectionVariantChoice(variantPending.variantId);
+    } else if (flow === "different-car" && differentCarPending != null) {
+      writeModifySelectionDifferentCarVariantChoice(differentCarPending.variantId);
+    }
     router.push(resolved.editColourPath);
-  }, [resolved, router]);
+  }, [differentCarPending, flow, resolved, router, variantPending]);
 
   const onEditVariant = useCallback(() => {
     if (resolved?.editVariantPath == null) return;
@@ -263,14 +347,14 @@ export function ModifySelectionReviewPayScreen({
     <div className={MODIFY_SELECTION_PAGE_SHELL_CLASS}>
       <ModifySelectionScreenHeader />
 
-      <main className="mx-auto flex w-full max-w-[640px] flex-1 flex-col px-5 pb-[calc(5rem+32px+env(safe-area-inset-bottom))] pt-2">
+      <main className={styles.mx_auto_0}>
         <ModifySelectionPageHeading
           title={MODIFY_SELECTION_REVIEW_PAY_TITLE}
           titleDelayMs={STAGGER_TITLE_MS}
         />
 
         <div
-          className="payment-success-stagger mt-8"
+          className={[styles.payment_success_stagger_1, "payment-success-stagger"].filter(Boolean).join(" ")}
           style={{ animationDelay: `${STAGGER_SELECTION_MS}ms` }}
         >
           <ModifySelectionReviewSelectionCard
@@ -291,7 +375,7 @@ export function ModifySelectionReviewPayScreen({
         </div>
 
         <div
-          className="payment-success-stagger"
+          className={[styles.payment_success_stagger_2, "payment-success-stagger"].filter(Boolean).join(" ")}
           style={{ animationDelay: `${STAGGER_BOOKING_MS}ms` }}
         >
           <ModifySelectionReviewBookingAmountCard
@@ -301,37 +385,44 @@ export function ModifySelectionReviewPayScreen({
         </div>
 
         <div
-          className="payment-success-stagger"
+          className={[styles.payment_success_stagger_2, "payment-success-stagger"].filter(Boolean).join(" ")}
           style={{ animationDelay: `${STAGGER_PRICE_MS}ms` }}
         >
           <ModifySelectionReviewPaymentSummary summary={resolved.summary} />
         </div>
+
+        <div className={styles.demo_slot}>
+          <ModifySelectionReviewPayDemoSwitcher
+            value={demoScenario}
+            onChange={onDemoScenarioChange}
+          />
+        </div>
       </main>
 
-      <div className="fixed bottom-0 left-0 right-0 z-10 bg-white pb-[env(safe-area-inset-bottom)] footer-elevated">
-        <div className="mx-auto flex h-20 w-full max-w-[640px] items-center justify-between gap-3 px-5">
-          <div className="min-w-0">
-            <p className="text-xs leading-[18px] text-[#757575]">Booking amount</p>
-            <div className="mt-0.5 flex items-center gap-1.5">
-              <span className="text-lg font-semibold leading-6 text-[#121212]">
+      <div className={[styles.fixed_3, "footer-elevated"].filter(Boolean).join(" ")}>
+        <div className={styles.mx_auto_4}>
+          <div className={styles.min_w_0_5}>
+            <p className={styles.text_xs_6}>{MODIFY_SELECTION_REVIEW_PAY_DUE_TODAY_LABEL}</p>
+            <div className={styles.mt_0_5_7}>
+              <span className={styles.text_lg_8}>
                 {formatModifySelectionInr(resolved.summary.bookingAmountToPayInr)}
               </span>
               <button
                 type="button"
                 onClick={scrollToBookingAmount}
-                className="flex size-4 shrink-0 items-center justify-center rounded focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/20"
-                aria-label="View booking amount breakdown"
+                className={styles.flex_9}
+                aria-label="View what you pay today"
               >
-                <Image src={infoIcon} alt="" width={16} height={16} className="size-4" unoptimized />
+                <Image src={infoIcon} alt="" width={16} height={16} className={styles.size_4_10} unoptimized />
               </button>
             </div>
           </div>
           <button
             type="button"
             onClick={onPay}
-            className="primary-cta ml-auto h-12 !w-[160px] shrink-0 px-2.5"
+            className={[styles.primary_cta_wide, "primary-cta"].filter(Boolean).join(" ")}
           >
-            {MODIFY_SELECTION_REVIEW_PAY_CTA}
+            {reviewPayCtaLabel(resolved.summary.bookingAmountToPayInr)}
           </button>
         </div>
       </div>

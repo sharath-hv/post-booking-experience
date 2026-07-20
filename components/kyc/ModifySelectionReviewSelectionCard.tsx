@@ -13,6 +13,8 @@ import {
 } from "@/lib/experience-flow-content";
 import { getModifySelectionCarCutoutForColour } from "@/lib/modify-selection-car-cutouts";
 import { cn } from "@/lib/utils";
+import styles from "./ModifySelectionReviewSelectionCard.module.scss";
+
 
 type ModifySelectionReviewSelectionCardProps = {
   colourId: string;
@@ -43,10 +45,10 @@ function EditLinkButton({
     <button
       type="button"
       onClick={onClick}
-      className="flex size-5 shrink-0 items-center justify-center rounded focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/20"
+      className={styles.flex_0}
       aria-label={label}
     >
-      <Image src={editIcon} alt="" width={20} height={20} className="size-5" unoptimized />
+      <Image src={editIcon} alt="" width={20} height={20} className={styles.size_5_1} unoptimized />
     </button>
   );
 }
@@ -76,33 +78,33 @@ export function ModifySelectionReviewSelectionCard({
 
   return (
     <div className={MODIFY_SELECTION_SUMMARY_CARD_CLASS}>
-      <div className="relative h-[140px] w-full overflow-hidden bg-white">
-        <div className="absolute inset-0 overflow-hidden" aria-hidden>
+      <div className={styles.relative_2}>
+        <div className={styles.absolute_3} aria-hidden>
           <Image
             src={carBackgroundSmall}
             alt=""
             fill
-            className="object-cover"
+            className={styles.object_cover_4}
             style={{ objectPosition: "center 28%" }}
             sizes="(max-width: 640px) 100vw, 320px"
             unoptimized
           />
         </div>
         <div
-          className="absolute inset-0"
+          className={styles.absolute_5}
           style={{
             backgroundImage:
               "linear-gradient(180deg, rgba(255,255,255,0) 68%, rgba(255,255,255,0.7) 100%), linear-gradient(180deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 25%)",
           }}
           aria-hidden
         />
-        <div className="absolute left-1/2 top-6 h-[102px] w-[180px] -translate-x-1/2">
-          <div className="relative mx-auto h-full w-[150px]">
+        <div className={styles.absolute_6}>
+          <div className={styles.relative_7}>
             <Image
               src={getModifySelectionCarCutoutForColour(colourId)}
               alt=""
               fill
-              className="object-contain object-bottom"
+              className={styles.object_contain_8}
               sizes="180px"
               unoptimized
             />
@@ -110,35 +112,35 @@ export function ModifySelectionReviewSelectionCard({
         </div>
       </div>
 
-      <div className="border-t border-[#e8e8e8] px-4 pb-4 pt-4">
-        <div className="flex items-center gap-2">
-          <p className="text-base font-medium leading-6 text-[#121212]">{titleLabel}</p>
+      <div className={styles.border_t_9}>
+        <div className={styles.flex_10}>
+          <p className={styles.text_base_11}>{titleLabel}</p>
           {onEditCar != null ? (
             <EditLinkButton label="Change make and model" onClick={onEditCar} />
           ) : null}
         </div>
 
-        <div className="mt-3 flex items-center gap-2">
-          <span className="shrink-0 text-xs leading-[18px] text-[#757575]">Variant:</span>
-          <span className="text-xs font-medium leading-[18px] text-[#121212]">{variantLabel}</span>
+        <div className={styles.mt_3_12}>
+          <span className={styles.shrink_0_13}>Variant:</span>
+          <span className={styles.text_xs_14}>{variantLabel}</span>
           {onEditVariant != null ? (
             <EditLinkButton label="Change variant" onClick={onEditVariant} />
           ) : null}
         </div>
 
-        <div className="mt-2 flex items-center gap-2">
-          <span className="shrink-0 text-xs leading-[18px] text-[#757575]">Colour:</span>
-          <span className="text-xs font-medium leading-[18px] text-[#121212]">{colourName}</span>
+        <div className={styles.mt_2_15}>
+          <span className={styles.shrink_0_13}>Colour:</span>
+          <span className={styles.text_xs_14}>{colourName}</span>
           <EditLinkButton label="Change colour" onClick={onEditColour} />
         </div>
 
-        <div className="mt-2 flex flex-wrap items-center gap-2">
-          <span className="shrink-0 text-xs leading-[18px] text-[#757575]">Delivery:</span>
-          <span className={cn("text-xs leading-[18px]", deliveryTextClass)}>
+        <div className={styles.mt_2_16}>
+          <span className={styles.shrink_0_13}>Delivery:</span>
+          <span className={cn(styles.text_xs_18, deliveryTextClass)}>
             {deliveryParts ? (
               <>
                 {deliveryParts.prefix}
-                <span className="font-semibold">{deliveryParts.date}</span>
+                <span className={styles.font_semibold_17}>{deliveryParts.date}</span>
               </>
             ) : (
               deliveryLine

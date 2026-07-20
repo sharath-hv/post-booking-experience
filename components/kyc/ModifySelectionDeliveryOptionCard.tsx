@@ -10,6 +10,8 @@ import {
 } from "@/components/kyc/modify-selection-option-card-ui";
 import { formatModifySelectionInr } from "@/lib/modify-selection-review-pay-content";
 import { cn } from "@/lib/utils";
+import styles from "./ModifySelectionDeliveryOptionCard.module.scss";
+
 
 export type ModifySelectionDeliveryOptionCardProps = {
   selected: boolean;
@@ -40,40 +42,40 @@ export function ModifySelectionDeliveryOptionCard({
       aria-pressed={selected}
       className={cn(
         MODIFY_SELECTION_SELECTABLE_CARD_BASE_CLASS,
-        "p-4",
+        styles.p_4_8,
         modifySelectionSelectableCardClass(selected),
       )}
     >
-      <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-1">
-            <p className={cn("text-sm font-normal leading-5", deliveryLineClass)}>
+      <div className={styles.flex_0}>
+        <div className={styles.min_w_0_1}>
+          <div className={styles.flex_2}>
+            <p className={cn(styles.text_sm_9, deliveryLineClass)}>
               {deliveryParts ? (
                 <>
                   {deliveryParts.prefix}
-                  <span className="font-semibold">{deliveryParts.date}</span>
+                  <span className={styles.font_semibold_3}>{deliveryParts.date}</span>
                 </>
               ) : (
                 deliveryLine
               )}
             </p>
-            <span className="relative size-4 shrink-0" aria-hidden>
+            <span className={styles.relative_4} aria-hidden>
               <Image
                 src={iconSrc}
                 alt=""
                 width={16}
                 height={16}
-                className="size-4 object-contain"
+                className={styles.size_4_5}
                 unoptimized
                 sizes="16px"
               />
             </span>
           </div>
-          <p className="mt-2 text-base font-medium leading-6 text-[#121212]">
+          <p className={styles.mt_2_6}>
             {formatModifySelectionInr(priceInr)}
           </p>
         </div>
-        <span className="mt-0.5 flex shrink-0">
+        <span className={styles.mt_0_5_7}>
           <ModifySelectionRadioIndicator selected={selected} />
         </span>
       </div>

@@ -24,6 +24,8 @@ import {
   type ModifySelectionDeliveryChoice,
 } from "@/lib/modify-selection-colours-content";
 import { cn } from "@/lib/utils";
+import styles from "./ModifySelectionDeliveryOptionBottomSheet.module.scss";
+
 
 const SHEET_TRANSITION_MS = 280;
 
@@ -104,37 +106,34 @@ export function ModifySelectionDeliveryOptionBottomSheet({
 
   return (
     <BottomSheetPortal>
-      <div className={`fixed inset-0 ${BOTTOM_SHEET_OVERLAY_Z_CLASS}`}>
+      <div className={cn(styles.fixed_0, BOTTOM_SHEET_OVERLAY_Z_CLASS)}>
         <button
           type="button"
           className={cn(
-            "absolute inset-0 bg-black/90 transition-opacity duration-[280ms] ease-out motion-reduce:opacity-100 motion-reduce:transition-none",
-            animateIn ? "opacity-100" : "opacity-0",
+            styles.absolute_6,
+            animateIn ? styles.opacity_100_7 : styles.opacity_0_8,
           )}
           onClick={onClose}
           aria-label="Dismiss"
         />
         <div
-          className={cn(
-            `absolute bottom-0 left-1/2 z-10 flex ${BOTTOM_SHEET_MAX_HEIGHT_CLASS} w-full max-w-[640px] -translate-x-1/2 flex-col overflow-hidden rounded-t-[24px] bg-white sheet-elevated transition-transform duration-[280ms] ease-out motion-reduce:translate-y-0 motion-reduce:transition-none`,
-            animateIn ? "translate-y-0" : "translate-y-full",
-          )}
+          className={cn(styles.sheetPanel, BOTTOM_SHEET_MAX_HEIGHT_CLASS, "sheet-elevated", animateIn ? styles.translate_y_0_9 : styles.translate_y_full_10)}
           role="dialog"
           aria-modal="true"
           aria-labelledby={titleId}
         >
-          <div className="relative flex min-h-0 flex-1 flex-col">
-            <header className="flex shrink-0 items-start justify-between gap-3 px-5 pt-6">
+          <div className={styles.relative_0}>
+            <header className={styles.flex_1}>
               <h2
                 id={titleId}
-                className="min-w-0 flex-1 pr-2 text-left text-xl font-semibold leading-7 tracking-[-0.1px] text-[#121212]"
+                className={styles.min_w_0_2}
               >
                 {MODIFY_SELECTION_DELIVERY_SHEET_TITLE}
               </h2>
               <button
                 type="button"
                 onClick={onClose}
-                className="cta-ghost -mr-1 -mt-1 flex size-10 shrink-0 items-center justify-center rounded-lg text-[#121212] focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/20 focus-visible:ring-offset-2"
+                className={[styles.cta_ghost_3, "cta-ghost"].filter(Boolean).join(" ")}
                 aria-label="Close"
               >
                 <BottomSheetCloseIcon />
@@ -143,11 +142,11 @@ export function ModifySelectionDeliveryOptionBottomSheet({
 
             <div
               className={cn(
-                "min-h-0 flex-1 overflow-y-auto px-5 pt-3",
+                styles.min_h_0_11,
                 BOTTOM_SHEET_BODY_BEFORE_CTA_CLASS,
               )}
             >
-              <div className="flex flex-col gap-4" role="group" aria-label={MODIFY_SELECTION_DELIVERY_SHEET_TITLE}>
+              <div className={styles.flex_4} role="group" aria-label={MODIFY_SELECTION_DELIVERY_SHEET_TITLE}>
                 <ModifySelectionDeliveryOptionCard
                   selected={deliveryChoice === "express"}
                   onSelect={() => setDeliveryChoice("express")}
@@ -168,12 +167,11 @@ export function ModifySelectionDeliveryOptionBottomSheet({
             </div>
 
             <div
-              className={cn(
-                "shrink-0 bg-white px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))]",
+              className={cn(styles.shrink_0_0,
                 BOTTOM_SHEET_CTA_STRIP_TOP_CLASS,
               )}
             >
-              <button type="button" onClick={handleConfirm} className="primary-cta w-full">
+              <button type="button" onClick={handleConfirm} className={[styles.primary_cta_5, "primary-cta"].filter(Boolean).join(" ")}>
                 Confirm
               </button>
             </div>

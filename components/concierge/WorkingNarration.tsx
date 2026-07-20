@@ -8,6 +8,8 @@ import warningAmberIcon from "@/assets/Warning amber.svg";
 import { instantRevealEnabled } from "@/lib/concierge/instant";
 import { OVERLAY_GLASS_SURFACE_CLASS } from "@/lib/overlay-glass-card";
 import { cn } from "@/lib/utils";
+import styles from "./WorkingNarration.module.scss";
+
 
 /** Time each activity line stays “in progress” before ticking done (live mode). */
 const LINE_ACTIVE_MS = 1500;
@@ -20,7 +22,7 @@ function SpinnerIcon() {
       viewBox="0 0 24 24"
       fill="none"
       aria-hidden
-      className="shrink-0 animate-spin text-[#121212] motion-reduce:animate-none"
+      className={styles.shrink_0_0}
     >
       <circle cx="12" cy="12" r="9" stroke="currentColor" strokeOpacity="0.2" strokeWidth="2.5" />
       <path
@@ -35,7 +37,7 @@ function SpinnerIcon() {
 
 function DoneTickIcon() {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden className="shrink-0">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden className={styles.shrink_0_1}>
       <circle cx="12" cy="12" r="9" fill="#0fa457" />
       <path
         d="M8.4 12.2l2.4 2.4 4.8-5"
@@ -50,7 +52,7 @@ function DoneTickIcon() {
 
 function QueuedIcon() {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden className="shrink-0">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden className={styles.shrink_0_1}>
       <circle cx="12" cy="12" r="8.5" stroke="#c2c2c2" strokeWidth="1" />
     </svg>
   );
@@ -58,7 +60,7 @@ function QueuedIcon() {
 
 function ClockIcon() {
   return (
-    <svg width="20" height="20" viewBox="0 0 16 16" fill="none" aria-hidden className="shrink-0">
+    <svg width="20" height="20" viewBox="0 0 16 16" fill="none" aria-hidden className={styles.shrink_0_1}>
       <path
         d="M8 14C11.3137 14 14 11.3137 14 8C14 4.68629 11.3137 2 8 2C4.68629 2 2 4.68629 2 8C2 11.3137 4.68629 14 8 14Z"
         stroke="#4B4B4B"
@@ -80,7 +82,7 @@ function WarningIcon() {
       alt=""
       width={20}
       height={20}
-      className="shrink-0"
+      className={styles.shrink_0_1}
       unoptimized
       aria-hidden
     />
@@ -182,25 +184,25 @@ export function WorkingNarration({
   return (
     <div
       className={cn(
-        "rounded-2xl px-4 py-4",
+        styles.rounded_2xl_6,
         OVERLAY_GLASS_SURFACE_CLASS,
         className
       )}
       role="status"
       aria-live="polite"
     >
-      <div className="flex flex-col gap-4">
+      <div className={styles.flex_2}>
         {lines.map((line, idx) => {
           if (mode === "live" && idx > activeIndex) return null;
           const done = mode === "live" ? idx < activeIndex : idx < ongoingDoneCount;
           const queued = mode === "ongoing" && idx > ongoingDoneCount;
           return (
-            <div key={idx} className="kyc-stagger flex items-start gap-2.5">
+            <div key={idx} className={[styles.kyc_stagger_3, "kyc-stagger"].filter(Boolean).join(" ")}>
               {done ? <DoneTickIcon /> : queued ? <QueuedIcon /> : <SpinnerIcon />}
               <span
                 className={cn(
-                  "text-sm leading-5 transition-colors duration-300",
-                  done || queued ? "text-[#757575]" : "text-[#121212]"
+                  styles.text_sm_7,
+                  done || queued ? styles.text_757575__8 : styles.text_121212__9
                 )}
               >
                 {line}
@@ -209,12 +211,12 @@ export function WorkingNarration({
           );
         })}
         {allDone && doneLabel ? (
-          <div className="kyc-stagger mt-0.5 flex items-center gap-2.5 border-t border-dashed border-[#e8e8e8] pt-3">
+          <div className={[styles.kyc_stagger_4, "kyc-stagger"].filter(Boolean).join(" ")}>
             {doneTone === "warning" ? <WarningIcon /> : <DoneTickIcon />}
             <span
               className={cn(
-                "text-sm font-medium leading-5",
-                doneTone === "warning" ? "text-[#D16900]" : "text-[#0c7a42]"
+                styles.text_sm_10,
+                doneTone === "warning" ? styles.text_D16900__12 : styles.text_0c7a42__13
               )}
             >
               {doneLabel}
@@ -222,9 +224,9 @@ export function WorkingNarration({
           </div>
         ) : null}
         {mode === "ongoing" && etaLabel ? (
-          <div className="kyc-stagger mt-0.5 flex items-center gap-2.5 border-t border-dashed border-[#e8e8e8] pt-3">
+          <div className={[styles.kyc_stagger_4, "kyc-stagger"].filter(Boolean).join(" ")}>
             <ClockIcon />
-            <span className="text-sm font-medium leading-5 text-[#121212]">{etaLabel}</span>
+            <span className={styles.text_sm_5}>{etaLabel}</span>
           </div>
         ) : null}
       </div>

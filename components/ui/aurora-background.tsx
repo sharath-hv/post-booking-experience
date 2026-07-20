@@ -4,6 +4,8 @@ import { cn } from "@/lib/utils";
 import type { ReactNode } from "react";
 
 import { AuroraLightLayer } from "@/components/ui/aurora-light-layer";
+import styles from "./aurora-background.module.scss";
+
 
 export interface AuroraBackgroundProps extends React.HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
@@ -20,13 +22,13 @@ export function AuroraBackground({
   return (
     <div
       className={cn(
-        "relative flex min-h-dvh flex-col items-center justify-center bg-[#F7FAFF] text-slate-950 transition-colors",
+        styles.relative_1,
         className
       )}
       {...props}
     >
       <AuroraLightLayer showRadialGradient={showRadialGradient} />
-      <div className="relative z-10 flex w-full flex-col items-center justify-center">{children}</div>
+      <div className={styles.relative_0}>{children}</div>
     </div>
   );
 }

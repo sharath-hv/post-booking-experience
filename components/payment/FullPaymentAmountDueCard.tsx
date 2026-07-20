@@ -7,6 +7,7 @@ import {
   FULL_PAYMENT_INSURANCE_INR,
   ON_ROAD_PRICE_INR,
 } from "@/components/payment/loan-amount-demo-constants";
+import styles from "./FullPaymentAmountDueCard.module.scss";
 
 export type FullPaymentAmountDueCardProps = {
   /**
@@ -56,17 +57,17 @@ function AmountRow({ label, amountInr, dueLine, dueByLabel, showDivider }: Amoun
   return (
     <>
       {showDivider ? (
-        <hr className="my-0 border-0 border-t border-dashed border-[#e8e8e8]" />
+        <hr className={styles.my_0_0} />
       ) : null}
-      <div className="flex flex-col gap-1">
-        <div className="flex items-start justify-between gap-3">
-          <p className="text-left text-xs font-normal leading-[18px] text-[#121212]">{label}</p>
-          <p className="shrink-0 text-xs font-medium leading-[18px] text-[#121212]">
+      <div className={styles.flex_1}>
+        <div className={styles.flex_2}>
+          <p className={styles.text_left_3}>{label}</p>
+          <p className={styles.shrink_0_4}>
             {formatInr(amountInr)}
           </p>
         </div>
         {secondaryLine ? (
-          <p className="text-left text-xs font-normal leading-[18px] text-[#4b4b4b]">
+          <p className={styles.text_left_5}>
             {secondaryLine}
           </p>
         ) : null}
@@ -91,7 +92,7 @@ export function FullPaymentAmountDueCard({
   if (variant === "car_only") {
     return (
       <section
-        className="w-full rounded-xl bg-white card-elevated px-3 py-3 text-left"
+        className={[styles.w_full_6, "card-elevated"].filter(Boolean).join(" ")}
         aria-label="Amount for your new car"
       >
         <AmountRow
@@ -104,10 +105,10 @@ export function FullPaymentAmountDueCard({
 
   return (
     <section
-      className="w-full rounded-xl bg-white card-elevated px-3 py-3 text-left"
+      className={[styles.w_full_6, "card-elevated"].filter(Boolean).join(" ")}
       aria-label="Amount to pay"
     >
-      <div className="flex flex-col gap-3">
+      <div className={styles.flex_7}>
         <AmountRow
           label="Amount for your new car"
           amountInr={carAmountInr}

@@ -1,0 +1,21 @@
+/* Component styles */
+
+.word {
+  display: inline;
+  transition-property: opacity;
+  transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+  transition-duration: var(--tw-duration, var(--default-transition-duration));
+}
+
+.opacity_100 {
+  opacity: 100%;
+}
+
+.opacity_0 {
+  opacity: 0%;
+}
+
+.duration200 {
+  --tw-duration: 200ms;
+  transition-duration: 200ms;
+}

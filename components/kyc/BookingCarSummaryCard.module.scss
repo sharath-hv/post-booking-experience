@@ -1,0 +1,110 @@
+/* Component styles */
+
+.pointer_events_none_0 {
+  pointer-events: none;
+  position: absolute;
+  inset-inline: 0px;
+  top: -1px;
+  height: 362px;
+  overflow: hidden;
+}
+
+.block_1 {
+  display: block;
+  height: auto;
+  width: 100%;
+  max-width: none;
+}
+
+.absolute_2 {
+  position: absolute;
+  inset: 0px;
+}
+
+.absolute_3 {
+  position: absolute;
+  left: calc(1 / 2 * 100%);
+  top: calc(var(--spacing) * 10);
+  z-index: 2;
+  height: 85px;
+  width: 150px;
+  --tw-translate-x: calc(calc(1 / 2 * 100%) * -1);
+  translate: var(--tw-translate-x) var(--tw-translate-y);
+  overflow: hidden;
+}
+
+.relative_4 {
+  position: relative;
+  margin-inline: auto;
+  height: 100%;
+  width: 100%;
+  max-width: 150px;
+}
+
+.object_contain_5 {
+  object-fit: contain;
+  object-position: bottom;
+}
+
+.w_full_6 {
+  width: 100%;
+  border-radius: var(--radius-xl);
+  background-color: #f5f5f5;
+  padding: calc(var(--spacing) * 4);
+}
+
+.w_full_7 {
+  width: 100%;
+  flex-shrink: 0;
+}
+
+
+.bookingCarCardShell {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-2xl);
+  border-style: var(--tw-border-style);
+  border-width: 1px;
+  border-color: var(--color-white);
+}
+
+.bookingCarHeroHeight {
+  height: 244px;
+}
+
+.bookingCarHeroHeightVin {
+  min-height: 318px;
+}
+
+.bookingCarSummaryPanel {
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  border-style: var(--tw-border-style);
+  border-width: 1px;
+  border-color: #e8e8e8;
+  background-color: var(--color-white);
+  padding: 11px;
+  --tw-backdrop-blur: blur(12px);
+  -webkit-backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
+  backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
+}
+
+.bookingCarSummaryPanelPosition {
+  position: absolute;
+  bottom: 7px;
+  inset-inline: calc(var(--spacing) * 2);
+  z-index: 10;
+}
+
+.relative_0 {
+  position: relative;
+  width: 100%;
+}
+
+.relative_1 {
+  position: relative;
+  z-index: 10;
+  margin-inline: calc(var(--spacing) * 2);
+  margin-top: calc(var(--spacing) * -24);
+  margin-bottom: calc(var(--spacing) * 2);
+}

@@ -14,6 +14,8 @@ import {
 } from "@/components/payment/loan-amount-demo-constants";
 import { buildPayInsurancePremiumHref } from "@/lib/paymentUrls";
 import { PARTNER_DEALER_LABEL, PARTNER_DEALER_LABEL_CAPITALIZED } from "@/lib/dealer-attribution-content";
+import styles from "./LoanDisbursementReceivedScreen.module.scss";
+
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -76,7 +78,7 @@ export function LoanDisbursementReceivedScreen({
     <ConciergeTurnShell
       says={says}
       artifact={
-        <div className="flex flex-col gap-4">
+        <div className={styles.flex_0}>
           <AmountReceivedCard
             amountInr={disbursedAmountInr}
             title={`Disbursed by ${bank.name}`}

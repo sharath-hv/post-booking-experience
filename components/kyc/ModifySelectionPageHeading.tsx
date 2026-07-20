@@ -2,6 +2,7 @@ import {
   MODIFY_SELECTION_BODY_CLASS,
   MODIFY_SELECTION_LEAD_CLASS,
 } from "@/components/kyc/modify-selection-option-card-ui";
+import styles from "./ModifySelectionPageHeading.module.scss";
 
 type ModifySelectionPageHeadingProps = {
   title: string;
@@ -23,14 +24,14 @@ export function ModifySelectionPageHeading({
   return (
     <>
       <h1
-        className={`payment-success-stagger ${MODIFY_SELECTION_LEAD_CLASS}`}
+        className={[styles.title, "payment-success-stagger", MODIFY_SELECTION_LEAD_CLASS].filter(Boolean).join(" ")}
         style={{ animationDelay: `${titleDelayMs}ms` }}
       >
         {title}
       </h1>
       {subline ? (
         <p
-          className={`payment-success-stagger mt-2 ${MODIFY_SELECTION_BODY_CLASS}`}
+          className={[styles.subline, "payment-success-stagger", MODIFY_SELECTION_BODY_CLASS].filter(Boolean).join(" ")}
           style={{ animationDelay: `${bodyDelay}ms` }}
         >
           {subline}

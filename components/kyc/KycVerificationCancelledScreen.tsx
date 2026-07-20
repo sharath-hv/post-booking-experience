@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
@@ -13,15 +14,17 @@ import { KycTopNavHeader } from "@/components/kyc/KycTopNavHeader";
 import { ManageBookingBottomSheet } from "@/components/kyc/ManageBookingBottomSheet";
 import { WordByWordLine } from "@/components/payment/WordByWordLine";
 import { AuroraLightLayer } from "@/components/ui/aurora-light-layer";
+import styles from "./KycVerificationCancelledScreen.module.scss";
+
 import {
   HERO_ACTION_HEADLINE_SUBLINE_GAP_CLASS,
   HERO_ILLUSTRATION_TO_COPY_MT,
 } from "@/components/ui/success-screen-layout";
 
 const HEADLINE_WORD_DELAY_MS = 135;
-const HERO_FADE_DURATION_CLASS = "duration-[450ms]";
+const HERO_FADE_DURATION_CLASS = styles.heroFadeDuration;
 const SUBLINE_TO_CTA_DELAY_MS = 240;
-const HERO_MIN_HEIGHT = "min-h-[90dvh]";
+const HERO_MIN_HEIGHT = styles.heroMinHeight;
 
 function MenuOptionsButton({ onClick }: { onClick: () => void }) {
   return (
@@ -29,10 +32,10 @@ function MenuOptionsButton({ onClick }: { onClick: () => void }) {
       type="button"
       aria-label="More options"
       onClick={onClick}
-      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#e8e8e8] bg-white text-[#121212] transition-colors hover:bg-[#fafafa] focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/20 focus-visible:ring-offset-2"
+      className={styles.flex_0}
     >
-      <span className="relative h-6 w-6" aria-hidden>
-        <Image src={menuIcon} alt="" fill className="object-contain" unoptimized sizes="24px" />
+      <span className={styles.relative_1} aria-hidden>
+        <Image src={menuIcon} alt="" fill className={styles.object_contain_2} unoptimized sizes="24px" />
       </span>
     </button>
   );
@@ -77,39 +80,39 @@ export function KycVerificationCancelledScreen() {
   }, [router]);
 
   return (
-    <div className="flex min-h-dvh flex-col bg-[#F7FAFF] font-sans">
-      <div className="mx-auto flex w-full max-w-[640px] flex-1 flex-col">
+    <div className={styles.flex_3}>
+      <div className={styles.mx_auto_4}>
         <div
-          className={`kyc-pending-hero-card relative isolate mx-auto flex min-h-0 w-full flex-1 flex-col ${HERO_MIN_HEIGHT}`}
+          className={cn(styles.kyc_pending_hero_card_0, "kyc-pending-hero-card", HERO_MIN_HEIGHT)}
         >
           <KycTopNavHeader
             transparent
             endSlot={
-              <div className="flex shrink-0 items-center gap-2">
+              <div className={styles.flex_5}>
                 <GetHelpPillButton />
                 <MenuOptionsButton onClick={() => setManageBookingOpen(true)} />
               </div>
             }
           />
           <AuroraLightLayer />
-          <div className="relative z-10 flex min-h-0 w-full flex-1 flex-col items-center px-5 pb-10 pt-[72px]">
-            <div className="relative h-20 w-20 shrink-0">
+          <div className={styles.relative_6}>
+            <div className={styles.relative_7}>
               <Image
                 src={kycFailedHero}
                 alt=""
                 width={80}
                 height={80}
-                className="h-20 w-20 object-contain"
+                className={styles.h_20_8}
                 priority
                 unoptimized
                 onLoad={() => setHeroArtReady(true)}
               />
             </div>
 
-            <div className={`${HERO_ILLUSTRATION_TO_COPY_MT} flex w-full flex-col text-center`}>
-              <div className={`flex w-full flex-col ${HERO_ACTION_HEADLINE_SUBLINE_GAP_CLASS}`}>
+            <div className={cn(HERO_ILLUSTRATION_TO_COPY_MT, styles.flex_1)}>
+              <div className={cn(styles.flex_2, HERO_ACTION_HEADLINE_SUBLINE_GAP_CLASS)}>
                 {reduceMotion ? (
-                  <h1 className="text-2xl font-semibold leading-8 tracking-tight text-[#121212]">
+                  <h1 className={styles.text_2xl_9}>
                     {KYC_VERIFICATION_CANCELLED_COPY.headline}
                   </h1>
                 ) : (
@@ -119,48 +122,42 @@ export function KycVerificationCancelledScreen() {
                     text={KYC_VERIFICATION_CANCELLED_COPY.headline}
                     wordDelayMs={HEADLINE_WORD_DELAY_MS}
                     wordOpacityDurationClassName={HERO_FADE_DURATION_CLASS}
-                    className="text-2xl font-semibold leading-8 tracking-tight text-[#121212]"
+                    className={styles.text_2xl_9}
                     onComplete={onHeadlineComplete}
                     startWhen={heroArtReady}
                   />
                 )}
                 <p
-                  className={`text-sm font-normal leading-[22px] text-[#4b4b4b] transition-opacity ${HERO_FADE_DURATION_CLASS} ease-out ${
-                    showSubline ? "opacity-100" : "opacity-0"
-                  }`}
+                  className={cn(styles.text_sm_3, HERO_FADE_DURATION_CLASS, styles.ease_out_3, showSubline ? styles.opacity_100_3 : styles.opacity_0_3)}
                   aria-hidden={!showSubline}
                 >
                   {KYC_VERIFICATION_CANCELLED_COPY.subline}
                 </p>
               </div>
               <div
-                className={`mt-6 flex items-center gap-3 rounded-2xl bg-white card-elevated px-3 py-3 text-left transition-opacity ${HERO_FADE_DURATION_CLASS} ease-out ${
-                  showSubline ? "opacity-100" : "opacity-0"
-                }`}
+                className={cn(styles.mt_6_4, "card-elevated", HERO_FADE_DURATION_CLASS, styles.ease_out_4, showSubline ? styles.opacity_100_4 : styles.opacity_0_4)}
                 aria-hidden={!showSubline}
               >
-                <span className="relative h-5 w-5 shrink-0">
+                <span className={styles.relative_10}>
                   <Image
                     src={infoIcon}
                     alt=""
                     fill
-                    className="object-contain"
+                    className={styles.object_contain_2}
                     unoptimized
                     sizes="20px"
                   />
                 </span>
-                <p className="text-xs leading-[18px] text-[#121212]">
+                <p className={styles.text_xs_11}>
                   {KYC_VERIFICATION_CANCELLED_COPY.infoBox}
                 </p>
               </div>
             </div>
 
-            <div className="mt-auto w-full pt-8">
+            <div className={styles.mt_auto_12}>
               <button
                 type="button"
-                className={`primary-cta transition-opacity ${HERO_FADE_DURATION_CLASS} ease-out focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/30 focus-visible:ring-offset-2 ${
-                  showCta ? "opacity-100" : "pointer-events-none opacity-0"
-                }`}
+                className={cn(styles.primary_cta_5, "primary-cta", HERO_FADE_DURATION_CLASS, styles.ease_out_5, showCta ? styles.opacity_100_5 : styles.pointer_events_none_5)}
                 tabIndex={showCta ? 0 : -1}
                 onClick={() => router.push(KYC_VERIFICATION_CANCELLED_COPY.doneHref)}
               >

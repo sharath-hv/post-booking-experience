@@ -1,0 +1,22 @@
+/* Component styles */
+
+.flex_0 {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing) * 5);
+}
+
+.px_1_1 {
+  padding-inline: var(--spacing);
+  font-size: 12px;
+  line-height: var(--tw-leading, 16px);
+  --tw-leading: 18px;
+  line-height: 18px;
+  color: #757575;
+}
+
+.font_semibold_2 {
+  --tw-font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-semibold);
+}
+

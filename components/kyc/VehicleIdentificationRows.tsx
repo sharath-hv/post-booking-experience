@@ -4,6 +4,8 @@ import Image from "next/image";
 import { useCallback } from "react";
 
 import copyIcon from "@/assets/copy.svg";
+import styles from "./VehicleIdentificationRows.module.scss";
+
 
 type VehicleIdentificationRowsProps = {
   engineNo: string;
@@ -26,22 +28,22 @@ function VehicleIdentificationCopyLine({
   }, [value]);
 
   return (
-    <p className="text-xs leading-[18px] text-[#121212]">
-      <span className="font-normal text-[#757575]">{label}:</span>{" "}
+    <p className={styles.text_xs_0}>
+      <span className={styles.font_normal_1}>{label}:</span>{" "}
       {showCopyButton ? (
-        <span className="inline-flex items-center gap-2 font-medium">
+        <span className={styles.inline_flex_2}>
           {value}
           <button
             type="button"
             onClick={onCopy}
             aria-label={`Copy ${label}`}
-            className="flex size-4 shrink-0 items-center justify-center rounded focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/20 focus-visible:ring-offset-1"
+            className={styles.flex_3}
           >
-            <Image src={copyIcon} alt="" width={16} height={16} className="size-4 object-contain" unoptimized />
+            <Image src={copyIcon} alt="" width={16} height={16} className={styles.size_4_4} unoptimized />
           </button>
         </span>
       ) : (
-        <span className="font-medium">{value}</span>
+        <span className={styles.font_medium_5}>{value}</span>
       )}
     </p>
   );
@@ -57,8 +59,8 @@ export function VehicleIdentificationRows({
 }: VehicleIdentificationRowsProps) {
   return (
     <>
-      <div className="mt-3 border-t border-[#E8E8E8]" role="separator" aria-hidden />
-      <div className="mt-3 flex flex-col gap-2">
+      <div className={styles.mt_3_6} role="separator" aria-hidden />
+      <div className={styles.mt_3_7}>
         <VehicleIdentificationCopyLine
           label="Engine no"
           value={engineNo}

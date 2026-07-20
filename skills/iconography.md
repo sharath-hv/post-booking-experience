@@ -47,9 +47,9 @@ Chevrons are **structural** — they signal "more content here" without leaving 
 
 ## Icon Sizing
 
-Icons are sized using Tailwind `size-*` utilities (**default** spacing scale — see `primitives.md`). Do not use typography tokens for icon dimensions.
+Icons are sized using `size` spacing values (spacing scale — see `primitives.md`). Do not use typography tokens for icon dimensions.
 
-| Component size | Icon size | Tailwind utility |
+| Component size | Icon size | SCSS class |
 |----------------|-----------|------------------|
 | `xs` | 12px | `size-3` |
 | `sm` | 16px | `size-4` |
@@ -59,7 +59,7 @@ Icons are sized using Tailwind `size-*` utilities (**default** spacing scale —
 
 ### Rules
 
-- Always use Tailwind spacing utilities — never typography tokens
+- Always use SCSS spacing tokens — never typography tokens
 - Icons inherit their size from the CSS layer. Do **not** set `size` props on Lucide icons inside buttons
 - Always use `currentColor` for fill so icons inherit text color from the theme
 - UI icons → `lucide-react` | Product/feature icons → `/public/assets/icons/*.svg`
@@ -88,5 +88,5 @@ Icons are sized using Tailwind `size-*` utilities (**default** spacing scale —
 | `ArrowDown` for accordion toggle | Use `ChevronDown` — it's an expand, not navigation |
 | `ArrowRight` for dropdown trigger | Use `ChevronDown` — it opens a menu in place |
 | Mixed icon libraries in one project | Stick to Lucide throughout |
-| `--font-*` tokens for icon dimensions | Use Tailwind `size-*` utilities |
+| `--font-*` tokens for icon dimensions | Use `size` spacing values |
 | Decorative icon without `aria-hidden="true"` | Always hide decorative icons from screen readers |

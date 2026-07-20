@@ -18,6 +18,8 @@ import { cn } from "@/lib/utils";
 
 import deleteIcon from "@/assets/Delete.svg";
 import done01Icon from "@/assets/done 01.png";
+import styles from "./ConciergeDocumentsCard.module.scss";
+
 
 type ConciergeDocumentsCardProps = {
   uploads: KycUploadsState;
@@ -32,25 +34,25 @@ type ConciergeDocumentsCardProps = {
 
 function UploadSuccessBadge() {
   return (
-    <span className="relative h-6 w-6 shrink-0">
-      <Image src={done01Icon} alt="" fill className="object-contain" unoptimized sizes="24px" />
+    <span className={styles.relative_0}>
+      <Image src={done01Icon} alt="" fill className={styles.object_contain_1} unoptimized sizes="24px" />
     </span>
   );
 }
 
 function FileChip({ name, onRemove }: { name: string; onRemove: () => void }) {
   return (
-    <div className="relative flex h-12 items-center gap-2 rounded-lg border border-dashed border-[#e8e8e8] bg-[#f5f5f5] px-3">
+    <div className={styles.relative_2}>
       <UploadSuccessBadge />
-      <span className="min-w-0 flex-1 truncate text-sm leading-5 text-[#121212]">{name}</span>
+      <span className={styles.min_w_0_3}>{name}</span>
       <button
         type="button"
         onClick={onRemove}
-        className="cta-ghost flex size-5 shrink-0 items-center justify-center rounded focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/20 focus-visible:ring-offset-2"
+        className={[styles.cta_ghost_4, "cta-ghost"].filter(Boolean).join(" ")}
         aria-label={`Remove ${name}`}
       >
-        <span className="relative h-5 w-5">
-          <Image src={deleteIcon} alt="" fill className="object-contain" unoptimized sizes="20px" />
+        <span className={styles.relative_5}>
+          <Image src={deleteIcon} alt="" fill className={styles.object_contain_1} unoptimized sizes="20px" />
         </span>
       </button>
     </div>
@@ -70,26 +72,26 @@ type DocumentRowProps = {
 function DocumentRow({ title, hint, files, allowMultiple, uploadLabel = "Upload", onUpload, onRemove }: DocumentRowProps) {
   const hasFiles = files.length > 0;
   return (
-    <div className="px-4 py-3.5">
-      <div className="flex items-center gap-3">
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-1.5">
-            <p className="text-sm font-semibold leading-5 text-[#121212]">{title}</p>
+    <div className={styles.px_4_6}>
+      <div className={styles.flex_7}>
+        <div className={styles.min_w_0_8}>
+          <div className={styles.flex_9}>
+            <p className={styles.text_sm_10}>{title}</p>
           </div>
-          <p className="mt-0.5 text-xs leading-[18px] text-[#757575]">{hint}</p>
+          <p className={styles.mt_0_5_11}>{hint}</p>
         </div>
         {!hasFiles ? (
           <button
             type="button"
             onClick={onUpload}
-            className="cta-ghost flex h-9 shrink-0 items-center justify-center rounded-[10px] border border-[#121212] px-4 text-sm font-medium leading-5 text-[#121212]"
+            className={[styles.cta_ghost_12, "cta-ghost"].filter(Boolean).join(" ")}
           >
             {uploadLabel}
           </button>
         ) : null}
       </div>
       {hasFiles ? (
-        <div className="mt-2.5 flex flex-col gap-3">
+        <div className={styles.mt_2_5_13}>
           {files.map((file) => (
             <FileChip key={file.id} name={file.name} onRemove={() => onRemove(file.id)} />
           ))}
@@ -97,7 +99,7 @@ function DocumentRow({ title, hint, files, allowMultiple, uploadLabel = "Upload"
             <button
               type="button"
               onClick={onUpload}
-              className="self-start text-[13px] font-medium leading-[18px] text-[#1b73e8]"
+              className={styles.self_start_14}
             >
               + Add another photo
             </button>
@@ -164,8 +166,8 @@ export function ConciergeDocumentsCard({
 
       <div
         className={cn(
-          isGlass ? OVERLAY_GLASS_CARD_CLASS : "overflow-hidden rounded-2xl bg-white card-elevated",
-          onlyDocs == null ? "mt-4" : undefined,
+          isGlass ? OVERLAY_GLASS_CARD_CLASS : styles.overflow_hidden_19, "card-elevated",
+          onlyDocs == null ? styles.mt_4_20 : undefined,
         )}
       >
         {showAadhaar ? (
@@ -179,7 +181,7 @@ export function ConciergeDocumentsCard({
             onRemove={(fileId) => handleRemove("aadhaar", fileId)}
           />
         ) : null}
-        {showBothRows ? <hr className="mx-4 border-0 border-t border-dashed border-[#e8e8e8]" /> : null}
+        {showBothRows ? <hr className={styles.mx_4_15} /> : null}
         {showPan ? (
           <DocumentRow
             title="PAN card"
@@ -193,9 +195,9 @@ export function ConciergeDocumentsCard({
       </div>
 
       {onlyDocs == null ? (
-        <div className="mt-3 px-1">
-          <p className="flex items-start gap-2 text-xs leading-[18px] text-[#757575]">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden className="mt-0.5 shrink-0">
+        <div className={styles.mt_3_16}>
+          <p className={styles.flex_17}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden className={styles.mt_0_5_18}>
               <rect x="5" y="10.5" width="14" height="9.5" rx="2" stroke="currentColor" strokeWidth="1.8" />
               <path
                 d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"

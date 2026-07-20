@@ -225,7 +225,7 @@ Raw palette values. Only consult when adding a new semantic token or debugging a
 
 ### 1px-Base Spacing (read this first)
 
-`@acko/tokens` v1.1.0+ ships `--spacing: 0.0625rem` inside `@theme inline` in its `theme.css`. At a 16px root font size, this sets Tailwind v4's spacing base to **1px per unit**.
+`@acko/tokens` v1.1.0+ ships `--spacing: 0.0625rem` inside `@theme inline` in its `theme.css`. At a 16px root font size, this sets the spacing scale's spacing base to **1px per unit**.
 
 ```css
 /* Shipped by @acko/tokens — do NOT remove or override */
@@ -248,7 +248,7 @@ Before writing any layout code, check if `@acko/tokens/theme.css` (or `@acko/tok
 ### Rules
 
 1. **Utility number = pixel value.** `p-16` = 16px, `gap-12` = 12px, `size-20` = 20px.
-2. **Do not use raw `px` in JSX** for spacing — always use Tailwind utilities.
+2. **Do not use raw `px` in JSX** for spacing — always use SCSS spacing values.
 3. **Do not override `--spacing`** in `index.css` or any app-level `@theme` block. The value shipped by `@acko/tokens` is the source of truth.
 4. **Legacy `--scale-*` names** — do not use removed/deprecated scale vars.
 
@@ -327,7 +327,7 @@ These do **not** change with the 1px base:
 
 ### Migration from 0.25rem base (4px per unit)
 
-If migrating from an older `@acko/tokens` version (or standard Tailwind default) where `p-4` = 16px:
+If migrating from an older `@acko/tokens` version (or standard spacing scale default) where `p-4` = 16px:
 
 **Multiply every spacing utility number by 4.**
 
@@ -352,7 +352,7 @@ If migrating from an older `@acko/tokens` version (or standard Tailwind default)
 | `h-16` for a 64px header | `h-64` — multiply old values by 4 |
 | `px-4 md:px-8 lg:px-10` for gutters | `px-16 md:px-32 lg:px-40` |
 | Override `--spacing` in app CSS | Leave it as shipped by `@acko/tokens` |
-| Hardcode `padding: 16px` in JSX | `p-16` Tailwind utility |
+| Hardcode `padding: 16px` in JSX | `p-16` SCSS class |
 
 ---
 
@@ -406,9 +406,9 @@ Each level is expressed as 4 sub-tokens in `tokens.css`: `--font-{level}-size`, 
 | `--font-caption-*` | 12px | 16px | 0px | Regular 400 |
 | `--font-overline-*` | 11px | 16px | 0.5px | Semibold 600 |
 
-### Tailwind Mapping
+### Spacing mapping
 
-| Token | Tailwind equivalent |
+| Token | Approx. px |
 |-------|-------------------|
 | 12px / `--font-caption-size` | `text-xs` |
 | 14px / `--font-body-sm-size` | `text-sm` |
@@ -424,7 +424,7 @@ Each level is expressed as 4 sub-tokens in `tokens.css`: `--font-{level}-size`, 
 
 Buttons use their own scale — not body tokens:
 
-| Size | Font | Tailwind |
+| Size | Font | Approx. px |
 |------|------|----------|
 | xs | 12px | `text-xs` |
 | sm | 14px | `text-sm` |
@@ -444,7 +444,7 @@ Buttons use their own scale — not body tokens:
 
 ## Border Radius
 
-| Token | Value | Use Case | Tailwind |
+| Token | Value | Use Case | Approx. px |
 |-------|-------|----------|----------|
 | `--radius-sm` | 4px | Nested insets | `rounded` |
 | `--radius-md` | 6px | Checkboxes md/lg | `rounded-md` |

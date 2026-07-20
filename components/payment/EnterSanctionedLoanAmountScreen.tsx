@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
@@ -19,6 +20,8 @@ import {
 } from "@/components/payment/loan-amount-demo-constants";
 import { DisbursementAmountCollectionBottomSheet } from "@/components/payment/DisbursementAmountCollectionBottomSheet";
 import { BOOKING_LOCK_AMOUNT_INR, buildDownPaymentCheckoutHref } from "@/lib/paymentUrls";
+import styles from "./EnterSanctionedLoanAmountScreen.module.scss";
+
 
 /** Carried on `/payment/pay-down-payment` → `/payment` so the chain matches ACKO finance `?bank=` wiring. */
 const SELF_FINANCE_BANK_QUERY = "self_finance";
@@ -97,90 +100,88 @@ export function EnterSanctionedLoanAmountScreen() {
   }, [disbursementPrefill]);
 
   return (
-    <div className="flex min-h-dvh flex-col bg-[#F7FAFF] font-sans">
+    <div className={styles.flex_0}>
       <KycTopNavHeader endSlot={<GetHelpPillButton />} />
 
-      <main className="mx-auto flex min-h-0 w-full max-w-[640px] flex-1 flex-col px-5 pb-[calc(7rem+env(safe-area-inset-bottom))] pt-2">
+      <main className={styles.mx_auto_1}>
         <h1
           id="enter-sanctioned-loan-title"
-          className="payment-success-stagger mx-auto mt-0 w-full text-[24px] font-semibold leading-[32px] tracking-[-0.1px] text-[#121212]"
+          className={[styles.payment_success_stagger_2, "payment-success-stagger"].filter(Boolean).join(" ")}
           style={{ animationDelay: `${STAGGER_TITLE_MS}ms` }}
         >
           Your down payment details
         </h1>
 
         <div
-          className="payment-success-stagger mx-auto mt-6 w-full overflow-hidden rounded-[16px] bg-white card-elevated"
+          className={[styles.payment_success_stagger_3, "payment-success-stagger", "card-elevated"].filter(Boolean).join(" ")}
           style={{ animationDelay: `${STAGGER_CARD_MS}ms` }}
         >
-          <div className="bg-white px-4 pb-4 pt-4">
+          <div className={styles.bg_white_4}>
             <button
               type="button"
               onClick={() => setCarPriceExpanded((v) => !v)}
-              className="flex w-full items-start justify-between gap-2 text-left"
+              className={styles.flex_5}
               aria-expanded={carPriceExpanded}
             >
-              <span className="inline-flex shrink-0 items-center gap-2">
-                <span className="w-fit whitespace-nowrap text-sm font-normal leading-5 text-[#121212]">
+              <span className={styles.inline_flex_6}>
+                <span className={styles.w_fit_7}>
                   ACKO Drive car price
                 </span>
-                <span className="relative flex size-4 shrink-0 justify-center pt-0.5" aria-hidden>
+                <span className={styles.relative_8} aria-hidden>
                   <Image
                     src={chevronRightIcon}
                     alt=""
                     width={16}
                     height={16}
-                    className={`size-4 object-contain transition-transform duration-200 ${
-                      carPriceExpanded ? "-rotate-90" : "rotate-90"
-                    }`}
+                    className={cn(styles.size_4_0, carPriceExpanded ? styles._rotate_90_0 : styles.rotate_90_0)}
                     unoptimized
                   />
                 </span>
               </span>
-              <span className="shrink-0 text-right text-sm font-medium leading-5 text-[#121212] tabular-nums">
+              <span className={styles.shrink_0_9}>
                 {formatInr(ON_ROAD_PRICE_INR)}
               </span>
             </button>
 
             {carPriceExpanded ? (
-              <div className="mt-2 flex h-[72px] w-full flex-col justify-between rounded-lg bg-[#f5f5f5] px-3 py-2.5 text-xs leading-[18px]">
-                <div className="flex items-start justify-between gap-2">
-                  <span className="text-[#4b4b4b]">On-road price</span>
-                  <span className="shrink-0 font-medium tabular-nums text-[#121212]">
+              <div className={styles.mt_2_10}>
+                <div className={styles.flex_11}>
+                  <span className={styles.text_4b4b4b__12}>On-road price</span>
+                  <span className={styles.shrink_0_13}>
                     {formatInr(ON_ROAD_LIST_PRICE_INR)}
                   </span>
                 </div>
-                <div className="flex items-start justify-between gap-2">
-                  <span className="text-[#4b4b4b]">ACKO Drive discount</span>
-                  <span className="shrink-0 font-medium tabular-nums text-[#0fa457]">
+                <div className={styles.flex_11}>
+                  <span className={styles.text_4b4b4b__12}>ACKO Drive discount</span>
+                  <span className={styles.shrink_0_14}>
                     {formatInrSignedNegative(-ACKO_DRIVE_DISCOUNT_INR)}
                   </span>
                 </div>
               </div>
             ) : null}
 
-            <div className="-mx-4 my-5 h-px bg-[#e8e8e8]" aria-hidden />
+            <div className={styles._mx_4_15} aria-hidden />
 
-            <div className="flex items-start justify-between gap-3">
-              <span className="min-w-0 max-w-[196px] text-sm font-normal leading-5 text-[#121212]">
+            <div className={styles.flex_16}>
+              <span className={styles.min_w_0_17}>
                 Booking amount (paid)
               </span>
-              <span className="w-20 shrink-0 text-right text-sm font-medium leading-5 text-[#121212] tabular-nums">
+              <span className={styles.w_20_18}>
                 − {formatInr(BOOKING_LOCK_AMOUNT_INR)}
               </span>
             </div>
 
-            <div className="-mx-4 my-5 h-px bg-[#e8e8e8]" aria-hidden />
+            <div className={styles._mx_4_15} aria-hidden />
 
-            <div className="flex items-start justify-between gap-3">
+            <div className={styles.flex_16}>
               <span
                 id="sanctioned-loan-amount-label"
-                className="min-w-0 max-w-[196px] text-sm font-normal leading-5 text-[#121212]"
+                className={styles.min_w_0_17}
               >
                 Loan disbursement amount
               </span>
               <span
-                className="min-w-[80px] flex-1 text-right text-sm font-medium leading-5 text-[#121212] tabular-nums"
+                className={styles.min_w_80px__19}
                 aria-labelledby="sanctioned-loan-amount-label"
               >
                 − {formatInr(loanAmount)}
@@ -189,15 +190,15 @@ export function EnterSanctionedLoanAmountScreen() {
             <button
               type="button"
               onClick={() => setDisbursementEditOpen(true)}
-              className="mt-2 inline-flex items-center gap-2 text-xs font-medium leading-[18px] text-[#1b73e8] focus-visible:rounded focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#1b73e8]/25"
+              className={styles.mt_2_20}
             >
-              <span className="relative size-4 shrink-0" aria-hidden>
+              <span className={styles.relative_21} aria-hidden>
                 <Image
                   src={editIcon}
                   alt=""
                   width={16}
                   height={16}
-                  className="size-4 object-contain"
+                  className={styles.size_4_22}
                   unoptimized
                 />
               </span>
@@ -205,66 +206,66 @@ export function EnterSanctionedLoanAmountScreen() {
             </button>
           </div>
 
-          <div className="flex min-h-12 items-center justify-between border-t border-[#e8e8e8] px-4 py-3">
-            <span className="text-sm font-normal leading-5 text-[#121212]">
+          <div className={styles.flex_23}>
+            <span className={styles.text_sm_24}>
               Insurance, later before delivery
             </span>
-            <span className="min-w-[80px] text-right text-sm font-medium leading-5 text-[#121212] tabular-nums">
+            <span className={styles.min_w_80px__25}>
               − {formatInr(DOWN_PAYMENT_INSURANCE_INR)}
             </span>
           </div>
 
-          <div className="flex h-16 min-h-16 items-center justify-between border-x-0 border-b-0 border-t border-[#e3f0e5] bg-gradient-to-b from-white to-[#e7ffee] px-4">
-            <span className="text-sm font-medium leading-5 text-[#121212]">Your down payment, due now</span>
-            <span className="min-w-[80px] text-right text-base font-semibold leading-6 text-[#121212] tabular-nums">
+          <div className={styles.flex_26}>
+            <span className={styles.text_sm_27}>Your down payment, due now</span>
+            <span className={styles.min_w_80px__28}>
               {formatInr(carDownPaymentPortionInr)}
             </span>
           </div>
         </div>
 
         <div
-          className="payment-success-stagger mx-auto mt-4 min-h-[138px] w-full rounded-[16px] border border-[#ffe380] bg-[#fff7e5] px-4 py-3"
+          className={[styles.payment_success_stagger_29, "payment-success-stagger"].filter(Boolean).join(" ")}
           style={{ animationDelay: `${STAGGER_INFO_MS}ms` }}
           role="region"
           aria-label="Down payment parts"
         >
-          <p className="text-xs font-normal leading-[18px] text-[#121212]">
+          <p className={styles.text_xs_30}>
             Two things to know:
           </p>
-          <ul className="mt-2 space-y-2">
-            <li className="flex gap-2">
-              <span className="relative mt-0.5 size-5 shrink-0" aria-hidden>
+          <ul className={styles.mt_2_31}>
+            <li className={styles.flex_32}>
+              <span className={styles.relative_33} aria-hidden>
                 <Image
                   src={tickIcon}
                   alt=""
                   width={20}
                   height={20}
-                  className="size-5 object-contain"
+                  className={styles.size_5_34}
                   unoptimized
                 />
               </span>
-              <p className="max-w-[260px] text-xs leading-[18px] text-[#121212]">
+              <p className={styles.max_w_260px__35}>
                 Pay your down payment of{" "}
-                <span className="font-semibold">
+                <span className={styles.font_semibold_36}>
                   {formatInr(carDownPaymentPortionInr)} by {CAR_DOWN_PAYMENT_DUE_LABEL}
                 </span>{" "}
                 . Your reservation holds until then.
               </p>
             </li>
-            <li className="flex gap-2">
-              <span className="relative mt-0.5 size-5 shrink-0" aria-hidden>
+            <li className={styles.flex_32}>
+              <span className={styles.relative_33} aria-hidden>
                 <Image
                   src={tickIcon}
                   alt=""
                   width={20}
                   height={20}
-                  className="size-5 object-contain"
+                  className={styles.size_5_34}
                   unoptimized
                 />
               </span>
-              <p className="max-w-[260px] text-xs leading-[18px] text-[#121212]">
+              <p className={styles.max_w_260px__35}>
                 Insurance of{" "}
-                <span className="font-semibold">
+                <span className={styles.font_semibold_36}>
                   {formatInr(DOWN_PAYMENT_INSURANCE_INR)} is separate
                 </span>{" "}
                 . Pay it just before delivery, for RTO registration.
@@ -274,12 +275,12 @@ export function EnterSanctionedLoanAmountScreen() {
         </div>
       </main>
 
-      <div className="fixed bottom-0 left-0 right-0 z-10 pb-[env(safe-area-inset-bottom)] footer-elevated">
-        <div className="mx-auto w-full max-w-[640px] bg-white px-5 pb-5 pt-3">
+      <div className={[styles.fixed_37, "footer-elevated"].filter(Boolean).join(" ")}>
+        <div className={styles.mx_auto_38}>
           <button
             type="button"
             onClick={navigateToPayment}
-            className="primary-cta w-full"
+            className={[styles.primary_cta_39, "primary-cta"].filter(Boolean).join(" ")}
           >
             Confirm down payment
           </button>

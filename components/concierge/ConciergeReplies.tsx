@@ -6,6 +6,8 @@ import { useRef, useState } from "react";
 import { writeConciergeEcho } from "@/lib/concierge/echo";
 import { instantRevealEnabled } from "@/lib/concierge/instant";
 import { cn } from "@/lib/utils";
+import styles from "./ConciergeReplies.module.scss";
+
 
 /** Brief pressed beat before navigating — your reply visibly “sends”. */
 const SEND_BEAT_MS = 160;
@@ -64,7 +66,7 @@ export function ConciergeReplies({ replies, className }: ConciergeRepliesProps) 
   };
 
   return (
-    <div className={cn("flex w-full flex-col gap-3", className)}>
+    <div className={cn(styles.flex_0, className)}>
       {replies.map((reply) => (
         <button
           key={reply.label}

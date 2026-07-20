@@ -11,6 +11,8 @@ import {
   SELF_FINANCE_LOAN_DEFAULT_INR,
 } from "@/components/payment/loan-amount-demo-constants";
 import { buildPayInsurancePremiumHref } from "@/lib/paymentUrls";
+import styles from "./SelfFinanceTransferConfirmedScreen.module.scss";
+
 import {
   PARTNER_DEALER_LABEL,
   PARTNER_DEALER_LABEL_CAPITALIZED,
@@ -62,7 +64,7 @@ export function SelfFinanceTransferConfirmedScreen() {
     <ConciergeTurnShell
       says={says}
       artifact={
-        <div className="flex flex-col gap-4">
+        <div className={styles.flex_0}>
           <AmountReceivedCard
             amountInr={loanAmountInr}
             title={`Received by ${PARTNER_DEALER_LABEL}`}

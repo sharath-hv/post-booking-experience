@@ -1,0 +1,11 @@
+/* Component styles */
+
+.pincode_field {
+  max-width: 154px;
+}
+
+.city_row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: calc(var(--spacing) * 3);
+}

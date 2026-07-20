@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
@@ -14,6 +15,8 @@ import {
 } from "@/components/payment/insurance-coverage-content";
 import { PAYMENT_CHOOSE_ASSETS } from "@/components/payment/payment-choose-assets";
 import { buildInsurancePremiumCheckoutHref } from "@/lib/paymentUrls";
+import styles from "./ChooseInsuranceTenureScreen.module.scss";
+
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -27,8 +30,8 @@ function RadioIndicator({ selected }: { selected: boolean }) {
   const src = selected ? PAYMENT_CHOOSE_ASSETS.radioOn : PAYMENT_CHOOSE_ASSETS.radioOff;
 
   return (
-    <span className="relative h-4 w-4 shrink-0" aria-hidden>
-      <Image src={src} alt="" fill className="object-contain" unoptimized sizes="16px" />
+    <span className={styles.relative_0} aria-hidden>
+      <Image src={src} alt="" fill className={styles.object_contain_1} unoptimized sizes="16px" />
     </span>
   );
 }
@@ -51,65 +54,61 @@ function TenureCard({
       id={`insurance-tenure-${option.id}`}
       onClick={onSelect}
       aria-pressed={selected}
-      className={`w-full rounded-2xl border p-[15px] text-left transition-colors card-elevated ${
-        selected
-          ? "border-[#bda6e8] bg-white bg-[linear-gradient(to_bottom,#f4eefe,rgba(244,238,254,0))]"
-          : "border-transparent bg-white"
-      }`}
+      className={cn(styles.w_full_0, "card-elevated", selected ? styles.border_selected_0 : styles.border_transparent_0)}
     >
-      <div className="flex items-start gap-3">
-        <div className="relative h-10 w-10 shrink-0 self-center">
+      <div className={styles.flex_2}>
+        <div className={styles.relative_3}>
           <Image
             src={option.illustrationSrc}
             alt=""
             fill
-            className="object-contain"
+            className={styles.object_contain_1}
             unoptimized
             sizes="40px"
           />
         </div>
-        <div className="min-w-0 flex-1">
-          <span className="inline-flex rounded-full bg-[#efe9fb] px-2 py-0.5 text-[10px] font-semibold uppercase leading-4 tracking-[0.06em] text-[#5920c5]">
+        <div className={styles.min_w_0_4}>
+          <span className={styles.inline_flex_5}>
             {option.badge}
           </span>
-          <p className="mt-1 text-base font-semibold leading-6 text-[#121212]">{option.label}</p>
+          <p className={styles.mt_1_6}>{option.label}</p>
         </div>
-        <span className="mt-1 flex shrink-0">
+        <span className={styles.mt_1_7}>
           <RadioIndicator selected={selected} />
         </span>
       </div>
 
-      <p className="mt-2.5 text-[13px] leading-[19px] text-[#4b4b4b]">{option.blurb}</p>
+      <p className={styles.mt_2_5_8}>{option.blurb}</p>
 
-      <div className="mt-3 flex w-full">
-        <div className="min-w-0 flex-1 pr-4">
-          <p className="text-sm font-semibold leading-5 text-[#121212] tabular-nums">
+      <div className={styles.mt_3_9}>
+        <div className={styles.min_w_0_10}>
+          <p className={styles.text_sm_11}>
             {option.ownDamageYears} {option.ownDamageYears === 1 ? "year" : "years"}
           </p>
-          <p className="mt-0.5 text-[11px] leading-4 text-[#757575]">Zero depreciation cover</p>
+          <p className={styles.mt_0_5_12}>Zero depreciation cover</p>
         </div>
-        <div className="min-w-0 flex-1 border-l border-[#ececec] pl-4">
-          <p className="text-sm font-semibold leading-5 text-[#121212] tabular-nums">
+        <div className={styles.min_w_0_13}>
+          <p className={styles.text_sm_11}>
             {option.thirdPartyYears} {option.thirdPartyYears === 1 ? "year" : "years"}
           </p>
-          <p className="mt-0.5 text-[11px] leading-4 text-[#757575]">Third party cover</p>
+          <p className={styles.mt_0_5_12}>Third party cover</p>
         </div>
       </div>
 
-      <div className="mt-3 border-t border-dashed border-[#dcdbe1] pt-3">
+      <div className={styles.mt_3_14}>
         {option.upgradeBlurb ? (
-          <p className="mb-3 text-[13px] leading-[19px] text-[#5920c5]">{option.upgradeBlurb}</p>
+          <p className={styles.mb_3_15}>{option.upgradeBlurb}</p>
         ) : null}
-        <p className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-          <span className="text-base font-semibold leading-6 text-[#121212] tabular-nums">
+        <p className={styles.flex_16}>
+          <span className={styles.text_base_17}>
             {formatInr(option.premiumInr)}
           </span>
           {!isStandard ? (
             <>
-              <span className="text-sm leading-5 text-[#757575] line-through tabular-nums">
+              <span className={styles.text_sm_18}>
                 {formatInr(option.compareAtInr)}
               </span>
-              <span className="text-xs font-medium leading-[18px] text-[#0c8a4d]">
+              <span className={styles.text_xs_19}>
                 Save {formatInr(savings)}
               </span>
             </>
@@ -157,7 +156,7 @@ export function ChooseInsuranceTenureScreen() {
       <ConciergeTurnShell
         says={says}
         artifact={
-          <div className="flex w-full flex-col gap-4">
+          <div className={styles.flex_20}>
             {INSURANCE_TENURE_OPTIONS.map((option) => (
               <TenureCard
                 key={option.id}
@@ -169,7 +168,7 @@ export function ChooseInsuranceTenureScreen() {
             <button
               type="button"
               onClick={() => setCompareSheetOpen(true)}
-              className="tertiary-cta self-start"
+              className={[styles.tertiary_cta_21, "tertiary-cta"].filter(Boolean).join(" ")}
             >
               {INSURANCE_TENURE_DIFFERENCE_CTA}
             </button>

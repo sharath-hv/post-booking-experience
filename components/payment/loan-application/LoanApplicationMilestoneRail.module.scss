@@ -1,0 +1,94 @@
+/* Component styles */
+
+.relative_0 {
+  position: relative;
+  display: flex;
+  height: calc(var(--spacing) * 5);
+  width: calc(var(--spacing) * 5);
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.object_contain_1 {
+  object-fit: contain;
+}
+
+.relative_2 {
+  position: relative;
+  width: 100%;
+  min-width: 0px;
+}
+
+.pointer_events_none_3 {
+  pointer-events: none;
+  position: absolute;
+  top: calc(var(--spacing) * 2.5);
+  height: 1px;
+}
+
+.relative_4 {
+  position: relative;
+  display: flex;
+  width: 100%;
+  list-style-type: none;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0px;
+}
+
+.flex_5 {
+  display: flex;
+  min-width: 0px;
+  flex: 1;
+  flex-basis: 0px;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--spacing) * 1.5);
+  padding-inline: calc(var(--spacing) * 0.5);
+}
+
+.relative_6 {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  height: calc(var(--spacing) * 5);
+  width: calc(var(--spacing) * 5);
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.w_full_0 {
+  width: 100%;
+  text-align: center;
+  font-size: 10px;
+  --tw-leading: 14px;
+  line-height: 14px;
+  white-space: nowrap;
+}
+
+.font_normal_0 {
+  --tw-font-weight: var(--font-weight-normal);
+  font-weight: var(--font-weight-normal);
+  color: #a6a6a6;
+}
+
+.font_normal_0_0 {
+  --tw-font-weight: var(--font-weight-normal);
+  font-weight: var(--font-weight-normal);
+  color: #757575;
+}
+
+.font_medium_0 {
+  --tw-font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-white);
+}
+
+.labelInk {
+  --tw-font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-medium);
+  color: #121212;
+}

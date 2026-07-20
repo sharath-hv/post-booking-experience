@@ -1,0 +1,115 @@
+/* Component styles */
+
+.flex_0 {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: calc(var(--spacing) * 3);
+}
+
+.min_w_0_1 {
+  min-width: 0px;
+  flex: 1;
+  font-size: 16px;
+  line-height: var(--tw-leading, 24px);
+  --tw-font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-medium);
+  --tw-leading: calc(var(--spacing) * 6);
+  line-height: calc(var(--spacing) * 6);
+  color: #121212;
+}
+
+.mt_0_5_2 {
+  margin-top: calc(var(--spacing) * 0.5);
+  display: flex;
+  flex-shrink: 0;
+}
+
+.mt_0_5_3 {
+  margin-top: calc(var(--spacing) * 1);
+  font-size: 12px;
+  line-height: var(--tw-leading, 16px);
+  --tw-font-weight: var(--font-weight-normal);
+  font-weight: var(--font-weight-normal);
+  --tw-leading: calc(var(--spacing) * 4);
+  line-height: calc(var(--spacing) * 4);
+  color: #757575;
+}
+
+.mt_1_5_4 {
+  margin-top: calc(var(--spacing) * 3);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: calc(var(--spacing) * 2);
+}
+
+.text_sm_5 {
+  font-size: 14px;
+  line-height: var(--tw-leading, 20px);
+  --tw-font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-medium);
+  --tw-leading: calc(var(--spacing) * 5);
+  line-height: calc(var(--spacing) * 5);
+  color: #121212;
+}
+
+.text_xs_6 {
+  font-size: 12px;
+  line-height: var(--tw-leading, 16px);
+  --tw-font-weight: var(--font-weight-normal);
+  font-weight: var(--font-weight-normal);
+  --tw-leading: calc(var(--spacing) * 4);
+  line-height: calc(var(--spacing) * 4);
+  color: #757575;
+  text-decoration-line: line-through;
+}
+
+.text_xs_7 {
+  font-size: 12px;
+  line-height: var(--tw-leading, 16px);
+  --tw-font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-medium);
+  --tw-leading: calc(var(--spacing) * 4);
+  line-height: calc(var(--spacing) * 4);
+  color: #0fa457;
+}
+
+.mt_2_8 {
+  margin-top: calc(var(--spacing) * 2.5);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing);
+}
+
+.font_medium_9 {
+  --tw-font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-medium);
+}
+
+.relative_10 {
+  position: relative;
+  width: calc(var(--spacing) * 4);
+  height: calc(var(--spacing) * 4);
+  flex-shrink: 0;
+}
+
+.size_4_11 {
+  width: calc(var(--spacing) * 4);
+  height: calc(var(--spacing) * 4);
+  object-fit: contain;
+}
+
+.text_xs_12 {
+  font-size: 12px;
+  line-height: var(--tw-leading, 16px);
+  --tw-font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-medium);
+  --tw-leading: calc(var(--spacing) * 4);
+  line-height: calc(var(--spacing) * 4);
+}
+
+
+.p4 {
+  padding: calc(var(--spacing) * 4);
+}

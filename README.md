@@ -1,6 +1,6 @@
 # post-booking-experience
 
-ACKO Drive post-booking journey (quote, payment, KYC) — **Next.js 15** (App Router), React 19, TypeScript, Tailwind CSS 4.
+ACKO Drive post-booking journey (quote, payment, KYC) — **Next.js 15** (App Router), React 19, TypeScript, SCSS.
 
 ## Quick start
 

@@ -30,6 +30,8 @@ import {
   MODIFY_SELECTION_VARIANT_CONFIRM_TITLE,
 } from "@/lib/modify-selection-variants-content";
 import { MODIFY_SELECTION_STAGGER_MS } from "@/lib/modify-selection-stagger";
+import styles from "./ModifySelectionVariantConfirmationScreen.module.scss";
+
 
 /** Stagger: nav + footer CTA immediate; then title → subline → hero card. */
 const { title: STAGGER_TITLE_MS, subtext: STAGGER_SUBTEXT_MS, heading: STAGGER_HERO_MS } =
@@ -79,7 +81,7 @@ export function ModifySelectionVariantConfirmationScreen() {
     <div className={MODIFY_SELECTION_PAGE_SHELL_CLASS}>
       <ModifySelectionScreenHeader />
 
-      <main className="mx-auto flex w-full max-w-[640px] flex-1 flex-col px-5 pb-[calc(7rem+env(safe-area-inset-bottom))] pt-2">
+      <main className={styles.mx_auto_0}>
         <ModifySelectionPageHeading
           title={MODIFY_SELECTION_VARIANT_CONFIRM_TITLE}
           subline={MODIFY_SELECTION_VARIANT_CONFIRM_SUBLINE}
@@ -88,7 +90,7 @@ export function ModifySelectionVariantConfirmationScreen() {
         />
 
         <div
-          className="payment-success-stagger mt-8"
+          className={[styles.payment_success_stagger_1, "payment-success-stagger"].filter(Boolean).join(" ")}
           style={{ animationDelay: `${STAGGER_HERO_MS}ms` }}
         >
           <BookingCarSummaryCard
@@ -109,9 +111,9 @@ export function ModifySelectionVariantConfirmationScreen() {
         </div>
       </main>
 
-      <div className="fixed bottom-0 left-0 right-0 z-10 pb-[env(safe-area-inset-bottom)] footer-elevated">
-        <div className="mx-auto w-full max-w-[640px] bg-white px-5 py-4">
-          <button type="button" onClick={onConfirmChange} className="primary-cta w-full">
+      <div className={[styles.fixed_2, "footer-elevated"].filter(Boolean).join(" ")}>
+        <div className={styles.mx_auto_3}>
+          <button type="button" onClick={onConfirmChange} className={[styles.primary_cta_4, "primary-cta"].filter(Boolean).join(" ")}>
             {MODIFY_SELECTION_VARIANT_CONFIRM_CTA}
           </button>
         </div>

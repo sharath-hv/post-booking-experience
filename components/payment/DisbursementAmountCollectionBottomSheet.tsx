@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 import {
   useCallback,
   useEffect,
@@ -20,6 +21,8 @@ import {
 } from "@/components/ui/bottom-sheet-layout";
 import { bottomSheetTitleWidthWithIllustration } from "@/components/ui/bottom-sheet-title-layout";
 import { BottomSheetCloseIcon } from "@/components/ui/BottomSheetCloseIcon";
+import styles from "./DisbursementAmountCollectionBottomSheet.module.scss";
+
 
 /** Parity with `SelfFinanceConfirmBottomSheet` / `BankLoanDetailBottomSheet`. */
 const SHEET_TRANSITION_MS = 280;
@@ -181,68 +184,64 @@ export function DisbursementAmountCollectionBottomSheet({
   if (!mounted) return null;
 
   return (
-    <div className={`fixed inset-0 ${BOTTOM_SHEET_OVERLAY_Z_CLASS}`}>
+    <div className={cn(styles.fixed_0, BOTTOM_SHEET_OVERLAY_Z_CLASS)}>
       <button
         type="button"
-        className={`absolute inset-0 bg-black/90 transition-opacity duration-[280ms] ease-out motion-reduce:opacity-100 motion-reduce:transition-none ${
-          animateIn ? "opacity-100" : "opacity-0"
-        }`}
+        className={cn(styles.absolute_1, animateIn ? styles.opacity_100_1 : styles.opacity_0_1)}
         onClick={onClose}
         aria-label="Dismiss"
       />
       <div
-        className={`absolute bottom-0 left-1/2 z-10 flex ${BOTTOM_SHEET_MAX_HEIGHT_CLASS} w-full max-w-[640px] -translate-x-1/2 flex-col overflow-hidden rounded-t-[20px] bg-white sheet-elevated transition-transform duration-[280ms] ease-out motion-reduce:translate-y-0 motion-reduce:transition-none ${
-          animateIn ? "translate-y-0" : "translate-y-full"
-        }`}
+        className={cn(styles.absolute_2, BOTTOM_SHEET_MAX_HEIGHT_CLASS, styles.w_full_2, "sheet-elevated", animateIn ? styles.translate_y_0_2 : styles.translate_y_full_2)}
         role="dialog"
         aria-modal="true"
         aria-labelledby="disbursement-collection-title"
         aria-describedby="disbursement-collection-body disbursement-amount-field-hint"
       >
-        <div className="relative flex min-h-0 flex-1 flex-col">
+        <div className={styles.relative_0}>
           <button
             type="button"
             onClick={onClose}
-            className="cta-ghost absolute right-5 top-6 z-10 flex h-10 w-10 items-center justify-center rounded-lg text-[#121212] focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/20 focus-visible:ring-offset-2"
+            className={[styles.cta_ghost_1, "cta-ghost"].filter(Boolean).join(" ")}
             aria-label="Close"
           >
             <BottomSheetCloseIcon />
           </button>
 
-          <div className={`min-h-0 flex-1 overflow-y-auto px-5 pt-6 ${BOTTOM_SHEET_BODY_BEFORE_CTA_CLASS}`}>
-            <div className="relative h-[72px] w-[72px] shrink-0 overflow-hidden bg-white" aria-hidden>
+          <div className={cn(styles.min_h_0_3, BOTTOM_SHEET_BODY_BEFORE_CTA_CLASS)}>
+            <div className={styles.relative_2} aria-hidden>
               <Image
                 src={PAYMENT_CHOOSE_ASSETS.sanctionedAmount}
                 alt=""
                 width={72}
                 height={72}
-                className="h-[72px] w-[72px] object-contain"
+                className={styles.h_72px__3}
                 unoptimized
                 sizes="72px"
               />
             </div>
             <h2
               id="disbursement-collection-title"
-              className={`mt-6 ${bottomSheetTitleWidthWithIllustration} text-left text-[20px] font-semibold leading-[28px] tracking-[-0.12px] text-[#121212]`}
+              className={cn(styles.mt_6_4, bottomSheetTitleWidthWithIllustration, styles.text_left_4)}
             >
               {title}
             </h2>
             <p
               id="disbursement-collection-body"
-              className="mt-3 w-full text-left text-sm font-normal leading-[22px] text-[#4b4b4b]"
+              className={styles.mt_3_4}
             >
               This is the loan amount your bank will transfer to the dealer. It&apos;s usually your
               sanctioned amount minus any processing fees.
             </p>
 
-            <p id="disbursement-amount-field-hint" className="sr-only">
+            <p id="disbursement-amount-field-hint" className={styles.sr_only_5}>
               Type digits only; amount is shown in Indian Rupees.
             </p>
-            <div className="mt-6 w-full">
-              <label htmlFor="disbursement-amount-input" className="sr-only">
+            <div className={styles.mt_6_6}>
+              <label htmlFor="disbursement-amount-input" className={styles.sr_only_5}>
                 Disbursement amount in rupees
               </label>
-              <div className="flex h-12 min-h-12 w-full shrink-0 items-center rounded-lg border border-[#e8e8e8] bg-white px-4">
+              <div className={styles.flex_7}>
                 <input
                   ref={amountInputRef}
                   id="disbursement-amount-input"
@@ -253,20 +252,20 @@ export function DisbursementAmountCollectionBottomSheet({
                   onChange={onAmountChange}
                   placeholder="Enter the amount"
                   aria-describedby="disbursement-amount-field-hint"
-                  className="min-w-0 w-full border-0 bg-transparent p-0 text-[18px] font-semibold leading-[22px] text-[#121212] caret-[#121212] outline-none placeholder:text-[#9e9e9e] placeholder:font-normal [field-sizing:content] focus:ring-0 tabular-nums"
+                  className={styles.min_w_0_8}
                 />
               </div>
             </div>
           </div>
 
           <div
-            className={`shrink-0 space-y-3 bg-white px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] ${BOTTOM_SHEET_CTA_STRIP_TOP_CLASS}`}
+            className={cn(styles.shrink_0_5, BOTTOM_SHEET_CTA_STRIP_TOP_CLASS)}
           >
             <button
               type="button"
               onClick={handlePrimaryCta}
               disabled={primaryCtaDisabled}
-              className="primary-cta w-full"
+              className={[styles.primary_cta_9, "primary-cta"].filter(Boolean).join(" ")}
             >
               {primaryCtaLabel}
             </button>

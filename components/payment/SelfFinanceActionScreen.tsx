@@ -6,6 +6,8 @@ import { KycBookingProcessingScreen } from "@/components/kyc/KycBookingProcessin
 import { PAYMENT_CHOOSE_ASSETS } from "@/components/payment/payment-choose-assets";
 import { ProformaInvoiceCard } from "@/components/payment/ProformaInvoiceCard";
 import { ShimmerInfoCard } from "@/components/ui/ShimmerInfoCard";
+import styles from "./SelfFinanceActionScreen.module.scss";
+
 
 const HEADLINE_LINE_1 = "Your proforma invoice";
 const HEADLINE_LINE_2 = "is ready";
@@ -23,7 +25,7 @@ const CTA_WARNING_LINE =
 export function SelfFinanceActionScreen() {
   const heroSummaryCard = useMemo(
     () => (
-      <div className="flex flex-col gap-4">
+      <div className={styles.flex_0}>
         <ProformaInvoiceCard />
         <ShimmerInfoCard icon="info">{CTA_WARNING_LINE}</ShimmerInfoCard>
       </div>

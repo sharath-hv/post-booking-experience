@@ -27,6 +27,8 @@ import { instantRevealEnabled } from "@/lib/concierge/instant";
 import { readExperienceFlow } from "@/lib/experience-flow";
 import { getDeliveryDateShort } from "@/lib/journey-stage";
 import { cn } from "@/lib/utils";
+import styles from "./ConciergeTurnShell.module.scss";
+
 
 /** Pause after the echo chip lands before Shivi starts talking. */
 const ECHO_TO_DIALOGUE_MS = 550;
@@ -98,18 +100,17 @@ export type ConciergeTurnShellProps = ConciergeTurn & {
 
 /**
  * Recede transition shared by the page layers when the manage overlay is up.
- * Note: Tailwind v4 `scale-*` sets the individual `scale` property (not
- * `transform`), so `scale` must be named in the transition list explicitly.
+ * `scale` and `filter` must be named in the transition list explicitly.
  */
 const RECEDE_TRANSITION =
-  "transition-[scale,filter,opacity] duration-[650ms] ease-in-out motion-reduce:transition-none";
+  styles.transition_scale_filter__0;
 /**
  * Layer-promotion hint, applied ONLY while the manage layer is up. Left on
  * permanently, `will-change: filter` keeps the whole page in a rasterized
  * composited layer — iOS Safari quantizes the subtle card shadows there.
  */
-const RECEDE_WILL_CHANGE = "will-change-[scale,filter,opacity]";
-const RECEDE_ACTIVE = "pointer-events-none scale-[0.88] opacity-0 blur-[8px]";
+const RECEDE_WILL_CHANGE = styles.will_change_scale_filter_1;
+const RECEDE_ACTIVE = styles.pointer_events_none_2;
 
 /**
  * Presentation state for the manage layer. The overlay mounts first (its
@@ -175,24 +176,24 @@ function DeliveryDatePill({
       aria-label={`Car arrives ${date} — ${
         holder === "you" ? "waiting on you" : "on track"
       }. View purchase status.`}
-      className="concierge-echo-in pointer-events-auto flex h-8 shrink-0 items-center gap-1.5 rounded-full border border-[#e8e8e8] bg-white pl-2.5 pr-3 text-xs leading-4 text-[#121212] transition-[background-color,scale] hover:bg-[#fafafa] active:scale-[0.96]"
+      className={[styles.concierge_echo_in_0, "concierge-echo-in"].filter(Boolean).join(" ")}
     >
-      <span aria-hidden className="relative flex h-1.5 w-1.5 shrink-0">
+      <span aria-hidden className={styles.relative_1}>
         {holder === "you" ? (
           <span
-            className="absolute inset-0 animate-ping rounded-full bg-[#d99a23]/60 [animation-duration:2.4s] motion-reduce:hidden"
+            className={styles.absolute_2}
             aria-hidden
           />
         ) : null}
         <span
           className={cn(
-            "relative h-1.5 w-1.5 rounded-full",
-            holder === "you" ? "bg-[#d99a23]" : "bg-[#0fa457]"
+            styles.relative_21,
+            holder === "you" ? styles.bg_d99a23__23 : styles.bg_0fa457__24
           )}
         />
       </span>
-      <span className="text-[#757575]">Arrives</span>
-      <span className="-ml-0.5 font-semibold">{date}</span>
+      <span className={styles.text_757575__3}>Arrives</span>
+      <span className={styles._ml_0_5_4}>{date}</span>
     </button>
   );
 }
@@ -209,10 +210,10 @@ function MenuButton({ open, onClick }: { open: boolean; onClick: () => void }) {
       aria-label={open ? "Close" : "Menu"}
       aria-expanded={open}
       onClick={onClick}
-      className="pointer-events-auto flex h-8 shrink-0 items-center gap-1.5 rounded-[32px] border border-[#e8e8e8] bg-white pl-2 pr-3 text-[#121212] transition-colors hover:bg-[#fafafa] focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/20 focus-visible:ring-offset-2"
+      className={styles.pointer_events_auto_5}
     >
       {/* Icon container — hamburger and × are stacked and crossfade */}
-      <span className="relative h-4 w-4 shrink-0" aria-hidden>
+      <span className={styles.relative_6} aria-hidden>
         {/* Hamburger lines — rotates away when open */}
         <svg
           viewBox="0 0 24 24"
@@ -221,8 +222,8 @@ function MenuButton({ open, onClick }: { open: boolean; onClick: () => void }) {
           strokeWidth="2"
           strokeLinecap="round"
           className={cn(
-            "absolute inset-0 h-4 w-4 transition-[rotate,scale,opacity] duration-[400ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
-            open ? "rotate-90 scale-50 opacity-0" : "rotate-0 scale-100 opacity-100"
+            styles.absolute_3,
+            open ? styles.rotate_90_0 : styles.rotate_0_1
           )}
         >
           <path d="M4 7h16M4 12h16M4 17h16" />
@@ -236,8 +237,8 @@ function MenuButton({ open, onClick }: { open: boolean; onClick: () => void }) {
           strokeLinecap="round"
           strokeLinejoin="round"
           className={cn(
-            "absolute inset-0 h-4 w-4 transition-[rotate,scale,opacity] duration-[400ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
-            open ? "rotate-0 scale-100 opacity-100" : "-rotate-90 scale-50 opacity-0"
+            styles.absolute_4,
+            open ? styles.rotate_0_2 : styles._rotate_90_3
           )}
         >
           <path d="M6 6l12 12" />
@@ -246,19 +247,19 @@ function MenuButton({ open, onClick }: { open: boolean; onClick: () => void }) {
       </span>
 
       {/* Label — "Menu" slides up out, "Close" slides up in */}
-      <span className="relative h-[18px] overflow-hidden">
+      <span className={styles.relative_7}>
         <span
           className={cn(
-            "block text-xs font-medium leading-[18px] transition-[opacity,translate] duration-[350ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
-            open ? "pointer-events-none -translate-y-full opacity-0" : "translate-y-0 opacity-100"
+            styles.block_5,
+            open ? styles.menuLabelHidden : styles.menuLabelVisible
           )}
         >
           Menu
         </span>
         <span
           className={cn(
-            "absolute inset-0 flex items-center text-xs font-medium leading-[18px] transition-[opacity,translate] duration-[350ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
-            open ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"
+            styles.absolute_6,
+            open ? styles.menuLabelVisible : styles.menuLabelExit
           )}
         >
           Close
@@ -346,19 +347,19 @@ export function ConciergeTurnShell({
 
   /** Room for the fixed footer — taller when footnote + CTA + call link stack. */
   const mainBottomPad = !hasFooter
-    ? "pb-16"
+    ? styles.pb_16_7
     : footnote && !footnoteInline && replies?.length && callLabel
-      ? "pb-[calc(16rem+env(safe-area-inset-bottom))]"
-      : "pb-[calc(12rem+env(safe-area-inset-bottom))]";
+      ? styles.pbDeepFooter
+      : styles.pb_calc_12rem_env_safe_a_8;
 
   return (
-    <div className="relative min-h-dvh overflow-x-clip bg-[#F1F5FD]">
+    <div className={styles.relative_8}>
       <AuroraLightLayer />
 
       {/* Floats above both layers; morphs expand → close while the manage layer is up. */}
       {showMenu ? (
-        <div className="pointer-events-none fixed inset-x-0 top-0 z-[110]">
-          <div className="mx-auto flex h-14 w-full max-w-[640px] items-center justify-end gap-2 pr-5">
+        <div className={styles.pointer_events_none_9}>
+          <div className={styles.mx_auto_10}>
             <DeliveryDatePill
               holder={dateHolder ?? (replies?.length ? "you" : "shivi")}
               onClick={() => manage.setOpen(true)}
@@ -380,28 +381,28 @@ export function ConciergeTurnShell({
       >
       <KycTopNavHeader
         transparent
-        className={hideBack ? "[&>div:first-of-type>button]:invisible" : undefined}
+        className={hideBack ? styles._div_first_of_type_butto_9 : undefined}
       />
 
       <main
         className={cn(
-          "relative z-10 mx-auto flex w-full max-w-[640px] flex-col px-5 pt-3",
+          styles.relative_25,
           mainBottomPad
         )}
       >
         {dayStamp ? (
-          <div className="mb-5 flex items-center gap-3" aria-hidden>
-            <span className="h-px flex-1 bg-[#ececec]" />
-            <span className="text-[11px] font-medium uppercase leading-4 tracking-[0.08em] text-[#8f8e92]">
+          <div className={styles.mb_5_11} aria-hidden>
+            <span className={styles.h_px_12} />
+            <span className={styles.text_11px__13}>
               {dayStamp}
             </span>
-            <span className="h-px flex-1 bg-[#ececec]" />
+            <span className={styles.h_px_12} />
           </div>
         ) : null}
 
-        {echo ? <UserEchoChip text={echo} className="mb-6" /> : null}
+        {echo ? <UserEchoChip text={echo} className={styles.mb_6_14} /> : null}
 
-        {beforeDialogue ? <div className="mb-6">{beforeDialogue}</div> : null}
+        {beforeDialogue ? <div className={styles.mb_6_14}>{beforeDialogue}</div> : null}
 
         <ShiviDialogue
           lines={says}
@@ -417,8 +418,8 @@ export function ConciergeTurnShell({
             contentShown && (artifact || children) ? (
               <div
                 className={cn(
-                  "kyc-stagger flex flex-col gap-2",
-                  headingLastLine ? "mt-4" : workingBeforeArtifact ? "mt-5" : "mt-8"
+                  styles.kyc_stagger_26, "kyc-stagger",
+                  headingLastLine ? styles.mt_4_27 : workingBeforeArtifact ? styles.mt_5_28 : styles.mt_8_29
                 )}
               >
                 {artifact}
@@ -428,7 +429,7 @@ export function ConciergeTurnShell({
 
           const workingBlock =
             working || (footnote && footnoteInline && ready) ? (
-              <div className="mt-8 flex flex-col gap-6">
+              <div className={styles.mt_8_15}>
                 {working ? (
                   <WorkingNarration
                     lines={working.lines}
@@ -442,7 +443,7 @@ export function ConciergeTurnShell({
                   />
                 ) : null}
                 {footnote && footnoteInline && ready ? (
-                  <div className="kyc-stagger">
+                  <div className={[styles.kyc_stagger_16, "kyc-stagger"].filter(Boolean).join(" ")}>
                     <ShimmerInfoCard icon="info" lead={footnoteLead}>
                       {footnote}
                     </ShimmerInfoCard>
@@ -469,16 +470,16 @@ export function ConciergeTurnShell({
       {hasFooter ? (
         <div
           className={cn(
-            "fixed inset-x-0 bottom-0 z-20 origin-bottom",
+            styles.fixed_30,
             RECEDE_TRANSITION,
             manage.mounted && RECEDE_WILL_CHANGE,
-            ready ? "opacity-100" : "pointer-events-none opacity-0",
+            ready ? styles.opacity_100_31 : styles.pointer_events_none_32,
             manage.shown && RECEDE_ACTIVE
           )}
         >
-          <div className="mx-auto w-full max-w-[640px] bg-[linear-gradient(to_top,#F1F5FD_55%,rgba(241,245,253,0))] px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-12">
+          <div className={styles.mx_auto_17}>
             {footnote && !footnoteInline ? (
-              <div className="mb-3 mt-3">
+              <div className={styles.mb_3_18}>
                 <ShimmerInfoCard icon="info" lead={footnoteLead}>{footnote}</ShimmerInfoCard>
               </div>
             ) : null}
@@ -488,16 +489,16 @@ export function ConciergeTurnShell({
                 type="button"
                 onClick={() => setCallSheetOpen(true)}
                 className={cn(
-                  "flex h-9 w-full items-center justify-center gap-2 px-3 text-sm font-medium text-[#4b4b4b] underline decoration-[#c2c2c2] underline-offset-4 transition-colors hover:text-[#121212]",
-                  replies?.length ? "mt-3" : undefined
+                  styles.flex_33,
+                  replies?.length ? styles.mt_3_34 : undefined
                 )}
               >
-                <Image src={phoneIcon} alt="" width={20} height={20} className="shrink-0" unoptimized aria-hidden />
+                <Image src={phoneIcon} alt="" width={20} height={20} className={styles.shrink_0_19} unoptimized aria-hidden />
                 {callLabel}
               </button>
             ) : null}
             {footerExtra ? (
-              <div className={cn("flex w-full justify-center", replies?.length || callLabel ? "mt-2" : undefined)}>
+              <div className={cn(styles.flex_35, replies?.length || callLabel ? styles.mt_2_20 : undefined)}>
                 {footerExtra}
               </div>
             ) : null}
@@ -506,11 +507,11 @@ export function ConciergeTurnShell({
                 label={timeSkip.label}
                 href={timeSkip.href}
                 onBeforeNavigate={timeSkip.onBeforeNavigate}
-                className={replies?.length || callLabel ? "mt-4" : undefined}
+                className={replies?.length || callLabel ? styles.mt_4_10 : undefined}
               />
             ) : null}
             {altTimeSkip ? (
-              <TimeSkipChip label={altTimeSkip.label} href={altTimeSkip.href} className="mt-2" />
+              <TimeSkipChip label={altTimeSkip.label} href={altTimeSkip.href} className={styles.mt_2_20} />
             ) : null}
           </div>
         </div>

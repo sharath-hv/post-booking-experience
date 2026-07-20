@@ -7,6 +7,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import ackoDriveFinanceSuccessLottie from "@/components/kyc/lottie/acko-drive-finance-success.json";
 import { useReducedMotion } from "@/lib/animations/utils";
+import styles from "./SelfFinanceConfirmedScreen.module.scss";
+
 
 const USER_NAME = "Sharath";
 
@@ -59,41 +61,41 @@ export function SelfFinanceConfirmedScreen() {
   }, [showCopy, prefersReducedMotion]);
 
   return (
-    <div className="relative flex h-dvh flex-col overflow-hidden bg-[#F7FAFF] font-sans">
+    <div className={styles.relative_0}>
       <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-[50%] bg-[linear-gradient(to_bottom,rgba(232,248,239,0.9),rgba(244,251,247,0.4),rgba(244,251,247,0))]"
+        className={styles.pointer_events_none_1}
         aria-hidden
       />
 
-      <div className="relative flex min-h-0 flex-1 flex-col items-center justify-center px-5">
-        <div className="-translate-y-8 flex w-full max-w-[640px] flex-col items-center text-center">
-          <div className="relative flex h-[104px] w-[104px] shrink-0 items-center justify-center">
+      <div className={styles.relative_2}>
+        <div className={styles._translate_y_8_3}>
+          <div className={styles.relative_4}>
             <Lottie
               animationData={ackoDriveFinanceSuccessLottie}
               loop={false}
-              className="h-full w-full"
+              className={styles.h_full_5}
               aria-label="Success animation"
               onComplete={onLottieComplete}
             />
           </div>
 
           <motion.div
-            className="mt-6 flex w-full flex-col items-center gap-3"
+            className={styles.mt_6_6}
             initial={false}
             animate={{ opacity: showCopy ? 1 : 0 }}
             transition={{ duration: FADE_DURATION, ease: FADE_EASE }}
             aria-hidden={!showCopy}
           >
-            <h1 className="text-center text-[24px] font-semibold leading-8 tracking-[-0.1px] text-[#121212]">
+            <h1 className={styles.text_center_7}>
               {HEADLINE}
             </h1>
-            <p className="max-w-sm text-sm font-normal leading-5 text-[#4b4b4b]">{SUBLINE}</p>
+            <p className={styles.max_w_sm_8}>{SUBLINE}</p>
           </motion.div>
         </div>
       </div>
 
       <motion.div
-        className="relative z-10 shrink-0 bg-white px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-3 footer-elevated"
+        className={[styles.relative_9, "footer-elevated"].filter(Boolean).join(" ")}
         initial={false}
         animate={{ opacity: showFooter ? 1 : 0 }}
         transition={{ duration: FADE_DURATION, ease: FADE_EASE }}
@@ -102,7 +104,7 @@ export function SelfFinanceConfirmedScreen() {
       >
         <button
           type="button"
-          className="primary-cta w-full focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/30 focus-visible:ring-offset-2"
+          className={[styles.primary_cta_10, "primary-cta"].filter(Boolean).join(" ")}
           onClick={() => router.push("/payment/self-finance-action")}
           tabIndex={showFooter ? 0 : -1}
         >

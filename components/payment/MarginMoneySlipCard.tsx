@@ -4,6 +4,8 @@ import Image from "next/image";
 import { useCallback, type MouseEvent } from "react";
 
 import marginMoneySlipIcon from "@/assets/margin money slip.svg";
+import styles from "./MarginMoneySlipCard.module.scss";
+
 
 /**
  * Stub download — replace with a real PDF URL when available.
@@ -34,12 +36,12 @@ export function MarginMoneySlipCard() {
 
   return (
     <section
-      className="w-full rounded-2xl bg-white card-elevated p-4 text-left"
+      className={[styles.w_full_0, "card-elevated"].filter(Boolean).join(" ")}
       aria-label="Margin money slip"
     >
-      <div className="flex items-start gap-3">
+      <div className={styles.flex_1}>
         <div
-          className="flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#f5f5f5]"
+          className={styles.flex_2}
           aria-hidden
         >
           <Image
@@ -47,21 +49,21 @@ export function MarginMoneySlipCard() {
             alt=""
             width={24}
             height={24}
-            className="size-5 object-contain"
+            className={styles.size_5_3}
             unoptimized
           />
         </div>
-        <div className="flex min-w-0 flex-1 flex-col gap-1">
-          <div className="flex flex-col gap-0.5">
-            <p className="text-sm font-medium leading-5 text-[#121212]">Margin money slip</p>
-            <p className="text-xs font-normal leading-[18px] text-[#757575]">
+        <div className={styles.flex_4}>
+          <div className={styles.flex_5}>
+            <p className={styles.text_sm_6}>Margin money slip</p>
+            <p className={styles.text_xs_7}>
               Hyundai Creta 1.5 X-Line AT Diesel
             </p>
           </div>
           <a
             href="#"
             onClick={onDownload}
-            className="self-start text-xs font-medium leading-[18px] text-[#1b73e8] underline-offset-2 hover:underline focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#1b73e8]/30 focus-visible:ring-offset-2"
+            className={styles.self_start_8}
           >
             Download
           </a>

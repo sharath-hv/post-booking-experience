@@ -10,7 +10,8 @@ type CancelBookingFlowGuardProps = {
 };
 
 /**
- * Redirects when cancel-booking routes are opened outside the cancel-no-charges demo flow.
+ * Obsolete — cancel-booking is available in every flow (policy §7).
+ * Kept so accidental remounts no longer block express/standard cancel.
  */
 export function CancelBookingFlowGuard({ children }: CancelBookingFlowGuardProps) {
   const pathname = usePathname();

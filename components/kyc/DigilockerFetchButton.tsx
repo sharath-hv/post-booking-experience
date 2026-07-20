@@ -1,4 +1,7 @@
 import Image from "next/image";
+import { cn } from "@/lib/utils";
+import styles from "./DigilockerFetchButton.module.scss";
+
 
 import {
   KYC_UPLOAD_DIGILOCKER_COLOR,
@@ -11,21 +14,21 @@ type DigilockerFetchButtonProps = {
   className?: string;
 };
 
-export function DigilockerFetchButton({ onClick, className = "mb-4" }: DigilockerFetchButtonProps) {
+export function DigilockerFetchButton({ onClick, className = styles.mb4 }: DigilockerFetchButtonProps) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className={`flex w-full items-center justify-center gap-1.5 rounded-lg border border-[#643bfc]/25 bg-[#643bfc]/5 px-4 py-3 text-xs font-medium leading-[18px] transition-colors hover:border-[#643bfc]/40 hover:bg-[#643bfc]/10 focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#643bfc]/30 focus-visible:ring-offset-2 ${className}`}
+      className={cn(styles.flex_0, className)}
       style={{ color: KYC_UPLOAD_DIGILOCKER_COLOR }}
     >
       <span>{KYC_UPLOAD_DIGILOCKER_FETCH_LABEL}</span>
-      <span className="relative inline-block h-5 w-5 shrink-0" aria-hidden>
+      <span className={styles.relative_0} aria-hidden>
         <Image
           src={KYC_UPLOAD_DIGILOCKER_LOGO}
           alt=""
           fill
-          className="object-contain"
+          className={styles.object_contain_1}
           unoptimized
           sizes="20px"
         />

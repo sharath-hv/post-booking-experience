@@ -17,6 +17,8 @@ import {
   type ModifySelectionColourOption,
 } from "@/lib/modify-selection-colours-content";
 import { cn } from "@/lib/utils";
+import styles from "./ModifySelectionColourCard.module.scss";
+
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -51,46 +53,46 @@ export function ModifySelectionColourCard({
     ? BOOKING_EXPRESS_DELIVERY_TEXT_CLASS
     : BOOKING_STANDARD_DELIVERY_TEXT_CLASS;
 
-  const cardClassName = modifySelectionSelectableCardClassName(selected, readOnly, "p-4");
+  const cardClassName = modifySelectionSelectableCardClassName(selected, readOnly, styles.p4);
 
   const cardBody = (
-    <div className="flex items-start justify-between gap-3">
-      <div className="flex min-w-0 flex-1 items-center gap-3">
+    <div className={styles.flex_0}>
+      <div className={styles.flex_1}>
         <div
-          className="size-12 shrink-0 overflow-hidden rounded-full border border-[#e8e8e8] bg-white card-elevated"
+          className={styles.size_12_2}
           aria-hidden
         >
-          <div className="size-full" style={{ background: option.swatchBackground }} />
+          <div className={styles.size_full_3} style={{ background: option.swatchBackground }} />
         </div>
 
-        <div className="min-w-0 flex-1">
-          <p className="text-base font-medium leading-6 text-[#121212]">{option.name}</p>
+        <div className={styles.min_w_0_4}>
+          <p className={styles.text_base_5}>{option.name}</p>
 
-          <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
-            <span className="text-sm font-semibold leading-5 text-[#121212]">
+          <div className={styles.mt_1_5_6}>
+            <span className={styles.text_sm_7}>
               {formatInr(option.ackoDrivePriceInr)}
             </span>
-            <span className="text-xs font-normal leading-4 text-[#757575] line-through">
+            <span className={styles.text_xs_8}>
               {formatInr(option.onRoadListPriceInr)}
             </span>
             {savingsInr > 0 ? (
-              <span className="text-xs font-medium leading-4 text-[#0fa457]">
+              <span className={styles.text_xs_9}>
                 Save {formatInr(savingsInr)}
               </span>
             ) : null}
           </div>
 
-          <div className="mt-2 flex items-center gap-1">
-            <p className={cn("text-xs font-normal leading-4", deliveryTextClass)}>
+          <div className={styles.mt_2_10}>
+            <p className={cn(styles.text_xs_14, deliveryTextClass)}>
               {option.deliveryLine}
             </p>
-            <span className="relative size-4 shrink-0" aria-hidden>
+            <span className={styles.relative_11} aria-hidden>
               <Image
                 src={deliveryIconSrc}
                 alt=""
                 width={16}
                 height={16}
-                className="size-4 object-contain"
+                className={styles.size_4_12}
                 unoptimized
                 sizes="16px"
               />
@@ -100,7 +102,7 @@ export function ModifySelectionColourCard({
       </div>
 
       {!readOnly ? (
-        <span className="mt-0.5 flex shrink-0">
+        <span className={styles.mt_0_5_13}>
           <ModifySelectionRadioIndicator selected={selected} />
         </span>
       ) : null}

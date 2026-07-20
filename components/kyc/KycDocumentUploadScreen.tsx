@@ -11,6 +11,8 @@ import {
 } from "@/components/kyc/kyc-upload-content";
 import { PaymentSuccessStagger } from "@/components/ui/stagger-container";
 import { writeConciergeEcho } from "@/lib/concierge/echo";
+import styles from "./KycDocumentUploadScreen.module.scss";
+
 import {
   createEmptyKycUploads,
   readKycUploadState,
@@ -68,12 +70,12 @@ export function KycDocumentUploadScreen() {
   );
 
   return (
-    <div className="min-h-dvh bg-[#F7FAFF] font-sans">
+    <div className={styles.min_h_dvh_0}>
       <KycTopNavHeader />
 
-      <main className="mx-auto w-full max-w-[640px] px-5 pb-32 pt-2">
+      <main className={styles.mx_auto_1}>
         <PaymentSuccessStagger delay={STAGGER_HEADLINE}>
-          <h1 className="text-2xl font-semibold leading-8 tracking-[-0.1px] text-[#121212]">
+          <h1 className={styles.text_2xl_2}>
             {KYC_UPLOAD_HEADLINE}
           </h1>
         </PaymentSuccessStagger>
@@ -93,12 +95,12 @@ export function KycDocumentUploadScreen() {
         />
       </main>
 
-      <div className="fixed bottom-0 left-0 right-0 z-10 bg-white px-5 pb-5 pt-3">
-        <PaymentSuccessStagger className="mx-auto w-full max-w-[640px]" delay={STAGGER_CTA}>
+      <div className={styles.fixed_3}>
+        <PaymentSuccessStagger className={styles.mx_auto_4} delay={STAGGER_CTA}>
           <button
             type="button"
             disabled={!canSubmit}
-            className="primary-cta focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/30 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-[#a0a0a0] disabled:opacity-100 disabled:hover:bg-[#a0a0a0]"
+            className={[styles.primary_cta_5, "primary-cta"].filter(Boolean).join(" ")}
             onClick={handleSubmit}
           >
             {KYC_UPLOAD_SUBMIT_LABEL}

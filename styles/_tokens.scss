@@ -1,0 +1,92 @@
+:root {
+  --font-family-sans: "Euclid Circular B", -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --type-display-sm-size: 40px;
+  --type-display-sm-leading: 48px;
+  --type-heading-xl-size: 32px;
+  --type-heading-xl-leading: 40px;
+  --type-heading-lg-size: 24px;
+  --type-heading-lg-leading: 32px;
+  --type-heading-md-size: 20px;
+  --type-heading-md-leading: 28px;
+  --type-heading-sm-size: 18px;
+  --type-heading-sm-leading: 24px;
+  --type-body-lg-size: 18px;
+  --type-body-lg-leading: 28px;
+  --type-body-md-size: 16px;
+  --type-body-md-leading: 24px;
+  --type-body-sm-size: 14px;
+  --type-body-sm-leading: 20px;
+  --type-label-lg-size: 14px;
+  --type-label-lg-leading: 20px;
+  --type-label-md-size: 12px;
+  --type-label-md-leading: 16px;
+  --type-label-sm-size: 11px;
+  --type-label-sm-leading: 14px;
+  --type-caption-size: 12px;
+  --type-caption-leading: 16px;
+
+  --color-surface: #f7faff;
+  --color-surface-elevated: #ffffff;
+  --color-border-subtle: #e0e0e1;
+  --color-border-strong: #cccccd;
+  --color-text-primary: #242324;
+  --color-text-secondary: #605f63;
+  --color-text-muted: #8f8e92;
+  --color-brand: #6841e6;
+  --color-brand-hover: #582fd2;
+  --color-brand-subtle: #eaeafd;
+  --color-link: #1b73e8;
+  --color-success: #16a34a;
+  --color-success-subtle: #dcfce7;
+  --color-warning-bg: #fef9c3;
+  --color-warning-text: #a76406;
+  --color-danger: #dc2626;
+  --color-danger-subtle: #fee2e2;
+  --radius-card: 12px;
+  --radius-button: 10px;
+  --shadow-card: 0 1px 2px rgb(18 18 18 / 0.03), 0 4px 14px rgb(18 18 18 / 0.04);
+  --shadow-footer: 0 -4px 6px 0 rgba(54, 53, 76, 0.08);
+  --shadow-sheet: 0 -8px 24px rgba(0, 0, 0, 0.12);
+  --page-padding-x: 16px;
+  --app-max-width: 640px;
+
+  --quote-header: #121212;
+  --quote-timer-bg: #fff7e5;
+  --quote-timer-text: #d16900;
+  --quote-border-light: #e8e8e8;
+  --quote-text-body: #4b4b4b;
+  --quote-text-tertiary: #757575;
+  --quote-green: #0fa457;
+  --quote-red: #d83d37;
+  --quote-link: var(--color-link);
+  --quote-purple-tint: #efe9fb;
+  --quote-purple-text: #451999;
+  --quote-info-bg: #f9f6ff;
+  --quote-info-border: #efe9fb;
+  --quote-disclaimer-bg: #f8f7fc;
+  --quote-acko-title: #040222;
+  --quote-nested-bg: #f5f5f5;
+
+  --Surface-White: #ffffff;
+
+  --white: #ffffff;
+  --black: #000000;
+  --transparent: transparent;
+  --blue-500: color-mix(in srgb, #3b82f6 95%, white);
+  --indigo-300: color-mix(in srgb, #a5b4fc 95%, white);
+  --blue-300: color-mix(in srgb, #93c5fd 95%, white);
+  --violet-200: color-mix(in srgb, #ddd6fe 95%, white);
+  --blue-400: color-mix(in srgb, #60a5fa 95%, white);
+}
+
+body {
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-sans);
+  font-size: var(--type-body-md-size);
+  line-height: var(--type-body-md-leading);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

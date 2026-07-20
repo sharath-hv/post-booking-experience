@@ -1,8 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { cn } from "@/lib/utils";
 
 import { BottomSheetCloseIcon } from "@/components/ui/BottomSheetCloseIcon";
+import styles from "./QuoteFlowMenuSheet.module.scss";
+
 import {
   BOTTOM_SHEET_MAX_HEIGHT_CLASS,
   BOTTOM_SHEET_OVERLAY_Z_CLASS,
@@ -31,31 +34,25 @@ function FlowOptionRow({ flow, selected, onSelect }: FlowOptionRowProps) {
       type="button"
       disabled={disabled}
       onClick={() => onSelect(flow.id)}
-      className={`flex w-full items-start gap-3 rounded-xl px-2 py-3 text-left transition-colors focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/20 focus-visible:ring-offset-2 ${
-        disabled
-          ? "cursor-not-allowed opacity-60"
-          : "cursor-pointer hover:bg-[#f5f5f5] active:bg-[#ebebeb]"
-      } ${selected ? "bg-[#f5f5f5]" : ""}`}
+      className={cn(styles.flex_0, disabled ? styles.cursor_not_allowed_0 : styles.cursor_pointer_0, selected ? styles.bg_f5f5f5__0 : "")}
       aria-pressed={selected}
     >
       <span
-        className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 ${
-          selected ? "border-[#121212] bg-[#121212]" : "border-[#c4c4c4] bg-white"
-        }`}
+        className={cn(styles.mt_0_5_1, selected ? styles.border_121212__1 : styles.border_c4c4c4__1)}
         aria-hidden
       >
-        {selected ? <span className="h-2 w-2 rounded-full bg-white" /> : null}
+        {selected ? <span className={styles.h_2_0} /> : null}
       </span>
-      <span className="min-w-0 flex-1">
-        <span className="flex flex-wrap items-center gap-2">
-          <span className="text-sm font-medium leading-5 text-[#121212]">{flow.label}</span>
+      <span className={styles.min_w_0_1}>
+        <span className={styles.flex_2}>
+          <span className={styles.text_sm_3}>{flow.label}</span>
           {disabled ? (
-            <span className="rounded-full bg-[#f0f0f0] px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-[#6b7280]">
+            <span className={styles.rounded_full_4}>
               Coming soon
             </span>
           ) : null}
         </span>
-        <span className="mt-1 block text-xs leading-[18px] text-[#6b7280]">{flow.description}</span>
+        <span className={styles.mt_1_5}>{flow.description}</span>
       </span>
     </button>
   );
@@ -132,42 +129,38 @@ export function QuoteFlowMenuSheet({
   if (!mounted) return null;
 
   return (
-    <div className={`fixed inset-0 ${BOTTOM_SHEET_OVERLAY_Z_CLASS}`}>
+    <div className={cn(styles.fixed_2, BOTTOM_SHEET_OVERLAY_Z_CLASS)}>
       <button
         type="button"
-        className={`absolute inset-0 bg-black/90 transition-opacity duration-[280ms] ease-out motion-reduce:opacity-100 motion-reduce:transition-none ${
-          animateIn ? "opacity-100" : "opacity-0"
-        }`}
+        className={cn(styles.absolute_3, animateIn ? styles.opacity_100_3 : styles.opacity_0_3)}
         onClick={onClose}
         aria-label="Dismiss"
       />
       <div
-        className={`absolute bottom-0 left-1/2 z-10 flex ${BOTTOM_SHEET_MAX_HEIGHT_CLASS} w-full max-w-[640px] -translate-x-1/2 flex-col ${BOTTOM_SHEET_SCROLL_PANEL_CLASS} rounded-t-[24px] bg-white sheet-elevated transition-transform duration-[280ms] ease-out motion-reduce:translate-y-0 motion-reduce:transition-none ${
-          animateIn ? "translate-y-0" : "translate-y-full"
-        }`}
+        className={cn(styles.absolute_4, BOTTOM_SHEET_MAX_HEIGHT_CLASS, styles.w_full_4, BOTTOM_SHEET_SCROLL_PANEL_CLASS, styles.rounded_t_24px__4, "sheet-elevated", animateIn ? styles.translate_y_0_4 : styles.translate_y_full_4)}
         role="dialog"
         aria-modal="true"
         aria-labelledby="quote-flow-menu-title"
       >
-        <header className="flex shrink-0 items-center gap-3 bg-white px-5 pt-6">
+        <header className={styles.flex_6}>
           <h2
             id="quote-flow-menu-title"
-            className="min-w-0 flex-1 text-left text-xl font-semibold leading-7 tracking-[-0.1px] text-[#121212]"
+            className={styles.min_w_0_7}
           >
             Switch flows
           </h2>
           <button
             type="button"
             onClick={onClose}
-            className="cta-ghost flex size-10 shrink-0 items-center justify-end rounded-lg text-[#121212] focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/20 focus-visible:ring-offset-2"
+            className={[styles.cta_ghost_8, "cta-ghost"].filter(Boolean).join(" ")}
             aria-label="Close"
           >
             <BottomSheetCloseIcon />
           </button>
         </header>
 
-        <div className={`${BOTTOM_SHEET_SCROLL_BODY_CLASS} px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-4`}>
-          <div className="flex flex-col gap-1">
+        <div className={cn(BOTTOM_SHEET_SCROLL_BODY_CLASS, styles.px_5_5)}>
+          <div className={styles.flex_9}>
           {EXPERIENCE_FLOWS.map((flow) => (
             <FlowOptionRow
               key={flow.id}

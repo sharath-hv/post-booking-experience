@@ -1,8 +1,12 @@
 "use client";
 
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
+import { cn } from "@/lib/utils";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import calendarIcon from "@/assets/Calender.svg";
+import moneyIcon from "@/assets/money.svg";
+import moneyRoundIcon from "@/assets/Money round.svg";
 import {
   formatBankRate,
   type BankLoanTerms,
@@ -14,23 +18,36 @@ import {
   BOTTOM_SHEET_OVERLAY_Z_CLASS,
 } from "@/components/ui/bottom-sheet-layout";
 import { BottomSheetCloseIcon } from "@/components/ui/BottomSheetCloseIcon";
+import styles from "./BankLoanDetailBottomSheet.module.scss";
 
 /** Enter/exit slide duration — parity with the rest of the payment sheet family. */
 const SHEET_TRANSITION_MS = 280;
 
-function DetailSection({
-  title,
-  body,
-  showDivider = false,
-}: {
+type DetailSectionProps = {
   title: string;
   body: string;
+  icon: StaticImageData;
   showDivider?: boolean;
-}) {
+};
+
+/** Row layout mirrors the menu “Receipts and documents” list. */
+function DetailSection({ title, body, icon, showDivider = false }: DetailSectionProps) {
   return (
-    <div className={showDivider ? "border-t border-dashed border-[#e8e8e8] pt-4" : undefined}>
-      <p className="text-base font-medium leading-6 text-[#121212]">{title}</p>
-      <p className="mt-1.5 text-sm leading-5 text-[#4b4b4b]">{body}</p>
+    <div className={cn(styles.sectionRow, showDivider && styles.sectionRowDivider)}>
+      <span className={styles.sectionIcon} aria-hidden>
+        <Image
+          src={icon}
+          alt=""
+          width={20}
+          height={20}
+          className={styles.sectionIconAsset}
+          unoptimized
+        />
+      </span>
+      <div className={styles.sectionCopy}>
+        <p className={styles.sectionTitle}>{title}</p>
+        <p className={styles.sectionBody}>{body}</p>
+      </div>
     </div>
   );
 }
@@ -102,98 +119,114 @@ export function BankLoanDetailBottomSheet({
 
   if (!mounted || !renderedBank) return null;
 
+  const rateLabel =
+    renderedBank.interestRate.type === "from"
+      ? `From ${formatBankRate(renderedBank)}`
+      : formatBankRate(renderedBank);
+
   return (
-    <div className={`fixed inset-0 ${BOTTOM_SHEET_OVERLAY_Z_CLASS}`}>
+    <div className={cn(styles.overlay, BOTTOM_SHEET_OVERLAY_Z_CLASS)}>
       <button
         type="button"
-        className={`absolute inset-0 bg-black/90 transition-opacity duration-[280ms] ease-out motion-reduce:opacity-100 motion-reduce:transition-none ${
-          animateIn ? "opacity-100" : "opacity-0"
-        }`}
+        className={cn(styles.scrim, animateIn ? styles.scrimVisible : styles.scrimHidden)}
         onClick={onClose}
         aria-label="Dismiss"
       />
       <div
-        className={`absolute bottom-0 left-1/2 z-10 flex ${BOTTOM_SHEET_MAX_HEIGHT_CLASS} w-full max-w-[640px] -translate-x-1/2 flex-col overflow-hidden rounded-t-[20px] bg-white sheet-elevated transition-transform duration-[280ms] ease-out motion-reduce:translate-y-0 motion-reduce:transition-none ${
-          animateIn ? "translate-y-0" : "translate-y-full"
-        }`}
+        className={cn(
+          styles.panel,
+          BOTTOM_SHEET_MAX_HEIGHT_CLASS,
+          "sheet-elevated",
+          animateIn ? styles.panelShown : styles.panelHidden
+        )}
         role="dialog"
         aria-modal="true"
         aria-labelledby="bank-detail-sheet-title"
       >
-        <div className="relative flex min-h-0 flex-1 flex-col">
-          <div
-            className={`min-h-0 flex-1 overflow-y-auto px-5 pt-6 ${BOTTOM_SHEET_BODY_BEFORE_CTA_CLASS}`}
-          >
-            <div className="flex items-start justify-between gap-3">
-              <div className="flex min-w-0 flex-1 items-center gap-3">
-                <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full bg-[#f5f5f5]">
+        <div className={styles.panelInner}>
+          <div className={cn(styles.body, BOTTOM_SHEET_BODY_BEFORE_CTA_CLASS)}>
+            <div className={styles.header}>
+              <div className={styles.brand}>
+                <div className={styles.logoFrame}>
                   <Image
                     src={renderedBank.logoSrc}
                     alt=""
                     fill
-                    className="object-contain p-1.5"
+                    className={styles.logo}
                     unoptimized
                     sizes="48px"
                   />
                 </div>
-                <div className="min-w-0 flex-1">
-                  <h2
-                    id="bank-detail-sheet-title"
-                    className="truncate text-xl font-semibold leading-7 text-[#121212]"
-                  >
+                <div className={styles.brandCopy}>
+                  <h2 id="bank-detail-sheet-title" className={styles.bankName}>
                     {renderedBank.name}
                   </h2>
-                  <p className="mt-0.5 text-xs leading-[18px] text-[#757575]">
-                    From {formatBankRate(renderedBank)}
-                  </p>
+                  <p className={styles.rateLine}>{rateLabel}</p>
                 </div>
               </div>
               <button
                 type="button"
                 onClick={onClose}
-                className="cta-ghost -mr-1 -mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-[#121212] focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/20 focus-visible:ring-offset-2"
+                className={cn(styles.closeBtn, "cta-ghost")}
                 aria-label="Close"
               >
                 <BottomSheetCloseIcon />
               </button>
             </div>
 
-            <div className="mt-6 flex flex-col gap-4">
+            <div className={styles.sections}>
               {(
                 [
                   renderedBank.rateTypeCopy
-                    ? { title: "Interest rate", body: renderedBank.rateTypeCopy }
+                    ? {
+                        title: "Interest rate",
+                        body: renderedBank.rateTypeCopy,
+                        icon: moneyRoundIcon,
+                      }
                     : null,
                   renderedBank.foreclosure?.copy
                     ? {
                         title: "Closing the loan early",
                         body: renderedBank.foreclosure.copy,
+                        icon: calendarIcon,
                       }
                     : null,
                   renderedBank.partPayment?.copy
                     ? {
                         title: "Paying extra during the loan",
                         body: renderedBank.partPayment.copy,
+                        icon: moneyIcon,
                       }
                     : null,
                 ] as const
               )
-                .filter((section): section is { title: string; body: string } => section != null)
+                .filter(
+                  (
+                    section
+                  ): section is {
+                    title: string;
+                    body: string;
+                    icon: StaticImageData;
+                  } => section != null
+                )
                 .map((section, index) => (
                   <DetailSection
                     key={section.title}
                     title={section.title}
                     body={section.body}
+                    icon={section.icon}
                     showDivider={index > 0}
                   />
                 ))}
             </div>
           </div>
 
-          <div
-            className={`shrink-0 bg-white px-5 pb-[max(1rem,env(safe-area-inset-bottom))] ${BOTTOM_SHEET_CTA_STRIP_TOP_CLASS}`}
-          >
-            <button type="button" onClick={handleConfirm} className="primary-cta w-full">
+          <div className={cn(styles.footer, BOTTOM_SHEET_CTA_STRIP_TOP_CLASS)}>
+            <button
+              type="button"
+              onClick={handleConfirm}
+              className={cn(styles.confirmCta, "primary-cta")}
+            >
               Continue with {renderedBank.name}
             </button>
           </div>

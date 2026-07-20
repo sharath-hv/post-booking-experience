@@ -1,0 +1,76 @@
+/* Demo / QA segmented control — mirrors VerificationFailureReasonSwitcher */
+
+.wrap {
+  margin-top: 0;
+}
+
+.caption {
+  font-size: 11px;
+  line-height: 14px;
+  --tw-font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-medium);
+  color: #757575;
+}
+
+.demoTag {
+  color: #a6a6a6;
+}
+
+.tablist {
+  margin-top: calc(var(--spacing) * 2);
+  display: flex;
+  width: 100%;
+  flex-wrap: nowrap;
+  gap: 2px;
+  border-radius: calc(infinity * 1px);
+  border-style: var(--tw-border-style);
+  border-width: 1px;
+  border-color: #e8e8e8;
+  background-color: #f5f5f5;
+  padding: 2px;
+}
+
+.tab {
+  min-width: 0;
+  flex: 1 1 0;
+  border-radius: calc(infinity * 1px);
+  padding-inline: 4px;
+  padding-block: 6px;
+  text-align: center;
+  font-size: 10px;
+  --tw-font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-medium);
+  --tw-leading: 12px;
+  line-height: 12px;
+  white-space: nowrap;
+  transition-property: color, background-color, box-shadow;
+  transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+  transition-duration: var(--tw-duration, var(--default-transition-duration));
+}
+
+.tab:focus-visible {
+  outline-style: var(--tw-outline-style);
+  outline-width: 1px;
+  --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
+  box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  --tw-ring-color: color-mix(in oklab, #121212 20%, transparent);
+  --tw-ring-offset-width: 1px;
+  --tw-ring-offset-shadow: var(--tw-ring-inset,) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+}
+
+.tabSelected {
+  background-color: var(--color-white);
+  color: #121212;
+  --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
+  box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+}
+
+.tabIdle {
+  color: #6b7280;
+}
+
+@media (hover: hover) {
+  .tabIdle:hover {
+    color: #121212;
+  }
+}

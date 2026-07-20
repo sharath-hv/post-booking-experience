@@ -5,6 +5,8 @@ import Image from "next/image";
 import { modifySelectionSelectableCardClass } from "@/components/kyc/modify-selection-option-card-ui";
 import type { ModifySelectionCarBrandOption } from "@/lib/modify-selection-car-brands-content";
 import { cn } from "@/lib/utils";
+import styles from "./ModifySelectionCarBrandCard.module.scss";
+
 
 type ModifySelectionCarBrandCardProps = {
   brand: ModifySelectionCarBrandOption;
@@ -26,23 +28,23 @@ export function ModifySelectionCarBrandCard({
       onClick={onSelect}
       aria-pressed={selected}
       className={cn(
-        "flex h-[88px] w-full flex-col items-center overflow-hidden rounded-2xl border bg-white px-2 pb-2 pt-2 text-center transition-[background-color,border-color,transform] active:scale-[0.96] motion-reduce:active:scale-100",
+        styles.flex_4,
         modifySelectionSelectableCardClass(selected),
       )}
     >
-      <div className="flex h-12 w-[82px] shrink-0 items-center justify-center overflow-hidden rounded-lg bg-[#f5f5f5]">
-        <div className="relative size-8">
+      <div className={styles.flex_0}>
+        <div className={styles.relative_1}>
           <Image
             src={brand.logoSrc}
             alt=""
             fill
-            className="object-contain"
+            className={styles.object_contain_2}
             unoptimized
             sizes="32px"
           />
         </div>
       </div>
-      <p className="mt-auto w-full text-xs font-normal leading-[18px] text-[#121212]">
+      <p className={styles.mt_auto_3}>
         {brand.name}
       </p>
     </button>

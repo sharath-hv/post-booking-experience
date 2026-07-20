@@ -1,10 +1,13 @@
 "use client";
 
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
 
 import { KYC_ASSETS } from "@/components/kyc/kyc-assets";
 import type { TimelineStepStatus } from "@/components/kyc/WhatsNextTimeline";
+import styles from "./LoanApplicationMilestoneRail.module.scss";
+
 import {
   LOAN_APPLICATION_MILESTONES,
   routeToMilestone,
@@ -47,7 +50,7 @@ function MilestoneIcon({
 
   if (theme === "dark") {
     return (
-      <span className="relative flex h-5 w-5 shrink-0 items-center justify-center" title={label}>
+      <span className={styles.relative_0} title={label}>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
           {status === "done" ? (
             <>
@@ -102,8 +105,8 @@ function MilestoneIcon({
         : KYC_ASSETS.timelineNext;
 
   return (
-    <span className="relative flex h-5 w-5 shrink-0 items-center justify-center" title={label}>
-      <Image src={src} alt={label} fill className="object-contain" unoptimized sizes="20px" />
+    <span className={styles.relative_0} title={label}>
+      <Image src={src} alt={label} fill className={styles.object_contain_1} unoptimized sizes="20px" />
     </span>
   );
 }
@@ -187,12 +190,12 @@ export function LoanApplicationMilestoneRail({
   return (
     <div
       ref={railRef}
-      className="relative w-full min-w-0"
+      className={styles.relative_2}
       role="navigation"
       aria-label="Loan application progress"
     >
       <div
-        className="pointer-events-none absolute top-2.5 h-px"
+        className={styles.pointer_events_none_3}
         aria-hidden
         style={{
           left: connectorGrey.left,
@@ -201,7 +204,7 @@ export function LoanApplicationMilestoneRail({
         }}
       />
       <div
-        className="pointer-events-none absolute top-2.5 h-px"
+        className={styles.pointer_events_none_3}
         aria-hidden
         style={{
           left: connectorGreen.left,
@@ -210,33 +213,29 @@ export function LoanApplicationMilestoneRail({
         }}
       />
 
-      <ol className="relative flex w-full list-none items-start justify-between gap-0">
+      <ol className={styles.relative_4}>
         {LOAN_APPLICATION_MILESTONES.map((milestone, index) => {
           const status = milestoneStatus(milestone.id, activeMilestone);
           return (
             <li
               key={milestone.id}
-              className="flex min-w-0 flex-1 basis-0 flex-col items-center gap-1.5 px-0.5"
+              className={styles.flex_5}
               aria-current={status === "in_progress" ? "step" : undefined}
             >
               <div
                 ref={(el) => {
                   iconRefs.current[index] = el;
                 }}
-                className="relative z-10 flex h-5 w-5 shrink-0 items-center justify-center"
+                className={styles.relative_6}
               >
                 <MilestoneIcon status={status} theme={theme} />
               </div>
               <span
-                className={`w-full text-center text-[10px] leading-[14px] whitespace-nowrap ${
-                  status === "in_progress"
+                className={cn(styles.w_full_0, status === "in_progress"
                     ? theme === "dark"
-                      ? "font-medium text-white"
-                      : "font-medium text-[#121212]"
-                    : theme === "dark"
-                      ? "font-normal text-[#a6a6a6]"
-                      : "font-normal text-[#757575]"
-                }`}
+                      ? styles.font_medium_0
+                      : styles.labelInk
+                    : theme === "dark" ? styles.font_normal_0 : styles.font_normal_0_0)}
               >
                 {milestone.label}
               </span>

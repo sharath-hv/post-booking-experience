@@ -1,9 +1,12 @@
 "use client";
 
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import { KYC_ASSETS } from "@/components/kyc/kyc-assets";
+import styles from "./WhatsNextTimeline.module.scss";
+
 
 export type WhatsNextTimelineVariant = "default" | "compact";
 
@@ -50,13 +53,12 @@ export type WhatsNextTimelineProps = {
 };
 
 function timelineStepTitleClassName(status: TimelineStepStatus) {
-  const weight = status === "in_progress" ? "font-medium" : "font-normal";
-  return `text-sm ${weight} leading-5 text-[#121212]`;
+  const weight = status === "in_progress" ? styles.font_medium_0 : styles.font_normal_1;
+  return cn(styles.stepTitleBase, weight);
 }
 
 /** Subtext stays regular weight; only step titles vary by status. */
-const TIMELINE_STEP_DESCRIPTION_CLASS =
-  "mt-1 text-xs font-normal leading-[18px] text-[#757575]";
+const TIMELINE_STEP_DESCRIPTION_CLASS = styles.timelineStepDescription;
 
 /** Completed / active connector. */
 const CONNECTOR_ACTIVE = "#138808";
@@ -76,8 +78,8 @@ function TimelineStepIcon({ status }: { status: TimelineStepStatus }) {
     status === "done" ? "Done" : status === "in_progress" ? "In progress" : "Up next";
 
   return (
-    <span className="relative flex h-6 w-6 shrink-0 items-center justify-center" title={label}>
-      <Image src={src} alt={label} fill className="object-contain" unoptimized sizes="24px" />
+    <span className={styles.relative_0} title={label}>
+      <Image src={src} alt={label} fill className={styles.object_contain_1} unoptimized sizes="24px" />
     </span>
   );
 }
@@ -94,17 +96,17 @@ function TimelinePaymentSubStepIcon({ status }: { status: TimelineStepStatus }) 
 
   return (
     <span
-      className="relative mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center"
+      className={styles.relative_2}
       title={label}
     >
-      <Image src={src} alt={label} fill className="object-contain" unoptimized sizes="16px" />
+      <Image src={src} alt={label} fill className={styles.object_contain_1} unoptimized sizes="16px" />
     </span>
   );
 }
 
 function timelinePaymentSubStepTitleClassName(status: TimelineStepStatus) {
-  const weight = status === "in_progress" ? "font-medium" : "font-normal";
-  return `text-xs ${weight} leading-[18px] text-[#121212]`;
+  const weight = status === "in_progress" ? styles.font_medium_2 : styles.font_normal_3;
+  return cn(styles.subStepTitleBase, weight);
 }
 
 /**
@@ -210,15 +212,15 @@ export function WhatsNextTimeline({
 
   const sectionClassName =
     variant === "compact"
-      ? "rounded-2xl bg-white card-elevated p-4"
-      : "rounded-2xl bg-white card-elevated px-5 py-6";
-  const rowGapClass = variant === "compact" ? "gap-y-3" : "gap-y-4";
+      ? [styles.rounded_2xl_4, "card-elevated"].filter(Boolean).join(" ")
+      : [styles.rounded_2xl_5, "card-elevated"].filter(Boolean).join(" ");
+  const rowGapClass = variant === "compact" ? styles.gap_y_3_6 : styles.gap_y_4_7;
 
   const timelineRail = (
-    <div ref={railRef} className={`relative grid grid-cols-[24px_1fr] items-start gap-x-3 ${rowGapClass}`}>
+    <div ref={railRef} className={cn(styles.relative_0_0, rowGapClass)}>
       {connectorGreen.height > 0 ? (
         <div
-          className="pointer-events-none absolute left-3 z-0 w-px -translate-x-1/2"
+          className={styles.pointer_events_none_3}
           style={{
             top: connectorGreen.top,
             height: connectorGreen.height,
@@ -229,37 +231,37 @@ export function WhatsNextTimeline({
       ) : null}
       {connectorGrey.height > 0 ? (
         <div
-          className="pointer-events-none absolute left-3 z-0 w-px -translate-x-1/2 bg-[#e8e8e8]"
+          className={styles.pointer_events_none_4}
           style={{ top: connectorGrey.top, height: connectorGrey.height }}
           aria-hidden
         />
       ) : null}
-      <div ref={icon1Ref} className="relative z-[1] flex h-6 w-6 shrink-0 justify-center">
+      <div ref={icon1Ref} className={styles.relative_5}>
         <TimelineStepIcon status={firstStepStatus} />
       </div>
-      <div className="min-w-0">
+      <div className={styles.min_w_0_6}>
         <p className={timelineStepTitleClassName(firstStepStatus)}>{firstStepTitle}</p>
         <p className={TIMELINE_STEP_DESCRIPTION_CLASS}>{firstStepDescription}</p>
-        <hr className="mt-3 border-0 border-t border-[#e8e8e8]" />
+        <hr className={styles.mt_3_7} />
       </div>
-      <div ref={icon2Ref} className="relative z-[1] flex h-6 w-6 shrink-0 justify-center">
+      <div ref={icon2Ref} className={styles.relative_5}>
         <TimelineStepIcon status={secondStepStatus} />
       </div>
-      <div className="min-w-0">
+      <div className={styles.min_w_0_6}>
         <p className={timelineStepTitleClassName(secondStepStatus)}>{secondStepTitle}</p>
         <p className={TIMELINE_STEP_DESCRIPTION_CLASS}>{secondStepDescription}</p>
         {paymentSubSteps && paymentSubSteps.length > 0 ? (
           <ul
-            className="mt-3 space-y-3 border-l border-[#e8e8e8] pl-3"
+            className={styles.mt_3_8}
             aria-label="Payment steps"
           >
             {paymentSubSteps.map((step, index) => (
-              <li key={`${step.title}-${index}`} className="flex gap-2">
+              <li key={`${step.title}-${index}`} className={styles.flex_9}>
                 <TimelinePaymentSubStepIcon status={step.status} />
-                <div className="min-w-0">
+                <div className={styles.min_w_0_6}>
                   <p className={timelinePaymentSubStepTitleClassName(step.status)}>{step.title}</p>
                   {step.description ? (
-                    <p className="mt-0.5 text-xs font-normal leading-[18px] text-[#757575]">
+                    <p className={styles.mt_0_5_10}>
                       {step.description}
                     </p>
                   ) : null}
@@ -268,12 +270,12 @@ export function WhatsNextTimeline({
             ))}
           </ul>
         ) : null}
-        <hr className="mt-3 border-0 border-t border-[#e8e8e8]" />
+        <hr className={styles.mt_3_7} />
       </div>
-      <div ref={icon3Ref} className="relative z-[1] flex h-6 w-6 shrink-0 justify-center">
+      <div ref={icon3Ref} className={styles.relative_5}>
         <TimelineStepIcon status={thirdStepStatus} />
       </div>
-      <div className="min-w-0">
+      <div className={styles.min_w_0_6}>
         <p className={timelineStepTitleClassName(thirdStepStatus)}>{thirdStepTitle}</p>
         <p className={TIMELINE_STEP_DESCRIPTION_CLASS}>{thirdStepDescription}</p>
       </div>

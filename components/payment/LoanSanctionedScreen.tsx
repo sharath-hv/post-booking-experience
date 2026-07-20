@@ -6,6 +6,8 @@ import { useSearchParams } from "next/navigation";
 import { AmountReceivedCard, NextStepCard } from "@/components/concierge/artifacts";
 import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
 import { bankForQueryParam } from "@/components/payment/acko-drive-finance-bank";
+import styles from "./LoanSanctionedScreen.module.scss";
+
 import {
   BANK_DISBURSEMENT_INR,
   BOOKING_AMOUNT_PAID_INR,
@@ -53,7 +55,7 @@ export function LoanSanctionedScreen() {
     <ConciergeTurnShell
       says={says}
       artifact={
-        <div className="flex flex-col gap-4">
+        <div className={styles.flex_0}>
           <NextStepCard
             title={`Watch for ${PARTNER_DEALER_LABEL}'s call`}
             body="Pick up their call. They'll share the payment details so you can pay them directly."

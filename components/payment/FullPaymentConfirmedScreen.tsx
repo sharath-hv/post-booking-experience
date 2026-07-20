@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import moneyRoundIcon from "@/assets/Money round.svg";
 import { AmountReceivedCard, NextStepCard } from "@/components/concierge/artifacts";
 import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
+import styles from "./FullPaymentConfirmedScreen.module.scss";
+
 import {
   BOOKING_AMOUNT_PAID_INR,
   FULL_PAYMENT_CAR_AMOUNT_INR,
@@ -51,7 +53,7 @@ export function FullPaymentConfirmedScreen() {
     <ConciergeTurnShell
       says={says}
       artifact={
-        <div className="flex flex-col gap-4">
+        <div className={styles.flex_0}>
           <NextStepCard
             title={`Watch for ${PARTNER_DEALER_LABEL}'s call`}
             body="They'll share the payment details. Transfer the car amount directly to the dealer. Insurance will be collected separately, just before car registration."
@@ -60,7 +62,7 @@ export function FullPaymentConfirmedScreen() {
             amountInr={ON_ROAD_PRICE_INR}
             title="Your locked price"
             iconSrc={moneyRoundIcon}
-            iconBgClassName="bg-[#f0f0f0]"
+            iconBgClassName={styles.bgGray}
             rows={[
               {
                 label: "Booking amount",

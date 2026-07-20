@@ -11,6 +11,8 @@ import {
 import { BOOKING_PAYMENT_SUMMARY_INR } from "@/lib/payment-summary-demo";
 import { OVERLAY_GLASS_CARD_CLASS } from "@/lib/overlay-glass-card";
 import { cn } from "@/lib/utils";
+import styles from "./ChooseLoanPaymentSummaryCard.module.scss";
+
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -53,72 +55,70 @@ export function ChooseLoanPaymentSummaryCard({
   return (
     <div
       className={cn(
-        isGlass ? OVERLAY_GLASS_CARD_CLASS : "overflow-hidden rounded-2xl bg-white card-elevated",
+        isGlass ? OVERLAY_GLASS_CARD_CLASS : styles.overflow_hidden_12, "card-elevated",
       )}
     >
-      <div className={cn("px-4 pb-4 pt-4", !isGlass && "bg-white")}>
+      <div className={cn(styles.px_4_13, !isGlass && styles.bg_white_14)}>
         <button
           type="button"
-          className="flex w-full items-center justify-between gap-2 text-left"
+          className={styles.flex_0}
           onClick={() => setPriceBreakdownOpen((open) => !open)}
           aria-expanded={priceBreakdownOpen}
         >
-          <span className="flex min-w-0 items-center gap-1.5">
-            <span className="text-sm leading-5 text-[#121212]">ACKO Drive price</span>
+          <span className={styles.flex_1}>
+            <span className={styles.text_sm_2}>ACKO Drive price</span>
             <ChevronUp
-              className={`size-4 shrink-0 text-[#121212] transition-transform ${
-                priceBreakdownOpen ? "" : "rotate-180"
-              }`}
+              className={cn(styles.size_4_0, priceBreakdownOpen ? "" : styles.rotate_180_0)}
               aria-hidden
               strokeWidth={2}
             />
           </span>
-          <span className="shrink-0 text-sm font-medium leading-5 text-[#121212]">
+          <span className={styles.shrink_0_3}>
             {formatInr(ON_ROAD_PRICE_INR)}
           </span>
         </button>
 
         {priceBreakdownOpen ? (
-          <div className={cn("mt-3 rounded-lg bg-[#f5f5f5] px-3 py-3", isGlass && "border border-white")}>
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-xs leading-[18px] text-[#4b4b4b]">On-road price</span>
-              <span className="text-xs font-medium leading-[18px] text-[#121212]">
+          <div className={cn(styles.mt_3_15, isGlass && styles.border_16)}>
+            <div className={styles.flex_4}>
+              <span className={styles.text_xs_5}>On-road price</span>
+              <span className={styles.text_xs_6}>
                 {formatInr(ON_ROAD_LIST_PRICE_INR)}
               </span>
             </div>
-            <div className="mt-3 flex items-center justify-between gap-2">
-              <span className="text-xs leading-[18px] text-[#4b4b4b]">ACKO Drive discount</span>
-              <span className="text-xs font-medium leading-[18px] text-[#0fa457]">
+            <div className={styles.mt_3_7}>
+              <span className={styles.text_xs_5}>ACKO Drive discount</span>
+              <span className={styles.text_xs_8}>
                 -{formatInr(ACKO_DRIVE_DISCOUNT_INR)}
               </span>
             </div>
           </div>
         ) : null}
 
-        <hr className="my-4 border-0 border-t border-dashed border-[#e8e8e8]" />
+        <hr className={styles.my_4_9} />
 
-        <div className="flex items-center justify-between gap-2">
-          <span className="text-sm leading-5 text-[#121212]">Booking amount paid</span>
-          <span className="text-sm font-medium leading-5 text-[#121212]">
+        <div className={styles.flex_4}>
+          <span className={styles.text_sm_2}>Booking amount paid</span>
+          <span className={styles.text_sm_10}>
             {formatInr(BOOKING_PAYMENT_SUMMARY_INR.bookingAmountPaidInr)}
           </span>
         </div>
 
-        <hr className="my-4 border-0 border-t border-dashed border-[#e8e8e8]" />
+        <hr className={styles.my_4_9} />
 
-        <div className="flex items-center justify-between gap-2">
-          <span className="text-sm leading-5 text-[#121212]">Loan amount</span>
-          <span className="text-sm font-medium leading-5 text-[#121212]">
+        <div className={styles.flex_4}>
+          <span className={styles.text_sm_2}>Loan amount</span>
+          <span className={styles.text_sm_10}>
             {formatInr(loanAmountInr)}
           </span>
         </div>
 
         {showDownPaymentPaidRow ? (
           <>
-            <hr className="my-4 border-0 border-t border-dashed border-[#e8e8e8]" />
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-sm leading-5 text-[#121212]">Down payment paid</span>
-              <span className="text-sm font-medium leading-5 text-[#121212]">
+            <hr className={styles.my_4_9} />
+            <div className={styles.flex_4}>
+              <span className={styles.text_sm_2}>Down payment paid</span>
+              <span className={styles.text_sm_10}>
                 {formatInr(downPaymentPaidInr)}
               </span>
             </div>
@@ -129,14 +129,14 @@ export function ChooseLoanPaymentSummaryCard({
       {showRemainingFooter || !showDownPaymentPaidRow ? (
         <div
           className={cn(
-            "flex items-center justify-between gap-2 px-4 py-4",
-            isGlass ? "border-t border-dashed border-[#e8e8e8]" : "bg-[#f5f5f5]",
+            styles.flex_17,
+            isGlass ? styles.border_t_18 : styles.bg_f5f5f5__19,
           )}
         >
-          <span className="text-base font-medium leading-6 text-[#121212]">
+          <span className={styles.text_base_11}>
             {showRemainingFooter ? "Remaining down payment" : "Down payment amount"}
           </span>
-          <span className="text-base font-medium leading-6 text-[#121212]">
+          <span className={styles.text_base_11}>
             {formatInr(downPaymentAmountInr)}
           </span>
         </div>

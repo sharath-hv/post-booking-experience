@@ -1,0 +1,111 @@
+/* Component styles */
+
+.relative_0 {
+  position: relative;
+  display: flex;
+  height: 100dvh;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: #F7FAFF;
+  font-family: "Euclid Circular B", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.pointer_events_none_1 {
+  pointer-events: none;
+  position: absolute;
+  inset-inline: 0px;
+  top: 0px;
+  height: 50%;
+}
+
+.relative_2 {
+  position: relative;
+  display: flex;
+  min-height: 0px;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-inline: calc(var(--spacing) * 5);
+}
+
+._translate_y_8_3 {
+  --tw-translate-y: calc(var(--spacing) * -8);
+  translate: var(--tw-translate-x) var(--tw-translate-y);
+  display: flex;
+  width: 100%;
+  max-width: 640px;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.relative_4 {
+  position: relative;
+  display: flex;
+  height: 104px;
+  width: 104px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.h_full_5 {
+  height: 100%;
+  width: 100%;
+}
+
+.mt_6_6 {
+  margin-top: calc(var(--spacing) * 6);
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--spacing) * 3);
+}
+
+.text_center_7 {
+  text-align: center;
+  font-size: 24px;
+  --tw-font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-semibold);
+  --tw-leading: calc(var(--spacing) * 8);
+  line-height: calc(var(--spacing) * 8);
+  --tw-tracking: -0.1px;
+  letter-spacing: -0.1px;
+  color: #121212;
+}
+
+.max_w_sm_8 {
+  max-width: var(--container-sm);
+  font-size: 14px;
+  line-height: var(--tw-leading, 20px);
+  --tw-font-weight: var(--font-weight-normal);
+  font-weight: var(--font-weight-normal);
+  --tw-leading: calc(var(--spacing) * 5);
+  line-height: calc(var(--spacing) * 5);
+  color: #4b4b4b;
+}
+
+.relative_9 {
+  position: relative;
+  z-index: 10;
+  flex-shrink: 0;
+  background-color: var(--color-white);
+  padding-inline: calc(var(--spacing) * 5);
+  padding-top: calc(var(--spacing) * 3);
+}
+
+.primary_cta_10 {
+  width: 100%;
+}
+.primary_cta_10:focus-visible {
+  outline-style: var(--tw-outline-style);
+  outline-width: 1px;
+  --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
+  box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  --tw-ring-color: color-mix(in oklab, #121212 30%, transparent);
+  --tw-ring-offset-width: 2px;
+  --tw-ring-offset-shadow: var(--tw-ring-inset,) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+}
+

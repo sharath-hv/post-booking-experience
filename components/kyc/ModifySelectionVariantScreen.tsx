@@ -9,6 +9,9 @@ import { ModifySelectionScreenHeader } from "@/components/kyc/ModifySelectionScr
 import { ModifySelectionVariantCard } from "@/components/kyc/ModifySelectionVariantCard";
 import { ModifySelectionVariantFilterChips } from "@/components/kyc/ModifySelectionVariantFilterChips";
 import { writeModifySelectionVariantChoice } from "@/lib/modify-selection-variant-choice";
+import { readModifySelectionVariantPending } from "@/lib/modify-selection-variant-pending";
+import styles from "./ModifySelectionVariantScreen.module.scss";
+
 import {
   MODIFY_SELECTION_CURRENT_SELECTION_HEADING,
   MODIFY_SELECTION_PAGE_SHELL_CLASS,
@@ -46,7 +49,10 @@ export function ModifySelectionVariantScreen() {
     fuel: null,
     transmission: null,
   });
-  const [selectedVariantId, setSelectedVariantId] = useState<string | null>(null);
+  const [selectedVariantId, setSelectedVariantId] = useState<string | null>(() => {
+    const pending = readModifySelectionVariantPending();
+    return pending?.variantId ?? null;
+  });
 
   const filteredVariants = useMemo(
     () => filterModifySelectionVariants(allVariants, filters),
@@ -70,7 +76,7 @@ export function ModifySelectionVariantScreen() {
     <div className={MODIFY_SELECTION_PAGE_SHELL_CLASS}>
       <ModifySelectionScreenHeader />
 
-      <main className="mx-auto flex w-full max-w-[640px] flex-1 flex-col px-5 pb-[calc(7rem+env(safe-area-inset-bottom))] pt-2">
+      <main className={styles.mx_auto_0}>
         <ModifySelectionPageHeading
           title={MODIFY_SELECTION_VARIANT_SCREEN_TITLE}
           subline={MODIFY_SELECTION_VARIANT_SCREEN_SUBLINE}
@@ -79,30 +85,30 @@ export function ModifySelectionVariantScreen() {
         />
 
         <section
-          className="payment-success-stagger mb-6 mt-8"
+          className={[styles.payment_success_stagger_1, "payment-success-stagger"].filter(Boolean).join(" ")}
           style={{ animationDelay: `${STAGGER_CAR_SUMMARY_MS}ms` }}
           aria-labelledby="modify-selection-variant-current-selection-heading"
         >
           <h2
             id="modify-selection-variant-current-selection-heading"
-            className="text-sm font-medium leading-5 text-[#757575]"
+            className={styles.text_sm_2}
           >
             {MODIFY_SELECTION_CURRENT_SELECTION_HEADING}
           </h2>
-          <div className="mt-3">
+          <div className={styles.mt_3_3}>
             <BookingCarSummaryCard variant="detailsOnly" />
           </div>
         </section>
 
         <h2
-          className="payment-success-stagger text-sm font-medium leading-5 text-[#757575]"
+          className={[styles.payment_success_stagger_4, "payment-success-stagger"].filter(Boolean).join(" ")}
           style={{ animationDelay: `${STAGGER_SECTION_HEADING_MS}ms` }}
         >
           {MODIFY_SELECTION_AVAILABLE_VARIANTS_HEADING}
         </h2>
 
         <div
-          className="payment-success-stagger mt-4"
+          className={[styles.payment_success_stagger_5, "payment-success-stagger"].filter(Boolean).join(" ")}
           style={{ animationDelay: `${STAGGER_FILTERS_MS}ms` }}
         >
           <ModifySelectionVariantFilterChips
@@ -115,19 +121,19 @@ export function ModifySelectionVariantScreen() {
         </div>
 
         <div
-          className="mt-4 flex flex-col gap-4"
+          className={styles.mt_4_6}
           role="group"
           aria-label={MODIFY_SELECTION_AVAILABLE_VARIANTS_HEADING}
         >
           {filteredVariants.length === 0 ? (
-            <p className="text-sm font-normal leading-5 text-[#757575]">
+            <p className={styles.text_sm_7}>
               No variants match these filters. Try changing or clearing a filter.
             </p>
           ) : (
             filteredVariants.map((option, index) => (
               <div
                 key={option.id}
-                className="payment-success-stagger w-full"
+                className={[styles.payment_success_stagger_8, "payment-success-stagger"].filter(Boolean).join(" ")}
                 style={{
                   animationDelay: `${modifySelectionCardStaggerDelay(index, STAGGER_FIRST_VARIANT_MS)}ms`,
                 }}
@@ -143,13 +149,13 @@ export function ModifySelectionVariantScreen() {
         </div>
       </main>
 
-      <div className="fixed bottom-0 left-0 right-0 z-10 pb-[env(safe-area-inset-bottom)] footer-elevated">
-        <div className="mx-auto w-full max-w-[640px] bg-white px-5 py-4">
+      <div className={[styles.fixed_9, "footer-elevated"].filter(Boolean).join(" ")}>
+        <div className={styles.mx_auto_10}>
           <button
             type="button"
             disabled={selectedVariantId == null}
             onClick={onContinue}
-            className="primary-cta w-full focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/30 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-[#a0a0a0] disabled:opacity-100 disabled:hover:bg-[#a0a0a0]"
+            className={[styles.primary_cta_11, "primary-cta"].filter(Boolean).join(" ")}
           >
             Continue
           </button>

@@ -13,15 +13,15 @@ import {
 import {
   getModifySelectionCarModelsForBrand,
   modifySelectionCarModelPath,
-  MODIFY_SELECTION_CAR_MODEL_SCREEN_SUBLINE,
   modifySelectionCarModelScreenTitle,
 } from "@/lib/modify-selection-car-models-content";
 import { MODIFY_SELECTION_PAGE_SHELL_CLASS } from "@/lib/modify-selection-content";
 import { MODIFY_SELECTION_STAGGER_MS } from "@/lib/modify-selection-stagger";
+import styles from "./ModifySelectionCarModelScreen.module.scss";
+
 
 const {
   title: STAGGER_TITLE_MS,
-  subtext: STAGGER_SUBTEXT_MS,
   modelList: STAGGER_LIST_MS,
   modelStep: STAGGER_MODEL_STEP_MS,
 } = MODIFY_SELECTION_STAGGER_MS;
@@ -61,16 +61,14 @@ export function ModifySelectionCarModelScreen({ brandId }: ModifySelectionCarMod
     <div className={MODIFY_SELECTION_PAGE_SHELL_CLASS}>
       <ModifySelectionScreenHeader />
 
-      <main className="mx-auto flex w-full max-w-[640px] flex-1 flex-col px-5 pb-[env(safe-area-inset-bottom)] pt-2">
+      <main className={styles.mx_auto_0}>
         <ModifySelectionPageHeading
           title={title}
-          subline={MODIFY_SELECTION_CAR_MODEL_SCREEN_SUBLINE}
           titleDelayMs={STAGGER_TITLE_MS}
-          sublineDelayMs={STAGGER_SUBTEXT_MS}
         />
 
         <div
-          className="payment-success-stagger -mx-5 mt-8 divide-y divide-[#e8e8e8]"
+          className={[styles.payment_success_stagger_1, "payment-success-stagger"].filter(Boolean).join(" ")}
           style={{ animationDelay: `${STAGGER_LIST_MS}ms` }}
           role="list"
           aria-label={title}
@@ -78,7 +76,7 @@ export function ModifySelectionCarModelScreen({ brandId }: ModifySelectionCarMod
           {models.map((model, index) => (
             <div
               key={model.id}
-              className="payment-success-stagger w-full"
+              className={[styles.payment_success_stagger_2, "payment-success-stagger"].filter(Boolean).join(" ")}
               style={{
                 animationDelay: `${STAGGER_LIST_MS + index * STAGGER_MODEL_STEP_MS}ms`,
               }}

@@ -16,7 +16,12 @@ import {
   clearModifySelectionVariantChoice,
   readModifySelectionVariantChoice,
 } from "@/lib/modify-selection-variant-choice";
-import { writeModifySelectionVariantPending } from "@/lib/modify-selection-variant-pending";
+import {
+  readModifySelectionVariantPending,
+  writeModifySelectionVariantPending,
+} from "@/lib/modify-selection-variant-pending";
+import styles from "./ModifySelectionVariantColourScreen.module.scss";
+
 import {
   findModifySelectionVariantOption,
   modifySelectionVariantColourScreenTitle,
@@ -45,8 +50,15 @@ export function ModifySelectionVariantColourScreen() {
     readModifySelectionVariantChoice(),
   );
   const availableColours = useMemo(() => getModifySelectionAvailableColourOptions(), []);
-  const [selectedColourId, setSelectedColourId] = useState<string | null>(null);
+  const [selectedColourId, setSelectedColourId] = useState<string | null>(() => {
+    const pending = readModifySelectionVariantPending();
+    return pending?.colourId ?? null;
+  });
   const [deliverySheetOpen, setDeliverySheetOpen] = useState(false);
+  const pendingDeliveryChoice = useMemo(
+    () => readModifySelectionVariantPending()?.deliveryChoice,
+    [],
+  );
 
   const selectedVariant = useMemo(
     () => (variantId != null ? findModifySelectionVariantOption(variantId) : undefined),
@@ -107,7 +119,7 @@ export function ModifySelectionVariantColourScreen() {
     <div className={MODIFY_SELECTION_PAGE_SHELL_CLASS}>
       <ModifySelectionScreenHeader />
 
-      <main className="mx-auto flex w-full max-w-[640px] flex-1 flex-col px-5 pb-[calc(7rem+env(safe-area-inset-bottom))] pt-2">
+      <main className={styles.mx_auto_0}>
         <ModifySelectionPageHeading
           title={modifySelectionVariantColourScreenTitle(selectedVariant.name)}
           subline={MODIFY_SELECTION_VARIANT_COLOUR_SCREEN_SUBLINE}
@@ -116,14 +128,14 @@ export function ModifySelectionVariantColourScreen() {
         />
 
         <div
-          className="mt-8 flex flex-col gap-4"
+          className={styles.mt_8_1}
           role="group"
           aria-label={COLOUR_LIST_ARIA_LABEL}
         >
           {availableColours.map((option, index) => (
             <div
               key={option.id}
-              className="payment-success-stagger w-full"
+              className={[styles.payment_success_stagger_2, "payment-success-stagger"].filter(Boolean).join(" ")}
               style={{
                 animationDelay: `${modifySelectionListStaggerDelay(index, STAGGER_FIRST_COLOUR_MS)}ms`,
               }}
@@ -138,13 +150,13 @@ export function ModifySelectionVariantColourScreen() {
         </div>
       </main>
 
-      <div className="fixed bottom-0 left-0 right-0 z-10 pb-[env(safe-area-inset-bottom)] footer-elevated">
-        <div className="mx-auto w-full max-w-[640px] bg-white px-5 py-4">
+      <div className={[styles.fixed_3, "footer-elevated"].filter(Boolean).join(" ")}>
+        <div className={styles.mx_auto_4}>
           <button
             type="button"
             disabled={selectedColourId == null}
             onClick={onContinue}
-            className="primary-cta w-full focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/30 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-[#a0a0a0] disabled:opacity-100 disabled:hover:bg-[#a0a0a0]"
+            className={[styles.primary_cta_5, "primary-cta"].filter(Boolean).join(" ")}
           >
             Continue
           </button>
@@ -156,6 +168,7 @@ export function ModifySelectionVariantColourScreen() {
           open={deliverySheetOpen}
           onClose={() => setDeliverySheetOpen(false)}
           onConfirm={onDeliveryConfirm}
+          initialDeliveryChoice={pendingDeliveryChoice}
           expressDeliveryPriceInr={selectedColour.ackoDrivePriceInr}
           expressDeliveryLine={selectedColour.deliveryLine}
         />

@@ -20,9 +20,12 @@ import bookingCancelledIllustration from "@/assets/Booking cancelled.svg";
 import standardDeliveryIllustration from "@/assets/standard delivery.svg";
 import changeCarIllustration from "@/assets/Change car.svg";
 import radioOffIcon from "@/assets/Radio button off.svg";
+import radioOnIcon from "@/assets/Radio button on.svg";
 import clockIcon from "@/assets/Time.svg";
 import lockIcon from "@/assets/lock.svg";
 import moneyIcon from "@/assets/money.svg";
+import styles from "./ConciergeAllocationFailedScreen.module.scss";
+
 
 const BOOKING_LOCK_LABEL = `₹${BOOKING_LOCK_AMOUNT_INR.toLocaleString("en-IN")}`;
 const STANDARD_DELIVERY_DATE =
@@ -30,21 +33,13 @@ const STANDARD_DELIVERY_DATE =
 
 type AllocationFailedOptionId = "standard_delivery" | "different_car" | "refund";
 
-/** Radio glyph — matches `ChoosePaymentOptionsScreen` (asset off, inline purple on). */
+/** Radio glyph — on/off from `assets/` (#121212 selected). */
 function RadioIndicator({ selected }: { selected: boolean }) {
-  if (!selected) {
-    return (
-      <span className="relative h-4 w-4 shrink-0" aria-hidden>
-        <Image src={radioOffIcon} alt="" fill className="object-contain" unoptimized sizes="16px" />
-      </span>
-    );
-  }
+  const src = selected ? radioOnIcon : radioOffIcon;
+
   return (
-    <span className="relative h-4 w-4 shrink-0" aria-hidden>
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="h-4 w-4">
-        <circle cx="8" cy="8" r="7.4" stroke="#5920C5" strokeWidth="1.2" />
-        <circle cx="8" cy="8" r="4" fill="#5920C5" />
-      </svg>
+    <span className={styles.relative_0} aria-hidden>
+      <Image src={src} alt="" fill className={styles.object_contain_1} unoptimized sizes="16px" />
     </span>
   );
 }
@@ -75,39 +70,39 @@ function AllocationFailedOptionCard({
       onClick={onSelect}
       aria-pressed={selected}
       className={cn(
-        "w-full rounded-2xl border p-4 text-left transition-colors card-elevated",
+        styles.w_full_13, "card-elevated",
         selected
-          ? "border-[#bda6e8] bg-white bg-[linear-gradient(to_bottom,#f4eefe,rgba(244,238,254,0))]"
-          : "border-transparent bg-white",
+          ? styles.border_selected_1
+          : styles.border_transparent_1,
       )}
     >
-      <div className="flex items-start justify-between">
-        <div className="relative h-12 w-12 shrink-0">
+      <div className={styles.flex_3}>
+        <div className={styles.relative_4}>
           <Image
             src={illustrationSrc}
             alt=""
             fill
-            className="object-contain object-left"
+            className={styles.object_contain_5}
             unoptimized
             sizes="48px"
           />
         </div>
-        <span className="mt-0.5 flex shrink-0">
+        <span className={styles.mt_0_5_6}>
           <RadioIndicator selected={selected} />
         </span>
       </div>
 
-      <p className="mt-3 text-base font-medium leading-6 text-[#121212]">
+      <p className={styles.mt_3_7}>
         {title}
       </p>
-      <p className="mt-1 text-xs leading-4 text-[#4b4b4b]">{subtitle}</p>
+      <p className={styles.mt_1_8}>{subtitle}</p>
 
       {/* Decision-driving fact — same dashed-separator slot the payment cards use for their steps. */}
-      <div className="mt-3 flex items-center gap-2 border-t border-dashed border-[#dcdbe1] pt-3">
-        <span className="relative h-4 w-4 shrink-0">
-          <Image src={detailIcon} alt="" fill className="object-contain" unoptimized sizes="16px" />
+      <div className={styles.mt_3_9}>
+        <span className={styles.relative_0}>
+          <Image src={detailIcon} alt="" fill className={styles.object_contain_1} unoptimized sizes="16px" />
         </span>
-        <span className="min-w-0 text-xs leading-5 text-[#4b4b4b]">{detail}</span>
+        <span className={styles.min_w_0_10}>{detail}</span>
       </div>
     </button>
   );
@@ -159,7 +154,7 @@ export function ConciergeAllocationFailedScreen() {
       says={["I'm sorry, Sharath. I couldn't find your car.", bodyLine]}
       dateHolder="you"
       artifact={
-        <div className="flex w-full flex-col gap-4">
+        <div className={styles.flex_11}>
           <AllocationFailedOptionCard
             selected={choice === "standard_delivery"}
             onSelect={() => setChoice("standard_delivery")}
@@ -170,7 +165,7 @@ export function ConciergeAllocationFailedScreen() {
             detail={
               <>
                 Estimated delivery by{" "}
-                <span className="font-semibold text-[#121212]">{STANDARD_DELIVERY_DATE}</span>
+                <span className={styles.font_semibold_12}>{STANDARD_DELIVERY_DATE}</span>
               </>
             }
           />
@@ -184,7 +179,7 @@ export function ConciergeAllocationFailedScreen() {
             detail={
               <>
                 No change fee. Your{" "}
-                <span className="font-semibold text-[#121212]">{BOOKING_LOCK_LABEL}</span> carries over.
+                <span className={styles.font_semibold_12}>{BOOKING_LOCK_LABEL}</span> carries over.
               </>
             }
           />
@@ -197,7 +192,7 @@ export function ConciergeAllocationFailedScreen() {
             detailIcon={moneyIcon}
             detail={
               <>
-                Full <span className="font-semibold text-[#121212]">{BOOKING_LOCK_LABEL}</span> back in
+                Full <span className={styles.font_semibold_12}>{BOOKING_LOCK_LABEL}</span> back in
                 5–7 days.
               </>
             }

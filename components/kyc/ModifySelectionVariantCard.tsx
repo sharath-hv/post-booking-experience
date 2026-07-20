@@ -19,6 +19,8 @@ import {
   type ModifySelectionVariantOption,
 } from "@/lib/modify-selection-variants-content";
 import { cn } from "@/lib/utils";
+import styles from "./ModifySelectionVariantCard.module.scss";
+
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -59,55 +61,55 @@ export function ModifySelectionVariantCard({
     : BOOKING_STANDARD_DELIVERY_TEXT_CLASS;
   const deliveryParts = splitBookingDeliveryLine(option.deliveryLine);
 
-  const cardClassName = modifySelectionSelectableCardClassName(selected, readOnly, "p-4");
+  const cardClassName = modifySelectionSelectableCardClassName(selected, readOnly, styles.p4);
 
   const cardBody = (
     <>
-      <div className="flex items-start justify-between gap-3">
-        <p className="min-w-0 flex-1 text-base font-medium leading-6 text-[#121212]">{option.name}</p>
+      <div className={styles.flex_0}>
+        <p className={styles.min_w_0_1}>{option.name}</p>
         {!readOnly ? (
-          <span className="mt-0.5 flex shrink-0">
+          <span className={styles.mt_0_5_2}>
             <ModifySelectionRadioIndicator selected={selected} />
           </span>
         ) : null}
       </div>
 
-      <p className="mt-0.5 text-xs leading-4 text-[#757575]">
+      <p className={styles.mt_0_5_3}>
         {formatModifySelectionVariantSpecs(option)}
       </p>
 
-      <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
-        <span className="text-sm font-semibold leading-5 text-[#121212]">
+      <div className={styles.mt_1_5_4}>
+        <span className={styles.text_sm_5}>
           {formatInrLakhLabel(option.ackoDrivePriceInr)}
         </span>
-        <span className="text-xs font-normal leading-4 text-[#757575] line-through">
+        <span className={styles.text_xs_6}>
           {formatInrLakhLabel(option.onRoadListPriceInr)}
         </span>
         {savingsInr > 0 ? (
-          <span className="text-xs font-medium leading-4 text-[#0fa457]">
+          <span className={styles.text_xs_7}>
             Save {formatInr(savingsInr)}
           </span>
         ) : null}
       </div>
 
-      <div className="mt-2 flex items-center gap-1">
-        <p className={cn("text-xs font-normal leading-4", deliveryTextClass)}>
+      <div className={styles.mt_2_8}>
+        <p className={cn(styles.text_xs_12, deliveryTextClass)}>
           {deliveryParts ? (
             <>
               {deliveryParts.prefix}
-              <span className="font-medium">{deliveryParts.date}</span>
+              <span className={styles.font_medium_9}>{deliveryParts.date}</span>
             </>
           ) : (
             option.deliveryLine
           )}
         </p>
-        <span className="relative size-4 shrink-0" aria-hidden>
+        <span className={styles.relative_10} aria-hidden>
           <Image
             src={deliveryIconSrc}
             alt=""
             width={16}
             height={16}
-            className="size-4 object-contain"
+            className={styles.size_4_11}
             unoptimized
             sizes="16px"
           />

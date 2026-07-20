@@ -96,9 +96,6 @@ export function modifySelectionCarModelScreenTitle(brandName: string): string {
   return `Which model of ${brandName}?`;
 }
 
-export const MODIFY_SELECTION_CAR_MODEL_SCREEN_SUBLINE =
-  "Pick one and I'll show you the variants on offer.";
-
 export function modifySelectionCarModelPath(brandId: string, modelId?: string): string {
   const base = `/kyc/modify-selection/different-car/${brandId}`;
   return modelId ? `${base}/${modelId}` : base;

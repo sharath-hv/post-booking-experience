@@ -1,0 +1,23 @@
+/* Component styles */
+
+.relative_0 {
+  position: relative;
+  display: flex;
+  min-height: 100dvh;
+  flex-direction: column;
+  background-color: var(--color-white);
+  font-family: "Euclid Circular B", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.relative_1 {
+  position: relative;
+  z-index: 10;
+  margin-inline: auto;
+  display: flex;
+  width: 100%;
+  min-height: 0px;
+  max-width: 640px;
+  flex: 1;
+  flex-direction: column;
+}
+

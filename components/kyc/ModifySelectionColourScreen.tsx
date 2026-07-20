@@ -20,7 +20,12 @@ import {
   MODIFY_SELECTION_CURRENT_SELECTION_HEADING,
   MODIFY_SELECTION_PAGE_SHELL_CLASS,
 } from "@/lib/modify-selection-content";
-import { writeModifySelectionColourPending } from "@/lib/modify-selection-colour-pending";
+import {
+  readModifySelectionColourPending,
+  writeModifySelectionColourPending,
+} from "@/lib/modify-selection-colour-pending";
+import styles from "./ModifySelectionColourScreen.module.scss";
+
 import {
   modifySelectionCardStaggerDelay,
   MODIFY_SELECTION_STAGGER_MS,
@@ -41,8 +46,15 @@ const {
 export function ModifySelectionColourScreen() {
   const router = useRouter();
   const availableColours = useMemo(() => getModifySelectionAvailableColourOptions(), []);
-  const [selectedColourId, setSelectedColourId] = useState<string | null>(null);
+  const [selectedColourId, setSelectedColourId] = useState<string | null>(() => {
+    const pending = readModifySelectionColourPending();
+    return pending?.colourId ?? null;
+  });
   const [deliverySheetOpen, setDeliverySheetOpen] = useState(false);
+  const pendingDeliveryChoice = useMemo(
+    () => readModifySelectionColourPending()?.deliveryChoice,
+    [],
+  );
 
   const selectedColour = useMemo(
     () => availableColours.find((option) => option.id === selectedColourId) ?? null,
@@ -82,63 +94,73 @@ export function ModifySelectionColourScreen() {
     <div className={MODIFY_SELECTION_PAGE_SHELL_CLASS}>
       <ModifySelectionScreenHeader />
 
-      <main className="mx-auto flex w-full max-w-[640px] flex-1 flex-col px-5 pb-[calc(7rem+env(safe-area-inset-bottom))] pt-2">
-        <ModifySelectionPageHeading
-          title={MODIFY_SELECTION_COLOUR_SCREEN_TITLE}
-          subline={MODIFY_SELECTION_COLOUR_SCREEN_SUBLINE}
-          titleDelayMs={STAGGER_TITLE_MS}
-          sublineDelayMs={STAGGER_SUBTEXT_MS}
-        />
+      <main className={styles.mx_auto_0}>
+        <header className={styles.lead}>
+          <ModifySelectionPageHeading
+            title={MODIFY_SELECTION_COLOUR_SCREEN_TITLE}
+            subline={MODIFY_SELECTION_COLOUR_SCREEN_SUBLINE}
+            titleDelayMs={STAGGER_TITLE_MS}
+            sublineDelayMs={STAGGER_SUBTEXT_MS}
+          />
+        </header>
 
         <section
-          className="payment-success-stagger mb-6 mt-8"
+          className={[styles.currentSelection, "payment-success-stagger"].filter(Boolean).join(" ")}
           style={{ animationDelay: `${STAGGER_CAR_SUMMARY_MS}ms` }}
           aria-labelledby="modify-selection-current-selection-heading"
         >
           <h2
             id="modify-selection-current-selection-heading"
-            className="text-sm font-medium leading-5 text-[#757575]"
+            className={styles.currentSelectionLabel}
           >
             {MODIFY_SELECTION_CURRENT_SELECTION_HEADING}
           </h2>
-          <div className="mt-3">
-            <BookingCarSummaryCard variant="detailsOnly" />
-          </div>
+          <BookingCarSummaryCard variant="detailsOnly" />
         </section>
 
-        <h2
-          className="payment-success-stagger text-sm font-medium leading-5 text-[#757575]"
-          style={{ animationDelay: `${STAGGER_SECTION_HEADING_MS}ms` }}
+        <section
+          className={styles.availableColours}
+          aria-labelledby="modify-selection-available-colours-heading"
         >
-          {MODIFY_SELECTION_AVAILABLE_COLOURS_HEADING}
-        </h2>
+          <h2
+            id="modify-selection-available-colours-heading"
+            className={[styles.availableColoursHeading, "payment-success-stagger"].filter(Boolean).join(" ")}
+            style={{ animationDelay: `${STAGGER_SECTION_HEADING_MS}ms` }}
+          >
+            {MODIFY_SELECTION_AVAILABLE_COLOURS_HEADING}
+          </h2>
 
-        <div className="mt-4 flex flex-col gap-4" role="group" aria-label={MODIFY_SELECTION_AVAILABLE_COLOURS_HEADING}>
-          {availableColours.map((option, index) => (
-            <div
-              key={option.id}
-              className="payment-success-stagger w-full"
-              style={{
-                animationDelay: `${modifySelectionCardStaggerDelay(index, STAGGER_FIRST_COLOUR_MS)}ms`,
-              }}
-            >
-              <ModifySelectionColourCard
-                option={option}
-                selected={selectedColourId === option.id}
-                onSelect={() => setSelectedColourId(option.id)}
-              />
-            </div>
-          ))}
-        </div>
+          <div
+            className={styles.colourList}
+            role="group"
+            aria-label={MODIFY_SELECTION_AVAILABLE_COLOURS_HEADING}
+          >
+            {availableColours.map((option, index) => (
+              <div
+                key={option.id}
+                className={[styles.colourListItem, "payment-success-stagger"].filter(Boolean).join(" ")}
+                style={{
+                  animationDelay: `${modifySelectionCardStaggerDelay(index, STAGGER_FIRST_COLOUR_MS)}ms`,
+                }}
+              >
+                <ModifySelectionColourCard
+                  option={option}
+                  selected={selectedColourId === option.id}
+                  onSelect={() => setSelectedColourId(option.id)}
+                />
+              </div>
+            ))}
+          </div>
+        </section>
       </main>
 
-      <div className="fixed bottom-0 left-0 right-0 z-10 pb-[env(safe-area-inset-bottom)] footer-elevated">
-        <div className="mx-auto w-full max-w-[640px] bg-white px-5 py-4">
+      <div className={[styles.fixed_7, "footer-elevated"].filter(Boolean).join(" ")}>
+        <div className={styles.mx_auto_8}>
           <button
             type="button"
             disabled={selectedColourId == null}
             onClick={onContinue}
-            className="primary-cta w-full focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/30 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-[#a0a0a0] disabled:opacity-100 disabled:hover:bg-[#a0a0a0]"
+            className={[styles.primary_cta_9, "primary-cta"].filter(Boolean).join(" ")}
           >
             Continue
           </button>
@@ -150,6 +172,7 @@ export function ModifySelectionColourScreen() {
           open={deliverySheetOpen}
           onClose={() => setDeliverySheetOpen(false)}
           onConfirm={onDeliveryConfirm}
+          initialDeliveryChoice={pendingDeliveryChoice}
           expressDeliveryPriceInr={selectedColour.ackoDrivePriceInr}
           expressDeliveryLine={selectedColour.deliveryLine}
         />

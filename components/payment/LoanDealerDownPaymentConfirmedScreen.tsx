@@ -7,6 +7,8 @@ import { AmountReceivedCard } from "@/components/concierge/artifacts";
 import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
 import { ShimmerInfoCard } from "@/components/ui/ShimmerInfoCard";
 import { bankForQueryParam } from "@/components/payment/acko-drive-finance-bank";
+import styles from "./LoanDealerDownPaymentConfirmedScreen.module.scss";
+
 import {
   BANK_DISBURSEMENT_INR,
   cashDownPaymentDueInr,
@@ -67,7 +69,7 @@ export function LoanDealerDownPaymentConfirmedScreen() {
     <ConciergeTurnShell
       says={says}
       artifact={
-        <div className="flex flex-col gap-4">
+        <div className={styles.flex_0}>
           <AmountReceivedCard
             amountInr={loanAmountInr}
             title={`${bank.name} disbursement · in progress`}

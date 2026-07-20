@@ -15,8 +15,8 @@ export type BookingLockSuccessOptions = {
 /**
  * After booking-lock payment.
  * Initial lock (no `returnSource`) lands on the concierge arrival at
- * `/payment/booking-success`; modify-selection returns keep the celebration
- * at `/kyc/booking-confirmed`.
+ * `/payment/booking-success`; modify-selection returns use the auto-advance
+ * payment-received ack at `/kyc/booking-confirmed` (next route journey-aware).
  */
 export function buildBookingLockSuccessHref(
   paidInr: number,

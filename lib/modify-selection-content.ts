@@ -1,6 +1,11 @@
+import calendarIcon from "@/assets/Calender.svg";
+import carPriceIcon from "@/assets/car price.svg";
 import changeCarIcon from "@/assets/Change car.svg";
+import moneyIcon from "@/assets/money.svg";
 import type { StaticImageData } from "next/image";
 
+import type { BottomSheetConfirmBulletPoint } from "@/components/ui/BottomSheetConfirmBulletList";
+import { readChangeEntryStage } from "@/lib/change-policy";
 import {
   isModifyNoChargesFlow,
   isModifyWithChargesFlow,
@@ -8,46 +13,50 @@ import {
   type ExperienceFlow,
 } from "@/lib/experience-flow";
 import { MODIFY_BOOKING_CHANGE_FEE_INR } from "@/lib/manage-booking-modify";
+import styles from "./modify-selection-content.module.scss";
+
 
 export const MODIFY_SELECTION_PATH = "/kyc/modify-selection";
 
 /** White page shell for modify-selection routes — not concierge `#F7FAFF`. */
-export const MODIFY_SELECTION_PAGE_SHELL_CLASS = "min-h-dvh bg-white font-sans";
+export const MODIFY_SELECTION_PAGE_SHELL_CLASS = styles.modifySelectionPageShell;
 
 export const MODIFY_SELECTION_TITLE = "What would you like to change, Sharath?";
 
 export const MODIFY_SELECTION_SUBLINE_NO_CHARGES =
-  "No change fee applies. Your current booking stays active while you make changes.";
+  "No change fee. Your current pick stays put while you explore.";
 
 export const MODIFY_SELECTION_SUBLINE_WITH_CHARGES =
-  "A booking change fee of ₹5,000 applies. Your current booking stays active while you make changes.";
+  "A ₹5,000 change fee applies. Your current pick stays put while you explore.";
 
 /** @deprecated Use {@link resolveModifySelectionSubline}. */
 export const MODIFY_SELECTION_SUBLINE = MODIFY_SELECTION_SUBLINE_NO_CHARGES;
 
 export function resolveModifySelectionSubline(flow?: ExperienceFlow): string {
   const active = flow ?? readExperienceFlow();
-  if (isModifyWithChargesFlow(active)) {
-    return MODIFY_SELECTION_SUBLINE_WITH_CHARGES;
-  }
   if (isModifyNoChargesFlow(active)) {
     return MODIFY_SELECTION_SUBLINE_NO_CHARGES;
+  }
+  if (isModifyWithChargesFlow(active) || readChangeEntryStage() === "post") {
+    return MODIFY_SELECTION_SUBLINE_WITH_CHARGES;
   }
   return MODIFY_SELECTION_SUBLINE_NO_CHARGES;
 }
 
-const MODIFY_SELECTION_CONFIRM_CHANGE_FEE_BULLET = `A booking change fee of ₹${MODIFY_BOOKING_CHANGE_FEE_INR.toLocaleString("en-IN")} is applicable for this change.`;
+const MODIFY_SELECTION_CONFIRM_CHANGE_FEE_BULLET = `A ₹${MODIFY_BOOKING_CHANGE_FEE_INR.toLocaleString("en-IN")} one-time change fee applies for this.`;
 
-/** Confirm-sheet bullets — includes change-fee point in the modify-with-charges flow. */
+/** Confirm-sheet bullets — includes change-fee point when post-allocation / with-charges. */
 export function resolveModifySelectionConfirmPoints(
   choiceId: ModifySelectionChoiceId,
   flow?: ExperienceFlow,
-): readonly string[] {
+): readonly BottomSheetConfirmBulletPoint[] {
   const option = MODIFY_SELECTION_OPTIONS.find((o) => o.id === choiceId);
   if (option == null) return [];
 
   const active = flow ?? readExperienceFlow();
-  if (!isModifyWithChargesFlow(active)) {
+  const showChangeFee =
+    isModifyWithChargesFlow(active) || readChangeEntryStage() === "post";
+  if (!showChangeFee) {
     return option.confirmPoints;
   }
 
@@ -68,56 +77,77 @@ export type ModifySelectionOption = {
   continueCtaLabel: string;
   continuePath: string;
   confirmHeader: string;
-  /** Bullet points in confirm bottom sheet (grey container + tick icons). */
-  confirmPoints: readonly string[];
+  /** Bullet points in confirm bottom sheet (tick by default; date bullets use calendar). */
+  confirmPoints: readonly BottomSheetConfirmBulletPoint[];
 };
 
 export const MODIFY_SELECTION_OPTIONS: readonly ModifySelectionOption[] = [
   {
     id: "colour",
     title: "Change colour",
-    description:
-      "Pick a different colour for your Creta. Price may vary by colour.",
+    description: "Swap to another colour on your Creta — price can shift a little.",
     illustrationSrc: changeCarIcon,
     continueCtaLabel: "See available colours",
     continuePath: "/kyc/modify-selection/colour",
-    confirmHeader: "Before you change the colour",
+    confirmHeader: "Quick check before we switch colour",
     confirmPoints: [
-      "Your ₹10,000 booking amount carries forward to your new colour selection.",
-      "Delivery date will be updated based on the availability of your chosen colour.",
+      {
+        content: "Your ₹10,000 price lock carries forward to the new colour.",
+        icon: moneyIcon,
+      },
+      {
+        content: "I'll update the delivery date once we know the colour's availability.",
+        icon: calendarIcon,
+      },
     ],
   },
   {
     id: "variant",
     title: "Change variant",
-    description:
-      "Upgrade or switch to another Creta variant. Price will be updated based on your new choice.",
+    description: "Step up or switch Creta variants — I'll refresh the price for you.",
     illustrationSrc: changeCarIcon,
     continueCtaLabel: "See available variants",
     continuePath: "/kyc/modify-selection/variant",
-    confirmHeader: "Before you change the variant",
+    confirmHeader: "Quick check before we switch variant",
     confirmPoints: [
-      "Your ₹10,000 booking amount carries forward to your new variant selection.",
-      "Price will be updated based on the variant you choose.",
-      "Delivery date will be updated based on availability of your new variant.",
+      {
+        content: "Your ₹10,000 price lock carries forward to the new variant.",
+        icon: moneyIcon,
+      },
+      {
+        content: "I'll update the price for the variant you pick.",
+        icon: carPriceIcon,
+      },
+      {
+        content: "Delivery may move depending on that variant's availability.",
+        icon: calendarIcon,
+      },
     ],
   },
   {
     id: "different_car",
     title: "Choose a different car",
-    description:
-      "Browse other models from Hyundai or explore cars from other brands.",
+    description: "Browse other Hyundais — or cars from another brand entirely.",
     illustrationSrc: changeCarIcon,
     continueCtaLabel: "Browse cars",
     continuePath: "/kyc/modify-selection/different-car",
-    confirmHeader: "Before you choose a different car",
+    confirmHeader: "Quick check before we switch cars",
     confirmPoints: [
-      "Your ₹10,000 booking amount carries forward to your new car selection.",
-      "Price will be updated based on the car you choose.",
-      "Delivery date will be updated based on availability of your new car.",
+      {
+        content: "Your ₹10,000 price lock carries forward to the new car.",
+        icon: moneyIcon,
+      },
+      {
+        content: "I'll update the price for the car you pick.",
+        icon: carPriceIcon,
+      },
+      {
+        content: "Delivery will follow whatever that car can actually do.",
+        icon: calendarIcon,
+      },
     ],
   },
-] as const;
+];
 
 export function modifySelectionChoiceSlugToId(slug: string): ModifySelectionChoiceId | undefined {
   if (slug === "different-car") return "different_car";

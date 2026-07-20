@@ -3,12 +3,13 @@ import type { StaticImageData } from "next/image";
 import type { ReactNode } from "react";
 
 import { publicAssetPath } from "@/lib/public-asset-path";
+import styles from "./BottomSheetConfirmBulletList.module.scss";
+
 
 const BULLET_ICON = publicAssetPath("tick.svg");
 
 /** Tick bullets — shared by payment / modify confirm bottom sheets. */
-export const BOTTOM_SHEET_CONFIRM_BULLET_LIST_CLASS =
-  "mt-5 w-full list-none space-y-5";
+export const BOTTOM_SHEET_CONFIRM_BULLET_LIST_CLASS = styles.bottomSheetConfirmBulletList;
 
 export type BottomSheetConfirmBulletPoint =
   | string
@@ -36,9 +37,9 @@ export function BottomSheetConfirmBulletList({ id, points }: BottomSheetConfirmB
       {points.map((point, index) => {
         const { content, icon } = resolveBulletPoint(point);
         return (
-          <li key={index} className="flex gap-3">
+          <li key={index} className={styles.flex_0}>
             <div
-              className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#f5f5f5]"
+              className={styles.relative_1}
               aria-hidden
             >
               <Image
@@ -46,12 +47,12 @@ export function BottomSheetConfirmBulletList({ id, points }: BottomSheetConfirmB
                 alt=""
                 width={20}
                 height={20}
-                className="h-5 w-5 object-contain"
+                className={styles.h_5_2}
                 unoptimized
                 sizes="20px"
               />
             </div>
-            <p className="min-w-0 flex-1 self-center text-left text-sm font-normal leading-5 text-[#121212]">
+            <p className={styles.min_w_0_3}>
               {content}
             </p>
           </li>

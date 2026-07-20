@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import styles from "./WordByWordLine.module.scss";
 
 const DEFAULT_MS = 90;
 
@@ -15,7 +16,7 @@ type WordByWordLineProps = {
   onComplete?: () => void;
   /** Optional accessible name (e.g. full sentence while words animate visually). */
   ariaLabel?: string;
-  /** Tailwind duration class for each word’s opacity transition (default `duration-200`). */
+  /** CSS module class for each word’s opacity transition duration. */
   wordOpacityDurationClassName?: string;
   /**
    * When false, word reveal is paused (e.g. wait for a hero asset). When it becomes true,
@@ -34,7 +35,7 @@ export function WordByWordLine({
   as: Tag = "p",
   onComplete,
   ariaLabel,
-  wordOpacityDurationClassName = "duration-200",
+  wordOpacityDurationClassName = styles.duration200,
   startWhen = true,
 }: WordByWordLineProps) {
   const words = useMemo(() => text.trim().split(/\s+/).filter(Boolean), [text]);
@@ -85,9 +86,7 @@ export function WordByWordLine({
       {words.map((word, idx) => (
         <span
           key={idx}
-          className={`inline transition-opacity ${wordOpacityDurationClassName} ${
-            idx < visibleCount ? "opacity-100" : "opacity-0"
-          }`}
+          className={[styles.word, wordOpacityDurationClassName, idx < visibleCount ? styles.opacity_100 : styles.opacity_0].filter(Boolean).join(" ")}
         >
           {word}
           {idx < words.length - 1 ? " " : ""}

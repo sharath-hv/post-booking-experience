@@ -14,6 +14,8 @@ import {
 import { useLoanApplicationBank } from "@/components/payment/loan-application/use-loan-application-bank";
 import type { LoanApplicationRoute } from "@/lib/loan-application-content";
 import { loanApplicationPrevPath } from "@/lib/loan-application-urls";
+import styles from "./LoanApplicationShell.module.scss";
+
 
 type LoanApplicationShellProps = {
   currentRoute: LoanApplicationRoute;
@@ -32,8 +34,8 @@ export function LoanApplicationShell({ currentRoute, children }: LoanApplication
   }, [bankId, currentRoute, router]);
 
   return (
-    <div className="relative flex min-h-dvh flex-col bg-white font-sans">
-      <div className="relative z-10 mx-auto flex w-full min-h-0 max-w-[640px] flex-1 flex-col">
+    <div className={styles.relative_0}>
+      <div className={styles.relative_1}>
         <div className={LOAN_APPLICATION_HEADER_CLASS}>
           <KycTopNavHeader
             inverted

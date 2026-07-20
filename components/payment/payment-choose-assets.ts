@@ -2,11 +2,13 @@ import { publicAssetPath } from "@/lib/public-asset-path";
 
 import ackoDriveFinanceIllustration from "@/assets/ACKO Drive finance.svg";
 import fullCashIllustration from "@/assets/Full cash.svg";
+import radioOffIcon from "@/assets/Radio button off.svg";
+import radioOnIcon from "@/assets/Radio button on.svg";
 import selfFinanceIllustration from "@/assets/Self finance.svg";
 
 /**
  * Choose payment screen — illustrations + radio states.
- * Card illustrations are imported from `assets/`; radio and sheet art use `public/assets/`.
+ * Card illustrations and radios are imported from `assets/`; sheet art uses `public/assets/`.
  */
 const asset = publicAssetPath;
 
@@ -15,8 +17,8 @@ export const PAYMENT_CHOOSE_ASSETS = {
   ackoDriveFinance: ackoDriveFinanceIllustration,
   selfFinance: selfFinanceIllustration,
   fullCash: fullCashIllustration,
-  radioOn: asset("Radio button on.svg"),
-  radioOff: asset("Radio button off.svg"),
+  radioOn: radioOnIcon,
+  radioOff: radioOffIcon,
   /** Loan summary — bank building (synced from repo `assets/bank.svg`). */
   bank: asset("bank.svg"),
   /** Sanctioned / disbursement amount sheet art (synced from repo `assets/sanctioned amount.svg`). */

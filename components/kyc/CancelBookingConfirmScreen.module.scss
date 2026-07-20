@@ -1,0 +1,95 @@
+/* Component styles */
+
+.relative_0 {
+  position: relative;
+  min-height: 100dvh;
+  background-color: #F7FAFF;
+  font-family: "Euclid Circular B", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.relative_1 {
+  position: relative;
+  z-index: 10;
+  margin-inline: auto;
+  display: flex;
+  width: 100%;
+  max-width: 640px;
+  flex: 1;
+  flex-direction: column;
+}
+
+.flex_2 {
+  display: flex;
+  min-height: 0px;
+  flex: 1;
+  flex-direction: column;
+}
+
+.px_5_3 {
+  padding-inline: calc(var(--spacing) * 5);
+  padding-top: calc(var(--spacing) * 2);
+  padding-bottom: calc(var(--spacing) * 5);
+}
+
+.payment_success_stagger_4 {
+  font-size: 16px;
+  line-height: var(--tw-leading, 24px);
+  --tw-font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-medium);
+  --tw-leading: calc(var(--spacing) * 6);
+  line-height: calc(var(--spacing) * 6);
+  color: #D16900;
+}
+
+.payment_success_stagger_5 {
+  margin-top: calc(var(--spacing) * 2);
+  font-size: 24px;
+  line-height: var(--tw-leading, 32px);
+  --tw-font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-semibold);
+  --tw-leading: calc(var(--spacing) * 8);
+  line-height: calc(var(--spacing) * 8);
+  --tw-tracking: -0.1px;
+  letter-spacing: -0.1px;
+  color: #121212;
+}
+
+.payment_success_stagger_6 {
+  margin-top: calc(var(--spacing) * 6);
+}
+
+.px_5_7 {
+  padding-inline: calc(var(--spacing) * 5);
+  padding-top: calc(var(--spacing) * 8);
+}
+
+.payment_success_stagger_8 {
+  font-size: 16px;
+  line-height: var(--tw-leading, 24px);
+  --tw-font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-medium);
+  --tw-leading: calc(var(--spacing) * 6);
+  line-height: calc(var(--spacing) * 6);
+  color: #121212;
+}
+
+.payment_success_stagger_9 {
+  margin-top: calc(var(--spacing) * 4);
+  width: 100%;
+}
+
+.payment_success_stagger_10 {
+  margin-top: calc(var(--spacing) * 8);
+  font-size: 16px;
+  line-height: var(--tw-leading, 24px);
+  --tw-font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-medium);
+  --tw-leading: calc(var(--spacing) * 6);
+  line-height: calc(var(--spacing) * 6);
+  color: #121212;
+}
+
+.payment_success_stagger_11 {
+  margin-top: calc(var(--spacing) * 4);
+}
+

@@ -1,0 +1,44 @@
+/* Component styles */
+
+.flex_0 {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--spacing) * 3);
+  border-radius: var(--radius-2xl);
+  background-color: var(--color-white);
+  padding-inline: calc(var(--spacing) * 3);
+  padding-block: calc(var(--spacing) * 3);
+  text-align: left;
+}
+
+.relative_1 {
+  position: relative;
+  height: calc(var(--spacing) * 5);
+  width: calc(var(--spacing) * 5);
+  flex-shrink: 0;
+}
+
+.object_contain_2 {
+  object-fit: contain;
+}
+
+.min_w_0_3 {
+  min-width: 0px;
+  font-size: 12px;
+  line-height: var(--tw-leading, 16px);
+  --tw-leading: 18px;
+  line-height: 18px;
+  color: #121212;
+}
+
+.font_medium_4 {
+  --tw-font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-medium);
+  color: #121212;
+}
+
+
+.mt_1_0 {
+  margin-top: var(--spacing);
+  color: #121212;
+}

@@ -12,6 +12,8 @@ import {
 import type { CancelBookingCarDetails } from "@/lib/cancel-booking-content";
 import { getModifySelectionCarCutoutForColour } from "@/lib/modify-selection-car-cutouts";
 import { cn } from "@/lib/utils";
+import styles from "./CancelBookingCarCard.module.scss";
+
 
 type CancelBookingCarCardProps = {
   details: CancelBookingCarDetails;
@@ -34,23 +36,23 @@ export function CancelBookingCarCard({ details }: CancelBookingCarCardProps) {
   const deliveryParts = splitBookingDeliveryLine(details.deliveryLine);
 
   return (
-    <div className="flex h-[110px] w-full items-center gap-3 overflow-hidden rounded-2xl bg-white card-elevated px-3">
-      <div className="relative h-12 w-[84px] shrink-0 overflow-hidden">
+    <div className={[styles.flex_0, "card-elevated"].filter(Boolean).join(" ")}>
+      <div className={styles.relative_1}>
         <Image
           src={carCutoutSrc}
           alt=""
           fill
-          className="object-contain object-center"
+          className={styles.object_contain_2}
           sizes="84px"
           unoptimized
         />
       </div>
-      <div className="min-w-0 flex-1 py-3">
-        <p className="text-sm font-medium leading-5 text-[#121212]">{details.carTitle}</p>
-        <p className="mt-0.5 text-xs leading-[18px] text-[#4b4b4b]">{details.carVariant}</p>
-        <p className="text-xs leading-[18px] text-[#4b4b4b]">{details.carColor}</p>
-        <div className="mt-1 flex items-center gap-1">
-          <p className={cn("text-xs font-normal leading-[18px]", deliveryTextClass)}>
+      <div className={styles.min_w_0_3}>
+        <p className={styles.text_sm_4}>{details.carTitle}</p>
+        <p className={styles.mt_0_5_5}>{details.carVariant}</p>
+        <p className={styles.text_xs_6}>{details.carColor}</p>
+        <div className={styles.mt_1_7}>
+          <p className={cn(styles.text_xs_10, deliveryTextClass)}>
             {deliveryParts ? (
               <>
                 {deliveryParts.prefix}
@@ -60,13 +62,13 @@ export function CancelBookingCarCard({ details }: CancelBookingCarCardProps) {
               details.deliveryLine
             )}
           </p>
-          <span className="relative h-4 w-4 shrink-0" aria-hidden>
+          <span className={styles.relative_8} aria-hidden>
             <Image
               src={deliveryIconSrc}
               alt=""
               width={16}
               height={16}
-              className="h-4 w-4 object-contain"
+              className={styles.h_4_9}
               unoptimized
               sizes="16px"
             />

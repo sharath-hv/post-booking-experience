@@ -1,0 +1,97 @@
+/* Local keyframes — hashed with this module so `animation: aurora` resolves. */
+@keyframes aurora {
+  from {
+    background-position:
+      0% 50%,
+      15% 50%;
+  }
+  to {
+    background-position:
+      420% 50%,
+      400% 50%;
+  }
+}
+
+.root {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.mesh {
+  --white-gradient: repeating-linear-gradient(
+    100deg,
+    var(--white) 0%,
+    var(--white) 5%,
+    var(--transparent) 8%,
+    var(--transparent) 10%,
+    var(--white) 14%
+  );
+  --aurora: repeating-linear-gradient(
+    100deg,
+    var(--blue-500) 10%,
+    var(--indigo-300) 15%,
+    var(--blue-300) 20%,
+    var(--violet-200) 25%,
+    var(--blue-400) 30%
+  );
+
+  isolation: isolate;
+  position: absolute;
+  inset: 0 0 0 -40px;
+  transform: translateZ(0);
+  will-change: background-position;
+  background-image: var(--white-gradient), var(--aurora);
+  background-position: 0% 50%, 10% 50%;
+  opacity: 0.57;
+  filter: blur(8px) saturate(1.064);
+  background-size: 480% 300%;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: var(--white-gradient), var(--aurora);
+    background-size: 340%, 130%;
+    background-position: 0% 50%, 15% 50%;
+    transform: translateZ(0);
+    will-change: background-position;
+    mix-blend-mode: soft-light;
+    animation: aurora 32s linear infinite;
+  }
+}
+
+.meshMasked {
+  -webkit-mask-image: radial-gradient(ellipse 130% 100% at 50% 0%, black 14%, transparent 78%);
+  mask-image: radial-gradient(ellipse 130% 100% at 50% 0%, black 14%, transparent 78%);
+}
+
+@media (min-width: 640px) {
+  .mesh {
+    inset: -10px -10px -10px -50px;
+    opacity: 0.456;
+    filter: blur(10px) saturate(1.045);
+    background-size: 420%, 260%;
+
+    &::after {
+      background-size: 300%, 120%;
+    }
+  }
+
+  .meshMasked {
+    -webkit-mask-image: radial-gradient(
+      ellipse 100% 80% at 70% 0%,
+      black 10%,
+      var(--transparent) 70%
+    );
+    mask-image: radial-gradient(ellipse at 70% 0%, black 10%, var(--transparent) 70%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mesh::after {
+    animation: none !important;
+  }
+}

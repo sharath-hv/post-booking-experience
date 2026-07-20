@@ -3,6 +3,8 @@
 import { useRouter } from "next/navigation";
 
 import { cn } from "@/lib/utils";
+import styles from "./TimeSkipChip.module.scss";
+
 
 export type TimeSkipChipProps = {
   /** e.g. “Next morning” / “2 days later”. */
@@ -20,10 +22,10 @@ export type TimeSkipChipProps = {
 export function TimeSkipChip({ label, href, onBeforeNavigate, className }: TimeSkipChipProps) {
   const router = useRouter();
   return (
-    <div className={cn("flex w-full justify-center", className)}>
+    <div className={cn(styles.flex_2, className)}>
       <button
         type="button"
-        className="time-skip-chip"
+        className={[styles.time_skip_chip_0, "time-skip-chip"].filter(Boolean).join(" ")}
         onClick={() => {
           onBeforeNavigate?.();
           router.push(href);
@@ -37,7 +39,7 @@ export function TimeSkipChip({ label, href, onBeforeNavigate, className }: TimeS
           />
         </svg>
         <span>
-          {label} <span className="text-[#a6a6a6]">· demo</span>
+          {label} <span className={styles.text_a6a6a6__1}>· demo</span>
         </span>
       </button>
     </div>

@@ -1,0 +1,334 @@
+/* ShieldPolicyCard — premium hero, calm IDV panel, scannable cover rows */
+
+.card {
+  overflow: hidden;
+  border-radius: 20px;
+  border: 1px solid #eceaf4;
+  background-color: #fff;
+  text-align: left;
+}
+
+.header {
+  position: relative;
+  overflow: hidden;
+  padding: 20px 20px 12px;
+  background:
+    radial-gradient(130% 130% at 0% 0%, #efe8fc 0%, rgba(239, 232, 252, 0) 62%),
+    radial-gradient(110% 110% at 100% 0%, #fdeff3 0%, rgba(253, 239, 243, 0) 55%);
+}
+
+.watermark {
+  pointer-events: none;
+  position: absolute;
+  right: -36px;
+  top: -32px;
+  height: 200px;
+  width: 200px;
+  transform: rotate(14deg);
+  color: rgba(89, 32, 197, 0.06);
+  -webkit-mask-image: linear-gradient(to left, #000 28%, rgba(0, 0, 0, 0) 88%);
+  mask-image: linear-gradient(to left, #000 28%, rgba(0, 0, 0, 0) 88%);
+}
+
+.brandRow {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.brandCopy {
+  min-width: 0;
+  flex: 1;
+}
+
+.activeBadge {
+  margin-bottom: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 9999px;
+  background-color: #e9f7ef;
+  padding: 4px 10px;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #0c7a42;
+}
+
+.pulseWrap {
+  position: relative;
+  display: flex;
+  height: 6px;
+  width: 6px;
+}
+
+.pulseRing {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background-color: rgba(15, 164, 87, 0.5);
+  animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+  animation-duration: 2.4s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pulseRing {
+    display: none;
+  }
+}
+
+@keyframes ping {
+  75%,
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.pulseDot {
+  position: relative;
+  height: 6px;
+  width: 6px;
+  border-radius: 9999px;
+  background-color: #0fa457;
+}
+
+.title {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: -0.1px;
+  color: #18141f;
+}
+
+.subtitle {
+  margin: 2px 0 0;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--quote-text-body);
+}
+
+.logoWrap {
+  display: flex;
+  height: 44px;
+  width: 44px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 1px 2px rgba(18, 18, 18, 0.04);
+}
+
+.logo {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.priceBlock {
+  position: relative;
+  margin-top: 18px;
+}
+
+.priceRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 10px;
+  row-gap: 2px;
+}
+
+.price {
+  display: inline-block;
+  width: fit-content;
+  background-image: linear-gradient(105deg, #251c40 0%, #5920c5 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 36px;
+  letter-spacing: -0.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.compareAt {
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--color-text-secondary);
+  text-decoration: line-through;
+  font-variant-numeric: tabular-nums;
+}
+
+.savings {
+  margin: 8px 0 0;
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  border-radius: 9999px;
+  background-color: #e9f7ef;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  color: #0c7a42;
+}
+
+.policyNumber {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  color: #1c1727;
+  font-variant-numeric: tabular-nums;
+}
+
+.policyMeta {
+  margin: 2px 0 0;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--quote-text-tertiary);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 20px 4px;
+}
+
+.idvPanel {
+  border-radius: 14px;
+  border: 1px solid #efe9fb;
+  background-color: #f9f6ff;
+  padding: 14px 16px;
+}
+
+.idvEyebrow {
+  margin: 0;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 16px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.idvValue {
+  margin: 4px 0 0;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 28px;
+  letter-spacing: -0.2px;
+  color: #18141f;
+  font-variant-numeric: tabular-nums;
+}
+
+.idvCaption {
+  margin: 6px 0 0;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--quote-text-tertiary);
+}
+
+.highlights {
+  display: flex;
+  list-style: none;
+  flex-direction: column;
+  margin: 4px 0 0;
+  padding: 0;
+}
+
+.highlightRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 0;
+}
+
+.highlightRow + .highlightRow {
+  border-top: 1px dashed #e8e8e8;
+}
+
+.checkIcon {
+  margin-top: 1px;
+  display: flex;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background-color: #f3effc;
+  color: #5920c5;
+}
+
+.highlightCopy {
+  min-width: 0;
+  flex: 1;
+  padding-top: 2px;
+}
+
+.highlightTitle {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  color: #1c1727;
+}
+
+.highlightDetail {
+  margin: 2px 0 0;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--quote-text-tertiary);
+}
+
+.footer {
+  border-top: 1px solid #f1eef8;
+  padding: 14px 20px 16px;
+}
+
+.footerActive {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  border-top: 1px solid #f1eef8;
+  padding: 14px 20px 16px;
+}
+
+.policyIdentity {
+  min-width: 0;
+  flex: 1;
+}
+
+.footerCta {
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.footerArrow {
+  display: block;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  background-color: currentColor;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: contain;
+  -webkit-mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+}

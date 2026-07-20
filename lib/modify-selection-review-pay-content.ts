@@ -6,14 +6,25 @@ import {
   type ModifySelectionDeliveryChoice,
 } from "@/lib/modify-selection-colours-content";
 import { MODIFY_BOOKING_CHANGE_FEE_INR } from "@/lib/manage-booking-modify";
+import {
+  MODIFY_SELECTION_REVIEW_PAY_DEMO_DEFINITIONS,
+  type ModifySelectionReviewPayDemoScenario,
+} from "@/lib/modify-selection-review-pay-demo";
 
-/** Paid at booking lock — demo (Figma 2696:9166). */
+/** Paid at booking lock — demo default when no scenario override (Figma 2696:9166). */
 export const MODIFY_SELECTION_BOOKING_AMOUNT_PAID_INR = 10_000;
 
-/** New booking lock for the updated selection — demo (Figma 2696:9233). */
+/** New booking lock for the updated selection — demo default (Figma 2696:9233). */
 export const MODIFY_SELECTION_NEW_BOOKING_AMOUNT_INR = 15_000;
 
-export const MODIFY_SELECTION_REVIEW_PAY_TITLE = "Review and pay the booking amount";
+export const MODIFY_SELECTION_REVIEW_PAY_TITLE = "Ready to lock this in?";
+
+export const MODIFY_SELECTION_REVIEW_PAY_DUE_TODAY_HEADING = "What you'll pay";
+export const MODIFY_SELECTION_REVIEW_PAY_DUE_TODAY_LABEL = "Due today";
+export const MODIFY_SELECTION_REVIEW_PAY_BREAKDOWN_TOGGLE = "How we calculated this";
+/** Primary label on the expandable car-price summary row. */
+export const MODIFY_SELECTION_REVIEW_PAY_ACKO_DRIVE_PRICE_LABEL =
+  "ACKO Drive price";
 
 /** Price summary demo totals — Figma 2699:9390. */
 export const MODIFY_SELECTION_PRICE_SUMMARY_DEMO = {
@@ -44,31 +55,69 @@ export type ModifySelectionReviewPaySummary = {
   totalDiscountInr: number;
   newBookingAmountInr: number;
   bookingAmountPaidInr: number;
-  /** ₹5,000 when {@link isModifyWithChargesFlow} — booking change fee (50% of lock). */
+  /** ₹5,000 when change fee applies — one-time change fee. */
   changeSelectionFeeInr: number;
   bookingAmountToPayInr: number;
+  /**
+   * When paid lock exceeds new lock — surplus adjusted into final car amount (not refunded here).
+   */
+  bookingAmountSurplusInr: number;
+  /** Plain-language situation for the due-today card — omitted when lock is unchanged. */
+  situationLine: string | null;
   deliveryLine: string;
   isExpressDelivery: boolean;
 };
 
+export type BuildModifySelectionReviewPaySummaryOptions = {
+  /** Demo-only override — drives lock amounts and fee for QA scenario previews. */
+  demoScenario?: ModifySelectionReviewPayDemoScenario;
+};
+
+function resolvePolicyChangeFeeInr(): number {
+  // ₹5,000 one-time change fee applies from dealer allocation (policy §1.9):
+  // modify-with-charges demo flow, or express/standard entering after dealer found.
+  return isModifyWithChargesFlow() || readChangeEntryStage() === "post"
+    ? MODIFY_BOOKING_CHANGE_FEE_INR
+    : 0;
+}
+
 export function buildModifySelectionColourReviewPaySummary(
   option: ModifySelectionColourOption,
   deliveryChoice: ModifySelectionDeliveryChoice,
+  options?: BuildModifySelectionReviewPaySummaryOptions,
 ): ModifySelectionReviewPaySummary {
   const quote = resolveModifySelectionColourQuote(option, deliveryChoice);
   const { exShowroomPriceInr, otherChargesTotalInr, totalDiscountInr, ackoDriveDiscountInr, ackoDrivePriceInr } =
     MODIFY_SELECTION_PRICE_SUMMARY_DEMO;
 
-  const newBookingAmountInr = MODIFY_SELECTION_NEW_BOOKING_AMOUNT_INR;
-  const bookingAmountPaidInr = MODIFY_SELECTION_BOOKING_AMOUNT_PAID_INR;
-  // ₹5,000 one-time change fee applies after Booking Confirmation (policy §1.9):
-  // modify-with-charges demo flow, or express/standard entering post-lock.
+  const demo =
+    options?.demoScenario != null
+      ? MODIFY_SELECTION_REVIEW_PAY_DEMO_DEFINITIONS[options.demoScenario]
+      : null;
+
+  const newBookingAmountInr =
+    demo?.newBookingAmountInr ?? MODIFY_SELECTION_NEW_BOOKING_AMOUNT_INR;
+  const bookingAmountPaidInr =
+    demo?.bookingAmountPaidInr ?? MODIFY_SELECTION_BOOKING_AMOUNT_PAID_INR;
+  // Demo lock amounts can still apply; fee follows real policy unless a
+  // `*_fee` scenario explicitly forces the ₹5,000 line on for QA.
   const changeSelectionFeeInr =
-    isModifyWithChargesFlow() || readChangeEntryStage() === "post"
+    demo?.forceChangeFee === true
       ? MODIFY_BOOKING_CHANGE_FEE_INR
-      : 0;
-  const bookingAmountToPayInr =
-    Math.max(0, newBookingAmountInr - bookingAmountPaidInr) + changeSelectionFeeInr;
+      : resolvePolicyChangeFeeInr();
+
+  const lockDeltaInr = newBookingAmountInr - bookingAmountPaidInr;
+  const bookingAmountToPayInr = Math.max(0, lockDeltaInr) + changeSelectionFeeInr;
+  const bookingAmountSurplusInr = Math.max(0, -lockDeltaInr);
+
+  const situationLine =
+    demo != null
+      ? demo.situationLine
+      : bookingAmountSurplusInr > 0
+        ? "You've already paid more than this car's price lock."
+        : lockDeltaInr > 0
+          ? "This car needs a higher price lock."
+          : null;
 
   return {
     exShowroomPriceInr,
@@ -80,6 +129,8 @@ export function buildModifySelectionColourReviewPaySummary(
     bookingAmountPaidInr,
     changeSelectionFeeInr,
     bookingAmountToPayInr,
+    bookingAmountSurplusInr,
+    situationLine,
     deliveryLine: quote.deliveryLine,
     isExpressDelivery: quote.isExpressDelivery,
   };

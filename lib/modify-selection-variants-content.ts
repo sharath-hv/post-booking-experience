@@ -125,12 +125,12 @@ export const MODIFY_SELECTION_VARIANT_COLOUR_SCREEN_SUBLINE =
 
 export const MODIFY_SELECTION_VARIANT_CONFIRM_PATH = "/kyc/modify-selection/variant/confirm";
 
-export const MODIFY_SELECTION_VARIANT_CONFIRM_TITLE = "Confirm your selection";
+export const MODIFY_SELECTION_VARIANT_CONFIRM_TITLE = "Ready to lock this in?";
 
 export const MODIFY_SELECTION_VARIANT_CONFIRM_SUBLINE =
-  "Your ₹10,000 booking amount will be adjusted against your new booking. Delivery date may change based on the variant you pick.";
+  "Your ₹10,000 price lock carries forward — I'll adjust anything extra. Delivery may shift with the variant you pick.";
 
-export const MODIFY_SELECTION_VARIANT_CONFIRM_CTA = "Confirm change";
+export const MODIFY_SELECTION_VARIANT_CONFIRM_CTA = "Lock this in";
 
 export function formatModifySelectionVariantSpecs(option: ModifySelectionVariantOption): string {
   const fuelLabel = option.fuel === "petrol" ? "Petrol" : "Diesel";

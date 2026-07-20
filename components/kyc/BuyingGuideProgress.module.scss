@@ -1,0 +1,28 @@
+/* Component styles */
+
+.flex_0 {
+  display: flex;
+  height: var(--spacing);
+  width: 100%;
+  min-width: 0px;
+  flex: 1;
+  align-items: center;
+  gap: calc(var(--spacing) * 2);
+}
+
+.h_full_1 {
+  height: 100%;
+  min-width: 0px;
+  flex: 1;
+  overflow: hidden;
+  border-radius: var(--radius-2xl);
+  background-color: #f5f5f5;
+}
+
+
+.segment_fill {
+  height: 100%;
+  width: 100%;
+  border-radius: var(--radius-2xl);
+  background-image: linear-gradient(90deg, #121212 0%, #787878 100%);
+}

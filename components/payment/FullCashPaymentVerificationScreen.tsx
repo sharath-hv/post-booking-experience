@@ -11,6 +11,8 @@ import {
   FULL_PAYMENT_INSURANCE_INR,
 } from "@/components/payment/loan-amount-demo-constants";
 import { PARTNER_DEALER_LABEL, PARTNER_DEALER_LABEL_CAPITALIZED } from "@/lib/dealer-attribution-content";
+import styles from "./FullCashPaymentVerificationScreen.module.scss";
+
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -51,7 +53,7 @@ export function FullCashPaymentVerificationScreen() {
     <ConciergeTurnShell
       says={says}
       artifact={
-        <div className="flex flex-col gap-4">
+        <div className={styles.flex_0}>
           <AmountReceivedCard
             amountInr={carAmountInr}
             title="Payment · verifying with dealer"

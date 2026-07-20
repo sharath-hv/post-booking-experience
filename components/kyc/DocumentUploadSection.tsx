@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 import {
   DOCUMENT_UPLOAD_CARD_TITLE_CLASS,
@@ -9,12 +10,14 @@ import {
 import deleteIcon from "@/assets/Delete.svg";
 import done01Icon from "@/assets/done 01.png";
 import uploadIcon from "@/assets/upload.svg";
+import styles from "./DocumentUploadSection.module.scss";
+
 
 /** Figma 2506:17851 — gap from description to first upload row. */
-const DESCRIPTION_TO_UPLOAD_GAP_CLASS = "mt-4";
+const DESCRIPTION_TO_UPLOAD_GAP_CLASS = styles.descriptionToUploadGap;
 
 /** Figma 2506:17851 — gap from last upload row to “Add more”. */
-const UPLOAD_TO_ADD_MORE_GAP_CLASS = "mt-4";
+const UPLOAD_TO_ADD_MORE_GAP_CLASS = styles.uploadToAddMoreGap;
 
 export type DocumentUploadFile = {
   id: string;
@@ -33,8 +36,8 @@ export type DocumentUploadSectionProps = {
 
 function UploadSuccessBadge() {
   return (
-    <span className="relative h-6 w-6 shrink-0">
-      <Image src={done01Icon} alt="" fill className="object-contain" unoptimized sizes="24px" />
+    <span className={styles.relative_0}>
+      <Image src={done01Icon} alt="" fill className={styles.object_contain_1} unoptimized sizes="24px" />
     </span>
   );
 }
@@ -44,29 +47,29 @@ function UploadFileButton({ onClick }: { onClick: () => void }) {
     <button
       type="button"
       onClick={onClick}
-      className={`${DESCRIPTION_TO_UPLOAD_GAP_CLASS} flex h-12 w-full items-center justify-center gap-2 rounded-lg border border-dashed border-[#e8e8e8] bg-white transition-colors hover:border-[#c4c4c4] hover:bg-[#fafafa] focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/20 focus-visible:ring-offset-2`}
+      className={cn(DESCRIPTION_TO_UPLOAD_GAP_CLASS, styles.flex_0)}
     >
-      <span className="relative h-6 w-6 shrink-0">
-        <Image src={uploadIcon} alt="" fill className="object-contain" unoptimized sizes="24px" />
+      <span className={styles.relative_0}>
+        <Image src={uploadIcon} alt="" fill className={styles.object_contain_1} unoptimized sizes="24px" />
       </span>
-      <span className="text-sm font-normal leading-5 text-[#121212]">Upload file</span>
+      <span className={styles.text_sm_2}>Upload file</span>
     </button>
   );
 }
 
 function UploadedFileRow({ name, onRemove }: { name: string; onRemove: () => void }) {
   return (
-    <div className="relative flex h-12 items-center gap-2 rounded-lg border border-dashed border-[#e8e8e8] bg-[#f5f5f5] px-3">
+    <div className={styles.relative_3}>
       <UploadSuccessBadge />
-      <span className="min-w-0 flex-1 truncate text-sm leading-5 text-[#121212]">{name}</span>
+      <span className={styles.min_w_0_4}>{name}</span>
       <button
         type="button"
         onClick={onRemove}
-        className="cta-ghost flex size-5 shrink-0 items-center justify-center rounded focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/20 focus-visible:ring-offset-2"
+        className={[styles.cta_ghost_5, "cta-ghost"].filter(Boolean).join(" ")}
         aria-label={`Remove ${name}`}
       >
-        <span className="relative h-5 w-5">
-          <Image src={deleteIcon} alt="" fill className="object-contain" unoptimized sizes="20px" />
+        <span className={styles.relative_6}>
+          <Image src={deleteIcon} alt="" fill className={styles.object_contain_1} unoptimized sizes="20px" />
         </span>
       </button>
     </div>
@@ -85,14 +88,14 @@ export function DocumentUploadSection({
   const handleAddMore = onAddMoreClick ?? onUploadClick;
 
   return (
-    <section className="rounded-2xl border border-[#e8e8e8] bg-white p-4">
+    <section className={styles.rounded_2xl_7}>
       <p className={DOCUMENT_UPLOAD_CARD_TITLE_CLASS}>{title}</p>
       {description ? (
-        <p className="mt-1 w-full text-xs leading-[18px] text-[#757575]">{description}</p>
+        <p className={styles.mt_1_8}>{description}</p>
       ) : null}
 
       {files.length > 0 ? (
-        <div className={`${DESCRIPTION_TO_UPLOAD_GAP_CLASS} flex flex-col gap-3`}>
+        <div className={cn(DESCRIPTION_TO_UPLOAD_GAP_CLASS, styles.flex_1)}>
           {files.map((file) => (
             <UploadedFileRow key={file.id} name={file.name} onRemove={() => onRemove(file.id)} />
           ))}
@@ -105,7 +108,7 @@ export function DocumentUploadSection({
         <button
           type="button"
           onClick={handleAddMore}
-          className={`${UPLOAD_TO_ADD_MORE_GAP_CLASS} self-start text-[13px] font-medium leading-[18px] text-[#1b73e8] focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#1b73e8]/30 focus-visible:ring-offset-2`}
+          className={cn(UPLOAD_TO_ADD_MORE_GAP_CLASS, styles.self_start_2)}
         >
           + Add more
         </button>

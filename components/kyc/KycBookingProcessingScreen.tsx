@@ -9,6 +9,8 @@ import infoIcon from "@/assets/Info.svg";
 import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
 import type { ConciergeReply } from "@/components/concierge/ConciergeReplies";
 import { isDemoNavCtaLabel } from "@/lib/demo-nav-cta";
+import styles from "./KycBookingProcessingScreen.module.scss";
+
 
 const DEFAULT_PROCESSING_HEADLINE = "We're processing your booking, Sharath!";
 
@@ -113,13 +115,13 @@ export function KycBookingProcessingScreen({
   const artifact = (
     <>
       {infoBox != null || sublineLine2 ? (
-        <div className="flex items-center gap-3 rounded-2xl bg-white card-elevated px-3 py-3 text-left">
-          <span className="relative h-5 w-5 shrink-0">
-            <Image src={infoBoxIconSrc} alt="" fill className="object-contain" unoptimized sizes="20px" />
+        <div className={[styles.flex_0, "card-elevated"].filter(Boolean).join(" ")}>
+          <span className={styles.relative_1}>
+            <Image src={infoBoxIconSrc} alt="" fill className={styles.object_contain_2} unoptimized sizes="20px" />
           </span>
-          <div className="min-w-0 text-xs leading-[18px] text-[#121212]">
-            {infoBox?.title ? <p className="font-medium text-[#121212]">{infoBox.title}</p> : null}
-            <p className={infoBox?.title ? "mt-1 text-[#121212]" : undefined}>
+          <div className={styles.min_w_0_3}>
+            {infoBox?.title ? <p className={styles.font_medium_4}>{infoBox.title}</p> : null}
+            <p className={infoBox?.title ? styles.mt_1_0 : undefined}>
               {infoBox?.body ?? sublineLine2}
             </p>
           </div>

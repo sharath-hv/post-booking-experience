@@ -7,6 +7,8 @@ import shiviAvatar from "@/assets/Shivi small.png";
 import { WordByWordLine } from "@/components/payment/WordByWordLine";
 import { instantRevealEnabled } from "@/lib/concierge/instant";
 import { cn } from "@/lib/utils";
+import styles from "./ShiviDialogue.module.scss";
+
 
 /** Word cadence — aligned with the hero headlines elsewhere (speech rhythm). */
 const LEAD_WORD_DELAY_MS = 120;
@@ -16,10 +18,10 @@ const LINE_GAP_MS = 280;
 /** Longer beat after the lead when something lands between her words. */
 const AFTER_LEAD_SLOT_GAP_MS = 700;
 
-const LEAD_CLASS = "text-2xl font-medium leading-8 tracking-[-0.2px] text-[#121212]";
-const BODY_CLASS = "text-base font-normal leading-6 text-[#4b4b4b]";
+const LEAD_CLASS = styles.lead;
+const BODY_CLASS = styles.body;
 /** Last line acting as a header for the card/artifact directly below it. */
-const HEADING_CLASS = "mt-4 text-base font-medium leading-6 text-[#121212]";
+const HEADING_CLASS = styles.heading;
 
 export type ShiviDialogueProps = {
   /** Her lines for this turn — first line is the lead (large), rest are body. */
@@ -106,34 +108,34 @@ export function ShiviDialogue({
     (skipAnimation ? activeLines >= lines.length : doneLines >= lines.length);
 
   return (
-    <div className={cn("flex flex-col", className)}>
+    <div className={cn(styles.flex_8, className)}>
       <div
         className={cn(
-          "flex items-center gap-2 transition-opacity duration-300",
-          startWhen ? "opacity-100" : "opacity-0"
+          styles.flex_9,
+          startWhen ? styles.opacity_100_10 : styles.opacity_0_11
         )}
       >
-        <span className="relative h-8 w-8 shrink-0 overflow-hidden rounded-full bg-[#f5f5f5]">
+        <span className={styles.relative_0}>
           <Image
             src={shiviAvatar}
             alt=""
             fill
-            className="object-cover"
+            className={styles.object_cover_1}
             unoptimized
             sizes="32px"
             priority
           />
         </span>
-        <div className="flex items-center gap-1.5">
-          <span className="text-sm font-medium leading-5 text-[#121212]">Shivi</span>
-          <span aria-hidden className="text-xs leading-4 text-[#757575]">
+        <div className={styles.flex_2}>
+          <span className={styles.text_sm_3}>Shivi</span>
+          <span aria-hidden className={styles.text_xs_4}>
             ·
           </span>
-          <span className="text-xs leading-4 text-[#757575]">ACKO Drive</span>
+          <span className={styles.text_xs_4}>ACKO Drive</span>
         </div>
       </div>
 
-      <div className="mt-4 flex flex-col gap-3">
+      <div className={styles.mt_4_5}>
         {lines.map((line, idx) => {
           if (idx >= activeLines) return null;
           const isHeading = headingLastLine && idx > 0 && idx === lines.length - 1;
@@ -162,12 +164,12 @@ export function ShiviDialogue({
             <Fragment key={idx}>
               {lineNode}
               {idx === 0 && slotVisible ? (
-                <div className="kyc-stagger my-2">{afterLead}</div>
+                <div className={[styles.kyc_stagger_6, "kyc-stagger"].filter(Boolean).join(" ")}>{afterLead}</div>
               ) : null}
             </Fragment>
           );
         })}
-        {afterBodyVisible ? <div className="kyc-stagger">{afterBody}</div> : null}
+        {afterBodyVisible ? <div className={[styles.kyc_stagger_7, "kyc-stagger"].filter(Boolean).join(" ")}>{afterBody}</div> : null}
       </div>
     </div>
   );

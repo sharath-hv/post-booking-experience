@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { PAYMENT_CHOOSE_ASSETS } from "@/components/payment/payment-choose-assets";
@@ -11,6 +12,8 @@ import {
 } from "@/components/ui/bottom-sheet-layout";
 import { bottomSheetTitleWidthWithIllustration } from "@/components/ui/bottom-sheet-title-layout";
 import { BottomSheetCloseIcon } from "@/components/ui/BottomSheetCloseIcon";
+import styles from "./BankTransferUtrConfirmBottomSheet.module.scss";
+
 
 const SHEET_TRANSITION_MS = 280;
 
@@ -77,67 +80,63 @@ export function BankTransferUtrConfirmBottomSheet({
   if (!mounted) return null;
 
   return (
-    <div className={`fixed inset-0 ${BOTTOM_SHEET_OVERLAY_Z_CLASS}`}>
+    <div className={cn(styles.fixed_0, BOTTOM_SHEET_OVERLAY_Z_CLASS)}>
       <button
         type="button"
-        className={`absolute inset-0 bg-black/90 transition-opacity duration-[280ms] ease-out motion-reduce:opacity-100 motion-reduce:transition-none ${
-          animateIn ? "opacity-100" : "opacity-0"
-        }`}
+        className={cn(styles.absolute_1, animateIn ? styles.opacity_100_1 : styles.opacity_0_1)}
         onClick={onClose}
         aria-label="Dismiss"
       />
       <div
-        className={`absolute bottom-0 left-1/2 z-10 flex ${BOTTOM_SHEET_MAX_HEIGHT_CLASS} w-full max-w-[640px] -translate-x-1/2 flex-col overflow-hidden rounded-t-[20px] bg-white sheet-elevated transition-transform duration-[280ms] ease-out motion-reduce:translate-y-0 motion-reduce:transition-none ${
-          animateIn ? "translate-y-0" : "translate-y-full"
-        }`}
+        className={cn(styles.absolute_2, BOTTOM_SHEET_MAX_HEIGHT_CLASS, styles.w_full_2, "sheet-elevated", animateIn ? styles.translate_y_0_2 : styles.translate_y_full_2)}
         role="dialog"
         aria-modal="true"
         aria-labelledby="bank-transfer-confirm-title"
         aria-describedby="bank-transfer-confirm-body"
       >
-        <div className="relative flex min-h-0 flex-1 flex-col">
+        <div className={styles.relative_0}>
           <button
             type="button"
             onClick={onClose}
-            className="cta-ghost absolute right-5 top-6 z-10 flex h-10 w-10 items-center justify-center rounded-lg text-[#121212] focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/20 focus-visible:ring-offset-2"
+            className={[styles.cta_ghost_1, "cta-ghost"].filter(Boolean).join(" ")}
             aria-label="Close"
           >
             <BottomSheetCloseIcon />
           </button>
 
-          <div className="min-h-0 flex-1 overflow-y-auto px-5 pb-8 pt-6">
-            <div className="relative h-[72px] w-[72px] shrink-0 overflow-hidden bg-white" aria-hidden>
+          <div className={styles.min_h_0_2}>
+            <div className={styles.relative_3} aria-hidden>
               <Image
                 src={PAYMENT_CHOOSE_ASSETS.loanApproved}
                 alt=""
                 width={72}
                 height={72}
-                className="h-[72px] w-[72px] object-contain"
+                className={styles.h_72px__4}
                 unoptimized
                 sizes="72px"
               />
             </div>
             <h2
               id="bank-transfer-confirm-title"
-              className={`mt-6 ${bottomSheetTitleWidthWithIllustration} text-left text-[20px] font-semibold leading-[28px] tracking-[-0.12px] text-[#121212]`}
+              className={cn(styles.mt_6_3, bottomSheetTitleWidthWithIllustration, styles.text_left_3)}
             >
               Has your bank transferred the amount?
             </h2>
             <p
               id="bank-transfer-confirm-body"
-              className="mt-3 w-full text-left text-sm font-normal leading-[22px] text-[#4b4b4b]"
+              className={styles.mt_3_5}
             >
               I will check with the dealer and confirm the transfer on your behalf.
             </p>
           </div>
 
           <div
-            className={`shrink-0 space-y-3 bg-white px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] ${BOTTOM_SHEET_CTA_STRIP_TOP_CLASS}`}
+            className={cn(styles.shrink_0_4, BOTTOM_SHEET_CTA_STRIP_TOP_CLASS)}
           >
             <button
               type="button"
               onClick={handleConfirm}
-              className="primary-cta w-full"
+              className={[styles.primary_cta_6, "primary-cta"].filter(Boolean).join(" ")}
             >
               Yes, bank has transferred
             </button>

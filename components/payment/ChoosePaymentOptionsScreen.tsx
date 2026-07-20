@@ -1,6 +1,7 @@
 "use client";
 
 import Image, { type StaticImageData } from "next/image";
+import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
@@ -21,6 +22,8 @@ import {
 } from "@/components/payment/payment-choose-assets";
 import { estimateMonthlyEmiInr, parseAnnualRateFromLabel } from "@/lib/loan-emi";
 import { bankIdToken, bankNameToken, bankSelectionPath } from "@/lib/payment/bank-selection-urls";
+import styles from "./ChoosePaymentOptionsScreen.module.scss";
+
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -47,27 +50,18 @@ const STAGGER_OPTION_STEP_MS = 115;
 type PaymentOptionId = "acko_drive" | "self_finance" | "full_payment";
 
 function RadioIndicator({ selected }: { selected: boolean }) {
-  if (!selected) {
-    return (
-      <span className="relative h-4 w-4 shrink-0" aria-hidden>
-        <Image
-          src={PAYMENT_CHOOSE_ASSETS.radioOff}
-          alt=""
-          fill
-          className="object-contain"
-          unoptimized
-          sizes="16px"
-        />
-      </span>
-    );
-  }
+  const src = selected ? PAYMENT_CHOOSE_ASSETS.radioOn : PAYMENT_CHOOSE_ASSETS.radioOff;
 
   return (
-    <span className="relative h-4 w-4 shrink-0" aria-hidden>
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="h-4 w-4">
-        <circle cx="8" cy="8" r="7.4" stroke="#5920C5" strokeWidth="1.2" />
-        <circle cx="8" cy="8" r="4" fill="#5920C5" />
-      </svg>
+    <span className={styles.relative_0} aria-hidden>
+      <Image
+        src={src}
+        alt=""
+        fill
+        className={styles.object_contain_1}
+        unoptimized
+        sizes="16px"
+      />
     </span>
   );
 }
@@ -112,25 +106,25 @@ function FlowStrip({
   }, [steps.length, reduceMotion]);
 
   return (
-    <div className="flex h-5 items-center gap-3" aria-label="How it works">
-      <div className="min-w-0 flex-1 overflow-hidden">
+    <div className={styles.flex_3} aria-label="How it works">
+      <div className={styles.min_w_0_4}>
         <div
           key={idx}
-          className={`flex items-center gap-2 ${reduceMotion ? "" : "kyc-stagger"}`}
+          className={cn(styles.flex_0, reduceMotion ? "" : "kyc-stagger")}
         >
-          <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#efe9fb] text-[10px] font-semibold leading-none text-[#5920c5]">
+          <span className={styles.flex_5}>
             {idx + 1}
           </span>
-          <span className="min-w-0 truncate text-xs leading-5 text-[#4b4b4b]">{steps[idx]}</span>
+          <span className={styles.min_w_0_6}>{steps[idx]}</span>
           {bankLogosOnStep === idx ? (
-            <span className="flex shrink-0 items-center gap-1">
+            <span className={styles.flex_7}>
               {PARTNER_BANK_LOGOS.map((bank) => (
-                <span key={bank.alt} className="relative h-4 w-4" title={bank.alt}>
+                <span key={bank.alt} className={styles.relative_8} title={bank.alt}>
                   <Image
                     src={bank.src}
                     alt={bank.alt}
                     fill
-                    className="object-contain"
+                    className={styles.object_contain_1}
                     unoptimized
                     sizes="16px"
                   />
@@ -140,13 +134,11 @@ function FlowStrip({
           ) : null}
         </div>
       </div>
-      <div className="flex shrink-0 items-center gap-1" aria-hidden>
+      <div className={styles.flex_7} aria-hidden>
         {steps.map((step, i) => (
           <span
             key={step}
-            className={`h-1 rounded-full transition-all duration-300 ${
-              i === idx ? "w-3 bg-[#5920c5]" : "w-1 bg-[#d9d8de]"
-            }`}
+            className={cn(styles.h_1_1, i === idx ? styles.w_3_1 : styles.w_1_1)}
           />
         ))}
       </div>
@@ -190,61 +182,57 @@ function OptionCard({
       id={`payment-option-${id}`}
       onClick={onSelect}
       aria-pressed={selected}
-      className={`w-full rounded-2xl border p-4 text-left transition-colors card-elevated ${
-        selected
-          ? "border-[#bda6e8] bg-white bg-[linear-gradient(to_bottom,#f4eefe,rgba(244,238,254,0))]"
-          : "border-transparent bg-white"
-      }`}
+      className={cn(styles.w_full_2, "card-elevated", selected ? styles.border_selected_2 : styles.border_transparent_2)}
     >
-      <div className="flex items-start">
-        <div className="relative mr-3 h-10 w-10 shrink-0 self-center">
+      <div className={styles.flex_9}>
+        <div className={styles.relative_10}>
           <Image
             src={illustrationSrc}
             alt=""
             fill
-            className="object-contain"
+            className={styles.object_contain_1}
             unoptimized
             sizes="40px"
           />
         </div>
         {/* Uniform two-line lockup (chip, title) so every card's header is the same height. */}
-        <div className="min-w-0 flex-1">
+        <div className={styles.min_w_0_11}>
           {chip ? (
-            <span className="inline-flex rounded-full bg-[#efe9fb] px-2 py-0.5 text-[10px] font-semibold uppercase leading-4 tracking-[0.06em] text-[#5920c5]">
+            <span className={styles.inline_flex_12}>
               {chip}
             </span>
           ) : null}
-          <p className={`text-base font-medium leading-6 text-[#121212]${chip ? " mt-1" : ""}`}>
+          <p className={cn(styles.text_base_3, chip ? styles.mt_1_3 : "")}>
             {title}
           </p>
         </div>
-        <span className="mt-1 ml-3 flex shrink-0">
+        <span className={styles.mt_1_13}>
           <RadioIndicator selected={selected} />
         </span>
       </div>
 
-      <p className="mt-3 text-xs leading-4 text-[#4b4b4b]">{blurb}</p>
+      <p className={styles.mt_3_14}>{blurb}</p>
 
-      <div className="mt-4 flex w-full">
+      <div className={styles.mt_4_15}>
         {stats.map((stat, idx) => (
           <div
             key={stat.caption}
             className={
               idx === 0
-                ? "min-w-0 flex-1 pr-4"
-                : "min-w-0 flex-1 border-l border-[#ececec] pl-4"
+                ? styles.min_w_0_1
+                : styles.min_w_0_2
             }
           >
-            <p className="text-sm font-semibold leading-5 text-[#121212] tabular-nums">
+            <p className={styles.text_sm_16}>
               {stat.value}
             </p>
-            <p className="mt-0.5 text-[11px] leading-4 text-[#757575]">{stat.caption}</p>
+            <p className={styles.mt_0_5_17}>{stat.caption}</p>
           </div>
         ))}
       </div>
 
       {/* How-it-works strip — always visible and cycling on every card. */}
-      <div className="mt-4 border-t border-dashed border-[#dcdbe1] pt-4">
+      <div className={styles.mt_4_18}>
         <FlowStrip steps={flow} bankLogosOnStep={flowBankLogosOnStep} />
       </div>
     </button>
@@ -307,8 +295,8 @@ export function ChoosePaymentOptionsScreen() {
           "Pick what suits you. I'll make any of these painless.",
         ]}
         artifact={
-          <div className="flex w-full flex-col gap-4 [overflow-anchor:none]">
-            <div className="payment-success-stagger w-full">
+          <div className={styles.flex_19}>
+            <div className={[styles.payment_success_stagger_20, "payment-success-stagger"].filter(Boolean).join(" ")}>
               <OptionCard
                 id="acko_drive"
                 selected={choice === "acko_drive"}
@@ -333,7 +321,7 @@ export function ChoosePaymentOptionsScreen() {
             </div>
 
             <div
-              className="payment-success-stagger w-full"
+              className={[styles.payment_success_stagger_20, "payment-success-stagger"].filter(Boolean).join(" ")}
               style={{ animationDelay: `${STAGGER_OPTION_STEP_MS}ms` }}
             >
               <OptionCard
@@ -358,7 +346,7 @@ export function ChoosePaymentOptionsScreen() {
             </div>
 
             <div
-              className="payment-success-stagger w-full"
+              className={[styles.payment_success_stagger_20, "payment-success-stagger"].filter(Boolean).join(" ")}
               style={{ animationDelay: `${2 * STAGGER_OPTION_STEP_MS}ms` }}
             >
               <OptionCard

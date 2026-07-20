@@ -1,0 +1,29 @@
+/* Component styles */
+
+.mx_auto_0 {
+  margin-inline: auto;
+  display: flex;
+  width: 100%;
+  max-width: 640px;
+  flex: 1;
+  flex-direction: column;
+  padding-inline: calc(var(--spacing) * 5);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-top: calc(var(--spacing) * 2);
+}
+
+.payment_success_stagger_1 {
+  margin-inline: calc(var(--spacing) * -5);
+  margin-top: calc(var(--spacing) * 6);
+}
+
+.payment_success_stagger_2 {
+  width: 100%;
+}
+
+.payment_success_stagger_2:not(:last-child) {
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: #e8e8e8;
+}
+

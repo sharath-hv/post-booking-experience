@@ -7,6 +7,8 @@ import { ModifySelectionScreenHeader } from "@/components/kyc/ModifySelectionScr
 import { BookingCarSummaryCard } from "@/components/kyc/BookingCarSummaryCard";
 import { MODIFY_SELECTION_PAGE_SHELL_CLASS, MODIFY_SELECTION_PATH, modifySelectionChoiceLabel } from "@/lib/modify-selection-content";
 import { MODIFY_SELECTION_STAGGER_MS } from "@/lib/modify-selection-stagger";
+import styles from "./ModifySelectionPlaceholderScreen.module.scss";
+
 
 /** Stagger: nav + footer CTA immediate; then title → summary card. */
 const { title: STAGGER_TITLE_MS, section: STAGGER_SECTION_MS } = MODIFY_SELECTION_STAGGER_MS;
@@ -24,22 +26,22 @@ export function ModifySelectionPlaceholderScreen({ choiceSlug }: ModifySelection
     <div className={MODIFY_SELECTION_PAGE_SHELL_CLASS}>
       <ModifySelectionScreenHeader />
 
-      <main className="mx-auto flex w-full max-w-[640px] flex-1 flex-col px-5 pb-[calc(7rem+env(safe-area-inset-bottom))] pt-2">
+      <main className={styles.mx_auto_0}>
         <ModifySelectionPageHeading title={label} titleDelayMs={STAGGER_TITLE_MS} />
         <div
-          className="payment-success-stagger mt-8"
+          className={[styles.payment_success_stagger_1, "payment-success-stagger"].filter(Boolean).join(" ")}
           style={{ animationDelay: `${STAGGER_SECTION_MS}ms` }}
         >
           <BookingCarSummaryCard variant="detailsOnly" />
         </div>
       </main>
 
-      <div className="fixed bottom-0 left-0 right-0 z-10 pb-[env(safe-area-inset-bottom)] footer-elevated">
-        <div className="mx-auto w-full max-w-[640px] bg-white px-5 py-4">
+      <div className={[styles.fixed_2, "footer-elevated"].filter(Boolean).join(" ")}>
+        <div className={styles.mx_auto_3}>
           <button
             type="button"
             onClick={() => router.push(MODIFY_SELECTION_PATH)}
-            className="primary-cta w-full"
+            className={[styles.primary_cta_4, "primary-cta"].filter(Boolean).join(" ")}
           >
             Back to modify options
           </button>

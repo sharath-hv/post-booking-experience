@@ -4,6 +4,8 @@ import cameraIcon from "@/assets/Camera.svg";
 import digilockerLogo from "@/assets/Digilocker.png";
 import fileIcon from "@/assets/file.svg";
 import galleryIcon from "@/assets/image.svg";
+import styles from "./kyc-upload-content.module.scss";
+
 
 export const KYC_UPLOAD_HEADLINE = "Upload your PAN and Aadhaar";
 
@@ -21,8 +23,7 @@ export const KYC_UPLOAD_SUBMIT_LABEL = "Submit documents";
 export const KYC_UPLOAD_ADD_MORE_COLOR = "#1b73e8";
 
 /** Card title on document upload sections (14px medium). */
-export const DOCUMENT_UPLOAD_CARD_TITLE_CLASS =
-  "text-sm font-medium leading-5 text-[#121212]";
+export const DOCUMENT_UPLOAD_CARD_TITLE_CLASS = styles.documentUploadCardTitle;
 
 export type KycDocumentKind = "aadhaar" | "pan";
 

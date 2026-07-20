@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
@@ -8,12 +9,14 @@ import infoIcon from "@/assets/Info.svg";
 import bookingCancelledHero from "@/assets/Booking cancelled.svg";
 import { CANCEL_BOOKING_SUCCESS_COPY } from "@/lib/cancel-booking-success-content";
 import { WordByWordLine } from "@/components/payment/WordByWordLine";
+import styles from "./CancelBookingSuccessScreen.module.scss";
+
 import {
   SUCCESS_SCREEN_HEADLINE_SUBTEXT_GAP_CLASS,
 } from "@/components/ui/success-screen-layout";
 
 const HEADLINE_WORD_DELAY_MS = 135;
-const HERO_FADE_DURATION_CLASS = "duration-[450ms]";
+const HERO_FADE_DURATION_CLASS = styles.heroFadeDuration;
 const SUBLINE_TO_CTA_DELAY_MS = 240;
 
 /**
@@ -54,30 +57,30 @@ export function CancelBookingSuccessScreen() {
   }, [router]);
 
   return (
-    <div className="relative flex min-h-dvh flex-col overflow-hidden bg-[#F7FAFF] font-sans">
+    <div className={styles.relative_0}>
       <div
-        className="pointer-events-none absolute inset-x-0 top-0 mx-auto h-[240px] w-full max-w-[640px] bg-[linear-gradient(to_bottom,#f5f5f5,rgba(255,255,255,0.8),rgba(255,255,255,0))]"
+        className={styles.pointer_events_none_1}
         aria-hidden
       />
 
-      <div className="relative z-10 mx-auto flex w-full max-w-[640px] min-h-0 flex-1 flex-col items-center justify-center px-5 pb-[calc(5.5rem+env(safe-area-inset-bottom))] pt-8">
-        <div className="-translate-y-8 flex w-full flex-col items-center text-center">
-          <div className="relative h-20 w-20 shrink-0">
+      <div className={styles.relative_2}>
+        <div className={styles._translate_y_8_3}>
+          <div className={styles.relative_4}>
             <Image
               src={bookingCancelledHero}
               alt=""
               width={80}
               height={80}
-              className="h-20 w-20 object-contain"
+              className={styles.h_20_5}
               priority
               unoptimized
               onLoad={() => setHeroArtReady(true)}
             />
           </div>
 
-          <div className={`mt-8 flex w-full flex-col items-center ${SUCCESS_SCREEN_HEADLINE_SUBTEXT_GAP_CLASS}`}>
+          <div className={cn(styles.mt_8_0, SUCCESS_SCREEN_HEADLINE_SUBTEXT_GAP_CLASS)}>
             {reduceMotion ? (
-              <h1 className="text-2xl font-semibold leading-8 tracking-tight text-[#121212]">
+              <h1 className={styles.text_2xl_6}>
                 {CANCEL_BOOKING_SUCCESS_COPY.headline}
               </h1>
             ) : (
@@ -87,15 +90,13 @@ export function CancelBookingSuccessScreen() {
                 text={CANCEL_BOOKING_SUCCESS_COPY.headline}
                 wordDelayMs={HEADLINE_WORD_DELAY_MS}
                 wordOpacityDurationClassName={HERO_FADE_DURATION_CLASS}
-                className="text-2xl font-semibold leading-8 tracking-tight text-[#121212]"
+                className={styles.text_2xl_6}
                 onComplete={onHeadlineComplete}
                 startWhen={heroArtReady}
               />
             )}
             <p
-              className={`max-w-sm text-sm font-normal leading-[22px] text-[#4b4b4b] transition-opacity ${HERO_FADE_DURATION_CLASS} ease-out ${
-                showSubline ? "opacity-100" : "opacity-0"
-              }`}
+              className={cn(styles.max_w_sm_1, HERO_FADE_DURATION_CLASS, styles.ease_out_1, showSubline ? styles.opacity_100_1 : styles.opacity_0_1)}
               aria-hidden={!showSubline}
             >
               {CANCEL_BOOKING_SUCCESS_COPY.subline}
@@ -103,22 +104,20 @@ export function CancelBookingSuccessScreen() {
           </div>
 
           <div
-            className={`mt-6 flex w-full items-center gap-3 rounded-2xl bg-white card-elevated px-3 py-3 text-left transition-opacity ${HERO_FADE_DURATION_CLASS} ease-out ${
-              showSubline ? "opacity-100" : "opacity-0"
-            }`}
+            className={cn(styles.mt_6_2, "card-elevated", HERO_FADE_DURATION_CLASS, styles.ease_out_2, showSubline ? styles.opacity_100_2 : styles.opacity_0_2)}
             aria-hidden={!showSubline}
           >
-            <span className="relative h-5 w-5 shrink-0">
+            <span className={styles.relative_7}>
               <Image
                 src={infoIcon}
                 alt=""
                 fill
-                className="object-contain"
+                className={styles.object_contain_8}
                 unoptimized
                 sizes="20px"
               />
             </span>
-            <p className="text-xs leading-[18px] text-[#121212]">
+            <p className={styles.text_xs_9}>
               {CANCEL_BOOKING_SUCCESS_COPY.infoBox}
             </p>
           </div>
@@ -126,15 +125,13 @@ export function CancelBookingSuccessScreen() {
       </div>
 
       <div
-        className={`fixed bottom-0 left-0 right-0 z-10 bg-white footer-elevated transition-opacity ${HERO_FADE_DURATION_CLASS} ease-out ${
-          showCta ? "opacity-100" : "pointer-events-none opacity-0"
-        }`}
+        className={cn(styles.fixed_3, "footer-elevated", HERO_FADE_DURATION_CLASS, styles.ease_out_3, showCta ? styles.opacity_100_3 : styles.pointer_events_none_3)}
         aria-hidden={!showCta}
       >
-        <div className="mx-auto w-full max-w-[640px] px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-3">
+        <div className={styles.mx_auto_10}>
           <button
             type="button"
-            className="primary-cta w-full focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/30 focus-visible:ring-offset-2"
+            className={[styles.primary_cta_11, "primary-cta"].filter(Boolean).join(" ")}
             tabIndex={showCta ? 0 : -1}
             onClick={() => router.push(CANCEL_BOOKING_SUCCESS_COPY.doneHref)}
           >

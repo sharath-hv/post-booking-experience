@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import {
@@ -12,12 +13,14 @@ import { BottomSheetPortal } from "@/components/ui/BottomSheetPortal";
 import { BOTTOM_SHEET_MAX_HEIGHT_CLASS, BOTTOM_SHEET_OVERLAY_Z_CLASS } from "@/components/ui/bottom-sheet-layout";
 
 import chevronRightIcon from "@/assets/Chevron_right.svg";
+import styles from "./KycUploadSourceBottomSheet.module.scss";
+
 
 /** Parity with `ManageBookingBottomSheet` / `ShiviIntroBottomSheet`. */
 const SHEET_TRANSITION_MS = 280;
 
 /** Space from title block bottom to first option row (32px). */
-const TITLE_TO_LIST_GAP_CLASS = "gap-8";
+const TITLE_TO_LIST_GAP_CLASS = styles.titleToListGap;
 
 type UploadSourceRowProps = {
   label: string;
@@ -30,20 +33,20 @@ function UploadSourceRow({ label, iconSrc, onClick }: UploadSourceRowProps) {
     <button
       type="button"
       onClick={onClick}
-      className="flex w-full items-center gap-3 py-0 text-left transition-colors hover:bg-[#fafafa] active:bg-[#f5f5f5]"
+      className={styles.flex_0}
     >
-      <span className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-[#f5f5f5]">
-        <span className="relative h-6 w-6 shrink-0">
-          <Image src={iconSrc} alt="" fill className="object-contain" unoptimized sizes="24px" />
+      <span className={styles.flex_1}>
+        <span className={styles.relative_2}>
+          <Image src={iconSrc} alt="" fill className={styles.object_contain_3} unoptimized sizes="20px" />
         </span>
       </span>
-      <span className="min-w-0 flex-1 text-sm font-medium leading-5 text-[#121212]">{label}</span>
-      <span className="relative h-5 w-5 shrink-0">
+      <span className={styles.min_w_0_4}>{label}</span>
+      <span className={styles.relative_5}>
         <Image
           src={chevronRightIcon}
           alt=""
           fill
-          className="object-contain"
+          className={styles.object_contain_3}
           unoptimized
           sizes="20px"
         />
@@ -124,48 +127,44 @@ export function KycUploadSourceBottomSheet({
 
   return (
     <BottomSheetPortal>
-      <div className={`fixed inset-0 ${BOTTOM_SHEET_OVERLAY_Z_CLASS}`}>
+      <div className={cn(styles.fixed_0, BOTTOM_SHEET_OVERLAY_Z_CLASS)}>
       <button
         type="button"
-        className={`absolute inset-0 bg-black/90 transition-opacity duration-[280ms] ease-out motion-reduce:opacity-100 motion-reduce:transition-none ${
-          animateIn ? "opacity-100" : "opacity-0"
-        }`}
+        className={cn(styles.absolute_1, animateIn ? styles.opacity_100_1 : styles.opacity_0_1)}
         onClick={onClose}
         aria-label="Dismiss"
       />
       <div
-        className={`absolute bottom-0 left-1/2 z-10 flex ${BOTTOM_SHEET_MAX_HEIGHT_CLASS} w-full max-w-[640px] -translate-x-1/2 flex-col overflow-y-auto overflow-x-hidden rounded-t-[24px] bg-white sheet-elevated transition-transform duration-[280ms] ease-out motion-reduce:translate-y-0 motion-reduce:transition-none ${
-          animateIn ? "translate-y-0" : "translate-y-full"
-        }`}
+        className={cn(styles.absolute_2, BOTTOM_SHEET_MAX_HEIGHT_CLASS, styles.w_full_2, "sheet-elevated", animateIn ? styles.translate_y_0_2 : styles.translate_y_full_2)}
         role="dialog"
         aria-modal="true"
         aria-labelledby="kyc-upload-source-title"
       >
         <div
-          className={`flex flex-col ${TITLE_TO_LIST_GAP_CLASS} px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-6`}
+          className={cn(styles.flex_3, TITLE_TO_LIST_GAP_CLASS, styles.px_5_3)}
         >
-          <div className="flex shrink-0 items-start justify-between gap-5">
+          <div className={styles.flex_6}>
             <h2
               id="kyc-upload-source-title"
-              className="min-w-0 flex-1 text-left text-[20px] font-semibold leading-[28px] tracking-[-0.1px] text-[#121212]"
+              className={styles.min_w_0_7}
             >
               How do you want to upload?
             </h2>
             <button
               type="button"
               onClick={onClose}
-              className="cta-ghost flex size-6 shrink-0 items-center justify-center rounded-lg text-[#121212] focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/20 focus-visible:ring-offset-2"
+              className={[styles.cta_ghost_8, "cta-ghost"].filter(Boolean).join(" ")}
               aria-label="Close"
             >
               <BottomSheetCloseIcon />
             </button>
           </div>
 
-          <div className="flex shrink-0 flex-col">
+          <div className={styles.flex_9}>
             {sourceOptions.map((option, index) => (
               <div key={option.id}>
                 {index > 0 ? (
-                  <hr className="my-5 border-0 border-t border-dashed border-[#e8e8e8]" />
+                  <hr className={styles.my_5_10} />
                 ) : null}
                 <UploadSourceRow
                   label={option.label}

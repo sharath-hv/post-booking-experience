@@ -1,0 +1,187 @@
+/* Component styles */
+
+.relative_0 {
+  position: relative;
+  height: calc(var(--spacing) * 6);
+  width: calc(var(--spacing) * 6);
+  flex-shrink: 0;
+}
+
+.object_contain_1 {
+  object-fit: contain;
+}
+
+.relative_2 {
+  position: relative;
+  display: flex;
+  height: calc(var(--spacing) * 12);
+  align-items: center;
+  gap: calc(var(--spacing) * 2);
+  border-radius: var(--radius-lg);
+  border-style: var(--tw-border-style);
+  border-width: 1px;
+  --tw-border-style: dashed;
+  border-style: dashed;
+  border-color: #e8e8e8;
+  background-color: #f5f5f5;
+  padding-inline: calc(var(--spacing) * 3);
+}
+
+.min_w_0_3 {
+  min-width: 0px;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: var(--tw-leading, 20px);
+  --tw-leading: calc(var(--spacing) * 5);
+  line-height: calc(var(--spacing) * 5);
+  color: #121212;
+}
+
+.cta_ghost_4 {
+  display: flex;
+  width: calc(var(--spacing) * 5);
+  height: calc(var(--spacing) * 5);
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.25rem;
+}
+.cta_ghost_4:focus-visible {
+  outline-style: var(--tw-outline-style);
+  outline-width: 1px;
+  --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
+  box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  --tw-ring-color: color-mix(in oklab, #121212 20%, transparent);
+  --tw-ring-offset-width: 2px;
+  --tw-ring-offset-shadow: var(--tw-ring-inset,) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+}
+
+.relative_5 {
+  position: relative;
+  height: calc(var(--spacing) * 5);
+  width: calc(var(--spacing) * 5);
+}
+
+.px_4_6 {
+  padding-inline: calc(var(--spacing) * 4);
+  padding-block: calc(var(--spacing) * 3.5);
+}
+
+.flex_7 {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--spacing) * 3);
+}
+
+.min_w_0_8 {
+  min-width: 0px;
+  flex: 1;
+}
+
+.flex_9 {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--spacing) * 1.5);
+}
+
+.text_sm_10 {
+  font-size: 14px;
+  line-height: var(--tw-leading, 20px);
+  --tw-font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-semibold);
+  --tw-leading: calc(var(--spacing) * 5);
+  line-height: calc(var(--spacing) * 5);
+  color: #121212;
+}
+
+.mt_0_5_11 {
+  margin-top: calc(var(--spacing) * 0.5);
+  font-size: 12px;
+  line-height: var(--tw-leading, 16px);
+  --tw-leading: 18px;
+  line-height: 18px;
+  color: #757575;
+}
+
+.cta_ghost_12 {
+  display: flex;
+  height: calc(var(--spacing) * 9);
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border-style: var(--tw-border-style);
+  border-width: 1px;
+  border-color: #121212;
+  padding-inline: calc(var(--spacing) * 4);
+  font-size: 14px;
+  line-height: var(--tw-leading, 20px);
+  --tw-font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-medium);
+  --tw-leading: calc(var(--spacing) * 5);
+  line-height: calc(var(--spacing) * 5);
+  color: #121212;
+}
+
+.mt_2_5_13 {
+  margin-top: calc(var(--spacing) * 2.5);
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing) * 3);
+}
+
+.self_start_14 {
+  align-self: flex-start;
+  font-size: 13px;
+  --tw-font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-medium);
+  --tw-leading: 18px;
+  line-height: 18px;
+  color: #1b73e8;
+}
+
+.mx_4_15 {
+  margin-inline: calc(var(--spacing) * 4);
+  border-style: var(--tw-border-style);
+  border-width: 0px;
+  border-top-style: var(--tw-border-style);
+  border-top-width: 1px;
+  --tw-border-style: dashed;
+  border-style: dashed;
+  border-color: #e8e8e8;
+}
+
+.mt_3_16 {
+  margin-top: calc(var(--spacing) * 3);
+  padding-inline: var(--spacing);
+}
+
+.flex_17 {
+  display: flex;
+  align-items: flex-start;
+  gap: calc(var(--spacing) * 2);
+  font-size: 12px;
+  line-height: var(--tw-leading, 16px);
+  --tw-leading: 18px;
+  line-height: 18px;
+  color: #757575;
+}
+
+.mt_0_5_18 {
+  margin-top: calc(var(--spacing) * 0.5);
+  flex-shrink: 0;
+}
+
+.overflow_hidden_19 {
+  overflow: hidden;
+  border-radius: var(--radius-2xl);
+  background-color: var(--color-white);
+}
+
+.mt_4_20 {
+  margin-top: calc(var(--spacing) * 4);
+}
+

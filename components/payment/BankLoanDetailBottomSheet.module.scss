@@ -1,0 +1,225 @@
+/* BankLoanDetailBottomSheet — aligned with payment sheet family + bank cards */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  border: none;
+  padding: 0;
+  background-color: rgb(0 0 0 / 0.9);
+  transition: opacity 280ms var(--ease-out, cubic-bezier(0, 0, 0.2, 1));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scrim {
+    transition: none;
+  }
+}
+
+.scrimVisible {
+  opacity: 1;
+}
+
+.scrimHidden {
+  opacity: 0;
+}
+
+.panel {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  z-index: 10;
+  display: flex;
+  width: 100%;
+  max-width: 640px;
+  translate: -50% 0;
+  flex-direction: column;
+  overflow: hidden;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  background-color: #fff;
+  transition: transform 280ms var(--ease-out, cubic-bezier(0, 0, 0.2, 1));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel {
+    transition: none;
+  }
+}
+
+.panelShown {
+  transform: translateY(0);
+}
+
+.panelHidden {
+  transform: translateY(100%);
+}
+
+.panelInner {
+  position: relative;
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+}
+
+.body {
+  min-height: 0;
+  flex: 1;
+  overflow-y: auto;
+  padding-inline: 20px;
+  padding-top: 24px;
+  /* padding-bottom: 32px from BOTTOM_SHEET_BODY_BEFORE_CTA_CLASS — do not zero it here */
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.brand {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  align-items: center;
+  gap: 12px;
+}
+
+.logoFrame {
+  position: relative;
+  height: 48px;
+  width: 48px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 8px;
+  border: 1px solid #e8e8e8;
+  background-color: var(--color-white);
+}
+
+.logo {
+  object-fit: contain;
+  padding: 6px;
+}
+
+.brandCopy {
+  min-width: 0;
+  flex: 1;
+}
+
+.bankName {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 28px;
+  color: #121212;
+}
+
+.rateLine {
+  margin: 4px 0 0;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18px;
+  color: #757575;
+}
+
+.closeBtn {
+  display: flex;
+  height: 40px;
+  width: 40px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  margin: -4px -4px 0 0;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #121212;
+  cursor: pointer;
+}
+
+.closeBtn:focus-visible {
+  outline: 2px solid rgb(18 18 18 / 0.2);
+  outline-offset: 2px;
+}
+
+/* Document-list rows — icon + title/body, dashed separators (no outer card) */
+.sections {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sectionRow {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  gap: 12px;
+  padding-block: 16px;
+  text-align: left;
+}
+
+/* Body already has 32px before the CTA — don't stack another 16px under the last row */
+.sectionRow:last-child {
+  padding-bottom: 0;
+}
+
+.sectionRowDivider {
+  border-top: 1px dashed #e8e8e8;
+}
+
+.sectionIcon {
+  display: flex;
+  height: 36px;
+  width: 36px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background-color: #f5f5f5;
+  color: #75747a;
+}
+
+.sectionIconAsset {
+  display: block;
+  object-fit: contain;
+}
+
+.sectionCopy {
+  min-width: 0;
+  flex: 1;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  color: #121212;
+}
+
+.sectionBody {
+  margin: 2px 0 0;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  color: #757575;
+}
+
+.footer {
+  flex-shrink: 0;
+  background-color: #fff;
+  padding: 0 20px max(1rem, env(safe-area-inset-bottom));
+}
+
+.confirmCta {
+  width: 100%;
+}

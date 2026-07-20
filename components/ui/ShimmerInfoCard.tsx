@@ -4,6 +4,8 @@ import infoIcon from "@/assets/Info.svg";
 import warningIcon from "@/assets/Warning.svg";
 
 import { cn } from "@/lib/utils";
+import styles from "./ShimmerInfoCard.module.scss";
+
 
 type ShimmerInfoIcon = "alert" | "clock" | "info";
 
@@ -49,21 +51,20 @@ export type ShimmerInfoCardProps = {
 export function ShimmerInfoCard({ icon = "alert", lead, children, className }: ShimmerInfoCardProps) {
   return (
     <div
-      className={cn(
-        "next-step-shimmer flex h-fit items-center gap-2.5 rounded-2xl border border-[#f3e0b6] bg-[linear-gradient(180deg,rgba(255,247,229,1)_0%,rgba(255,255,255,0.8)_100%)] p-3",
+      className={cn(styles.next_step_shimmer_0, "next-step-shimmer",
         className
       )}
     >
       {icon === "alert" ? (
         <span
           aria-hidden
-          className="h-4 w-4 shrink-0 bg-[#D16900] [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center] [-webkit-mask-size:contain] [-webkit-mask-repeat:no-repeat] [-webkit-mask-position:center]"
+          className={styles.h_4_0}
           style={WARNING_ICON_MASK_STYLE}
         />
       ) : icon === "info" ? (
         <span
           aria-hidden
-          className="h-5 w-5 shrink-0 bg-[#7a5410] [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center] [-webkit-mask-size:contain] [-webkit-mask-repeat:no-repeat] [-webkit-mask-position:center]"
+          className={styles.h_5_1}
           style={INFO_ICON_MASK_STYLE}
         />
       ) : (
@@ -73,13 +74,13 @@ export function ShimmerInfoCard({ icon = "alert", lead, children, className }: S
           viewBox="0 0 24 24"
           fill="none"
           aria-hidden
-          className="shrink-0 text-[#a76406]"
+          className={styles.shrink_0_2}
         >
           {ICON_PATHS[icon]}
         </svg>
       )}
-      <p className="text-xs leading-[18px] text-[#7a5410]">
-        {lead ? <span className="font-semibold">{lead} </span> : null}
+      <p className={styles.text_xs_3}>
+        {lead ? <span className={styles.font_semibold_4}>{lead} </span> : null}
         {children}
       </p>
     </div>

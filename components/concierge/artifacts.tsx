@@ -24,6 +24,8 @@ import {
 } from "@/components/kyc/BookingCarSummaryCard";
 import { cn } from "@/lib/utils";
 import { OVERLAY_GLASS_CARD_CLASS, OVERLAY_GLASS_SURFACE_CLASS } from "@/lib/overlay-glass-card";
+import styles from "./artifacts.module.scss";
+
 
 const TICK_ICON_MASK_STYLE = {
   maskImage: `url(${tickIcon.src})`,
@@ -49,9 +51,9 @@ type RowTag = {
 };
 
 const ROW_TAG_CLASS: Record<RowTag["variant"], string> = {
-  green: "bg-[#e7f6ee] text-[#0c7a42]",
-  amber: "bg-[#fff7e5] text-[#a76406]",
-  grey:  "bg-[#f5f5f5] text-[#757575]",
+  green: styles.bg_e7f6ee__1,
+  amber: styles.bg_fff7e5__2,
+  grey:  styles.bg_f5f5f5__1,
 };
 
 export type AmountReceivedCardProps = {
@@ -64,7 +66,7 @@ export type AmountReceivedCardProps = {
   status?: "received" | "processing";
   /** Custom icon image to replace the default tick / spinner. */
   iconSrc?: string | StaticImageData;
-  /** Tailwind bg class for the icon container (overrides the green / yellow default). */
+  /** Background class for the icon container (overrides the green / yellow default). */
   iconBgClassName?: string;
   /** `glass` — frosted gradient surface used on the manage-booking overlay. */
   variant?: "default" | "glass";
@@ -83,25 +85,25 @@ export function AmountReceivedCard({
 }: AmountReceivedCardProps) {
   const processing = status === "processing";
   const isGlass = variant === "glass";
-  const defaultBg = processing ? "bg-[#fff7e5]" : "bg-[#e7f6ee]";
+  const defaultBg = processing ? styles.bg_fff7e5__3 : styles.bg_e7f6ee__4;
   return (
     <div
       className={cn(
-        isGlass ? OVERLAY_GLASS_CARD_CLASS : "overflow-hidden rounded-2xl bg-white card-elevated",
+        isGlass ? OVERLAY_GLASS_CARD_CLASS : styles.overflow_hidden_39, "card-elevated",
       )}
     >
-      <div className="flex items-center gap-3 px-4 py-4">
+      <div className={styles.flex_0}>
         <span
           className={cn(
-            "flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition-colors duration-300",
+            styles.flex_53,
             iconBgClassName ?? defaultBg,
           )}
         >
           {iconSrc ? (
-            <Image src={iconSrc} alt="" width={20} height={20} className="object-contain" unoptimized />
+            <Image src={iconSrc} alt="" width={20} height={20} className={styles.object_contain_1} unoptimized />
           ) : processing ? (
             <span
-              className="h-5 w-5 animate-spin rounded-full border-2 border-[#f0ddb0] border-t-[#a76406]"
+              className={styles.h_5_2}
               aria-hidden
             />
           ) : (
@@ -116,24 +118,24 @@ export function AmountReceivedCard({
             </svg>
           )}
         </span>
-        <div className="min-w-0">
-          <p className="text-xl font-semibold leading-7 tracking-[-0.2px] text-[#121212] tabular-nums">
+        <div className={styles.min_w_0_3}>
+          <p className={styles.text_xl_4}>
             {formatInr(amountInr)}
           </p>
-          <p className="text-xs leading-[18px] text-[#757575]">{title}</p>
+          <p className={styles.text_xs_5}>{title}</p>
         </div>
       </div>
       {rows?.length ? (
-        <div className="border-t border-dashed border-[#e8e8e8] px-4 py-4">
-          <div className="flex flex-col gap-3">
+        <div className={styles.border_t_6}>
+          <div className={styles.flex_7}>
             {rows.map((row) => (
-              <div key={row.label} className="flex items-center justify-between gap-3">
-                <span className="flex min-w-0 items-center gap-1.5 text-sm leading-5 text-[#4b4b4b]">
+              <div key={row.label} className={styles.flex_8}>
+                <span className={styles.flex_9}>
                   {row.label}
                   {row.tag ? (
                     <span
                       className={cn(
-                        "shrink-0 rounded-full px-2 py-0.5 text-[11px] font-medium leading-4",
+                        styles.shrink_0_54,
                         ROW_TAG_CLASS[row.tag.variant],
                       )}
                     >
@@ -141,7 +143,7 @@ export function AmountReceivedCard({
                     </span>
                   ) : null}
                 </span>
-                <span className="text-sm font-medium leading-5 text-[#121212] tabular-nums">
+                <span className={styles.text_sm_10}>
                   {row.value}
                 </span>
               </div>
@@ -150,8 +152,8 @@ export function AmountReceivedCard({
         </div>
       ) : null}
       {note ? (
-        <div className={cn("border-t border-[#e8e8e8] px-4 py-2.5", !isGlass && "bg-[#fafafa]")}>
-          <p className="text-xs leading-[18px] text-[#757575]">{note}</p>
+        <div className={cn(styles.border_t_55, !isGlass && styles.bg_fafafa__56)}>
+          <p className={styles.text_xs_5}>{note}</p>
         </div>
       ) : null}
     </div>
@@ -188,7 +190,7 @@ function PlanTimelineGlyph({ name, className }: { name: PlanTimelineIcon; classN
       alt=""
       width={20}
       height={20}
-      className={cn("shrink-0", className)}
+      className={cn(styles.shrink_0_16, className)}
       unoptimized
       aria-hidden
     />
@@ -209,8 +211,9 @@ export function PlanList({ items, variant = "default" }: PlanListProps) {
   return (
     <ol
       className={cn(
-        "flex flex-col rounded-2xl card-elevated px-4 py-5",
-        variant === "glass" ? OVERLAY_GLASS_SURFACE_CLASS : "bg-white"
+        styles.planList,
+        "card-elevated",
+        variant === "glass" ? OVERLAY_GLASS_SURFACE_CLASS : styles.planListSolid
       )}
     >
       {items.map((item, idx) => {
@@ -219,44 +222,59 @@ export function PlanList({ items, variant = "default" }: PlanListProps) {
         const isDone = status === "done";
         const isLast = idx === items.length - 1;
         return (
-          <li key={item.title} className="flex items-start gap-3.5">
-            <span className="flex self-stretch shrink-0 flex-col items-center">
+          <li key={item.title} className={styles.planStep}>
+            <span className={styles.planRail}>
+              {/* Fill the “Now” label offset so the rail doesn’t break above the live node */}
+              {isNow ? (
+                <span
+                  className={cn(styles.planConnector, styles.planConnectorIntoNow)}
+                  aria-hidden
+                />
+              ) : null}
               <span
                 className={cn(
-                  "flex h-9 w-9 shrink-0 items-center justify-center rounded-full",
-                  isNow
-                    ? "mt-5 bg-[#5920c5] text-white ring-4 ring-[#efe9fb]"
-                    : isDone
-                      ? "bg-[#e7f6ee] text-[#0fa457]"
-                      : "bg-[#f5f5f5] text-[#8f8e92]"
+                  styles.planNode,
+                  isNow ? styles.planNodeNow : isDone ? styles.planNodeDone : styles.planNodeTodo
                 )}
               >
-                <PlanTimelineGlyph name={item.icon} className={isNow ? "brightness-0 invert" : undefined} />
+                <PlanTimelineGlyph
+                  name={item.icon}
+                  className={isNow ? styles.planGlyphOnNow : undefined}
+                />
               </span>
               {!isLast ? (
                 <span
                   className={cn(
-                    "w-px flex-1 border-l border-dashed",
+                    styles.planConnector,
                     isNow
-                      ? "mb-1 mt-2 border-[#cdb7f0]"
+                      ? styles.planConnectorFromNow
                       : isDone
-                        ? "my-1 border-[#bfe5cb]"
-                        : "my-1 border-[#dcdbe1]"
+                        ? styles.planConnectorFromDone
+                        : styles.planConnectorFromTodo
                   )}
                   aria-hidden
                 />
               ) : null}
             </span>
-            <div className={cn("min-w-0", isNow && "pt-0.5", !isLast && "pb-6")}>
-              {isNow ? (
-                <p className="mb-1 text-[10px] font-semibold uppercase leading-4 tracking-[0.08em] text-[#5920c5]">
-                  Now
-                </p>
-              ) : null}
-              <div className="flex items-center gap-1.5">
-                <p className="text-sm font-medium leading-5 text-[#121212]">{item.title}</p>
+            <div
+              className={cn(
+                styles.planStepCopy,
+                isNow && styles.planStepCopyNow,
+                !isLast && styles.planStepCopySpaced
+              )}
+            >
+              {isNow ? <p className={styles.planNowLabel}>Now</p> : null}
+              <div className={styles.planTitleRow}>
+                <p className={styles.planTitle}>{item.title}</p>
                 {isDone ? (
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden className="shrink-0">
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    aria-hidden
+                    className={styles.planDoneCheck}
+                  >
                     <path
                       d="M5 12.5l4.2 4.2L19 7"
                       stroke="#0fa457"
@@ -267,12 +285,7 @@ export function PlanList({ items, variant = "default" }: PlanListProps) {
                   </svg>
                 ) : null}
               </div>
-              <p
-                className={cn(
-                  "mt-1 text-[13px] leading-[19px]",
-                  isDone ? "text-[#0c7a42]" : "text-[#757575]"
-                )}
-              >
+              <p className={cn(styles.planDetail, isDone ? styles.planDetailDone : styles.planDetailTodo)}>
                 {item.detail}
               </p>
             </div>
@@ -329,63 +342,63 @@ export function CarPriceBreakupCard({
   dueInr,
 }: CarPriceBreakupCardProps) {
   return (
-    <div className="overflow-hidden rounded-2xl bg-white card-elevated text-left">
-      <div className="flex items-center justify-between gap-3 border-b border-[#e8e8e8] bg-[#fafafa] px-4 py-3">
-        <span className="text-sm font-medium leading-5 text-[#121212]">Your locked price</span>
-        <span className="text-sm font-semibold leading-5 text-[#121212] tabular-nums">
+    <div className={[styles.overflow_hidden_17, "card-elevated"].filter(Boolean).join(" ")}>
+      <div className={styles.flex_18}>
+        <span className={styles.text_sm_15}>Your locked price</span>
+        <span className={styles.text_sm_19}>
           {formatInr(totalInr)}
         </span>
       </div>
 
-      <div className="flex flex-col px-4 py-1">
-        <div className="flex items-center justify-between gap-3 py-3">
-          <span className="flex min-w-0 items-center gap-1.5 text-sm leading-5 text-[#4b4b4b]">
+      <div className={styles.flex_20}>
+        <div className={styles.flex_21}>
+          <span className={styles.flex_9}>
             Booking amount
-            <span className="shrink-0 rounded-full bg-[#e7f6ee] px-2 py-0.5 text-[11px] font-medium leading-4 text-[#0c7a42]">
+            <span className={styles.shrink_0_22}>
               Paid ✓
             </span>
           </span>
-          <span className="text-sm font-medium leading-5 text-[#757575] tabular-nums">
+          <span className={styles.text_sm_23}>
             − {formatInr(bookingPaidInr)}
           </span>
         </div>
 
         {disbursementLabel != null && disbursementInr != null ? (
-          <div className="flex items-center justify-between gap-3 border-t border-dashed border-[#e8e8e8] py-3">
-            <span className="flex min-w-0 items-center gap-1.5 text-sm leading-5 text-[#4b4b4b]">
+          <div className={styles.flex_24}>
+            <span className={styles.flex_9}>
               {disbursementLabel}
-              <span className="shrink-0 rounded-full bg-[#f5f5f5] px-2 py-0.5 text-[11px] font-medium leading-4 text-[#757575]">
+              <span className={styles.shrink_0_25}>
                 Bank → dealer
               </span>
             </span>
-            <span className="text-sm font-medium leading-5 text-[#757575] tabular-nums">
+            <span className={styles.text_sm_23}>
               − {formatInr(disbursementInr)}
             </span>
           </div>
         ) : null}
 
-        <div className="flex items-center justify-between gap-3 border-t border-dashed border-[#e8e8e8] py-3">
-          <span className="flex min-w-0 items-center gap-1.5 text-sm leading-5 text-[#4b4b4b]">
+        <div className={styles.flex_24}>
+          <span className={styles.flex_9}>
             Insurance
-            <span className="shrink-0 rounded-full bg-[#fff7e5] px-2 py-0.5 text-[11px] font-medium leading-4 text-[#a76406]">
+            <span className={styles.shrink_0_26}>
               Later · before delivery
             </span>
           </span>
-          <span className="text-sm font-medium leading-5 text-[#757575] tabular-nums">
+          <span className={styles.text_sm_23}>
             − {formatInr(insuranceInr)}
           </span>
         </div>
       </div>
 
-      <div className="flex items-center justify-between gap-3 border-t border-[#e3d9fa] bg-[#f9f6ff] px-4 py-3.5">
-        <span className="text-sm font-semibold leading-5 text-[#5920c5]">{dueLabel}</span>
-        <span className="text-base font-semibold leading-6 text-[#5920c5] tabular-nums">
+      <div className={styles.flex_27}>
+        <span className={styles.text_sm_28}>{dueLabel}</span>
+        <span className={styles.text_base_29}>
           = {formatInr(dueInr)}
         </span>
       </div>
 
-      <div className="border-t border-[#e8e8e8] bg-[#fafafa] px-4 py-2.5">
-        <p className="text-xs leading-[18px] text-[#757575]">
+      <div className={styles.border_t_30}>
+        <p className={styles.text_xs_5}>
           These parts always add up to your locked price. Nothing extra, ever. Insurance is
           paid just before delivery, for RTO registration.
         </p>
@@ -411,28 +424,28 @@ export type NextStepCardProps = {
  */
 export function NextStepCard({ title, body }: NextStepCardProps) {
   return (
-    <div className="rounded-2xl border border-[var(--violet-200)] bg-[#f9f6ff] px-4 py-4 card-elevated">
-      <div className="flex items-center gap-3.5">
-        <span className="relative flex h-9 w-9 shrink-0 items-center justify-center">
+    <div className={[styles.rounded_2xl_31, "card-elevated"].filter(Boolean).join(" ")}>
+      <div className={styles.flex_32}>
+        <span className={styles.relative_33}>
           <span
             aria-hidden
-            className="absolute inset-0 animate-ping rounded-full bg-[#5920c5]/25 [animation-duration:2.4s] motion-reduce:hidden"
+            className={styles.absolute_34}
           />
-          <span className="relative flex h-9 w-9 items-center justify-center rounded-full bg-[#5920c5] text-white ring-4 ring-[#efe9fb]">
+          <span className={styles.relative_35}>
             <Image
               src={phoneIcon}
               alt=""
               width={20}
               height={20}
-              className="shrink-0 brightness-0 invert"
+              className={styles.shrink_0_36}
               unoptimized
               aria-hidden
             />
           </span>
         </span>
-        <div className="min-w-0">
-          <p className="text-base font-semibold leading-6 text-[#121212]">{title}</p>
-          <p className="mt-1 text-[13px] leading-[19px] text-[#757575]">{body}</p>
+        <div className={styles.min_w_0_3}>
+          <p className={styles.text_base_37}>{title}</p>
+          <p className={styles.mt_1_38}>{body}</p>
         </div>
       </div>
     </div>
@@ -486,8 +499,8 @@ export function CarSummaryCardLite({
   variant,
   colour,
   deliveryLine,
-  deliveryLineClassName = "text-[#5920c5]",
-  deliveryStripClassName = "border-[#efe9fb] bg-[#f9f6ff]",
+  deliveryLineClassName = styles.textExpress,
+  deliveryStripClassName = styles.stripExpress,
   deliveryIconSrc,
   dealerName,
   dealerDetail,
@@ -501,44 +514,44 @@ export function CarSummaryCardLite({
 
   if (!showHeroLayout) {
     return (
-      <div className="overflow-hidden rounded-2xl bg-white card-elevated">
+      <div className={[styles.overflow_hidden_39, "card-elevated"].filter(Boolean).join(" ")}>
         <div
           className={cn(
-            "flex flex-col px-4",
-            statusChip ? "gap-1 pt-3.5 pb-3.5" : "gap-3 py-4"
+            styles.flex_73,
+            statusChip ? styles.gap_1_74 : styles.gap_3_75
           )}
         >
           {statusChip ? (
             <span
               className={
                 statusChipVariant === "blue"
-                  ? "inline-flex h-6 w-fit items-center rounded-full bg-[#e8f0fe] px-2 py-1 text-[11px] font-medium leading-4 text-[#1a56db]"
-                  : "inline-flex h-6 w-fit items-center gap-1 rounded-full bg-[#e7f6ee] px-2 py-1 text-[11px] font-medium leading-4 text-[#0c7a42]"
+                  ? styles.inline_flex_6
+                  : styles.inline_flex_2
               }
             >
               {statusChipVariant === "blue" ? null : (
                 <span
                   aria-hidden
-                  className="h-5 w-5 shrink-0 bg-[#0c7a42] [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center] [-webkit-mask-size:contain] [-webkit-mask-repeat:no-repeat] [-webkit-mask-position:center]"
+                  className={styles.h_5_40}
                   style={TICK_ICON_MASK_STYLE}
                 />
               )}
               {statusChipLabel(statusChip)}
             </span>
           ) : null}
-          <div className="flex items-center gap-3">
-            <div className="min-w-0 flex-1">
-              <p className="text-base font-semibold leading-6 text-[#121212]">{title}</p>
-              <p className="mt-0.5 text-xs leading-[18px] text-[#757575]">
+          <div className={styles.flex_41}>
+            <div className={styles.min_w_0_42}>
+              <p className={styles.text_base_37}>{title}</p>
+              <p className={styles.mt_0_5_43}>
                 {variant} · {colour}
               </p>
             </div>
-            <div className="relative h-[64px] w-[110px] shrink-0">
+            <div className={styles.relative_44}>
               <Image
                 src={cretaCutout}
                 alt={title}
                 fill
-                className="object-contain"
+                className={styles.object_contain_1}
                 unoptimized
                 sizes="110px"
               />
@@ -546,19 +559,19 @@ export function CarSummaryCardLite({
           </div>
         </div>
         {engineNo || chassisNo ? (
-          <div className="border-t border-dashed border-[#e8e8e8] px-4 py-3">
+          <div className={styles.border_t_45}>
             {engineNo ? (
-              <div className="flex items-center justify-between gap-3 py-1">
-                <span className="text-sm leading-5 text-[#4b4b4b]">Engine no.</span>
-                <span className="text-sm font-medium leading-5 text-[#121212] tabular-nums">
+              <div className={styles.flex_46}>
+                <span className={styles.text_sm_47}>Engine no.</span>
+                <span className={styles.text_sm_10}>
                   {engineNo}
                 </span>
               </div>
             ) : null}
             {chassisNo ? (
-              <div className="flex items-center justify-between gap-3 py-1">
-                <span className="text-sm leading-5 text-[#4b4b4b]">Chassis no.</span>
-                <span className="text-sm font-medium leading-5 text-[#121212] tabular-nums">
+              <div className={styles.flex_46}>
+                <span className={styles.text_sm_47}>Chassis no.</span>
+                <span className={styles.text_sm_10}>
                   {chassisNo}
                 </span>
               </div>
@@ -568,7 +581,7 @@ export function CarSummaryCardLite({
         {deliveryLine ? (
           <div
             className={cn(
-              "flex items-center justify-center gap-1.5 border-t px-4 py-2",
+              styles.flex_76,
               deliveryStripClassName,
               deliveryLineClassName
             )}
@@ -579,16 +592,16 @@ export function CarSummaryCardLite({
                 alt=""
                 width={14}
                 height={14}
-                className="h-3.5 w-3.5 shrink-0 object-contain"
+                className={styles.h_3_5_48}
                 unoptimized
                 aria-hidden
               />
             ) : (
-              <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden className="shrink-0">
+              <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden className={styles.shrink_0_16}>
                 <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z" fill="currentColor" />
               </svg>
             )}
-            <span className="text-xs font-medium leading-[18px]">{deliveryLine}</span>
+            <span className={styles.text_xs_49}>{deliveryLine}</span>
           </div>
         ) : null}
       </div>
@@ -619,21 +632,21 @@ export function CarSummaryCardLite({
       {showVehicleIdentification ? <BookingCarCardBackdrop /> : null}
 
       {SHOW_CAR_SOURCE_HEADER ? (
-        <div className="relative z-10 flex items-center gap-3 px-4 py-3">
-          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#f5f5f5]">
-            <Image src={ackoDriveWordmark} alt="" width={20} height={15} className="h-[15px] w-5 object-contain" unoptimized />
+        <div className={styles.relative_50}>
+          <span className={styles.flex_51}>
+            <Image src={ackoDriveWordmark} alt="" width={20} height={15} className={styles.h_15px__52} unoptimized />
           </span>
-          <div className="min-w-0 flex-1">
-            <p className="text-sm font-medium leading-5 text-[#121212]">{dealerName}</p>
+          <div className={styles.min_w_0_42}>
+            <p className={styles.text_sm_15}>{dealerName}</p>
             {dealerDetail ? (
-              <p className="mt-0.5 text-xs leading-[18px] text-[#757575]">{dealerDetail}</p>
+              <p className={styles.mt_0_5_43}>{dealerDetail}</p>
             ) : null}
           </div>
           <span
             className={
               statusChip && statusChipVariant === "blue"
-                ? "shrink-0 rounded-full bg-[#e8f0fe] px-2 py-0.5 text-[11px] font-medium leading-4 text-[#1a56db]"
-                : "shrink-0 rounded-full bg-[#e7f6ee] px-2 py-0.5 text-[11px] font-medium leading-4 text-[#0c7a42]"
+                ? styles.shrink_0_7
+                : styles.badgeGreen
             }
           >
             {statusChip ? statusChipLabel(statusChip) : "Reserved"}
@@ -643,17 +656,17 @@ export function CarSummaryCardLite({
 
       {showVehicleIdentification ? (
         <>
-          <div className={`relative w-full ${BOOKING_CAR_HERO_HEIGHT_CLASS}`}>
+          <div className={cn(styles.relative_0, BOOKING_CAR_HERO_HEIGHT_CLASS)}>
             <BookingCarSummaryCardVisualStage showBackdrop={false} />
           </div>
-          <div className={`relative z-10 mx-2 -mt-24 mb-2 ${BOOKING_CAR_SUMMARY_PANEL_CLASS}`}>
+          <div className={cn(styles.relative_1, BOOKING_CAR_SUMMARY_PANEL_CLASS)}>
             {carDetails}
           </div>
         </>
       ) : (
-        <div className={`relative w-full ${BOOKING_CAR_HERO_HEIGHT_CLASS}`}>
+        <div className={cn(styles.relative_2, BOOKING_CAR_HERO_HEIGHT_CLASS)}>
           <BookingCarSummaryCardVisualStage />
-          <div className={`${BOOKING_CAR_SUMMARY_PANEL_POSITION_CLASS} ${BOOKING_CAR_SUMMARY_PANEL_CLASS}`}>
+          <div className={cn(BOOKING_CAR_SUMMARY_PANEL_POSITION_CLASS, BOOKING_CAR_SUMMARY_PANEL_CLASS)}>
             {carDetails}
           </div>
         </div>

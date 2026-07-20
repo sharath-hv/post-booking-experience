@@ -11,6 +11,7 @@ import {
   BOOKING_CAR_HERO_HEIGHT_CLASS,
   BOOKING_CAR_HERO_HEIGHT_VIN_CLASS,
   BOOKING_CAR_SUMMARY_PANEL_CLASS,
+  BOOKING_CAR_SUMMARY_PANEL_OVER_HERO_CLASS,
   BOOKING_CAR_SUMMARY_PANEL_POSITION_CLASS,
   BookingCarCardBackdrop,
   BookingCarSummaryCardVisualStage,
@@ -25,6 +26,8 @@ import { PaymentSuccessStagger } from "@/components/ui/stagger-container";
 import { cn } from "@/lib/utils";
 
 import bookingSuccessLottie from "./lottie/booking-success.json";
+import styles from "./BookingCelebrationSuccessScreen.module.scss";
+
 
 /** Default: booking-success Lottie (~one play-through if `complete` never fires). */
 const DEFAULT_LOTTIE_FALLBACK_MS = 1600;
@@ -120,7 +123,7 @@ export function BookingCelebrationSuccessScreen({
   const showCustomCarCard = replaceCarCardWith != null;
   const showCarSection = showDefaultCarCard || showCustomCarCard;
   const contentScrollClass =
-    showCustomCarCard ? "overflow-y-auto" : "overflow-hidden";
+    showCustomCarCard ? styles.overflowYAuto : styles.overflowHidden;
   usePreloadBookingImages(showDefaultCarCard);
 
   const [showHeader, setShowHeader] = useState(false);
@@ -157,25 +160,25 @@ export function BookingCelebrationSuccessScreen({
   }, [showHeader, onHeadlineReveal]);
 
   return (
-    <div className="relative flex h-dvh flex-col overflow-hidden bg-[#F7FAFF] font-sans">
+    <div className={styles.relative_0}>
       <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-[50%] bg-[linear-gradient(to_bottom,rgba(232,248,239,0.9),rgba(244,251,247,0.4),rgba(244,251,247,0))] transition-opacity duration-700"
+        className={styles.pointer_events_none_1}
         aria-hidden
       />
 
       <div
-        className={`relative flex min-h-0 flex-1 flex-col justify-start overflow-hidden ${HERO_ICON_TOP_PT} transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)]`}
+        className={cn(styles.relative_0_0, HERO_ICON_TOP_PT, styles.transition_all_0)}
       >
         <div
-          className={`mx-auto flex min-h-0 w-full max-w-[640px] flex-1 flex-col px-5 ${contentScrollClass}`}
+          className={cn(styles.mx_auto_1, contentScrollClass)}
         >
-          <div className="flex w-full flex-col items-center text-center">
-            <div className="relative flex h-[104px] w-[104px] shrink-0 items-center justify-center">
+          <div className={styles.flex_2}>
+            <div className={styles.relative_3}>
               <Lottie
                 key={lottieAnimation != null ? "custom-lottie" : "booking-success"}
                 animationData={animationData}
                 loop={false}
-                className="h-full w-full"
+                className={styles.h_full_4}
                 aria-label="Success animation"
                 onComplete={handleAnimationFinished}
               />
@@ -183,14 +186,14 @@ export function BookingCelebrationSuccessScreen({
 
             {showHeader && (
               <PaymentSuccessStagger
-                className={`${CELEBRATION_LOTTIE_TO_HEADLINE_MT} flex w-full flex-col items-center ${SUCCESS_SCREEN_HEADLINE_SUBTEXT_GAP_CLASS}`}
+                className={cn(CELEBRATION_LOTTIE_TO_HEADLINE_MT, styles.flex_2_0, SUCCESS_SCREEN_HEADLINE_SUBTEXT_GAP_CLASS)}
                 delay={0.2}
               >
-                <h1 className="text-center text-[24px] font-semibold leading-8 tracking-[-0.1px] text-[#121212]">
+                <h1 className={styles.text_center_5}>
                   {headline}
                 </h1>
                 {belowHeadline != null && (
-                  <PaymentSuccessStagger className="w-full text-center" delay={0.4}>
+                  <PaymentSuccessStagger className={styles.w_full_6} delay={0.4}>
                     {belowHeadline}
                   </PaymentSuccessStagger>
                 )}
@@ -202,23 +205,21 @@ export function BookingCelebrationSuccessScreen({
             showCarSection &&
             (showDefaultCarCard ? (
               <PaymentSuccessStagger
-                className={cn("relative mt-8 w-full self-center", BOOKING_CAR_CARD_SHELL_CLASS)}
+                className={cn(styles.relative_15, BOOKING_CAR_CARD_SHELL_CLASS)}
                 delay={0.6}
               >
                 <div
-                  className={`relative w-full overflow-hidden ${
-                    showVehicleIdentification
+                  className={cn(styles.relative_3_0, showVehicleIdentification
                       ? BOOKING_CAR_HERO_HEIGHT_VIN_CLASS
-                      : BOOKING_CAR_HERO_HEIGHT_CLASS
-                  }`}
+                      : BOOKING_CAR_HERO_HEIGHT_CLASS)}
                 >
                   {showVehicleIdentification ? <BookingCarCardBackdrop /> : null}
                   <BookingCarSummaryCardVisualStage showBackdrop={!showVehicleIdentification} />
                   <div
                     className={
                       showVehicleIdentification
-                        ? `relative z-10 mx-2 -mt-24 mb-2 ${BOOKING_CAR_SUMMARY_PANEL_CLASS}`
-                        : `${BOOKING_CAR_SUMMARY_PANEL_POSITION_CLASS} ${BOOKING_CAR_SUMMARY_PANEL_CLASS}`
+                        ? cn(BOOKING_CAR_SUMMARY_PANEL_OVER_HERO_CLASS, BOOKING_CAR_SUMMARY_PANEL_CLASS)
+                        : cn(BOOKING_CAR_SUMMARY_PANEL_POSITION_CLASS, BOOKING_CAR_SUMMARY_PANEL_CLASS)
                     }
                   >
                     <BookingCarCardDetails
@@ -230,7 +231,7 @@ export function BookingCelebrationSuccessScreen({
               </PaymentSuccessStagger>
             ) : (
               <PaymentSuccessStagger
-                className="mt-8 w-full max-w-[640px] self-center"
+                className={styles.mt_8_7}
                 delay={0.6}
               >
                 {replaceCarCardWith}
@@ -241,22 +242,22 @@ export function BookingCelebrationSuccessScreen({
 
       {showCar && (
         <PaymentSuccessStagger
-          className="z-10 shrink-0 bg-white pb-[env(safe-area-inset-bottom)]"
+          className={styles.z_10_8}
           delay={0.8}
         >
-          <div className="mx-auto flex w-full max-w-[640px] flex-col">
+          <div className={styles.mx_auto_9}>
             {upNextText != null && upNextText.length > 0 && (
-              <div className="flex h-8 w-full shrink-0 items-center justify-center bg-[#f0f0f6] px-5">
-                <p className="text-center text-xs leading-[18px] text-[#121212]">
-                  <span className="font-medium">Up next:</span>
+              <div className={styles.flex_10}>
+                <p className={styles.text_center_11}>
+                  <span className={styles.font_medium_12}>Up next:</span>
                   <span>{` ${upNextText}`}</span>
                 </p>
               </div>
             )}
-            <div className="px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-3">
+            <div className={styles.px_5_13}>
               <button
                 type="button"
-                className="primary-cta focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/30 focus-visible:ring-offset-2"
+                className={[styles.primary_cta_14, "primary-cta"].filter(Boolean).join(" ")}
                 onClick={() => router.push(okayPath)}
               >
                 {ctaLabel}

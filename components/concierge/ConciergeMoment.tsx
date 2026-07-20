@@ -28,6 +28,7 @@ import { getArrivalLeadPaid, getTurnWords, type ConciergeMomentId } from "@/lib/
 import {
   DEFAULT_EXPERIENCE_FLOW,
   isCancelNoChargesFlow,
+  isCancelWithChargesFlow,
   readExperienceFlow,
   type ExperienceFlow,
 } from "@/lib/experience-flow";
@@ -52,6 +53,8 @@ import {
 } from "@/lib/kyc-verification-outcome";
 import { BOOKING_LOCK_AMOUNT_INR } from "@/lib/paymentUrls";
 import { CAR_SOURCE_NAME, CAR_SOURCE_DETAIL } from "@/lib/dealer-attribution-content";
+import styles from "./ConciergeMoment.module.scss";
+
 
 export type ConciergeMomentProps = {
   moment: ConciergeMomentId;
@@ -96,25 +99,57 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
     }
   }, [shouldRedirectToManualVerification, router]);
 
-  const words = useMemo(() => getTurnWords(moment, flow), [moment, flow]);
-
   /** Car details — honour an updated selection from the modify flows. */
-  const car = useMemo(() => {
-    if (!flowReady) {
-      return { title: BOOKING_CAR_TITLE, variant: BOOKING_CAR_VARIANT, colour: BOOKING_CAR_COLOR };
-    }
-    const snapshot = readActiveBookingSnapshot();
-    return {
-      title: snapshot?.carTitle ?? BOOKING_CAR_TITLE,
-      variant: snapshot?.carVariant ?? BOOKING_CAR_VARIANT,
-      colour: snapshot?.colourName ?? BOOKING_CAR_COLOR,
-    };
-  }, [flowReady]);
+  const { car, afterSelectionChange, selectionDeliveryLine, selectionIsExpress } =
+    useMemo(() => {
+      if (!flowReady) {
+        return {
+          car: {
+            title: BOOKING_CAR_TITLE,
+            variant: BOOKING_CAR_VARIANT,
+            colour: BOOKING_CAR_COLOR,
+          },
+          afterSelectionChange: false,
+          selectionDeliveryLine: null as string | null,
+          selectionIsExpress: null as boolean | null,
+        };
+      }
+      const snapshot = readActiveBookingSnapshot();
+      return {
+        car: {
+          title: snapshot?.carTitle ?? BOOKING_CAR_TITLE,
+          variant: snapshot?.carVariant ?? BOOKING_CAR_VARIANT,
+          colour: snapshot?.colourName ?? BOOKING_CAR_COLOR,
+        },
+        afterSelectionChange: snapshot?.selectionChangeCompleted === true,
+        selectionDeliveryLine: snapshot?.deliveryLine ?? null,
+        selectionIsExpress:
+          snapshot != null ? snapshot.isExpressDelivery : null,
+      };
+    }, [flowReady]);
 
-  const deliveryLine = getBookingDeliveryLine(flow);
-  const deliveryLineClass = getBookingDeliveryTextClass(flow);
-  const deliveryStripClass = getBookingDeliveryStripContainerClass(flow);
-  const deliveryIconSrc = getBookingDeliveryIconSrc(flow);
+  const earlyAllocation = searchParams.get("early") === "1";
+
+  const words = useMemo(
+    () =>
+      getTurnWords(moment, flow, {
+        car,
+        afterSelectionChange,
+        earlyAllocation: moment === "allocationDone" ? earlyAllocation : false,
+      }),
+    [moment, flow, car, afterSelectionChange, earlyAllocation],
+  );
+
+  const deliveryFlow =
+    selectionIsExpress === true
+      ? "express"
+      : selectionIsExpress === false
+        ? "standard"
+        : flow;
+  const deliveryLine = selectionDeliveryLine ?? getBookingDeliveryLine(deliveryFlow);
+  const deliveryLineClass = getBookingDeliveryTextClass(deliveryFlow);
+  const deliveryStripClass = getBookingDeliveryStripContainerClass(deliveryFlow);
+  const deliveryIconSrc = getBookingDeliveryIconSrc(deliveryFlow);
 
   const turn: ConciergeTurn & { hideBack?: boolean } = useMemo(() => {
     const base: ConciergeTurn & { hideBack?: boolean } = {
@@ -275,24 +310,31 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
         };
       }
 
-      case "dealerSearch":
+      case "dealerSearch": {
+        // cancel_with_charges parks here once the partner is assigned (charged cancel demo).
+        const parkForCancelCharges = isCancelWithChargesFlow(flow);
         return {
           ...base,
           working,
           footnoteInline: true,
           // Standard resolves live (any nearby dealer works, no overnight wait), so it
           // gets a reply button instead of the express-only "Next morning" time-skip.
-          replies: primaryReply(JOURNEY_PATHS.kyc.bookingAccepted),
-          timeSkip: words.timeSkipLabel
-            ? { label: words.timeSkipLabel, href: JOURNEY_PATHS.kyc.bookingAccepted }
-            : undefined,
-          altTimeSkip: isStandardDeliveryFlow(flow)
+          replies: parkForCancelCharges
             ? undefined
-            : {
-                label: "If no car is found",
-                href: JOURNEY_PATHS.carAllocation.failed,
-              },
+            : primaryReply(JOURNEY_PATHS.kyc.bookingAccepted),
+          timeSkip:
+            words.timeSkipLabel && !parkForCancelCharges
+              ? { label: words.timeSkipLabel, href: JOURNEY_PATHS.kyc.bookingAccepted }
+              : undefined,
+          altTimeSkip:
+            isStandardDeliveryFlow(flow) || parkForCancelCharges
+              ? undefined
+              : {
+                  label: "If no car is found",
+                  href: JOURNEY_PATHS.carAllocation.failed,
+                },
         };
+      }
 
       case "dealerFound": {
         return {
@@ -300,7 +342,7 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
           // No reply buttons here, but the date is in the user's hands — the call is the action.
           dateHolder: "you",
           artifact: (
-            <div className="flex flex-col gap-5">
+            <div className={styles.flex_0}>
               <CarSummaryCardLite
                 title={car.title}
                 variant={car.variant}
@@ -316,9 +358,9 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
                 title="Confirm with a one-time code"
                 body="Our partner will call you shortly. Share the OTP with them."
               />
-              <p className="px-1 text-xs leading-[18px] text-[#757575]">
-                <span className="font-semibold">Having second thoughts?</span> A change costs ₹5,000 and
-                cancelling holds back half of what you&apos;ve paid. Both are in the menu up top.
+              <p className={styles.px_1_1}>
+                <span className={styles.font_semibold_2}>Having second thoughts?</span> A change costs ₹5,000 and
+                cancelling holds back half of your booking amount. Both are in the menu up top.
               </p>
             </div>
           ),
@@ -376,8 +418,12 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
           timeSkip: words.timeSkipLabel
             ? { label: words.timeSkipLabel, href: JOURNEY_PATHS.carAllocation.confirmed }
             : undefined,
+          // Standard: early-allocation demo. Express: inability-to-deliver demo.
           altTimeSkip: isStandardDeliveryFlow(flow)
-            ? undefined
+            ? {
+                label: "Car ready early",
+                href: `${JOURNEY_PATHS.carAllocation.confirmed}?early=1`,
+              }
             : { label: "If no car is found", href: JOURNEY_PATHS.carAllocation.failed },
         };
 

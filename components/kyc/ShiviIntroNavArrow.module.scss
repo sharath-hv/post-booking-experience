@@ -1,0 +1,19 @@
+/* Component styles */
+
+.pointer_events_none_0 {
+  pointer-events: none;
+  margin-inline: auto;
+  display: block;
+  height: auto;
+  max-height: 100%;
+  width: 90px;
+  object-fit: contain;
+  max-width: min(120px, 40vw);
+
+}
+@media (width >= 40rem) {
+  .pointer_events_none_0 {
+    width: 110px;
+  }
+}
+

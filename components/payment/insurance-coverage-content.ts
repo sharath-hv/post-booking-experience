@@ -205,7 +205,7 @@ export const INSURANCE_COVER_HERO = {
   eyebrow: "Insured declared value",
   value: "₹9,54,900",
   caption:
-    "Your car's full ex-showroom price — no new-car haircut. Every claim is valued against this number, with zero depreciation on replaced parts.",
+    "Your car's full ex-showroom price. Every claim is valued against this number, with zero depreciation on replaced parts.",
 } as const;
 
 /** Coverage highlights under the hero — rows, each with its own explanation. */
