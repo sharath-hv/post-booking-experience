@@ -260,10 +260,6 @@ export const INSURANCE_VALUE_POINTS: readonly InsuranceValuePoint[] = [
 
 export const INSURANCE_COVERAGE_SHEET_TITLE = "ACKO Drive Shield — your new car's cover";
 
-/** One-line framing below the sheet title — purchase mode only. */
-export const INSURANCE_COVERAGE_SHEET_SUBTITLE =
-  "Before you pay — here's exactly what ₹37,000 buys. No fine print between us.";
-
 /** Pricing-team commitment — the line that ends the support call before it starts. */
 export const INSURANCE_PRICE_PROMISE =
   "Find this exact cover for less anywhere, and I'll refund the difference — that's a promise.";
@@ -273,10 +269,6 @@ export const INSURANCE_PRICE_PROMISE =
 /* ------------------------------------------------------------------------ */
 
 export const INSURANCE_OWNED_SHEET_TITLE = "Your Shield policy";
-
-/** One-line framing below the sheet title — owned mode only. */
-export const INSURANCE_OWNED_SHEET_SUBTITLE =
-  "Paid and live — this is the cover you're driving home with. I hold a copy too, always.";
 
 /** Demo policy identity — issued the moment the premium lands. */
 export const INSURANCE_POLICY_NUMBER = "ADRV-2026-0841927";

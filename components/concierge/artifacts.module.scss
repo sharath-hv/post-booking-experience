@@ -379,7 +379,7 @@
   font-size: 13px;
   --tw-leading: 19px;
   line-height: 19px;
-  color: #757575;
+  color: #4b4b4b;
 }
 
 .overflow_hidden_39 {
@@ -843,29 +843,36 @@
 }
 
 /*
- * Vertical dashed rail — 1px stroke, 2px dash / 2px gap.
+ * Vertical dashed rail — 1.5px stroke, 2px dash / 2px gap.
  * Segments stop at the node edge (no negative margin into the circle) so the
  * stroke never paints on top of the icon node.
  */
 .planConnector {
   flex: 1 1 auto;
   align-self: center;
-  width: 1px;
+  width: 1.5px;
   min-height: 8px;
   background-color: transparent;
   background-image: repeating-linear-gradient(
     to bottom,
-    #dcdbe1 0,
-    #dcdbe1 2px,
+    #d0cfd5 0,
+    #d0cfd5 2px,
     transparent 2px,
     transparent 4px
   );
   background-repeat: repeat-y;
   background-position: center top;
-  background-size: 1px 4px;
+  background-size: 1.5px 4px;
 }
 
-/* “Now” label offset only — green, ends at the top edge of the live node. */
+/* Shared “Now” label offset — keeps the node aligned with the title. */
+.planConnectorIntoNowSpacer {
+  flex: 0 0 18px;
+  min-height: 18px;
+  background-image: none;
+}
+
+/* Green rail into “Now” when the previous step is done. */
 .planConnectorIntoNow {
   flex: 0 0 18px;
   min-height: 18px;
@@ -876,19 +883,19 @@
     transparent 2px,
     transparent 4px
   );
-  background-size: 1px 4px;
+  background-size: 1.5px 4px;
 }
 
 /* From “now” → next: grey — starts below the live node */
 .planConnectorFromNow {
   background-image: repeating-linear-gradient(
     to bottom,
-    #dcdbe1 0,
-    #dcdbe1 2px,
+    #d0cfd5 0,
+    #d0cfd5 2px,
     transparent 2px,
     transparent 4px
   );
-  background-size: 1px 4px;
+  background-size: 1.5px 4px;
 }
 
 /* From done → next: green */
@@ -900,7 +907,7 @@
     transparent 2px,
     transparent 4px
   );
-  background-size: 1px 4px;
+  background-size: 1.5px 4px;
 }
 
 .planConnectorFromTodo {
@@ -911,7 +918,7 @@
     transparent 2px,
     transparent 4px
   );
-  background-size: 1px 4px;
+  background-size: 1.5px 4px;
 }
 
 .planStepCopy {

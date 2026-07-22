@@ -527,7 +527,7 @@ function ManageBookingBottomSheetInner({
               Your car
             </h2>
             <p className={styles.mt_1_12}>
-              Reference ID: {DEMO_BOOKING_ID}
+              Booking ID: {DEMO_BOOKING_ID}
             </p>
           </div>
           <button

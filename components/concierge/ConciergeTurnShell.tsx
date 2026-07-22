@@ -73,7 +73,7 @@ export type ConciergeTurn = {
    */
   altTimeSkip?: { label: string; href: string } | readonly { label: string; href: string }[];
   /** Orange commitment line above the footer (deadlines, expectations). */
-  footnote?: string;
+  footnote?: ReactNode;
   /** Semibold prefix for the footnote card. */
   footnoteLead?: string;
   /** Render the footnote inline after the turn's content instead of fixed above the CTA. */
@@ -455,9 +455,13 @@ export function ConciergeTurnShell({
                 ) : null}
                 {footnote && footnoteInline && ready ? (
                   <div className={[styles.kyc_stagger_16, "kyc-stagger"].filter(Boolean).join(" ")}>
-                    <ShimmerInfoCard icon="info" lead={footnoteLead}>
-                      {footnote}
-                    </ShimmerInfoCard>
+                    {typeof footnote === "string" ? (
+                      <ShimmerInfoCard icon="info" lead={footnoteLead}>
+                        {footnote}
+                      </ShimmerInfoCard>
+                    ) : (
+                      footnote
+                    )}
                   </div>
                 ) : null}
               </div>
@@ -491,7 +495,13 @@ export function ConciergeTurnShell({
           <div className={styles.mx_auto_17}>
             {footnote && !footnoteInline ? (
               <div className={styles.mb_3_18}>
-                <ShimmerInfoCard icon="info" lead={footnoteLead}>{footnote}</ShimmerInfoCard>
+                {typeof footnote === "string" ? (
+                  <ShimmerInfoCard icon="info" lead={footnoteLead}>
+                    {footnote}
+                  </ShimmerInfoCard>
+                ) : (
+                  footnote
+                )}
               </div>
             ) : null}
             {replies?.length ? <ConciergeReplies replies={replies} /> : null}

@@ -4,6 +4,8 @@ import Image from "next/image";
 import { useCallback, type MouseEvent } from "react";
 
 import locationIcon from "@/assets/Location.svg";
+import { OVERLAY_GLASS_CARD_CLASS } from "@/lib/overlay-glass-card";
+import { cn } from "@/lib/utils";
 import styles from "./PartnerGarageCard.module.scss";
 
 export type PartnerGarageCardProps = {
@@ -13,6 +15,8 @@ export type PartnerGarageCardProps = {
   detail?: string;
   /** Optional maps / directions URL. Prevents navigation when omitted. */
   directionsHref?: string;
+  /** `glass` — frosted gradient surface used on confirmation / overlay stacks. */
+  variant?: "default" | "glass";
 };
 
 /**
@@ -22,6 +26,7 @@ export function PartnerGarageCard({
   name = "Advaith Hyundai",
   detail = "Whitefield · Bengaluru",
   directionsHref,
+  variant = "default",
 }: PartnerGarageCardProps) {
   const onPlaceholderClick = useCallback(
     (e: MouseEvent<HTMLAnchorElement>) => {
@@ -30,9 +35,14 @@ export function PartnerGarageCard({
     [directionsHref],
   );
 
+  const isGlass = variant === "glass";
+
   return (
     <section
-      className={[styles.card, "card-elevated"].filter(Boolean).join(" ")}
+      className={cn(
+        styles.card,
+        isGlass ? OVERLAY_GLASS_CARD_CLASS : [styles.cardSolid, "card-elevated"],
+      )}
       aria-label="Partner garage"
     >
       <div className={styles.row}>

@@ -166,6 +166,7 @@
 
 .shrink_0_22 {
   flex-shrink: 0;
+  border: 1px solid var(--color-white);
   border-radius: calc(infinity * 1px);
   padding-inline: calc(var(--spacing) * 2.5);
   padding-block: var(--spacing);

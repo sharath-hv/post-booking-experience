@@ -13,6 +13,7 @@ import {
   type PlanItem,
 } from "@/components/concierge/artifacts";
 import { ConciergeTurnShell, type ConciergeTurn } from "@/components/concierge/ConciergeTurnShell";
+import { PaperworkDeadlineFootnote } from "@/components/concierge/DeadlineCountdownFootnote";
 import {
   BOOKING_CAR_COLOR,
   BOOKING_CAR_TITLE,
@@ -215,6 +216,7 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
           ),
           headingLastLine: true,
           artifact: <PlanList items={planItems} variant="glass" />,
+          footnote: <PaperworkDeadlineFootnote />,
           replies: primaryReply(JOURNEY_PATHS.kyc.hub),
         };
       }
@@ -343,6 +345,10 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
           dateHolder: "you",
           artifact: (
             <div className={styles.flex_0}>
+              <NextStepCard
+                title="Confirm with a one-time code"
+                body="Our partner will call you shortly. Share the OTP with them. That's how Hyundai assigns this exact car to you."
+              />
               <CarSummaryCardLite
                 title={car.title}
                 variant={car.variant}
@@ -353,10 +359,6 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
                 deliveryIconSrc={deliveryIconSrc}
                 dealerName={CAR_SOURCE_NAME}
                 dealerDetail={CAR_SOURCE_DETAIL}
-              />
-              <NextStepCard
-                title="Confirm with a one-time code"
-                body="Our partner will call you shortly. Share the OTP with them."
               />
               <p className={styles.px_1_1}>
                 <span className={styles.font_semibold_2}>Having second thoughts?</span> A change costs ₹5,000 and

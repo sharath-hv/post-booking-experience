@@ -135,7 +135,7 @@ export function ManageBookingZoomOverlay({
                 Your car
               </h2>
               <p className={styles.mt_1_5}>
-                Reference ID: {DEMO_BOOKING_ID}
+                Booking ID: {DEMO_BOOKING_ID}
               </p>
             </div>
 
@@ -160,7 +160,7 @@ export function ManageBookingZoomOverlay({
                 >
                   {dateHolder === "you"
                     ? `Waiting on you — ${nowStep?.title.toLowerCase() ?? "this step"}`
-                    : "On track ✓"}
+                    : "On track"}
                 </span>
               </div>
 

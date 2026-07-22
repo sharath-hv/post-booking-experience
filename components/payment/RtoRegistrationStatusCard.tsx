@@ -3,7 +3,7 @@
 import { ShimmerInfoCard } from "@/components/ui/ShimmerInfoCard";
 
 const RTO_REGISTRATION_INFO_COPY =
-  "You'll get your registration number the moment the RTO issues it.";
+  "I'll share your registration number as soon as the RTO issues it.";
 
 /**
  * RTO registration status — info shimmer callout.

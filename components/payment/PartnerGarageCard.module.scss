@@ -3,9 +3,12 @@
 .card {
   width: 100%;
   border-radius: var(--radius-2xl);
-  background-color: var(--color-white);
   padding: calc(var(--spacing) * 4);
   text-align: left;
+}
+
+.cardSolid {
+  background-color: var(--color-white);
 }
 
 .row {

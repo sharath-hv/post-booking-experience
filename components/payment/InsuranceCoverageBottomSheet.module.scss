@@ -73,8 +73,7 @@
   display: flex;
   flex-shrink: 0;
   flex-direction: column;
-  gap: 14px;
-  padding: 20px 20px 0;
+  padding: 20px 20px 4px;
   background:
     radial-gradient(130% 130% at 0% 0%, #efe8fc 0%, rgba(239, 232, 252, 0) 62%),
     radial-gradient(110% 110% at 100% 0%, #fdeff3 0%, rgba(253, 239, 243, 0) 55%),
@@ -118,37 +117,6 @@
 .closeBtn:focus-visible {
   outline: 2px solid rgb(18 18 18 / 0.2);
   outline-offset: 2px;
-}
-
-.shiviLine {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-}
-
-.shiviAvatar {
-  position: relative;
-  margin-top: 1px;
-  height: 32px;
-  width: 32px;
-  flex-shrink: 0;
-  overflow: hidden;
-  border-radius: 9999px;
-  background-color: #f5f5f5;
-}
-
-.shiviAvatarImg {
-  object-fit: cover;
-}
-
-.shiviCopy {
-  margin: 0;
-  min-width: 0;
-  flex: 1;
-  font-size: 13px;
-  font-weight: 400;
-  line-height: 18px;
-  color: var(--quote-text-body);
 }
 
 .headerFade {

@@ -7,10 +7,11 @@ import { KYC_ASSETS } from "@/components/kyc/kyc-assets";
 import { useFullPaymentJourney } from "@/components/payment/use-full-payment-journey";
 import { ShieldPolicyCard } from "@/components/payment/ShieldPolicyCard";
 import type { InsuranceTenureId } from "@/components/payment/insurance-coverage-content";
+import { DEMO_NAV_CTA_LABEL } from "@/lib/demo-nav-cta";
 
 const HEADLINE = "Your Creta is covered, Sharath";
 const SUBLINE =
-  "Issued the moment your payment landed. Insurance is us, after all. Zero depreciation, active from today. Next, I take your registration file to the RTO.";
+  "Zero depreciation cover, active from today. Next, I'll take your registration file to the RTO.";
 
 /** Policy issued instantly (ACKO is the insurer) — news turn, then on to the RTO wait. */
 export function CarDeliveryInsurancePrepScreen() {
@@ -26,7 +27,8 @@ export function CarDeliveryInsurancePrepScreen() {
       heroIllustrationSrc={KYC_ASSETS.insuranceInProgressHero}
       nextHref={withBank("/payment/car-delivery-rto")}
       prefetchHref={withBank("/payment/car-delivery-rto")}
-      nextCtaLabel="On to the RTO"
+      nextCtaLabel={DEMO_NAV_CTA_LABEL}
+      timeSkipLabel="RTO registration"
       heroSummaryCard={<ShieldPolicyCard mode="active" tenure={tenure} />}
       manageBookingShowVehicleIdentification
     />

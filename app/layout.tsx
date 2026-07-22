@@ -4,6 +4,7 @@ import styles from "./layout.module.scss";
 
 import { EUCLID_FONT_ORIGIN, EUCLID_PRELOAD_FONT_FILES, euclidFontHref } from "@/lib/euclid-font-preload";
 import { AnimationProvider } from "@/components/providers";
+import { AppToastHost } from "@/components/ui/AppToastHost";
 
 export const metadata: Metadata = {
   title: "Post-booking experience",
@@ -33,6 +34,7 @@ export default function RootLayout({
       <body className={styles.body}>
         <AnimationProvider>
           <div className={styles.shell}>{children}</div>
+          <AppToastHost />
         </AnimationProvider>
       </body>
     </html>

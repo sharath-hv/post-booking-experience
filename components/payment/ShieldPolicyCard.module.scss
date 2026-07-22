@@ -11,7 +11,7 @@
 .header {
   position: relative;
   overflow: hidden;
-  padding: 20px 20px 12px;
+  padding: 20px 20px 16px;
   background:
     radial-gradient(130% 130% at 0% 0%, #efe8fc 0%, rgba(239, 232, 252, 0) 62%),
     radial-gradient(110% 110% at 100% 0%, #fdeff3 0%, rgba(253, 239, 243, 0) 55%);
@@ -48,15 +48,18 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  height: 24px;
+  border: 1px solid var(--color-white);
   border-radius: 9999px;
   background-color: #e9f7ef;
-  padding: 4px 10px;
+  padding: 0 8px;
   font-size: 10px;
   font-weight: 600;
   line-height: 12px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: #0c7a42;
+  box-sizing: border-box;
 }
 
 .pulseWrap {
@@ -102,17 +105,17 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 600;
-  line-height: 24px;
+  line-height: 26px;
   letter-spacing: -0.1px;
   color: #18141f;
 }
 
 .subtitle {
-  margin: 2px 0 0;
-  font-size: 12px;
-  line-height: 16px;
+  margin: 4px 0 0;
+  font-size: 14px;
+  line-height: 20px;
   color: var(--quote-text-body);
 }
 
@@ -137,15 +140,7 @@
 
 .priceBlock {
   position: relative;
-  margin-top: 18px;
-}
-
-.priceRow {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  column-gap: 10px;
-  row-gap: 2px;
+  margin-top: 12px;
 }
 
 .price {
@@ -156,56 +151,18 @@
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 600;
-  line-height: 36px;
-  letter-spacing: -0.5px;
+  line-height: 32px;
+  letter-spacing: -0.4px;
   font-variant-numeric: tabular-nums;
-}
-
-.compareAt {
-  font-size: 16px;
-  line-height: 24px;
-  color: var(--color-text-secondary);
-  text-decoration: line-through;
-  font-variant-numeric: tabular-nums;
-}
-
-.savings {
-  margin: 8px 0 0;
-  display: inline-flex;
-  align-items: center;
-  width: fit-content;
-  border-radius: 9999px;
-  background-color: #e9f7ef;
-  padding: 4px 10px;
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 16px;
-  color: #0c7a42;
-}
-
-.policyNumber {
-  margin: 0;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 20px;
-  color: #1c1727;
-  font-variant-numeric: tabular-nums;
-}
-
-.policyMeta {
-  margin: 2px 0 0;
-  font-size: 12px;
-  line-height: 16px;
-  color: var(--quote-text-tertiary);
 }
 
 .body {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 12px 20px 4px;
+  gap: 12px;
+  padding: 0 20px 12px;
 }
 
 .idvPanel {
@@ -227,9 +184,9 @@
 
 .idvValue {
   margin: 4px 0 0;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 600;
-  line-height: 28px;
+  line-height: 24px;
   letter-spacing: -0.2px;
   color: #18141f;
   font-variant-numeric: tabular-nums;
@@ -246,7 +203,7 @@
   display: flex;
   list-style: none;
   flex-direction: column;
-  margin: 4px 0 0;
+  margin: 0;
   padding: 0;
 }
 
@@ -296,27 +253,11 @@
 }
 
 .footer {
-  border-top: 1px solid #f1eef8;
   padding: 14px 20px 16px;
-}
-
-.footerActive {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-  border-top: 1px solid #f1eef8;
-  padding: 14px 20px 16px;
-}
-
-.policyIdentity {
-  min-width: 0;
-  flex: 1;
 }
 
 .footerCta {
   gap: 4px;
-  flex-shrink: 0;
 }
 
 .footerArrow {

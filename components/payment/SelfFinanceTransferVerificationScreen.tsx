@@ -5,13 +5,8 @@ import { useSearchParams } from "next/navigation";
 
 import { AmountReceivedCard } from "@/components/concierge/artifacts";
 import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
-import { ShimmerInfoCard } from "@/components/ui/ShimmerInfoCard";
-import {
-  FULL_PAYMENT_INSURANCE_INR,
-  SELF_FINANCE_LOAN_DEFAULT_INR,
-} from "@/components/payment/loan-amount-demo-constants";
+import { SELF_FINANCE_LOAN_DEFAULT_INR } from "@/components/payment/loan-amount-demo-constants";
 import { PARTNER_DEALER_LABEL, PARTNER_DEALER_LABEL_CAPITALIZED } from "@/lib/dealer-attribution-content";
-import styles from "./SelfFinanceTransferVerificationScreen.module.scss";
 
 
 function formatInr(amount: number) {
@@ -56,20 +51,15 @@ export function SelfFinanceTransferVerificationScreen() {
     <ConciergeTurnShell
       says={says}
       artifact={
-        <div className={styles.flex_0}>
-          <AmountReceivedCard
-            amountInr={loanAmountInr}
-            title="Bank transfer - verifying with dealer"
-            status="processing"
-            rows={[
-              { label: "Sent to", value: PARTNER_DEALER_LABEL_CAPITALIZED },
-            ]}
-            note="Confirmation typically takes 1-2 business days."
-          />
-          <ShimmerInfoCard icon="info">
-            <strong>One thing still ahead:</strong>{` your ${formatInr(FULL_PAYMENT_INSURANCE_INR)} insurance. The RTO won't register your car without a live policy, and I'll ask you at exactly the right moment.`}
-          </ShimmerInfoCard>
-        </div>
+        <AmountReceivedCard
+          amountInr={loanAmountInr}
+          title="Bank transfer - verifying with dealer"
+          status="processing"
+          rows={[
+            { label: "Sent to", value: PARTNER_DEALER_LABEL_CAPITALIZED },
+          ]}
+          note="Confirmation typically takes 1-2 business days."
+        />
       }
       timeSkip={{ label: "Once dealer confirms", href: nextHref }}
       callLabel="Questions? I can call you"

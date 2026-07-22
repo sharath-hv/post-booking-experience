@@ -181,7 +181,15 @@
   background-color: var(--color-white);
 }
 
-.mt_4_20 {
-  margin-top: calc(var(--spacing) * 4);
+/* Matches concierge artifact card stack spacing (gap-4) used on other turns. */
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+.cardStack {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing) * 4);
 }
 

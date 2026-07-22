@@ -10,6 +10,7 @@ import fileIcon from "@/assets/file.svg";
 import homeIcon from "@/assets/Home.svg";
 import identityIcon from "@/assets/Identity.svg";
 import invoiceIcon from "@/assets/Invoice.svg";
+import { OVERLAY_GLASS_SURFACE_CLASS } from "@/lib/overlay-glass-card";
 import { cn } from "@/lib/utils";
 import styles from "./LoanDocumentsChecklistCard.module.scss";
 
@@ -61,21 +62,30 @@ function DocRow({ icon, label, reason }: DocItem) {
   );
 }
 
+export type LoanDocumentsChecklistCardProps = {
+  /** `glass` — frosted surface matching arrival PlanList / AmountReceivedCard. */
+  variant?: "default" | "glass";
+};
+
 /**
  * The loan document checklist, upfront — no “see checklist” click.
  * Header → employment tabs → document list → friction-melting footer.
  */
-export function LoanDocumentsChecklistCard() {
+export function LoanDocumentsChecklistCard({
+  variant = "default",
+}: LoanDocumentsChecklistCardProps) {
   const [tab, setTab] = useState<EmploymentTab>("salaried");
   const items = tab === "salaried" ? SALARIED_DOCUMENTS : SELF_EMPLOYED_DOCUMENTS;
+  const isGlass = variant === "glass";
 
   return (
-    <div className={cn(styles.card, "card-elevated")}>
-      <header className={styles.header}>
-        <h3 className={styles.title}>Documents required</h3>
-        <p className={styles.subtitle}>Photos or PDFs. Nothing needs printing.</p>
-      </header>
-
+    <div
+      className={cn(
+        isGlass ? OVERLAY_GLASS_SURFACE_CLASS : styles.card,
+        !isGlass && "card-elevated",
+        isGlass && styles.cardGlass,
+      )}
+    >
       <div className={styles.tabs} role="tablist" aria-label="Employment type">
         {(
           [

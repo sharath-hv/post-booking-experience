@@ -5,19 +5,13 @@ import { useSearchParams } from "next/navigation";
 
 import { AmountReceivedCard } from "@/components/concierge/artifacts";
 import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
-import { ShimmerInfoCard } from "@/components/ui/ShimmerInfoCard";
 import { bankForQueryParam } from "@/components/payment/acko-drive-finance-bank";
-import styles from "./LoanDealerDownPaymentConfirmedScreen.module.scss";
 
 import {
   BANK_DISBURSEMENT_INR,
   cashDownPaymentDueInr,
-  FULL_PAYMENT_INSURANCE_INR,
 } from "@/components/payment/loan-amount-demo-constants";
-import {
-  PARTNER_DEALER_LABEL,
-  PARTNER_DEALER_LABEL_CAPITALIZED,
-} from "@/lib/dealer-attribution-content";
+import { PARTNER_DEALER_LABEL_CAPITALIZED } from "@/lib/dealer-attribution-content";
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -69,22 +63,17 @@ export function LoanDealerDownPaymentConfirmedScreen() {
     <ConciergeTurnShell
       says={says}
       artifact={
-        <div className={styles.flex_0}>
-          <AmountReceivedCard
-            amountInr={loanAmountInr}
-            title={`${bank.name} disbursement · in progress`}
-            status="processing"
-            variant="glass"
-            rows={[
-              { label: "Down payment confirmed", value: formatInr(downPaymentInr) },
-              { label: "Releasing to", value: PARTNER_DEALER_LABEL_CAPITALIZED },
-            ]}
-            note="Typically completes within 1–2 business days."
-          />
-          <ShimmerInfoCard icon="info">
-            <strong>One thing still ahead:</strong>{` your ${formatInr(FULL_PAYMENT_INSURANCE_INR)} insurance. The RTO won't register your car without a live policy, and I'll ask you at exactly the right moment.`}
-          </ShimmerInfoCard>
-        </div>
+        <AmountReceivedCard
+          amountInr={loanAmountInr}
+          title={`${bank.name} disbursement · in progress`}
+          status="processing"
+          variant="glass"
+          rows={[
+            { label: "Down payment confirmed", value: formatInr(downPaymentInr) },
+            { label: "Releasing to", value: PARTNER_DEALER_LABEL_CAPITALIZED },
+          ]}
+          note="Typically completes within 1–2 business days."
+        />
       }
       timeSkip={{ label: "Once the bank disburses", href: disbursementReceivedHref }}
       callLabel="Questions? I can call you"

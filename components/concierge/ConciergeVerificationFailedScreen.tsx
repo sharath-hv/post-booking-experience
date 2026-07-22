@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
 import { ConciergeDocumentsCard } from "@/components/concierge/ConciergeDocumentsCard";
+import { ReuploadDeadlineFootnote } from "@/components/concierge/DeadlineCountdownFootnote";
 import { VerificationFailureReasonSwitcher } from "@/components/kyc/VerificationFailureReasonSwitcher";
 import {
   resolveKycVerificationFailureReason,
@@ -17,8 +18,6 @@ import {
   writeKycUploadState,
   type KycUploadsState,
 } from "@/lib/kyc-upload-state";
-
-const FOOTNOTE = "Re-upload within 24 hours or your purchase will be cancelled and your payment refunded.";
 
 type FailureCopy = {
   says: readonly string[];
@@ -143,7 +142,7 @@ export function ConciergeVerificationFailedScreen() {
           variant="glass"
         />
       }
-      footnote={FOOTNOTE}
+      footnote={<ReuploadDeadlineFootnote />}
       replies={replies}
       altTimeSkip={{ label: "If retries are exhausted", href: "/kyc/verification-cancelled" }}
       callLabel="Questions? I can call you"

@@ -31,7 +31,22 @@
   color: #a76406;
 }
 
+.clockIcon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  background-color: #a76406;
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+}
+
 .text_xs_3 {
+  min-width: 0;
+  flex: 1;
   font-size: 12px;
   line-height: var(--tw-leading, 16px);
   --tw-leading: 18px;

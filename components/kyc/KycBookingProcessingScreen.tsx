@@ -38,6 +38,8 @@ export type KycBookingProcessingScreenProps = {
   ctaWarningLine?: string;
   /** Primary CTA label (default “Next” → renders as a demo time-skip). */
   nextCtaLabel?: string;
+  /** Demo time-skip chip label when `nextCtaLabel` is the demo nav (default “Skip ahead”). */
+  timeSkipLabel?: string;
   /** Alternate demo branch(es) under the time skip (e.g. failure / more-docs paths). */
   altTimeSkip?: { label: string; href: string } | readonly { label: string; href: string }[];
   /**
@@ -48,6 +50,7 @@ export type KycBookingProcessingScreenProps = {
   heroSummaryCard?: ReactNode;
   /** Legacy hero slots — concierge turns are dialogue-first, so these are ignored. */
   heroIllustrationSlot?: ReactNode;
+  /** Rendered directly under the headline, before the subline (e.g. bank partner row). */
   belowHeadline?: ReactNode;
   heroIllustrationSrc?: string | StaticImageData;
   heroIllustrationWidth?: number;
@@ -80,6 +83,7 @@ export function KycBookingProcessingScreen({
   prefetchHref = nextHref,
   ctaWarningLine,
   nextCtaLabel = "Next",
+  timeSkipLabel = "Skip ahead",
   altTimeSkip,
   onPrimaryCtaClick,
   heroSummaryCard,
@@ -110,7 +114,7 @@ export function KycBookingProcessingScreen({
     return [{ label: nextCtaLabel, href: nextHref, echo: replyEcho }];
   }, [isDemoNav, nextCtaLabel, onPrimaryCtaClick, nextHref, replyEcho]);
 
-  const timeSkip = isDemoNav ? { label: "Skip ahead", href: nextHref } : undefined;
+  const timeSkip = isDemoNav ? { label: timeSkipLabel, href: nextHref } : undefined;
 
   const artifact = (
     <>
@@ -135,7 +139,7 @@ export function KycBookingProcessingScreen({
     <ConciergeTurnShell
       dayStamp={dayStamp}
       says={says}
-      afterBody={belowHeadline}
+      afterLead={belowHeadline}
       artifact={artifact}
       replies={replies}
       timeSkip={timeSkip}

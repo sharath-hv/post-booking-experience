@@ -1,8 +1,10 @@
 "use client";
 
+import Image from "next/image";
+
+import tickIcon from "@/assets/tick01.svg";
 import { cn } from "@/lib/utils";
 import styles from "./UserEchoChip.module.scss";
-
 
 export type UserEchoChipProps = {
   /** The user's last reply, landing on this turn. */
@@ -19,15 +21,15 @@ export function UserEchoChip({ text, className }: UserEchoChipProps) {
     <div className={cn(styles.flex_3, className)}>
       <div className={[styles.concierge_echo_in_0, "concierge-echo-in"].filter(Boolean).join(" ")}>
         <span className={styles.text_sm_1}>{text}</span>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden className={styles.shrink_0_2}>
-          <path
-            d="M5 13l4 4L19 7"
-            stroke="rgba(255,255,255,0.55)"
-            strokeWidth="2.4"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+        <Image
+          src={tickIcon}
+          alt=""
+          width={14}
+          height={14}
+          aria-hidden
+          className={styles.shrink_0_2}
+          unoptimized
+        />
       </div>
     </div>
   );

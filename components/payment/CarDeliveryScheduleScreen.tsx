@@ -150,7 +150,11 @@ export function CarDeliveryScheduleScreen() {
         ]}
         artifact={
           <div className={styles.artifactStack}>
-            <PartnerGarageCard name={DEALER_NAME} detail={DEALER_DETAIL} />
+            <PartnerGarageCard
+              name={DEALER_NAME}
+              detail={DEALER_DETAIL}
+              variant="glass"
+            />
             <CarSummaryCardLite
               title={BOOKING_CAR_TITLE}
               variant={BOOKING_CAR_VARIANT}
@@ -194,6 +198,7 @@ export function CarDeliveryScheduleScreen() {
             <p className={styles.locationDetail}>{DEALER_DETAIL}</p>
           </div>
         </div>
+        <hr className={styles.locationSeparator} />
 
         <div className={styles.body}>
           <DayChips options={days} selected={day} onSelect={setDay} />
