@@ -148,9 +148,9 @@ export function getArrivalLeadPaid(flow: ExperienceFlow): string {
 }
 
 const DEALER_SEARCH_FOOTNOTE_LEAD = "A quick heads-up:";
-/** Fees kick in on this turn (dealer search) — partner is still being lined up. */
+/** Fees kick in after this turn — once a partner is locked on the next step. */
 const DEALER_SEARCH_FOOTNOTE =
-  "From here, changing your pick costs ₹5,000, and if you cancel, half your booking amount stays with us.";
+  "From the next step, changing your pick costs ₹5,000, and if you cancel, half your booking amount stays with us.";
 
 /**
  * Standard — unlike express, every nearby dealer already knows the car is
@@ -209,7 +209,7 @@ function expressDealerSearch(
       "Finding who can deliver soonest",
     ],
     workingMode: "ongoing",
-    workingEtaLabel: "I'll have news by tomorrow morning",
+    workingEtaLabel: "I'll update you as soon as I have news",
     timeSkipLabel: "Next morning",
     callLabel: "Can't sleep on it? I can call you",
     footnoteLead: DEALER_SEARCH_FOOTNOTE_LEAD,
@@ -229,7 +229,7 @@ function dealerFoundWords(
     : "Found a match, Sharath.";
   const body = isStandard
     ? `Your exact ${familiar} isn't in stock, so Hyundai will build a fresh one just for you. Before I ask them to start, share the one-time code when our partner calls.`
-    : `I've reserved a fresh ${familiar} for you. Share the one-time code when our partner calls. I'll put your car's details on the card once it's locked.`;
+    : `I've reserved a fresh ${familiar} for you. Share the one-time code when our partner calls. I'll put your car's details on the card once the code is verified.`;
 
   return {
     says: [lead, body],

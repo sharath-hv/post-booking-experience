@@ -8,10 +8,7 @@ import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
 import { bankForQueryParam } from "@/components/payment/acko-drive-finance-bank";
 import styles from "./LoanSanctionedScreen.module.scss";
 
-import {
-  BANK_DISBURSEMENT_INR,
-  BOOKING_AMOUNT_PAID_INR,
-} from "@/components/payment/loan-amount-demo-constants";
+import { BANK_DISBURSEMENT_INR } from "@/components/payment/loan-amount-demo-constants";
 import {
   PARTNER_DEALER_LABEL,
   PARTNER_DEALER_LABEL_CAPITALIZED,
@@ -56,23 +53,14 @@ export function LoanSanctionedScreen() {
       says={says}
       artifact={
         <div className={styles.flex_0}>
-          <NextStepCard
-            title={`Watch for ${PARTNER_DEALER_LABEL}'s call`}
-            body="Pick up their call. They'll share the payment details so you can pay them directly."
-          />
           <AmountReceivedCard
             amountInr={BANK_DISBURSEMENT_INR}
             title={`Approved by ${bank.name}`}
             variant="glass"
-            rows={[
-              { label: "Disburses to", value: PARTNER_DEALER_LABEL_CAPITALIZED },
-              {
-                label: "Booking amount",
-                value: `− ${formatInr(BOOKING_AMOUNT_PAID_INR)}`,
-                tag: { text: "Paid", variant: "green" },
-              },
-            ]}
-            note={`${bank.name} releases the remaining funds to ${PARTNER_DEALER_LABEL_CAPITALIZED} once they confirm your down payment.`}
+          />
+          <NextStepCard
+            title={`Watch for ${PARTNER_DEALER_LABEL}'s call`}
+            body="Pick up their call. They'll share the payment details so you can pay them directly."
           />
         </div>
       }

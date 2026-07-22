@@ -140,8 +140,8 @@ export function isIdentityFunnelPhase(phase: JourneyPhase): boolean {
 }
 
 /**
- * Before a dealer partner is assigned — `/kyc` through verification only.
- * `/kyc/processing` assigns the partner (working done) and is post-allocation.
+ * Before dealer search — `/kyc` through verification only.
+ * `/kyc/processing` is still free for change/cancel; fees start at booking-accepted.
  */
 export function isPreDealerAllocationPhase(phase: JourneyPhase): boolean {
   return phase === "identity_verification" || phase === "kyc_documents";
@@ -149,7 +149,7 @@ export function isPreDealerAllocationPhase(phase: JourneyPhase): boolean {
 
 /**
  * Change selection is allowed only before vehicle ID (engine/chassis).
- * Free before dealer assigned; ₹5,000 from partner assigned through allocation-pending.
+ * Free through dealer search; ₹5,000 from dealer found (booking-accepted) through allocation-pending.
  * Blocked once engine/chassis exist (booking-confirmed / allocation-confirmed+).
  */
 export function isChangeSelectionAllowedPhase(phase: JourneyPhase): boolean {
@@ -167,16 +167,13 @@ export function isChangeSelectionAvailablePhase(phase: JourneyPhase): boolean {
 }
 
 /**
- * ₹5,000 change fee applies once a dealer partner is assigned
- * (`/kyc/processing` onward, including allocation-pending — still no VIN).
- * OTP is manufacturer-portal confirmation; VIN is what blocks further changes.
+ * ₹5,000 change fee applies once a dealer partner is locked
+ * (`/kyc/booking-accepted` onward, including allocation-pending — still no VIN).
+ * Dealer search (`/kyc/processing`) stays free. OTP is manufacturer-portal confirmation;
+ * VIN is what blocks further changes.
  */
 export function isDealerAllocatedChangeFeePhase(phase: JourneyPhase): boolean {
-  return (
-    phase === "booking_processing" ||
-    phase === "booking_accepted" ||
-    phase === "car_allocation"
-  );
+  return phase === "booking_accepted" || phase === "car_allocation";
 }
 
 /** @deprecated Use `isDealerAllocatedChangeFeePhase`. */

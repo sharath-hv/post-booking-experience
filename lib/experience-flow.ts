@@ -70,7 +70,7 @@ export const EXPERIENCE_FLOWS: readonly ExperienceFlowDefinition[] = [
     id: "cancel_with_charges",
     label: "Cancellation with 50% charges",
     description:
-      "Express path through dealer search (partner assigned) — cancel with ₹5,000 retained (50% of booking lock)",
+      "Express path through dealer found (partner locked) — cancel with ₹5,000 retained (50% of booking lock)",
     entryPath: "/quote",
     available: true,
   },

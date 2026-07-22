@@ -304,7 +304,7 @@ export function ChoosePaymentOptionsScreen() {
                 illustrationSrc={PAYMENT_CHOOSE_ASSETS.ackoDriveFinance}
                 title="Finance with ACKO Drive"
                 chip="Easiest"
-                blurb="You pick the bank, I run the entire loan at rates I've already pushed down for you."
+                blurb="You pick the bank. I handle the paperwork, follow-ups, and chase — so you don't have to."
                 stats={[
                   { value: "~2 days", caption: "approval time" },
                   { value: formatInr(ACKO_EMI_FROM_INR), caption: "estimated monthly EMI" },

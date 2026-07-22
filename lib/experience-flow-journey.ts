@@ -62,11 +62,10 @@ const CANCEL_NO_CHARGES_ALLOWED_KYC_PATHS = new Set<string>([
   JOURNEY_PATHS.kyc.verificationInProgress,
 ]);
 
-/** Paths beyond processing (dealer partner assigned) that redirect in the cancel-with-charges demo flow. */
+/** Paths beyond booking-accepted (partner locked) that redirect in the cancel-with-charges demo flow. */
 const CANCEL_WITH_CHARGES_BLOCKED_PATHS = new Set<string>([
   JOURNEY_PATHS.kyc.verificationFailed,
   JOURNEY_PATHS.kyc.manualVerification,
-  JOURNEY_PATHS.kyc.bookingAccepted,
   JOURNEY_PATHS.kyc.bookingConfirmed,
   JOURNEY_PATHS.carAllocation.pending,
   JOURNEY_PATHS.carAllocation.confirmed,
@@ -78,6 +77,7 @@ const CANCEL_WITH_CHARGES_ALLOWED_KYC_PATHS = new Set<string>([
   JOURNEY_PATHS.kyc.documentsReceived,
   JOURNEY_PATHS.kyc.verificationInProgress,
   JOURNEY_PATHS.kyc.processing,
+  JOURNEY_PATHS.kyc.bookingAccepted,
 ]);
 
 function isModifySelectionPath(path: string): boolean {
@@ -230,8 +230,8 @@ export function getCancelNoChargesRedirectTarget(
 }
 
 /**
- * When the cancel-with-charges flow is active, post–processing URLs redirect
- * to `/kyc/processing` (dealer partner assigned). Returns `null` when no redirect is needed.
+ * When the cancel-with-charges flow is active, post–booking-accepted URLs redirect
+ * to `/kyc/booking-accepted` (partner locked — fee boundary). Returns `null` when no redirect is needed.
  */
 export function getCancelWithChargesRedirectTarget(
   pathname: string,
@@ -248,7 +248,7 @@ export function getCancelWithChargesRedirectTarget(
   const path = normalizeAppPathname(pathname);
 
   if (isModifySelectionPath(path)) {
-    return JOURNEY_PATHS.kyc.processing;
+    return JOURNEY_PATHS.kyc.bookingAccepted;
   }
 
   if (
@@ -256,7 +256,7 @@ export function getCancelWithChargesRedirectTarget(
     path.startsWith("/car-allocation/") ||
     /^\/kyc\/car-allocation-/.test(path)
   ) {
-    return JOURNEY_PATHS.kyc.processing;
+    return JOURNEY_PATHS.kyc.bookingAccepted;
   }
 
   return null;
