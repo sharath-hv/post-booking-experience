@@ -128,7 +128,7 @@ const EXPRESS_ARRIVAL: TurnWords = {
   ],
   replyLabel: "Let's do the paper work",
   replyEcho: "Let's do the paper work",
-  footnote: "Worth doing now, so your booking amount and delivery date hold.",
+  footnote: "Finish the paperwork before time runs out — or I'll cancel this booking.",
 };
 
 const STANDARD_ARRIVAL: TurnWords = {
@@ -139,7 +139,7 @@ const STANDARD_ARRIVAL: TurnWords = {
   ],
   replyLabel: "Let's do the paper work",
   replyEcho: "Let's do the paper work",
-  footnote: "Worth doing now, so nothing slows down your delivery.",
+  footnote: "Finish the paperwork before time runs out — or I'll cancel this booking.",
 };
 
 /** Arrival lead — identical before and after payment so the headline never reflows. */
@@ -148,9 +148,9 @@ export function getArrivalLeadPaid(flow: ExperienceFlow): string {
 }
 
 const DEALER_SEARCH_FOOTNOTE_LEAD = "A quick heads-up:";
-/** Shown once the partner is assigned on this turn — fees apply from here. */
+/** Fees kick in on this turn (dealer search) — partner is still being lined up. */
 const DEALER_SEARCH_FOOTNOTE =
-  "I've locked in a partner. A ₹5,000 change fee applies if you switch your pick, and cancelling holds back half of your booking amount.";
+  "From here, changing your pick costs ₹5,000, and if you cancel, half your booking amount stays with us.";
 
 /**
  * Standard — unlike express, every nearby dealer already knows the car is
@@ -197,11 +197,11 @@ function expressDealerSearch(
     says: afterSelectionChange
       ? [
           "Change locked in, Sharath.",
-          `Now I'm reaching out to dealers for ${exact}. They usually take a few hours to confirm stock, so this runs overnight. I'll let you know the moment I hear back.`,
+          `Now I'm reaching out to dealers for ${exact}. They usually take a few hours to confirm stock. I'll let you know the moment I hear back.`,
         ]
       : [
           "That's the paperwork done, Sharath.",
-          `Now I'm reaching out to dealers for ${exact}. They usually take a few hours to confirm stock, so this runs overnight. I'll let you know the moment I hear back.`,
+          `Now I'm reaching out to dealers for ${exact}. They usually take a few hours to confirm stock. I'll let you know the moment I hear back.`,
         ],
     workingLines: [
       "Reaching out to dealers near you",
@@ -220,19 +220,19 @@ function expressDealerSearch(
 function dealerFoundWords(
   car: ConciergeCarRef,
   afterSelectionChange: boolean,
+  /** Standard: build-to-order. Express: stock reserved. */
+  isStandard: boolean,
 ): TurnWords {
   const familiar = carFamiliarName(car.title);
+  const lead = afterSelectionChange
+    ? "Found a match for your new pick, Sharath."
+    : "Found a match, Sharath.";
+  const body = isStandard
+    ? `Your exact ${familiar} isn't in stock, so Hyundai will build a fresh one just for you. Before I ask them to start, share the one-time code when our partner calls.`
+    : `I've reserved a fresh ${familiar} for you. Share the one-time code when our partner calls. I'll put your car's details on the card once it's locked.`;
 
   return {
-    says: afterSelectionChange
-      ? [
-          "Found a match for your new pick, Sharath.",
-          `I've reserved a fresh ${familiar} for you. Share the one-time code when our partner calls — that's how we assign this exact car to you. I'll put the engine and chassis numbers on the card once it's locked.`,
-        ]
-      : [
-          "Found a match, Sharath.",
-          `I've reserved a fresh ${familiar} for you. Share the one-time code when our partner calls — that's how Hyundai assigns this exact car to you. I'll put the engine and chassis numbers on the card once it's locked.`,
-        ],
+    says: [lead, body],
     timeSkipLabel: "After the call",
     callLabel: "Questions? I can call you",
   };
@@ -264,7 +264,7 @@ const EXPRESS_SCRIPT: Record<ConciergeMomentId, TurnWords> = {
       "Matching your Aadhaar details",
       "Checking your name and address",
     ],
-    workingDoneLabel: "Verified. Your purchase is now open in your name.",
+    workingDoneLabel: "Verified. Booking is now open in your name.",
     replyLabel: "What's next?",
     replyEcho: "What's next?",
     callLabel: "Questions? I can call you",
@@ -298,7 +298,7 @@ const EXPRESS_SCRIPT: Record<ConciergeMomentId, TurnWords> = {
 
   /** Built dynamically via {@link getTurnWords} — placeholder for the record type. */
   dealerSearch: expressDealerSearch(DEFAULT_CAR, false),
-  dealerFound: dealerFoundWords(DEFAULT_CAR, false),
+  dealerFound: dealerFoundWords(DEFAULT_CAR, false, false),
   carReserved: carReservedWords(DEFAULT_CAR),
 
   /** Standard-only in practice — express never routes here (see `dealerFound`'s time-skip). */
@@ -329,7 +329,7 @@ const EXPRESS_SCRIPT: Record<ConciergeMomentId, TurnWords> = {
 
   moneyIntro: {
     says: [
-      "Morning, Sharath. Let's sort out the payment.",
+      "Let's sort out the payment, Sharath.",
       "₹13,63,780 is left to pay on your Creta. You can finance it through me, or arrange it yourself. Whichever you prefer.",
     ],
     replyLabel: "Show me my options",
@@ -367,7 +367,7 @@ export function getTurnWords(
   }
 
   if (moment === "dealerFound") {
-    return dealerFoundWords(car, afterSelectionChange);
+    return dealerFoundWords(car, afterSelectionChange, isStandardDeliveryFlow(flow));
   }
 
   if (moment === "carReserved") {

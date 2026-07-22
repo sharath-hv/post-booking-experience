@@ -156,60 +156,65 @@ export function ConciergeDocumentsCard({
 
   return (
     <>
-      {/* Pre-action caveat — only for the initial upload (both docs, no prior context).
-          Re-upload turns already have Shivi's explanation above, so suppress it. */}
-      {onlyDocs == null ? (
-        <ShimmerInfoCard icon="info" lead="Quick check:">
-          the name should match on both documents, and the Aadhaar address should be in Bengaluru, where your car gets registered.
-        </ShimmerInfoCard>
-      ) : null}
+      {/* Single root so parent kyc-stagger gap doesn't stack with card margins. */}
+      <div className={styles.root}>
+        <div className={styles.cardStack}>
+          {/* Pre-action caveat — only for the initial upload (both docs, no prior context).
+              Re-upload turns already have Shivi's explanation above, so suppress it. */}
+          {onlyDocs == null ? (
+            <ShimmerInfoCard icon="info" lead="Quick check:">
+              the name should match on both documents, and the Aadhaar address should be in Bengaluru, where your car gets registered.
+            </ShimmerInfoCard>
+          ) : null}
 
-      <div
-        className={cn(
-          isGlass ? OVERLAY_GLASS_CARD_CLASS : styles.overflow_hidden_19, "card-elevated",
-          onlyDocs == null ? styles.mt_4_20 : undefined,
-        )}
-      >
-        {showAadhaar ? (
-          <DocumentRow
-            title="Aadhaar card"
-            hint="Front and back, clear photos"
-            files={uploads.aadhaar}
-            allowMultiple
-            uploadLabel={onlyDocs != null ? "Re-upload" : "Upload"}
-            onUpload={() => openSourceSheet("aadhaar")}
-            onRemove={(fileId) => handleRemove("aadhaar", fileId)}
-          />
-        ) : null}
-        {showBothRows ? <hr className={styles.mx_4_15} /> : null}
-        {showPan ? (
-          <DocumentRow
-            title="PAN card"
-            hint="One clear photo"
-            files={uploads.pan}
-            uploadLabel={onlyDocs != null ? "Re-upload" : "Upload"}
-            onUpload={() => openSourceSheet("pan")}
-            onRemove={(fileId) => handleRemove("pan", fileId)}
-          />
+          <div
+            className={cn(
+              isGlass ? OVERLAY_GLASS_CARD_CLASS : styles.overflow_hidden_19,
+              "card-elevated",
+            )}
+          >
+            {showAadhaar ? (
+              <DocumentRow
+                title="Aadhaar card"
+                hint="Front and back, clear photos"
+                files={uploads.aadhaar}
+                allowMultiple
+                uploadLabel={onlyDocs != null ? "Re-upload" : "Upload"}
+                onUpload={() => openSourceSheet("aadhaar")}
+                onRemove={(fileId) => handleRemove("aadhaar", fileId)}
+              />
+            ) : null}
+            {showBothRows ? <hr className={styles.mx_4_15} /> : null}
+            {showPan ? (
+              <DocumentRow
+                title="PAN card"
+                hint="One clear photo"
+                files={uploads.pan}
+                uploadLabel={onlyDocs != null ? "Re-upload" : "Upload"}
+                onUpload={() => openSourceSheet("pan")}
+                onRemove={(fileId) => handleRemove("pan", fileId)}
+              />
+            ) : null}
+          </div>
+        </div>
+
+        {onlyDocs == null ? (
+          <div className={styles.mt_3_16}>
+            <p className={styles.flex_17}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden className={styles.mt_0_5_18}>
+                <rect x="5" y="10.5" width="14" height="9.5" rx="2" stroke="currentColor" strokeWidth="1.8" />
+                <path
+                  d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                />
+              </svg>
+              Encrypted, and used only for this purchase. Nobody else sees them.
+            </p>
+          </div>
         ) : null}
       </div>
-
-      {onlyDocs == null ? (
-        <div className={styles.mt_3_16}>
-          <p className={styles.flex_17}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden className={styles.mt_0_5_18}>
-              <rect x="5" y="10.5" width="14" height="9.5" rx="2" stroke="currentColor" strokeWidth="1.8" />
-              <path
-                d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-              />
-            </svg>
-            Encrypted, and used only for this purchase. Nobody else sees them.
-          </p>
-        </div>
-      ) : null}
 
       <KycUploadSourceBottomSheet
         open={sourceSheetOpen}

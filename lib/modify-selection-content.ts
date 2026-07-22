@@ -1,6 +1,8 @@
 import calendarIcon from "@/assets/Calender.svg";
 import carPriceIcon from "@/assets/car price.svg";
 import changeCarIcon from "@/assets/Change car.svg";
+import changeColourIcon from "@/assets/Change colour.svg";
+import changeVariantIcon from "@/assets/Change variant.svg";
 import moneyIcon from "@/assets/money.svg";
 import type { StaticImageData } from "next/image";
 
@@ -86,7 +88,7 @@ export const MODIFY_SELECTION_OPTIONS: readonly ModifySelectionOption[] = [
     id: "colour",
     title: "Change colour",
     description: "Swap to another colour on your Creta — price can shift a little.",
-    illustrationSrc: changeCarIcon,
+    illustrationSrc: changeColourIcon,
     continueCtaLabel: "See available colours",
     continuePath: "/kyc/modify-selection/colour",
     confirmHeader: "Quick check before we switch colour",
@@ -105,7 +107,7 @@ export const MODIFY_SELECTION_OPTIONS: readonly ModifySelectionOption[] = [
     id: "variant",
     title: "Change variant",
     description: "Step up or switch Creta variants — I'll refresh the price for you.",
-    illustrationSrc: changeCarIcon,
+    illustrationSrc: changeVariantIcon,
     continueCtaLabel: "See available variants",
     continuePath: "/kyc/modify-selection/variant",
     confirmHeader: "Quick check before we switch variant",

@@ -221,13 +221,24 @@ export function PlanList({ items, variant = "default" }: PlanListProps) {
         const isNow = status === "now";
         const isDone = status === "done";
         const isLast = idx === items.length - 1;
+        const prevStatus =
+          idx > 0
+            ? (items[idx - 1]!.status ?? (idx - 1 === 0 ? "now" : "todo"))
+            : null;
+        // Offset keeps the node aligned with the title under the “Now” label.
+        // Paint the green rail only when a done step sits above; otherwise spacer only.
+        const intoNowFromDone = isNow && prevStatus === "done";
         return (
           <li key={item.title} className={styles.planStep}>
             <span className={styles.planRail}>
-              {/* Fill the “Now” label offset so the rail doesn’t break above the live node */}
               {isNow ? (
                 <span
-                  className={cn(styles.planConnector, styles.planConnectorIntoNow)}
+                  className={cn(
+                    styles.planConnector,
+                    intoNowFromDone
+                      ? styles.planConnectorIntoNow
+                      : styles.planConnectorIntoNowSpacer,
+                  )}
                   aria-hidden
                 />
               ) : null}
@@ -619,6 +630,7 @@ export function CarSummaryCardLite({
       deliveryIconSrc={deliveryIconPath(deliveryIconSrc)}
       engineNo={engineNo}
       chassisNo={chassisNo}
+      showCopyButtons={showVehicleIdentification}
     />
   );
 

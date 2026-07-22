@@ -1,11 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback } from "react";
+import { useCallback, type MouseEvent } from "react";
 
 import copyIcon from "@/assets/copy.svg";
+import { showAppToast } from "@/lib/app-toast";
 import styles from "./VehicleIdentificationRows.module.scss";
-
 
 type VehicleIdentificationRowsProps = {
   engineNo: string;
@@ -14,18 +14,53 @@ type VehicleIdentificationRowsProps = {
   showCopyButtons?: boolean;
 };
 
+async function copyToClipboard(value: string): Promise<boolean> {
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(value);
+      return true;
+    }
+  } catch {
+    /* fall through */
+  }
+
+  try {
+    const input = document.createElement("textarea");
+    input.value = value;
+    input.setAttribute("readonly", "");
+    input.style.position = "fixed";
+    input.style.opacity = "0";
+    document.body.appendChild(input);
+    input.select();
+    const ok = document.execCommand("copy");
+    document.body.removeChild(input);
+    return ok;
+  } catch {
+    return false;
+  }
+}
+
 function VehicleIdentificationCopyLine({
   label,
   value,
+  toastLabel,
   showCopyButton,
 }: {
   label: string;
   value: string;
+  toastLabel: string;
   showCopyButton: boolean;
 }) {
-  const onCopy = useCallback(() => {
-    void navigator.clipboard?.writeText(value).catch(() => {});
-  }, [value]);
+  const onCopy = useCallback(
+    (event: MouseEvent<HTMLButtonElement>) => {
+      event.preventDefault();
+      event.stopPropagation();
+      void copyToClipboard(value).then((ok) => {
+        if (ok) showAppToast(`${toastLabel} copied`);
+      });
+    },
+    [toastLabel, value],
+  );
 
   return (
     <p className={styles.text_xs_0}>
@@ -63,11 +98,13 @@ export function VehicleIdentificationRows({
       <div className={styles.mt_3_7}>
         <VehicleIdentificationCopyLine
           label="Engine no"
+          toastLabel="Engine number"
           value={engineNo}
           showCopyButton={showCopyButtons}
         />
         <VehicleIdentificationCopyLine
           label="Chassis no"
+          toastLabel="Chassis number"
           value={chassisNo}
           showCopyButton={showCopyButtons}
         />

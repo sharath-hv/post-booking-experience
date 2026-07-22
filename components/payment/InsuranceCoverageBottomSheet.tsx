@@ -3,14 +3,11 @@
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import shiviAvatar from "@/assets/Shivi small.png";
 import {
   INSURANCE_CLAIMS_LINE,
   INSURANCE_COVERAGE_ITEMS,
-  INSURANCE_COVERAGE_SHEET_SUBTITLE,
   INSURANCE_COVERAGE_SHEET_TITLE,
   INSURANCE_COVER_HERO,
-  INSURANCE_OWNED_SHEET_SUBTITLE,
   INSURANCE_OWNED_SHEET_TITLE,
   INSURANCE_POLICY_FACTS,
   INSURANCE_TENURE_OPTIONS,
@@ -50,18 +47,6 @@ function CoverageDetailRow({ iconSrc, title, description }: InsuranceCoverageIte
         <p className={styles.coverageDetail}>{description}</p>
       </div>
     </li>
-  );
-}
-
-/** Shivi's framing — avatar + one-line copy in a quiet chip. */
-function ShiviLine({ text }: { text: string }) {
-  return (
-    <div className={styles.shiviLine}>
-      <span className={styles.shiviAvatar}>
-        <Image src={shiviAvatar} alt="" fill className={styles.shiviAvatarImg} unoptimized sizes="32px" />
-      </span>
-      <p className={styles.shiviCopy}>{text}</p>
-    </div>
   );
 }
 
@@ -195,9 +180,6 @@ export function InsuranceCoverageBottomSheet({
                   <BottomSheetCloseIcon />
                 </button>
               </div>
-              <ShiviLine
-                text={owned ? INSURANCE_OWNED_SHEET_SUBTITLE : INSURANCE_COVERAGE_SHEET_SUBTITLE}
-              />
               <div aria-hidden className={styles.headerFade} />
             </header>
 

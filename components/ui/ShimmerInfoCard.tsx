@@ -1,11 +1,11 @@
 import type { CSSProperties, ReactNode } from "react";
 
 import infoIcon from "@/assets/Info.svg";
+import timeIcon from "@/assets/Time.svg";
 import warningIcon from "@/assets/Warning.svg";
 
 import { cn } from "@/lib/utils";
 import styles from "./ShimmerInfoCard.module.scss";
-
 
 type ShimmerInfoIcon = "alert" | "clock" | "info";
 
@@ -19,20 +19,10 @@ const INFO_ICON_MASK_STYLE = {
   WebkitMaskImage: `url(${infoIcon.src})`,
 } satisfies CSSProperties;
 
-const ICON_PATHS: Record<"clock", ReactNode> = {
-  clock: (
-    <>
-      <circle cx="12" cy="12" r="8.5" stroke="currentColor" strokeWidth="2" />
-      <path
-        d="M12 7.5V12l3 2"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </>
-  ),
-};
+const CLOCK_ICON_MASK_STYLE = {
+  maskImage: `url(${timeIcon.src})`,
+  WebkitMaskImage: `url(${timeIcon.src})`,
+} satisfies CSSProperties;
 
 export type ShimmerInfoCardProps = {
   /** `alert` for caveats/checks, `clock` for deadlines/expectations, `info` for general information. */
@@ -68,21 +58,12 @@ export function ShimmerInfoCard({ icon = "alert", lead, children, className }: S
           style={INFO_ICON_MASK_STYLE}
         />
       ) : (
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          aria-hidden
-          className={styles.shrink_0_2}
-        >
-          {ICON_PATHS[icon]}
-        </svg>
+        <span aria-hidden className={styles.clockIcon} style={CLOCK_ICON_MASK_STYLE} />
       )}
-      <p className={styles.text_xs_3}>
+      <div className={styles.text_xs_3}>
         {lead ? <span className={styles.font_semibold_4}>{lead} </span> : null}
         {children}
-      </p>
+      </div>
     </div>
   );
 }

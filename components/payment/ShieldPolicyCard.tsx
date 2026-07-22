@@ -15,9 +15,7 @@ const FOOTER_ARROW_MASK_STYLE = {
 
 import {
   INSURANCE_CARD_HIGHLIGHTS,
-  INSURANCE_COMPARE_AT_PREMIUM_INR,
   INSURANCE_COVER_HERO,
-  INSURANCE_POLICY_NUMBER,
   INSURANCE_PREMIUM_INR,
   INSURANCE_TENURE_OPTIONS,
   type InsuranceTenureId,
@@ -52,7 +50,7 @@ function ShieldWatermark() {
 }
 
 export type ShieldPolicyCardProps = {
-  /** `quote` — before the premium is paid (price, savings). `active` — the owned policy. */
+  /** `quote` — before the premium is paid. `active` — the owned policy. */
   mode: "quote" | "active";
   /** Selected tenure — determines cover durations shown in active mode. Defaults to `"1+3"`. */
   tenure?: InsuranceTenureId;
@@ -68,8 +66,6 @@ export function ShieldPolicyCard({ mode, tenure = "1+3" }: ShieldPolicyCardProps
   const isActive = mode === "active";
   const tenureOption = INSURANCE_TENURE_OPTIONS.find((o) => o.id === tenure) ?? INSURANCE_TENURE_OPTIONS[0];
   const odYears = tenureOption.ownDamageYears;
-  const tpYears = tenureOption.thirdPartyYears;
-  const savingsInr = INSURANCE_COMPARE_AT_PREMIUM_INR - INSURANCE_PREMIUM_INR;
 
   return (
     <>
@@ -113,25 +109,13 @@ export function ShieldPolicyCard({ mode, tenure = "1+3" }: ShieldPolicyCardProps
           {!isActive ? (
             <div className={styles.priceBlock}>
               <div className={styles.brandCopy}>
-                <p className={styles.priceRow}>
-                  <span className={styles.price}>{formatInr(INSURANCE_PREMIUM_INR)}</span>
-                  <span className={styles.compareAt}>
-                    {formatInr(INSURANCE_COMPARE_AT_PREMIUM_INR)}
-                  </span>
-                </p>
-                <p className={styles.savings}>You save {formatInr(savingsInr)}</p>
+                <p className={styles.price}>{formatInr(INSURANCE_PREMIUM_INR)}</p>
               </div>
             </div>
           ) : null}
         </div>
 
         <div className={styles.body}>
-          <div className={styles.idvPanel}>
-            <p className={styles.idvEyebrow}>{INSURANCE_COVER_HERO.eyebrow}</p>
-            <p className={styles.idvValue}>{INSURANCE_COVER_HERO.value}</p>
-            <p className={styles.idvCaption}>{INSURANCE_COVER_HERO.caption}</p>
-          </div>
-
           <ul className={styles.highlights}>
             {INSURANCE_CARD_HIGHLIGHTS.map((row) => (
               <li key={row.title} className={styles.highlightRow}>
@@ -153,17 +137,15 @@ export function ShieldPolicyCard({ mode, tenure = "1+3" }: ShieldPolicyCardProps
               </li>
             ))}
           </ul>
+
+          <div className={styles.idvPanel}>
+            <p className={styles.idvEyebrow}>{INSURANCE_COVER_HERO.eyebrow}</p>
+            <p className={styles.idvValue}>{INSURANCE_COVER_HERO.value}</p>
+            <p className={styles.idvCaption}>{INSURANCE_COVER_HERO.caption}</p>
+          </div>
         </div>
 
-        <div className={isActive ? styles.footerActive : styles.footer}>
-          {isActive ? (
-            <div className={styles.policyIdentity}>
-              <p className={styles.policyNumber}>{INSURANCE_POLICY_NUMBER}</p>
-              <p className={styles.policyMeta}>
-                {`Active from today · Zero Dep ${odYears} yr${odYears > 1 ? "s" : ""} · Third Party ${tpYears} yrs`}
-              </p>
-            </div>
-          ) : null}
+        <div className={styles.footer}>
           <button
             type="button"
             onClick={() => setSheetOpen(true)}
