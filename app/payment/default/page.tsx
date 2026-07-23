@@ -1,8 +1,20 @@
-import { ConciergeMoment } from "@/components/concierge/ConciergeMoment";
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+
+import { JOURNEY_PATHS } from "@/lib/journey-routes";
 
 /**
- * The money chapter opens — Shivi lays out what remains and how to handle it.
+ * Legacy money-intro URL. Car-assigned + payment amount now live on
+ * booking-confirmed / allocation-confirmed; continue straight to options.
  */
 export default function PaymentDefaultPage() {
-  return <ConciergeMoment moment="moneyIntro" />;
+  const router = useRouter();
+
+  useEffect(() => {
+    router.replace(JOURNEY_PATHS.payment.choose);
+  }, [router]);
+
+  return null;
 }

@@ -18,7 +18,7 @@ export function CarAllocationConfirmedScreen() {
       upNextText="Payment"
       vehicleEngineNo={DEMO_VEHICLE_ENGINE_NO}
       vehicleChassisNo={DEMO_VEHICLE_CHASSIS_NO}
-      okayPath="/payment/default"
+      okayPath="/payment/choose"
     />
   );
 }

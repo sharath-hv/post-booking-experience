@@ -53,6 +53,39 @@ export function resolveJourneyStageIndex(pathname: string): number {
   return 0;
 }
 
+const DELIVERY_DATE_LABEL =
+  /^(\d{1,2})\s+([A-Za-z]{3})\s+'(\d{2})$/;
+
+const MONTH_INDEX: Record<string, number> = {
+  Jan: 0,
+  Feb: 1,
+  Mar: 2,
+  Apr: 3,
+  May: 4,
+  Jun: 5,
+  Jul: 6,
+  Aug: 7,
+  Sep: 8,
+  Oct: 9,
+  Nov: 10,
+  Dec: 11,
+};
+
+const MONTH_LABEL = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+] as const;
+
 /** Short date for the pill — “10 Jun” / “25 Oct”. */
 export function getDeliveryDateShort(flow?: ExperienceFlow): string {
   const date = splitBookingDeliveryLine(getBookingDeliveryLine(flow))?.date ?? "";
@@ -62,6 +95,35 @@ export function getDeliveryDateShort(flow?: ExperienceFlow): string {
 /** Full date for the layer hero — “10 Jun '25”. */
 export function getDeliveryDateFull(flow?: ExperienceFlow): string {
   return splitBookingDeliveryLine(getBookingDeliveryLine(flow))?.date ?? "";
+}
+
+function parseDeliveryDateLabel(dateLabel: string): Date | null {
+  const match = dateLabel.trim().match(DELIVERY_DATE_LABEL);
+  if (!match) return null;
+  const day = Number(match[1]);
+  const month = MONTH_INDEX[match[2]!];
+  const year = 2000 + Number(match[3]);
+  if (!Number.isFinite(day) || month == null || !Number.isFinite(year)) return null;
+  const date = new Date(year, month, day);
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
+function formatDeliveryDateLabel(date: Date): string {
+  const yy = String(date.getFullYear()).slice(-2);
+  return `${date.getDate()} ${MONTH_LABEL[date.getMonth()]} '${yy}`;
+}
+
+/**
+ * Date we expect a vehicle update — two weeks before delivery.
+ * Shown as a plain date; the offset is not explained in UI copy.
+ */
+export function getVehicleUpdateDateFull(flow?: ExperienceFlow): string {
+  const deliveryLabel = getDeliveryDateFull(flow);
+  const delivery = parseDeliveryDateLabel(deliveryLabel);
+  if (!delivery) return deliveryLabel;
+  const update = new Date(delivery);
+  update.setDate(update.getDate() - 14);
+  return formatDeliveryDateLabel(update);
 }
 
 type StepCopy = {
@@ -105,11 +167,32 @@ const STEP_COPY: readonly StepCopy[] = [
   },
 ] as const;
 
+/** Paperwork `now` detail — path-aware so it matches waiting-on-you vs on-track. */
+function paperworkNowDetail(pathname: string): string {
+  const path = normalizeAppPathname(pathname);
+  if (
+    path === "/kyc/manual-verification" ||
+    path === "/kyc/verification-in-progress"
+  ) {
+    return "Nothing needed from you. I'll update you when there's news.";
+  }
+  if (path === "/kyc/verification-failed") {
+    return "Re-upload so I can try verifying again";
+  }
+  if (path === "/kyc/documents-received") {
+    return "I'm verifying your documents now";
+  }
+  return "Two minutes from you, Shivi files the rest";
+}
+
 /** "Your exact car" step, `now` state — path-aware so copy matches the turn. */
 function exactCarNowDetail(pathname: string, flow?: ExperienceFlow): string {
   const path = normalizeAppPathname(pathname);
   if (path === "/kyc/booking-accepted") {
     return "Share the one-time code when our partner calls";
+  }
+  if (path === "/car-allocation/failed") {
+    return "Pick a path forward so we can keep your delivery moving";
   }
   if (path.startsWith("/car-allocation")) {
     return "Hyundai's manufacturing your exact car now";
@@ -120,6 +203,49 @@ function exactCarNowDetail(pathname: string, flow?: ExperienceFlow): string {
   return "I'll update you as soon as I hear from our partner";
 }
 
+/** Money-plan `now` detail — call waits vs system waits vs choose-and-pay. */
+function moneyNowDetail(pathname: string): string {
+  const path = normalizeAppPathname(pathname);
+  if (path === "/payment/loan-processing") {
+    return "Pick up the bank's verification call and share the OTP";
+  }
+  if (
+    path === "/payment/loan-sanctioned" ||
+    path === "/payment/self-finance-loan-confirmed" ||
+    path === "/payment/full-payment-confirmed"
+  ) {
+    return "Pick up the dealer's call and arrange the payment";
+  }
+  if (path === "/payment/loan-additional-documents") {
+    return "Upload the document the bank asked for";
+  }
+  if (
+    path === "/payment/down-payment-dealer-confirmed" ||
+    path === "/payment/loan-disbursement-received" ||
+    path === "/payment/full-cash-payment-verification" ||
+    path === "/payment/full-cash-payment-confirmed" ||
+    path === "/payment/self-finance-transfer-verification" ||
+    path === "/payment/self-finance-transfer-confirmed" ||
+    path === "/payment/down-payment-insurance-setup"
+  ) {
+    return "Nothing needed from you right now";
+  }
+  return "Your delivery date locks the moment this is set";
+}
+
+/**
+ * Purchase-state chip next to Arriving — same holder as the Arrives pill.
+ * No em dash; middot separates the chapter when waiting on the user.
+ */
+export function getBookingStatusChipLabel(
+  dateHolder: "you" | "shivi",
+  nowStepTitle?: string,
+): string {
+  if (dateHolder === "shivi") return "On track";
+  const chapter = (nowStepTitle ?? "this step").toLowerCase();
+  return `Waiting on you · ${chapter}`;
+}
+
 /** Timeline for the purchase-state layer, with the promise ledger in the details. */
 export function getJourneyStageSteps(
   pathname: string,
@@ -128,14 +254,15 @@ export function getJourneyStageSteps(
   const stage = resolveJourneyStageIndex(pathname);
   return STEP_COPY.map((step, idx) => {
     const status: PlanStepStatus = idx < stage ? "done" : idx === stage ? "now" : "todo";
-    const detail =
-      status === "done"
-        ? step.done
-        : status === "now"
-          ? idx === 1
-            ? exactCarNowDetail(pathname, flow)
-            : step.now
-          : step.todo || getBookingDeliveryLine(flow);
+    let detail = step.todo || getBookingDeliveryLine(flow);
+    if (status === "done") {
+      detail = step.done;
+    } else if (status === "now") {
+      if (idx === 0) detail = paperworkNowDetail(pathname);
+      else if (idx === 1) detail = exactCarNowDetail(pathname, flow);
+      else if (idx === 2) detail = moneyNowDetail(pathname);
+      else detail = step.now;
+    }
     return { icon: step.icon, title: step.title, detail, status };
   });
 }

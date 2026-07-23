@@ -61,6 +61,11 @@ export type KycBookingProcessingScreenProps = {
   replyEcho?: string | null;
   /** Contextual call affordance — essential on waiting screens, where anxiety peaks. */
   callLabel?: string;
+  /**
+   * Who the Arrives pill waits on — pass when the default
+   * (replies → you, else shivi) is wrong, e.g. bank/dealer call with only a demo skip.
+   */
+  dateHolder?: "you" | "shivi";
   /** Manage-booking sheet — post–car-allocation car card (engine/chassis + copy). */
   manageBookingShowVehicleIdentification?: boolean;
 };
@@ -91,6 +96,7 @@ export function KycBookingProcessingScreen({
   dayStamp,
   replyEcho,
   callLabel,
+  dateHolder,
   manageBookingShowVehicleIdentification,
 }: KycBookingProcessingScreenProps = {}) {
   const router = useRouter();
@@ -146,6 +152,7 @@ export function KycBookingProcessingScreen({
       altTimeSkip={altTimeSkip}
       footnote={ctaWarningLine}
       callLabel={callLabel}
+      dateHolder={dateHolder}
       manageShowVehicleIdentification={manageBookingShowVehicleIdentification}
     />
   );

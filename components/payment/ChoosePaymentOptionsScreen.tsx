@@ -304,9 +304,9 @@ export function ChoosePaymentOptionsScreen() {
                 illustrationSrc={PAYMENT_CHOOSE_ASSETS.ackoDriveFinance}
                 title="Finance with ACKO Drive"
                 chip="Easiest"
-                blurb="You pick the bank. I handle the paperwork, follow-ups, and chase — so you don't have to."
+                blurb="You pick the bank, I handle the paperwork and every follow-up after."
                 stats={[
-                  { value: "~2 days", caption: "approval time" },
+                  { value: "2 days", caption: "approx. approval time" },
                   { value: formatInr(ACKO_EMI_FROM_INR), caption: "estimated monthly EMI" },
                 ]}
                 flow={[
@@ -329,9 +329,9 @@ export function ChoosePaymentOptionsScreen() {
                 selected={choice === "self_finance"}
                 onSelect={() => setChoice("self_finance")}
                 illustrationSrc={PAYMENT_CHOOSE_ASSETS.selfFinance}
-                title="Loan from your own bank"
-                chip="Most control"
-                blurb="Your bank, your terms. Bring me the sanction letter and I take it from there."
+                title="Arrange the loan yourself"
+                chip="Self-arranged"
+                blurb="Pick any bank you like and apply on your own. Bring me the sanction letter and I take it from there."
                 stats={[
                   { value: "5–7 days", caption: "typical bank approval" },
                   { value: "Any bank", caption: "your relationship, your rate" },

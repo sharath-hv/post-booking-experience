@@ -64,6 +64,8 @@ export function LoanSanctionedScreen() {
           />
         </div>
       }
+      // No reply chips — the dealer call + down payment is the user action.
+      dateHolder="you"
       timeSkip={{ label: "After the dealer's call · demo", href: dealerConfirmedHref }}
       callLabel="Questions on the loan? I can call you"
       showMenu

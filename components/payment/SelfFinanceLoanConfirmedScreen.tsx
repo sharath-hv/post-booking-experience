@@ -44,7 +44,7 @@ export function SelfFinanceLoanConfirmedScreen() {
     [loanAmountInr],
   );
 
-  const timeSkipHref = buildMarginMoneySlipActionHref({
+  const downPaymentPaidHref = buildMarginMoneySlipActionHref({
     bank: "self_finance",
     loanAmount: String(loanAmountInr),
   });
@@ -67,7 +67,13 @@ export function SelfFinanceLoanConfirmedScreen() {
           />
         </div>
       }
-      timeSkip={{ label: "After dealer confirms down payment", href: timeSkipHref }}
+      dateHolder="you"
+      replies={[
+        {
+          label: "I've paid the down payment",
+          href: downPaymentPaidHref,
+        },
+      ]}
       callLabel="Questions? I can call you"
       showMenu
     />

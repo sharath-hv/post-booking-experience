@@ -7,7 +7,7 @@ import warningIcon from "@/assets/Warning.svg";
 import { cn } from "@/lib/utils";
 import styles from "./ShimmerInfoCard.module.scss";
 
-type ShimmerInfoIcon = "alert" | "clock" | "info";
+type ShimmerInfoIcon = "alert" | "clock" | "info" | "none";
 
 const WARNING_ICON_MASK_STYLE = {
   maskImage: `url(${warningIcon.src})`,
@@ -57,9 +57,9 @@ export function ShimmerInfoCard({ icon = "alert", lead, children, className }: S
           className={styles.h_5_1}
           style={INFO_ICON_MASK_STYLE}
         />
-      ) : (
+      ) : icon === "clock" ? (
         <span aria-hidden className={styles.clockIcon} style={CLOCK_ICON_MASK_STYLE} />
-      )}
+      ) : null}
       <div className={styles.text_xs_3}>
         {lead ? <span className={styles.font_semibold_4}>{lead} </span> : null}
         {children}
