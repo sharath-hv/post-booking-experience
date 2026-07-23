@@ -313,32 +313,28 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
       }
 
       case "dealerSearch": {
-        // cancel_with_charges parks here once the partner is assigned (charged cancel demo).
-        const parkForCancelCharges = isCancelWithChargesFlow(flow);
         return {
           ...base,
           working,
           footnoteInline: true,
           // Standard resolves live (any nearby dealer works, no overnight wait), so it
           // gets a reply button instead of the express-only "Next morning" time-skip.
-          replies: parkForCancelCharges
+          replies: primaryReply(JOURNEY_PATHS.kyc.bookingAccepted),
+          timeSkip: words.timeSkipLabel
+            ? { label: words.timeSkipLabel, href: JOURNEY_PATHS.kyc.bookingAccepted }
+            : undefined,
+          altTimeSkip: isStandardDeliveryFlow(flow)
             ? undefined
-            : primaryReply(JOURNEY_PATHS.kyc.bookingAccepted),
-          timeSkip:
-            words.timeSkipLabel && !parkForCancelCharges
-              ? { label: words.timeSkipLabel, href: JOURNEY_PATHS.kyc.bookingAccepted }
-              : undefined,
-          altTimeSkip:
-            isStandardDeliveryFlow(flow) || parkForCancelCharges
-              ? undefined
-              : {
-                  label: "If no car is found",
-                  href: JOURNEY_PATHS.carAllocation.failed,
-                },
+            : {
+                label: "If no car is found",
+                href: JOURNEY_PATHS.carAllocation.failed,
+              },
         };
       }
 
       case "dealerFound": {
+        // cancel_with_charges parks here once the partner is locked (charged cancel demo).
+        const parkForCancelCharges = isCancelWithChargesFlow(flow);
         return {
           ...base,
           // No reply buttons here, but the date is in the user's hands — the call is the action.
@@ -361,19 +357,21 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
                 dealerDetail={CAR_SOURCE_DETAIL}
               />
               <p className={styles.px_1_1}>
-                <span className={styles.font_semibold_2}>Having second thoughts?</span> A change costs ₹5,000 and
-                cancelling holds back half of your booking amount. Both are in the menu up top.
+                <span className={styles.font_semibold_2}>Having second thoughts?</span> From this step on, a
+                change costs ₹5,000 and cancelling holds back half of your booking amount. Both are in the
+                menu up top.
               </p>
             </div>
           ),
-          timeSkip: words.timeSkipLabel
-            ? {
-                label: words.timeSkipLabel,
-                href: isStandardDeliveryFlow(flow)
-                  ? JOURNEY_PATHS.carAllocation.pending
-                  : JOURNEY_PATHS.kyc.bookingConfirmed,
-              }
-            : undefined,
+          timeSkip:
+            words.timeSkipLabel && !parkForCancelCharges
+              ? {
+                  label: words.timeSkipLabel,
+                  href: isStandardDeliveryFlow(flow)
+                    ? JOURNEY_PATHS.carAllocation.pending
+                    : JOURNEY_PATHS.kyc.bookingConfirmed,
+                }
+              : undefined,
         };
       }
 

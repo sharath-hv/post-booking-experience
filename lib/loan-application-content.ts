@@ -30,6 +30,6 @@ export function routeToMilestone(route: LoanApplicationRoute): LoanApplicationMi
   return "references";
 }
 
-export const LOAN_APPLICATION_TENURE_OPTIONS = [12, 24, 36, 48, 60, 84] as const;
+export const LOAN_APPLICATION_TENURE_OPTIONS = [12, 24, 36, 48, 60, 72, 84] as const;
 
 export type LoanApplicationEmploymentType = "salaried" | "self_employed";

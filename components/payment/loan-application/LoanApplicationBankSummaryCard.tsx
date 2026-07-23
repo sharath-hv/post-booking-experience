@@ -43,7 +43,7 @@ export function LoanApplicationBankSummaryCard({ bank }: LoanApplicationBankSumm
         <span className={styles.text_xs_4}>From {bank.rate}</span>
       </div>
       <p className={styles.text_xs_6}>
-        The final rate of interest will be decided by the bank based on your cibil score
+        Final rates will be based on CIBIL score and current loan obligations
       </p>
     </div>
   );

@@ -107,7 +107,7 @@ export type WorkingNarrationProps = {
   doneLabel?: string;
   /** Colour + icon for `doneLabel` — defaults to success green. */
   doneTone?: WorkingNarrationDoneTone;
-  /** Expectation row (clock icon) — ongoing mode, e.g. “Expect news by tomorrow morning”. */
+  /** Expectation row (clock icon) — ongoing mode, e.g. “I'll update you as soon as I have news”. */
   etaLabel?: string;
   /** Ongoing mode — lines before this index render done (e.g. “request placed” already happened). */
   ongoingDoneCount?: number;

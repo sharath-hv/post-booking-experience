@@ -177,7 +177,7 @@ export function LoanApplicationLoanDetailsScreen() {
             Loan tenure (in months)
           </p>
           <div
-            className={cn(LOAN_APPLICATION_FIELD_GAP_CLASS, styles.grid_6)}
+            className={cn(LOAN_APPLICATION_FIELD_GAP_CLASS, styles.grid_7)}
             role="group"
             aria-label="Loan tenure in months"
           >

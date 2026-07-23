@@ -1,15 +1,15 @@
 /**
  * One-time change rule (policy §1.9 / §2.3):
- * - Before dealer partner assigned: changes are free (no ₹5,000 fee).
- * - From partner assigned on `/kyc/processing` through booking-accepted (before OTP):
+ * - Through dealer search (`/kyc/processing`): changes are free (no ₹5,000 fee).
+ * - From partner locked on `/kyc/booking-accepted` through allocation-pending (before VIN):
  *   exactly ONE model/colour change, ₹5,000 + any price difference.
  * - After vehicle ID (engine/chassis / booking-confirmed): change is not offered.
  * - A second post–dealer-allocation change is treated as cancellation (50% of booking
  *   amount) + rebook.
  *
  * The counter tracks post–dealer-allocation changes only; the entry stage records
- * whether the user entered before or after dealer allocation, so review-and-pay
- * can charge correctly. OTP is manufacturer-portal confirmation — not dealer allocation.
+ * whether the user entered before or after the fee boundary, so review-and-pay
+ * can charge correctly. OTP is manufacturer-portal confirmation — not the fee boundary.
  */
 
 const CHANGES_USED_KEY = "pbe-post-lock-changes-used";

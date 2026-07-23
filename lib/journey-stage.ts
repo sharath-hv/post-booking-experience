@@ -5,11 +5,16 @@ import {
 } from "@/lib/experience-flow-content";
 import type { ExperienceFlow } from "@/lib/experience-flow";
 import { normalizeAppPathname } from "@/lib/journey-routes";
-import { CAR_SOURCE_NAME } from "@/lib/dealer-attribution-content";
 
 /**
  * The four chapters of the journey — one source of truth for the purchase-state
  * layer (timeline, receipts) and the delivery-date pill.
+ *
+ * Stage map (see docs/PLAN.md spine):
+ * 0 paperwork — arrival through KYC
+ * 1 exact car — dealer search → booking-accepted (OTP) / allocation-pending
+ * 2 money — booking-confirmed (car reserved) through payment choose / finance
+ * 3 delivery — insurance / RTO / schedule
  */
 export type PlanStepStatus = "done" | "now" | "todo";
 
@@ -20,17 +25,28 @@ export type JourneyStageStep = {
   status: PlanStepStatus;
 };
 
+/**
+ * Engine/chassis are on the card from booking-confirmed onward
+ * (PLAN: vehicle ID after OTP — car reserved).
+ */
+export function isVehicleIdentificationAvailable(pathname: string): boolean {
+  return resolveJourneyStageIndex(pathname) >= 2;
+}
+
 /** 0 paperwork · 1 exact car · 2 money · 3 delivery. */
 export function resolveJourneyStageIndex(pathname: string): number {
   const path = normalizeAppPathname(pathname);
   if (path.includes("car-delivery") || path.includes("insurance")) return 3;
   if (path === "/payment/booking-success") return 0;
   if (path.startsWith("/payment")) return 2;
+  // Car reserved (VIN on card) — exact-car chapter is done; money is next.
+  if (path === "/kyc/booking-confirmed" || path === "/car-allocation/confirmed") {
+    return 2;
+  }
   if (
     path.startsWith("/car-allocation") ||
     path === "/kyc/processing" ||
-    path === "/kyc/booking-accepted" ||
-    path === "/kyc/booking-confirmed"
+    path === "/kyc/booking-accepted"
   ) {
     return 1;
   }
@@ -70,7 +86,7 @@ const STEP_COPY: readonly StepCopy[] = [
     icon: "car",
     title: "Your exact car",
     done: "Reserved and confirmed with our partner",
-    now: "News from our partner promised by tomorrow morning",
+    now: "I'll update you as soon as I hear from our partner",
     todo: "Shivi reserves your variant and colour with our partner",
   },
   {
@@ -89,11 +105,19 @@ const STEP_COPY: readonly StepCopy[] = [
   },
 ] as const;
 
-/** "Your exact car" step, `now` state — standard sits in a months-long manufacturing wait, not an overnight partner check. */
-function exactCarNowDetail(flow?: ExperienceFlow): string {
-  return isStandardDeliveryFlow(flow)
-    ? "Hyundai's manufacturing your exact car now"
-    : "News from our partner promised by tomorrow morning";
+/** "Your exact car" step, `now` state — path-aware so copy matches the turn. */
+function exactCarNowDetail(pathname: string, flow?: ExperienceFlow): string {
+  const path = normalizeAppPathname(pathname);
+  if (path === "/kyc/booking-accepted") {
+    return "Share the one-time code when our partner calls";
+  }
+  if (path.startsWith("/car-allocation")) {
+    return "Hyundai's manufacturing your exact car now";
+  }
+  if (isStandardDeliveryFlow(flow)) {
+    return "Lining up your dealer partner now";
+  }
+  return "I'll update you as soon as I hear from our partner";
 }
 
 /** Timeline for the purchase-state layer, with the promise ledger in the details. */
@@ -108,7 +132,9 @@ export function getJourneyStageSteps(
       status === "done"
         ? step.done
         : status === "now"
-          ? (idx === 1 ? exactCarNowDetail(flow) : step.now)
+          ? idx === 1
+            ? exactCarNowDetail(pathname, flow)
+            : step.now
           : step.todo || getBookingDeliveryLine(flow);
     return { icon: step.icon, title: step.title, detail, status };
   });
@@ -126,14 +152,28 @@ export function getJourneyReceipts(pathname: string): JourneyReceipt[] {
     { title: "Booking amount receipt", meta: "₹10,000 · paid" },
   ];
   if (stage >= 2) {
-    receipts.push(
-      { title: "Reservation confirmation", meta: CAR_SOURCE_NAME },
-      { title: "Allocation certificate", meta: "Engine & chassis no." },
-      { title: "Proforma invoice", meta: "On-road price breakup" },
-    );
+    receipts.push({ title: "Proforma invoice", meta: "On-road price breakup" });
   }
   if (stage >= 3) {
     receipts.push({ title: "Insurance policy", meta: "ACKO Drive Shield · zero dep" });
   }
   return receipts;
+}
+
+/** Demo download stub — replace with a real document URL when available. */
+export function downloadJourneyReceipt(receipt: JourneyReceipt) {
+  if (typeof document === "undefined") return;
+  const slug = receipt.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  const blob = new Blob(
+    [`${receipt.title}\n${receipt.meta}\n\nDemo document — ACKO Drive post-booking experience.\n`],
+    { type: "text/plain;charset=utf-8" },
+  );
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `${slug || "receipt"}-demo.txt`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
 }

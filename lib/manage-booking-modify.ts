@@ -32,21 +32,24 @@ function formatInr(amount: number) {
 }
 
 /**
- * Cancellation fee tier — free until a dealer partner is assigned on `/kyc/processing`.
- * Standard from processing onward (50% of booking amount retained), including before OTP.
+ * Cancellation fee tier — free through dealer search (`/kyc/processing`).
+ * Standard from booking-accepted onward (50% of booking amount retained), including before OTP.
  */
 export function resolveModifyBookingFeeTier(pathname: string): ModifyBookingFeeTier {
   if (isModifyNoChargesFlow() || isCancelNoChargesFlow()) {
     return "free";
   }
   const phase = resolveJourneyPhase(pathname);
-  return isPreDealerAllocationPhase(phase) ? "free" : "standard";
+  if (isPreDealerAllocationPhase(phase) || phase === "booking_processing") {
+    return "free";
+  }
+  return "standard";
 }
 
 /**
- * Change-selection fee tier — free before dealer partner assigned;
- * ₹5,000 from `/kyc/processing` (partner assigned) through booking-accepted.
- * OTP / booking-confirmed is not dealer allocation (change is hidden there).
+ * Change-selection fee tier — free through dealer search;
+ * ₹5,000 from `/kyc/booking-accepted` (partner locked) through allocation-pending.
+ * OTP / booking-confirmed hides change entirely.
  */
 export function resolveChangeSelectionFeeTier(pathname: string): ModifyBookingFeeTier {
   if (isModifyNoChargesFlow() || isCancelDemoFlow()) {

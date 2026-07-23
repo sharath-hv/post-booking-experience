@@ -13,9 +13,12 @@ import { ManageBookingCarCard, ManageBookingSections } from "@/components/kyc/Ma
 import { BottomSheetPortal } from "@/components/ui/BottomSheetPortal";
 import { readExperienceFlow, type ExperienceFlow } from "@/lib/experience-flow";
 import {
+  downloadJourneyReceipt,
   getDeliveryDateFull,
   getJourneyReceipts,
   getJourneyStageSteps,
+  isVehicleIdentificationAvailable,
+  type JourneyReceipt,
 } from "@/lib/journey-stage";
 import { cn } from "@/lib/utils";
 import { OVERLAY_GLASS_CARD_CLASS } from "@/lib/overlay-glass-card";
@@ -77,6 +80,11 @@ export function ManageBookingZoomOverlay({
   const receipts = useMemo(() => getJourneyReceipts(pathname), [pathname]);
   const nowStep = steps.find((step) => step.status === "now");
   const deliveryDate = getDeliveryDateFull(flow);
+  /** VIN from booking-confirmed onward — prop can force earlier for specific turns. */
+  const showVin = showVehicleIdentification || isVehicleIdentificationAvailable(pathname);
+  const onReceiptDownload = useCallback((receipt: JourneyReceipt) => {
+    downloadJourneyReceipt(receipt);
+  }, []);
   /** Scroll lock — compensate for the scrollbar so the page never reflows. */
   useEffect(() => {
     if (!mounted) return;
@@ -164,7 +172,7 @@ export function ManageBookingZoomOverlay({
                 </span>
               </div>
 
-              <ManageBookingCarCard showVehicleIdentification={showVehicleIdentification} />
+              <ManageBookingCarCard showVehicleIdentification={showVin} />
             </div>
 
             <section aria-labelledby="purchase-state-timeline-heading" className={styles.mt_8_10}>
@@ -181,7 +189,7 @@ export function ManageBookingZoomOverlay({
               <Suspense fallback={null}>
                 <ManageBookingSections
                   onClose={onClose}
-                  showVehicleIdentification={showVehicleIdentification}
+                  showVehicleIdentification={showVin}
                   surface="overlay"
                   hideCarCard
                   beforeChange={
@@ -197,6 +205,8 @@ export function ManageBookingZoomOverlay({
                           <button
                             key={receipt.title}
                             type="button"
+                            onClick={() => onReceiptDownload(receipt)}
+                            aria-label={`Download ${receipt.title}`}
                             className={cn(
                               styles.flex_26,
                               idx > 0 && styles.border_t_27

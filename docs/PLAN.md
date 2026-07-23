@@ -12,9 +12,9 @@ The journey is being redesigned as a conversation with **Shivi** (first-person v
 
 The business policy (5 stages; Booking Confirmation = lock point; 50%-of-total-paid cancellation; one ₹5,000 model/colour change; CYP deadlines; 100% refund on ACKO failure) governs all flows. **Stage mapping:** Booking Request = arrival · KYC = identity chapter · Booking Confirmation = dealer lock (booking-accepted/confirmed) · CYP = the money chapter · Delivery Processing = post-payment delivery chapter.
 
-**Cancellation (built, policy-correct):** “Cancel my purchase” is on the manage sheet until **car payment starts** (DP / instalment beyond the ₹10k lock) — then the Cancel row (and the whole “Make a change” section when Change is already gone) is hidden. Free before dealer allocation; from `/kyc/booking-accepted` onward retains **50% of the booking lock (₹5,000)**. OTP is manufacturer-portal confirmation, not the fee boundary. Sheet passes `?paid=&stage=` to `/kyc/cancel-booking` (`ConciergeCancelScreen`).
+**Cancellation (built, policy-correct):** “Cancel my purchase” is on the manage sheet until **car payment starts** (DP / instalment beyond the ₹10k lock) — then the Cancel row (and the whole “Make a change” section when Change is already gone) is hidden. Free through dealer search (`/kyc/processing`); from `/kyc/booking-accepted` (partner locked) onward retains **50% of the booking lock (₹5,000)**. OTP is manufacturer-portal confirmation, not the fee boundary. Sheet passes `?paid=&stage=` to `/kyc/cancel-booking` (`ConciergeCancelScreen`).
 
-**One-time change rule (built, policy §1.9 / §2.3):** Change is offered through **dealer partner assigned** (`/kyc/processing` working done → booking-accepted). Before processing: free. From partner assigned (before OTP): ₹5,000 once. After vehicle ID (engine/chassis on `/kyc/booking-confirmed`+): **Change row hidden**. `lib/change-policy.ts` tracks post–dealer-allocation changes; manage sheet writes entry stage `pre`/`post`. Second paid change → cancel & rebook (`reason=second-change`). Processing heads-up restates fees once the partner is locked in. Loan one-time rules (§6.2/6.3) are surfaced on loan **rejection** paths (“your one free switch covers this”); the loan-processing wait subline no longer repeats the switch offer.
+**One-time change rule (built, policy §1.9 / §2.3):** Change is offered through allocation-pending. Free through dealer search (`/kyc/processing`). From partner locked (`/kyc/booking-accepted`, before VIN): ₹5,000 once. After vehicle ID (engine/chassis on `/kyc/booking-confirmed`+): **Change row hidden**. `lib/change-policy.ts` tracks post–fee-boundary changes; manage sheet writes entry stage `pre`/`post`. Second paid change → cancel & rebook (`reason=second-change`). Dealer-search heads-up warns that fees start on the **next** step. Loan one-time rules (§6.2/6.3) are surfaced on loan **rejection** paths (“your one free switch covers this”); the loan-processing wait subline no longer repeats the switch offer.
 
 **Inability to deliver (built, policy §1.14 / §2.4):** **edge-case demo only** — **express delivery only** (hidden when `readExperienceFlow() === "standard"`). Demo entry points: `/kyc/processing` (dealer search) and `/car-allocation/pending` each carry a second pill (“If no car is found · demo”) → `/car-allocation/failed` (`ConciergeAllocationFailedScreen`, Vercel-aligned). Shivi apologises (“I'm sorry, Sharath. I couldn't find your car.” + express-timeline body); three **card-based** outs (not footer reply buttons): **Wait for standard delivery** (chip “About 3 months”, highlighted — `writeExperienceFlow("standard")`, echo “I'll wait for standard delivery”, → `/kyc/booking-accepted`), **Pick a different car** (free change, `entry stage pre`, → modify-selection; after pay → auto-advance **Payment received** then **`/kyc/processing`** — identity already done; `writeExperienceFlow("express"|"standard")` from the selection’s delivery choice so the spine resumes on the right timeline), **Get a full refund** (→ cancel `reason=our-failure`). Call affordance: “Want to talk it through? I can call you”. Standard users who land on `/car-allocation/failed` redirect to `/kyc/processing`.
 
@@ -28,7 +28,7 @@ The business policy (5 stages; Booking Confirmation = lock point; 50%-of-total-p
 
 **Demo prefill:** the loan application wizard starts fully prefilled (`createDefaultLoanApplicationState()` returns complete demo data; `fresh=1` re-seeds it) so Continue is enabled on every step — fields stay editable.
 
-**Policy transparency:** Shivi's arrival promise (“fully refundable right now — I'll flag it before that ever changes”) is kept: on dealer-search (`/kyc/processing`), once the partner is assigned the heads-up states fees apply (₹5,000 change / 50% cancel); dealer-found (`/kyc/booking-accepted`) points to the ⋮ menu. Manage sheet: free through verification; charged from processing onward.
+**Policy transparency:** Shivi's arrival promise (“fully refundable right now — I'll flag it before that ever changes”) is kept: on dealer-search (`/kyc/processing`) the heads-up warns fees start from the **next** step (₹5,000 change / 50% cancel); dealer-found (`/kyc/booking-accepted`) is the fee boundary and points to the ⋮ menu. Manage sheet: free through dealer search; charged from booking-accepted onward.
 
 **Insurance plan details & the acko.com price gap:** users comparison-shop mid-flow; discovering a cheaper number on acko.com themselves is what triggers support calls. The experience preempts it instead of defending after the fact. The premium card carries the value line up front (“Covered for ₹9,54,900 (full ex-showroom) · 5 add-ons included”); the coverage sheet (`InsuranceCoverageBottomSheet`, content in `insurance-coverage-content.ts`) is the full justification: Shivi's framing → **IDV block** (full ex-showroom, zero haircut; RTI pays full on-road ₹13,73,780) → base covers → **5 included add-ons** (RTI, engine protect, consumables, RSA, key cover) → **“Seen a lower price on acko.com?”** like-for-like table (this plan ₹37,000 vs website default ₹29,800 at −5% IDV/no add-ons vs website matched ₹37,450) → **price promise** (“find this exact cover for less on acko.com, I'll refund the difference”).
 
@@ -75,6 +75,8 @@ The business policy (5 stages; Booking Confirmation = lock point; 50%-of-total-p
 
 **Main spine skips `/car-allocation/*`.** After OTP confirmation the unit is already assigned (Vercel-aligned); CTA **Start the payment** → `/payment/default`. The allocation turns and routes remain for edge-case demos (`/car-allocation/pending`, `/car-allocation/failed`) but are not wired from booking-confirmed.
 
+**Purchase-state timeline (`lib/journey-stage.ts`):** 0 paperwork · 1 exact car (`/kyc/processing`, `/kyc/booking-accepted`, allocation-pending) · 2 money (`/kyc/booking-confirmed` onward — car is reserved, VIN on card) · 3 delivery (insurance / RTO / schedule). Booking-confirmed must not stay on “exact car / waiting on partner”.
+
 **`dealerFound` turn (`/kyc/booking-accepted`):** lead — “Found a match, Sharath. This is the Creta you picked.”; body — shortlisted Creta on `CarSummaryCardLite` (**Matched** blue chip, ACKO Drive attribution; no engine/chassis until OTP); `NextStepCard` — “Confirm with a one-time code” + partner OTP call copy (Hyundai portal assignment); demo skip **After the call** → `/kyc/booking-confirmed`. **`carReserved` turn (`/kyc/booking-confirmed`, default spine):** lead — “Your code checked out, Sharath. This Creta is yours.”; body — engine/chassis on `CarSummaryCardLite` with **Yours ✓** chip; CTA **Start the payment** (echo: “Let's start the payment”). **`moneyIntro` (`/payment/default`):** “Morning, Sharath. Let's sort out the payment.” + amount/options copy; footnote stakes delivery date (**10 Jun** express / **25 Oct** standard, from `getDeliveryDateShort()`); CTA **Show me my options** → `/payment/choose`. **`/payment/choose`:** option cards — chip above title, 16px gap, centred stat divider; ACKO Drive EMI **₹21,833** (no `/mo`); selected radio inline `#5920C5`.
 
 Buying-guide routes are bypassed on the spine (the arrival plan replaces them). No-"booking" sweep applied to converted surfaces + manage sheet ("Your car", "Make a change", "Cancel my purchase", "Paid so far", "Price lock amount").
@@ -114,7 +116,7 @@ Switch on **`/quote`** via the top-left menu (`QuoteFlowMenuSheet`). Active flow
 | **Change selection without any charges** | Yes | Express path through **`/kyc` (KYC pending)** only; post–KYC-pending routes redirect to `/kyc`; manage booking fees always free (`lib/manage-booking-modify.ts`); modify-selection routes unchanged |
 | **Change selection with ₹5,000 fee** | Yes | **Same routes as express** through **`/kyc/booking-accepted`**; change selection from booking accepted (`isModifyWithChargesFlow()` + `isChangeSelectionAvailablePhase`); ₹5,000 change fee in review-and-pay (`lib/modify-selection-review-pay-content.ts`) |
 | **Cancellation with no charges** | Yes | Express path through **`/kyc/verification-in-progress`** (inclusive); post–verification-in-progress routes redirect to `/kyc/verification-in-progress`; manage booking fees always free; **Cancel booking** → concierge cancel turn (`ConciergeCancelScreen`) with ₹0 charge; **Change selection** shown but not clickable |
-| **Cancellation with 50% charges** | Yes | Express path through **`/kyc/processing`** (partner assigned); later routes redirect to processing; cancel fee **standard** (₹5,000 retained); **Cancel booking** → concierge cancel turn with `stage=post`; **Change selection** shown but not clickable |
+| **Cancellation with 50% charges** | Yes | Express path through **`/kyc/booking-accepted`** (partner locked); later routes redirect to booking-accepted; cancel fee **standard** (₹5,000 retained); **Cancel booking** → concierge cancel turn with `stage=post`; **Change selection** shown but not clickable |
 
 ### Common vs flow-specific changes
 
@@ -131,7 +133,7 @@ Switch on **`/quote`** via the top-left menu (`QuoteFlowMenuSheet`). Active flow
 
 - **`JOURNEY_PATHS`** — canonical path strings for milestones (KYC hub → processing → booking accepted → car allocation → payment).
 - **`resolveJourneyPhase(pathname)`** — coarse phase for fees and future branching (not payment instalment state).
-- **`isIdentityFunnelPhase`** — free modify-booking fees (`/kyc` through `/kyc/processing` only).
+- **`isIdentityFunnelPhase`** — identity + dealer-search phases (`/kyc` through `/kyc/processing`).
 - Prefer importing paths from here when touching navigation; migrate `router.push` strings incrementally.
 
 ### Demo vs product CTAs (GitHub Pages)
@@ -308,12 +310,12 @@ Parser: `parseConfirmedLoanPlan()` in manage sheet; derives full DP from `ON_ROA
 
 ### Modify booking (Change + Cancel)
 
-OTP confirms the booking on the manufacturer portal — it is **not** dealer allocation. Dealer partner assigned = `/kyc/processing` (working done). Vehicle ID (engine/chassis) = `/kyc/booking-confirmed` onward.
+OTP confirms the booking on the manufacturer portal — it is **not** the fee boundary. Dealer search = `/kyc/processing` (still free). Partner locked = `/kyc/booking-accepted` (fee boundary). Vehicle ID (engine/chassis) = `/kyc/booking-confirmed` onward.
 
 | Stage | Change selection | Cancel my purchase | “Make a change” section |
 |-------|------------------|--------------------|-------------------------|
-| Before dealer (through verification) | **Show** · free | **Show** · free | Both |
-| Partner assigned (`/kyc/processing` → booking-accepted → `/car-allocation/pending`) | **Show** · ₹5,000 | **Show** · 50% of booking lock | Both |
+| Before partner locked (through dealer search `/kyc/processing`) | **Show** · free | **Show** · free | Both |
+| Partner locked (`/kyc/booking-accepted` → `/car-allocation/pending`) | **Show** · ₹5,000 | **Show** · 50% of booking lock | Both |
 | After vehicle ID (engine/chassis — `/kyc/booking-confirmed`, `/car-allocation/confirmed`+) | **Hide** | **Show** · 50% of booking lock | Cancel only |
 | After car payment (DP / instalment beyond ₹10k lock) | **Hide** | **Hide** | **Hide entire section** |
 
@@ -324,9 +326,9 @@ Helpers: `isChangeSelectionMenuVisible` / `isCancelBookingMenuVisible` / fee tie
 | Flow | Change selection | Cancel booking |
 |------|------------------|----------------|
 | **cancel_no_charges** | Visible when stage allows; **not clickable** | Enabled → `stage=pre` (₹0) |
-| **cancel_with_charges** | Visible when stage allows; **not clickable** | Enabled → fee by phase; park at processing → `stage=post` |
+| **cancel_with_charges** | Visible when stage allows; **not clickable** | Enabled → fee by phase; park at booking-accepted → `stage=post` |
 | **modify_no_charges** | Enabled (always free); journey capped at `/kyc` | Fee by phase |
-| **modify_with_charges** | Enabled from processing / booking-accepted (₹5,000) | Fee by phase |
+| **modify_with_charges** | Enabled; ₹5,000 from booking-accepted | Fee by phase |
 | **express / standard / kyc_failed** | Per stage table above | Per stage table above |
 
 `showVehicleIdentification` only affects the car card (engine/chassis rows), not modify actions.
@@ -444,7 +446,7 @@ Two selectable demos on **`/quote`**:
 | Flow id | Park point | Cancel charge |
 |---------|------------|---------------|
 | `cancel_no_charges` | `/kyc/verification-in-progress` | ₹0 (`stage=pre`) |
-| `cancel_with_charges` | `/kyc/processing` (partner assigned) | ₹5,000 (`stage=post`) |
+| `cancel_with_charges` | `/kyc/booking-accepted` (partner locked) | ₹5,000 (`stage=post`) |
 
 ### Journey caps
 
@@ -455,16 +457,16 @@ Two selectable demos on **`/quote`**:
 | `/quote`, payment routes, `/kyc`, `/kyc/upload`, `/kyc/documents-received`, `/kyc/verification-in-progress` | `/kyc/processing`, `/kyc/booking-accepted`, `/kyc/booking-confirmed`, car-allocation, etc. |
 | `/kyc/cancel-booking` | `/kyc/modify-selection/*` |
 
-**cancel_with_charges** — express path through dealer search (partner assigned):
+**cancel_with_charges** — express path through dealer found (partner locked):
 
-| Allowed | Blocked (redirect → `/kyc/processing`) |
-|---------|----------------------------------------|
-| Paths above plus `/kyc/processing` | `/kyc/booking-accepted`, `/kyc/booking-confirmed`, car-allocation, verification-failed / manual-verification |
+| Allowed | Blocked (redirect → `/kyc/booking-accepted`) |
+|---------|----------------------------------------------|
+| Paths above plus `/kyc/processing`, `/kyc/booking-accepted` | `/kyc/booking-confirmed`, car-allocation, verification-failed / manual-verification |
 | `/kyc/cancel-booking` | `/kyc/modify-selection/*` |
 
 Guards: `getCancelNoChargesRedirectTarget()` / `getCancelWithChargesRedirectTarget()` in `lib/experience-flow-journey.ts`; KYC post-hub pages use unified `getExperienceFlowJourneyRedirectTarget()` via `ModifyNoChargesGatedPage`.
 
-On **`/kyc/verification-in-progress`**, demo **Next** is hidden when `isCancelNoChargesFlow()`. On **`/kyc/processing`**, the “What's next?” CTA / time-skip is hidden when `isCancelWithChargesFlow()` so the demo stays on the charged cancel park point.
+On **`/kyc/verification-in-progress`**, demo **Next** is hidden when `isCancelNoChargesFlow()`. On **`/kyc/booking-accepted`**, the time-skip is hidden when `isCancelWithChargesFlow()` so the demo stays on the charged cancel park point.
 
 ### Entry
 

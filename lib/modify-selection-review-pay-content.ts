@@ -74,7 +74,7 @@ export type BuildModifySelectionReviewPaySummaryOptions = {
 };
 
 function resolvePolicyChangeFeeInr(): number {
-  // ₹5,000 one-time change fee applies from dealer allocation (policy §1.9):
+  // ₹5,000 one-time change fee applies from partner locked / booking-accepted (policy §1.9):
   // modify-with-charges demo flow, or express/standard entering after dealer found.
   return isModifyWithChargesFlow() || readChangeEntryStage() === "post"
     ? MODIFY_BOOKING_CHANGE_FEE_INR
