@@ -43,6 +43,13 @@ export function BankSelectionScreen() {
     [openBankId],
   );
 
+  /** Pre-approved offers float to the top so the phone-number match is easy to spot. */
+  const banks = useMemo(
+    () =>
+      [...BANK_LOAN_TERMS].sort((a, b) => Number(Boolean(b.preApproved)) - Number(Boolean(a.preApproved))),
+    [],
+  );
+
   const onConfirm = useCallback(
     (bankId: string) => {
       setOpenBankId(null);
@@ -73,7 +80,7 @@ export function BankSelectionScreen() {
         </p>
 
         <div className={styles.mt_8_4}>
-          {BANK_LOAN_TERMS.map((bank, index) => (
+          {banks.map((bank, index) => (
             <div
               key={bank.id}
               className={[styles.payment_success_stagger_5, "payment-success-stagger"].filter(Boolean).join(" ")}

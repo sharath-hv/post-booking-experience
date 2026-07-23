@@ -65,6 +65,8 @@ export function LoanBookingProcessingScreen() {
             : "/payment/loan-rejected",
         },
       ]}
+      // Demo skip only — the bank verification call is the pending user action.
+      dateHolder="you"
       callLabel="Anxious about the loan? I can call you"
       manageBookingShowVehicleIdentification
     />

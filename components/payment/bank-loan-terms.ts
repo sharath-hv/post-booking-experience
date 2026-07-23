@@ -21,20 +21,26 @@ export interface BankLoanTerms {
   interestRate: { value: number; type: "from" | "flat" };
 
   rateType: "Fixed" | "Floating" | null;
-  /** Plain-language restatement for the sheet, e.g. "Fixed. Your EMI stays the same for the full tenure." */
-  rateTypeCopy: string | null;
+  /** Plain-language points for the sheet, e.g. ["Fixed rate", "Your EMI stays the same for the full tenure"]. */
+  rateTypeCopy: readonly string[] | null;
 
   foreclosure: {
     /** Months before the loan can be closed early at all. */
     lockInMonths: number | null;
-    /** Plain-language paragraph — lock-in, tiered charges, waiver conditions. */
-    copy: string | null;
+    /** Plain-language bullets — lock-in, tiered charges, waiver conditions, one fact per line. */
+    copy: readonly string[] | null;
   } | null;
 
   partPayment: {
-    /** Plain-language paragraph — eligibility, frequency, cap, charges. */
-    copy: string | null;
+    /** Plain-language bullets — eligibility, frequency, cap, charges, one fact per line. */
+    copy: readonly string[] | null;
   } | null;
+
+  /**
+   * True when a phone-number lookup found a pre-approved offer at this bank.
+   * Drive the card/sheet badge from this flag — never hardcode bank ids in UI.
+   */
+  preApproved?: boolean;
 
   dataCompleteness: BankDataCompleteness;
 }
@@ -49,13 +55,20 @@ export const BANK_LOAN_TERMS: readonly BankLoanTerms[] = [
     logoSrc: logoById.get("hdfc")!,
     interestRate: { value: 8.8, type: "from" },
     rateType: "Fixed",
-    rateTypeCopy: "Fixed. Your EMI stays the same for the full tenure.",
+    rateTypeCopy: ["Fixed rate", "Your EMI stays the same for the full tenure"],
     foreclosure: {
       lockInMonths: 6,
-      copy: "Not allowed in the first 6 months. After that, a fee applies until month 24, based on how much you still owe. No fee after 2 years if you've opted for loan protection.",
+      copy: [
+        "Not allowed in the first 6 months",
+        "After that, a fee applies until month 24, based on how much you still owe",
+        "No fee after 2 years if you've opted for loan protection",
+      ],
     },
     partPayment: {
-      copy: "Allowed twice a year, once you've paid 12 EMIs. Each part payment is capped so your total prepayment doesn't cross 25% of what you owe.",
+      copy: [
+        "Allowed twice a year, once you've paid 12 EMIs",
+        "Capped so your total prepayment doesn't cross 25% of what you owe",
+      ],
     },
     dataCompleteness: "full",
   },
@@ -65,13 +78,20 @@ export const BANK_LOAN_TERMS: readonly BankLoanTerms[] = [
     logoSrc: logoById.get("baroda")!,
     interestRate: { value: 8.1, type: "from" },
     rateType: "Floating",
-    rateTypeCopy: "Floating. Your EMI can change when the bank revises its lending rate.",
+    rateTypeCopy: ["Floating rate", "Your EMI can change when the bank revises its lending rate"],
     foreclosure: {
       lockInMonths: 3,
-      copy: "Not allowed in the first 3 months. After that, a fee applies until month 18, based on how much you still owe. No fee after 18 months.",
+      copy: [
+        "Not allowed in the first 3 months",
+        "After that, a fee applies until month 18, based on how much you still owe",
+        "No fee after 18 months",
+      ],
     },
     partPayment: {
-      copy: "Allowed once a year after you've paid 6 EMIs. Each part payment is capped at 20% of the outstanding principal.",
+      copy: [
+        "Allowed once a year after you've paid 6 EMIs",
+        "Capped at 20% of the outstanding principal",
+      ],
     },
     dataCompleteness: "full",
   },
@@ -81,14 +101,24 @@ export const BANK_LOAN_TERMS: readonly BankLoanTerms[] = [
     logoSrc: logoById.get("icici")!,
     interestRate: { value: 8.8, type: "from" },
     rateType: "Fixed",
-    rateTypeCopy: "Fixed. Your EMI stays the same for the full tenure.",
+    rateTypeCopy: ["Fixed rate", "Your EMI stays the same for the full tenure"],
     foreclosure: {
       lockInMonths: 1,
-      copy: "Not allowed in the first month. After that, a fee applies until month 24, based on how much you still owe. No fee after 2 years.",
+      copy: [
+        "Not allowed in the first month",
+        "After that, a fee applies until month 24, based on how much you still owe",
+        "No fee after 2 years",
+      ],
     },
     partPayment: {
-      copy: "Allowed anytime after your first EMI. No cap on how much or how often, a small fee applies each time.",
+      copy: [
+        "Allowed anytime after your first EMI",
+        "No cap on how much or how often",
+        "A small fee applies each time",
+      ],
     },
+    // Demo: phone-number lookup found a pre-approved offer at ICICI only.
+    preApproved: true,
     dataCompleteness: "full",
   },
   {
@@ -97,13 +127,20 @@ export const BANK_LOAN_TERMS: readonly BankLoanTerms[] = [
     logoSrc: logoById.get("boi")!,
     interestRate: { value: 8.0, type: "from" },
     rateType: "Floating",
-    rateTypeCopy: "Floating. Your EMI can change when the bank revises its lending rate.",
+    rateTypeCopy: ["Floating rate", "Your EMI can change when the bank revises its lending rate"],
     foreclosure: {
       lockInMonths: 12,
-      copy: "Not allowed in the first 12 months. After that, a fee applies until month 36, based on how much you still owe. No fee after 3 years.",
+      copy: [
+        "Not allowed in the first 12 months",
+        "After that, a fee applies until month 36, based on how much you still owe",
+        "No fee after 3 years",
+      ],
     },
     partPayment: {
-      copy: "Allowed twice a year after you've paid 12 EMIs. Each part payment is capped at 25% of the outstanding principal.",
+      copy: [
+        "Allowed twice a year after you've paid 12 EMIs",
+        "Capped at 25% of the outstanding principal",
+      ],
     },
     dataCompleteness: "full",
   },
@@ -113,13 +150,21 @@ export const BANK_LOAN_TERMS: readonly BankLoanTerms[] = [
     logoSrc: logoById.get("canara")!,
     interestRate: { value: 8.0, type: "from" },
     rateType: "Fixed",
-    rateTypeCopy: "Fixed. Your EMI stays the same for the full tenure.",
+    rateTypeCopy: ["Fixed rate", "Your EMI stays the same for the full tenure"],
     foreclosure: {
       lockInMonths: 6,
-      copy: "Not allowed in the first 6 months. After that, a fee applies until month 24, based on how much you still owe. No fee after 2 years.",
+      copy: [
+        "Not allowed in the first 6 months",
+        "After that, a fee applies until month 24, based on how much you still owe",
+        "No fee after 2 years",
+      ],
     },
     partPayment: {
-      copy: "Allowed anytime after 6 EMIs. Cap of 30% of outstanding principal per year; a small fee applies each time.",
+      copy: [
+        "Allowed anytime after 6 EMIs",
+        "Capped at 30% of outstanding principal per year",
+        "A small fee applies each time",
+      ],
     },
     dataCompleteness: "full",
   },

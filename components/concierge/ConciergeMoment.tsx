@@ -258,6 +258,8 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
 
         return {
           ...base,
+          // User already uploaded; this turn is Shivi verifying (reply only advances).
+          dateHolder: "shivi",
           ...(overrideSays ? { says: overrideSays } : {}),
           working: workingWithOverride,
           replies: primaryReply(nextHref),
@@ -292,6 +294,7 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
         const hideSkip = isCancelNoChargesFlow(flow);
         return {
           ...base,
+          dateHolder: "shivi",
           artifact: (
             <NoteCallout>
               Nothing needed from you right now. I&apos;ll message you the moment there&apos;s
@@ -315,11 +318,10 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
       case "dealerSearch": {
         return {
           ...base,
+          // Still finalising the partner — Arrives stays on track until they confirm.
+          dateHolder: "shivi",
           working,
           footnoteInline: true,
-          // Standard resolves live (any nearby dealer works, no overnight wait), so it
-          // gets a reply button instead of the express-only "Next morning" time-skip.
-          replies: primaryReply(JOURNEY_PATHS.kyc.bookingAccepted),
           timeSkip: words.timeSkipLabel
             ? { label: words.timeSkipLabel, href: JOURNEY_PATHS.kyc.bookingAccepted }
             : undefined,
@@ -335,6 +337,7 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
       case "dealerFound": {
         // cancel_with_charges parks here once the partner is locked (charged cancel demo).
         const parkForCancelCharges = isCancelWithChargesFlow(flow);
+        const isStandard = isStandardDeliveryFlow(flow);
         return {
           ...base,
           // No reply buttons here, but the date is in the user's hands — the call is the action.
@@ -343,7 +346,11 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
             <div className={styles.flex_0}>
               <NextStepCard
                 title="Confirm with a one-time code"
-                body="Our partner will call you shortly. Share the OTP with them. That's how Hyundai assigns this exact car to you."
+                body={
+                  isStandard
+                    ? "Our partner will call you shortly. Share the OTP with them. Once it's verified, Hyundai can start building your car."
+                    : "Our partner will call you shortly. Share the OTP with them. That's how Hyundai assigns this exact car to you."
+                }
               />
               <CarSummaryCardLite
                 title={car.title}
@@ -367,7 +374,7 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
             words.timeSkipLabel && !parkForCancelCharges
               ? {
                   label: words.timeSkipLabel,
-                  href: isStandardDeliveryFlow(flow)
+                  href: isStandard
                     ? JOURNEY_PATHS.carAllocation.pending
                     : JOURNEY_PATHS.kyc.bookingConfirmed,
                 }
@@ -376,26 +383,35 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
       }
 
       case "carReserved":
+      case "allocationDone": {
+        // Car assigned + money intro merged: VIN card, amount card, one CTA to options.
+        const assignedCarCard = (
+          <CarSummaryCardLite
+            title={car.title}
+            variant={car.variant}
+            colour={car.colour}
+            statusChip="Yours ✓"
+            deliveryLine={deliveryLine}
+            deliveryLineClassName={deliveryLineClass}
+            deliveryStripClassName={deliveryStripClass}
+            deliveryIconSrc={deliveryIconSrc}
+            dealerName={CAR_SOURCE_NAME}
+            dealerDetail={CAR_SOURCE_DETAIL}
+            engineNo={DEMO_VEHICLE_ENGINE_NO}
+            chassisNo={DEMO_VEHICLE_CHASSIS_NO}
+          />
+        );
         return {
           ...base,
           artifact: (
-            <CarSummaryCardLite
-              title={car.title}
-              variant={car.variant}
-              colour={car.colour}
-              statusChip="Yours ✓"
-              deliveryLine={deliveryLine}
-              deliveryLineClassName={deliveryLineClass}
-              deliveryStripClassName={deliveryStripClass}
-              deliveryIconSrc={deliveryIconSrc}
-              dealerName={CAR_SOURCE_NAME}
-              dealerDetail={CAR_SOURCE_DETAIL}
-              engineNo={DEMO_VEHICLE_ENGINE_NO}
-              chassisNo={DEMO_VEHICLE_CHASSIS_NO}
-            />
+            <div className={styles.flex_0}>
+              {assignedCarCard}
+              <PaymentSummaryCard variant="glass" />
+            </div>
           ),
-          replies: primaryReply(JOURNEY_PATHS.payment.default),
+          replies: primaryReply(JOURNEY_PATHS.payment.choose),
         };
+      }
 
       case "allocationPending":
         return {
@@ -427,29 +443,8 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
             : { label: "If no car is found", href: JOURNEY_PATHS.carAllocation.failed },
         };
 
-      case "allocationDone":
-        return {
-          ...base,
-          artifact: (
-            <CarSummaryCardLite
-              title={car.title}
-              variant={car.variant}
-              colour={car.colour}
-              statusChip="Yours ✓"
-              deliveryLine={deliveryLine}
-              deliveryLineClassName={deliveryLineClass}
-              deliveryStripClassName={deliveryStripClass}
-              deliveryIconSrc={deliveryIconSrc}
-              dealerName={CAR_SOURCE_NAME}
-              dealerDetail={CAR_SOURCE_DETAIL}
-              engineNo={DEMO_VEHICLE_ENGINE_NO}
-              chassisNo={DEMO_VEHICLE_CHASSIS_NO}
-            />
-          ),
-          replies: primaryReply(JOURNEY_PATHS.payment.default),
-        };
-
       case "moneyIntro":
+        // Legacy route — page redirects to choose; keep a safe fallback turn.
         return {
           ...base,
           artifact: <PaymentSummaryCard variant="glass" />,

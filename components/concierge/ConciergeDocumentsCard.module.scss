@@ -193,3 +193,30 @@
   gap: calc(var(--spacing) * 4);
 }
 
+/* Quick-check bullets — same tone/color as the ShimmerInfoCard text it lives in. */
+.checkList {
+  margin: calc(var(--spacing) * 2) 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing) * 2);
+}
+
+.checkList li {
+  position: relative;
+  padding-left: calc(var(--spacing) * 4);
+}
+
+.checkList li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 6px;
+  height: 4px;
+  width: 4px;
+  border-radius: 50%;
+  background-color: currentColor;
+  opacity: 0.55;
+}
+

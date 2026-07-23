@@ -1,12 +1,9 @@
 "use client";
 
-import Image, { type StaticImageData } from "next/image";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import calendarIcon from "@/assets/Calender.svg";
-import moneyIcon from "@/assets/money.svg";
-import moneyRoundIcon from "@/assets/Money round.svg";
 import {
   formatBankRate,
   type BankLoanTerms,
@@ -25,28 +22,23 @@ const SHEET_TRANSITION_MS = 280;
 
 type DetailSectionProps = {
   title: string;
-  body: string;
-  icon: StaticImageData;
+  body: readonly string[];
   showDivider?: boolean;
 };
 
-/** Row layout mirrors the menu “Receipts and documents” list. */
-function DetailSection({ title, body, icon, showDivider = false }: DetailSectionProps) {
+/** Row layout mirrors the menu “Receipts and documents” list — body is one fact per bullet, not a paragraph to parse. */
+function DetailSection({ title, body, showDivider = false }: DetailSectionProps) {
   return (
     <div className={cn(styles.sectionRow, showDivider && styles.sectionRowDivider)}>
-      <span className={styles.sectionIcon} aria-hidden>
-        <Image
-          src={icon}
-          alt=""
-          width={20}
-          height={20}
-          className={styles.sectionIconAsset}
-          unoptimized
-        />
-      </span>
       <div className={styles.sectionCopy}>
         <p className={styles.sectionTitle}>{title}</p>
-        <p className={styles.sectionBody}>{body}</p>
+        <ul className={styles.sectionList}>
+          {body.map((point) => (
+            <li key={point} className={styles.sectionBullet}>
+              {point}
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
@@ -158,6 +150,9 @@ export function BankLoanDetailBottomSheet({
                   />
                 </div>
                 <div className={styles.brandCopy}>
+                  {renderedBank.preApproved ? (
+                    <span className={styles.preApprovedChip}>Pre-approved loan available for you</span>
+                  ) : null}
                   <h2 id="bank-detail-sheet-title" className={styles.bankName}>
                     {renderedBank.name}
                   </h2>
@@ -181,21 +176,18 @@ export function BankLoanDetailBottomSheet({
                     ? {
                         title: "Interest rate",
                         body: renderedBank.rateTypeCopy,
-                        icon: moneyRoundIcon,
                       }
                     : null,
                   renderedBank.foreclosure?.copy
                     ? {
                         title: "Closing the loan early",
                         body: renderedBank.foreclosure.copy,
-                        icon: calendarIcon,
                       }
                     : null,
                   renderedBank.partPayment?.copy
                     ? {
                         title: "Paying extra during the loan",
                         body: renderedBank.partPayment.copy,
-                        icon: moneyIcon,
                       }
                     : null,
                 ] as const
@@ -205,8 +197,7 @@ export function BankLoanDetailBottomSheet({
                     section
                   ): section is {
                     title: string;
-                    body: string;
-                    icon: StaticImageData;
+                    body: readonly string[];
                   } => section != null
                 )
                 .map((section, index) => (
@@ -214,7 +205,6 @@ export function BankLoanDetailBottomSheet({
                     key={section.title}
                     title={section.title}
                     body={section.body}
-                    icon={section.icon}
                     showDivider={index > 0}
                   />
                 ))}

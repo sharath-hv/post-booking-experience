@@ -5,7 +5,8 @@ import {
 } from "@/components/kyc/booking-car-card-content";
 import type { ExperienceFlow } from "@/lib/experience-flow";
 import { isStandardDeliveryFlow } from "@/lib/experience-flow-content";
-import { getDeliveryDateFull, getDeliveryDateShort } from "@/lib/journey-stage";
+import { getDeliveryDateShort, getVehicleUpdateDateFull } from "@/lib/journey-stage";
+import { BOOKING_PAYMENT_SUMMARY_INR } from "@/lib/payment-summary-demo";
 
 /**
  * Shivi's script — every word she says on the converted journey, in one place.
@@ -153,9 +154,8 @@ const DEALER_SEARCH_FOOTNOTE =
   "From the next step, changing your pick costs ₹5,000, and if you cancel, half your booking amount stays with us.";
 
 /**
- * Standard — unlike express, every nearby dealer already knows the car is
- * headed into the manufacturing queue either way, so there's no "who can
- * deliver soonest" race and no overnight suspense. Resolves live, in-session.
+ * Standard — lining up a dealer partner is still a real-world wait (hours).
+ * Clocking state on this turn; demo skip advances to dealer found.
  */
 function standardDealerSearch(
   car: ConciergeCarRef,
@@ -168,19 +168,19 @@ function standardDealerSearch(
     says: afterSelectionChange
       ? [
           "Change locked in, Sharath.",
-          `I'm lining up a dealer partner for ${exact}. This won't take long.`,
+          `I'm lining up a dealer partner for ${exact}. I'll update you once one's confirmed.`,
         ]
       : [
           "That's the paperwork done, Sharath.",
-          `I'm lining up a dealer partner for ${exact}. This won't take long.`,
+          `I'm lining up a dealer partner for ${exact}. I'll update you once one's confirmed.`,
         ],
     workingLines: [
       "Checking nearby partners",
-      `Assigning your ${familiar} to one`,
+      `Finding the right partner for your ${familiar}`,
     ],
-    workingDoneLabel: `Partner assigned for your ${familiar}.`,
-    replyLabel: "What's next?",
-    replyEcho: "What's next?",
+    workingMode: "ongoing",
+    workingEtaLabel: "Usually a few hours. I'll message you when a partner is confirmed.",
+    timeSkipLabel: "Partner assigned",
     callLabel: "Questions? I can call you",
     footnoteLead: DEALER_SEARCH_FOOTNOTE_LEAD,
     footnote: DEALER_SEARCH_FOOTNOTE,
@@ -228,7 +228,7 @@ function dealerFoundWords(
     ? "Found a match for your new pick, Sharath."
     : "Found a match, Sharath.";
   const body = isStandard
-    ? `Your exact ${familiar} isn't in stock, so Hyundai will build a fresh one just for you. Before I ask them to start, share the one-time code when our partner calls.`
+    ? `Hyundai will build a fresh ${familiar} just for you. Share the one-time code when our partner calls. Once it's verified, Hyundai can start building.`
     : `I've reserved a fresh ${familiar} for you. Share the one-time code when our partner calls. I'll put your car's details on the card once the code is verified.`;
 
   return {
@@ -238,16 +238,36 @@ function dealerFoundWords(
   };
 }
 
+function formatAmountToPay(): string {
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 0,
+  }).format(BOOKING_PAYMENT_SUMMARY_INR.amountToPayInr);
+}
+
+/** Shared payment body after the car is assigned (OTP or build-complete). */
+function paymentHandoffBody(): string {
+  return `Engine and chassis are on the card. Next up: pay the remaining ${formatAmountToPay()}. Finance through me, or arrange it yourself.`;
+}
+
+function paymentHandoffCta(): Pick<TurnWords, "replyLabel" | "replyEcho" | "callLabel"> {
+  return {
+    replyLabel: "Show me my payment options",
+    replyEcho: "Show me my payment options",
+    callLabel: "Rather talk it through? I can call you",
+  };
+}
+
 function carReservedWords(car: ConciergeCarRef): TurnWords {
   const familiar = carFamiliarName(car.title);
 
   return {
     says: [
-      `Your code checked out, Sharath. This ${familiar} is yours.`,
-      "Its engine and chassis numbers are on the card below. Next, let's sort the payment, the last big thing between you and your delivery date.",
+      `Your code checked out, Sharath. This ${familiar} is assigned to you.`,
+      paymentHandoffBody(),
     ],
-    replyLabel: "Start the payment",
-    replyEcho: "Let's start the payment",
+    ...paymentHandoffCta(),
   };
 }
 
@@ -320,21 +340,22 @@ const EXPRESS_SCRIPT: Record<ConciergeMomentId, TurnWords> = {
   /** Standard-only in practice — the manufacturing reveal, mirrors `carReserved`'s payment hand-off. */
   allocationDone: {
     says: [
-      "Your Creta is built, Sharath.",
-      "Fresh off the line. Its engine and chassis numbers are on the card below. Next, let's sort the payment, the last big thing between you and your delivery date.",
+      "Your Creta is built, Sharath. It's assigned to you.",
+      paymentHandoffBody(),
     ],
-    replyLabel: "Start the payment",
-    replyEcho: "Let's start the payment",
+    ...paymentHandoffCta(),
   },
 
+  /**
+   * Legacy alias — `/payment/default` redirects to choose. Kept so the moment
+   * id still type-checks if anything references it.
+   */
   moneyIntro: {
     says: [
       "Let's sort out the payment, Sharath.",
-      "₹13,63,780 is left to pay on your Creta. You can finance it through me, or arrange it yourself. Whichever you prefer.",
+      `Next up: pay the remaining ${formatAmountToPay()}. Finance through me, or arrange it yourself.`,
     ],
-    replyLabel: "Show me my options",
-    replyEcho: "Show me my options",
-    callLabel: "Rather talk it through? I can call you",
+    ...paymentHandoffCta(),
   },
 };
 
@@ -344,7 +365,8 @@ function moneyIntroFootnote(flow: ExperienceFlow): string {
 }
 
 function allocationPendingEta(flow: ExperienceFlow): string {
-  return `Estimated by ${getDeliveryDateFull(flow)}`;
+  // Vehicle update lands ~2 weeks before delivery — date only, no offset explained.
+  return `Next vehicle update by ${getVehicleUpdateDateFull(flow)}`;
 }
 
 /** Words for a turn — most moments share copy; flow-specific overrides live here. */
@@ -371,7 +393,7 @@ export function getTurnWords(
   }
 
   if (moment === "carReserved") {
-    return carReservedWords(car);
+    return { ...carReservedWords(car), footnote: moneyIntroFootnote(flow) };
   }
 
   const base = EXPRESS_SCRIPT[moment];
@@ -395,21 +417,26 @@ export function getTurnWords(
   }
   if (moment === "allocationDone") {
     const familiar = carFamiliarName(car.title);
+    const footnote = moneyIntroFootnote(flow);
     if (context?.earlyAllocation) {
       return {
         ...base,
+        footnote,
         says: [
-          `Good news, Sharath. Your ${familiar} is ready earlier than we planned.`,
-          "Fresh off the line ahead of schedule. Engine and chassis are on the card below. Next, let's sort the payment so we can pull your delivery date in.",
+          `Good news, Sharath. Your ${familiar} is ready earlier than we planned. It's assigned to you.`,
+          paymentHandoffBody(),
         ],
+        ...paymentHandoffCta(),
       };
     }
     return {
       ...base,
+      footnote,
       says: [
-        `Your ${familiar} is built, Sharath.`,
-        "Fresh off the line. Its engine and chassis numbers are on the card below. Next, let's sort the payment, the last big thing between you and your delivery date.",
+        `Your ${familiar} is built, Sharath. It's assigned to you.`,
+        paymentHandoffBody(),
       ],
+      ...paymentHandoffCta(),
     };
   }
   return base;

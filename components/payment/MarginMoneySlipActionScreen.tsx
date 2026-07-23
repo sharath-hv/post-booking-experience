@@ -3,18 +3,14 @@
 import { useCallback, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { KycBookingProcessingScreen } from "@/components/kyc/KycBookingProcessingScreen";
+import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
 import { BankTransferUtrConfirmBottomSheet } from "@/components/payment/BankTransferUtrConfirmBottomSheet";
 import { MarginMoneySlipCard } from "@/components/payment/MarginMoneySlipCard";
-import { PAYMENT_CHOOSE_ASSETS } from "@/components/payment/payment-choose-assets";
-
-const HEADLINE = "Your margin money slip is ready!";
-
-const SUBLINE =
-  "The dealer has confirmed your down payment. Share this slip with your bank and they will release the loan amount directly to the dealer.";
+import { PARTNER_DEALER_LABEL } from "@/lib/dealer-attribution-content";
 
 /**
- * Self finance — after full down payment; user downloads margin money slip for the bank.
+ * Self finance — dealer down-payment confirm takes 2-3 hours (ongoing wait).
+ * Demo skip reveals the margin money slip; then the user can confirm the bank transfer.
  */
 export function MarginMoneySlipActionScreen() {
   const router = useRouter();
@@ -24,44 +20,80 @@ export function MarginMoneySlipActionScreen() {
   const originalDownPayment = searchParams.get("original_down_payment");
 
   const [bankTransferSheetOpen, setBankTransferSheetOpen] = useState(false);
+  const [dealerConfirmed, setDealerConfirmed] = useState(false);
 
-  const { nextHref, prefetchHref } = useMemo(() => {
+  const transferVerificationHref = useMemo(() => {
     const q = new URLSearchParams();
     if (bank) q.set("bank", bank);
     if (loanAmount) q.set("loan_amount", loanAmount);
     if (originalDownPayment) q.set("original_down_payment", originalDownPayment);
     const qs = q.toString();
-    const base = qs
+    return qs
       ? `/payment/self-finance-transfer-verification?${qs}`
       : "/payment/self-finance-transfer-verification";
-    return { nextHref: base, prefetchHref: base };
   }, [bank, loanAmount, originalDownPayment]);
 
   const onBankTransferConfirm = useCallback(() => {
     setBankTransferSheetOpen(false);
-    const q = new URLSearchParams();
-    if (loanAmount) q.set("loan_amount", loanAmount);
-    const qs = q.toString();
-    const href = qs
-      ? `/payment/self-finance-transfer-verification?${qs}`
-      : "/payment/self-finance-transfer-verification";
-    router.push(href);
-  }, [router, loanAmount]);
+    router.push(transferVerificationHref);
+  }, [router, transferVerificationHref]);
 
-  const heroSummaryCard = useMemo(() => <MarginMoneySlipCard />, []);
+  const says = useMemo(
+    () =>
+      dealerConfirmed
+        ? [
+            "Your margin money slip is ready, Sharath.",
+            `The dealer has confirmed your down payment. Share this slip with your bank and they will release the loan amount directly to ${PARTNER_DEALER_LABEL}.`,
+          ]
+        : [
+            "I'm checking with the dealer on your down payment, Sharath.",
+            `Confirming with ${PARTNER_DEALER_LABEL} usually takes 2-3 hours. I'll hand you the margin money slip the moment they confirm.`,
+          ],
+    [dealerConfirmed],
+  );
 
   return (
     <>
-      <KycBookingProcessingScreen
-        headline={HEADLINE}
-        subline={SUBLINE}
-        heroIllustrationSrc={PAYMENT_CHOOSE_ASSETS.documentsReceived}
-        heroSummaryCard={heroSummaryCard}
-        nextHref={nextHref}
-        prefetchHref={prefetchHref}
-        nextCtaLabel="Bank has transferred the amount"
-        onPrimaryCtaClick={() => setBankTransferSheetOpen(true)}
-        manageBookingShowVehicleIdentification
+      <ConciergeTurnShell
+        key={dealerConfirmed ? "slip-ready" : "dealer-check"}
+        says={says}
+        workingBeforeArtifact
+        working={
+          dealerConfirmed
+            ? undefined
+            : {
+                mode: "ongoing",
+                lines: [
+                  "Checking with our dealer partner",
+                  "Confirming they've received your down payment",
+                ],
+                etaLabel: "Usually 2-3 hours. I'll message you when it's confirmed.",
+              }
+        }
+        artifact={dealerConfirmed ? <MarginMoneySlipCard /> : null}
+        replies={
+          dealerConfirmed
+            ? [
+                {
+                  label: "Bank has transferred the amount",
+                  onClick: () => setBankTransferSheetOpen(true),
+                  echo: null,
+                },
+              ]
+            : undefined
+        }
+        timeSkip={
+          dealerConfirmed
+            ? undefined
+            : {
+                label: "Dealer confirmed down payment",
+                onSelect: () => setDealerConfirmed(true),
+              }
+        }
+        dateHolder={dealerConfirmed ? "you" : "shivi"}
+        callLabel="Questions? I can call you"
+        showMenu
+        manageShowVehicleIdentification
       />
       <BankTransferUtrConfirmBottomSheet
         open={bankTransferSheetOpen}

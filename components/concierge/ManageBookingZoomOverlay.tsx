@@ -14,6 +14,7 @@ import { BottomSheetPortal } from "@/components/ui/BottomSheetPortal";
 import { readExperienceFlow, type ExperienceFlow } from "@/lib/experience-flow";
 import {
   downloadJourneyReceipt,
+  getBookingStatusChipLabel,
   getDeliveryDateFull,
   getJourneyReceipts,
   getJourneyStageSteps,
@@ -166,9 +167,7 @@ export function ManageBookingZoomOverlay({
                       : styles.bg_e7f6ee__25
                   )}
                 >
-                  {dateHolder === "you"
-                    ? `Waiting on you — ${nowStep?.title.toLowerCase() ?? "this step"}`
-                    : "On track"}
+                  {getBookingStatusChipLabel(dateHolder, nowStep?.title)}
                 </span>
               </div>
 

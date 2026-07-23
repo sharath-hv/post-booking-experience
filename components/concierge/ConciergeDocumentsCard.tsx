@@ -64,13 +64,29 @@ type DocumentRowProps = {
   hint: string;
   files: { id: string; name: string }[];
   allowMultiple?: boolean;
+  /** Label for the secondary add action after at least one file is present. */
+  addAnotherLabel?: string;
+  /** Hide the add action once this many files are present. */
+  maxFiles?: number;
   uploadLabel?: string;
   onUpload: () => void;
   onRemove: (fileId: string) => void;
 };
 
-function DocumentRow({ title, hint, files, allowMultiple, uploadLabel = "Upload", onUpload, onRemove }: DocumentRowProps) {
+function DocumentRow({
+  title,
+  hint,
+  files,
+  allowMultiple,
+  addAnotherLabel = "+ Add another photo",
+  maxFiles,
+  uploadLabel = "Upload",
+  onUpload,
+  onRemove,
+}: DocumentRowProps) {
   const hasFiles = files.length > 0;
+  const canAddAnother =
+    allowMultiple && (maxFiles == null || files.length < maxFiles);
   return (
     <div className={styles.px_4_6}>
       <div className={styles.flex_7}>
@@ -95,13 +111,13 @@ function DocumentRow({ title, hint, files, allowMultiple, uploadLabel = "Upload"
           {files.map((file) => (
             <FileChip key={file.id} name={file.name} onRemove={() => onRemove(file.id)} />
           ))}
-          {allowMultiple ? (
+          {canAddAnother ? (
             <button
               type="button"
               onClick={onUpload}
               className={styles.self_start_14}
             >
-              + Add another photo
+              {addAnotherLabel}
             </button>
           ) : null}
         </div>
@@ -162,8 +178,14 @@ export function ConciergeDocumentsCard({
           {/* Pre-action caveat — only for the initial upload (both docs, no prior context).
               Re-upload turns already have Shivi's explanation above, so suppress it. */}
           {onlyDocs == null ? (
-            <ShimmerInfoCard icon="info" lead="Quick check:">
-              the name should match on both documents, and the Aadhaar address should be in Bengaluru, where your car gets registered.
+            <ShimmerInfoCard icon="none" lead="Quick check:">
+              <ul className={styles.checkList}>
+                <li>
+                  Name should match on Aadhaar and PAN. I&apos;ll register the car, and the loan
+                  if you take one, against this name.
+                </li>
+                <li>Aadhaar address should show Bengaluru, since that&apos;s where the car gets registered.</li>
+              </ul>
             </ShimmerInfoCard>
           ) : null}
 
@@ -176,9 +198,11 @@ export function ConciergeDocumentsCard({
             {showAadhaar ? (
               <DocumentRow
                 title="Aadhaar card"
-                hint="Front and back, clear photos"
+                hint="One photo with both sides, or separate front and back"
                 files={uploads.aadhaar}
                 allowMultiple
+                addAnotherLabel="+ Add Aadhaar back"
+                maxFiles={2}
                 uploadLabel={onlyDocs != null ? "Re-upload" : "Upload"}
                 onUpload={() => openSourceSheet("aadhaar")}
                 onRemove={(fileId) => handleRemove("aadhaar", fileId)}

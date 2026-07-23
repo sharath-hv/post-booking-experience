@@ -28,6 +28,7 @@ export const JOURNEY_PATHS = {
   payment: {
     /** Arrival after price-lock — before KYC / dealer (not the money chapter). */
     bookingSuccess: "/payment/booking-success",
+    /** Legacy URL — client-redirects to `choose` (money intro merged into car-assigned). */
     default: "/payment/default",
     choose: "/payment/choose",
     payDownPayment: "/payment/pay-down-payment",

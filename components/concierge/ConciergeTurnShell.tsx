@@ -62,11 +62,19 @@ export type ConciergeTurn = {
     etaLabel?: string;
     /** Ongoing mode — lines before this index render done. */
     doneCount?: number;
+    /** Fires once when live working finishes (after the footer unlocks). */
+    onAllDone?: () => void;
   };
   /** Your reply affordances (fixed footer). */
   replies?: readonly ConciergeReply[];
   /** Demo time travel to the next turn (fixed footer, below replies). */
-  timeSkip?: { label: string; href: string; onBeforeNavigate?: () => void };
+  timeSkip?: {
+    label: string;
+    href?: string;
+    /** Same-page advance when the next beat stays on this turn. */
+    onSelect?: () => void;
+    onBeforeNavigate?: () => void;
+  };
   /**
    * Alternate demo branch(es) under the time skip — e.g. failure or
    * “bank needs more docs”. Pass one object or a list.
@@ -152,6 +160,14 @@ function useManageLayer() {
   return { open, setOpen, mounted, shown };
 }
 
+/** Amber = waiting on you; green = on track. Same rule as the manage-layer chip. */
+function resolveTurnDateHolder(
+  dateHolder: "you" | "shivi" | undefined,
+  replies: readonly unknown[] | undefined,
+): "you" | "shivi" {
+  return dateHolder ?? (replies?.length ? "you" : "shivi");
+}
+
 /**
  * The living delivery date — always visible, always honest about who holds it:
  * amber dot when the turn waits on the user, green when Shivi's working.
@@ -172,13 +188,13 @@ function DeliveryDatePill({
 
   if (!date) return null;
 
+  const statusPhrase = holder === "you" ? "Waiting on you" : "On track";
+
   return (
     <button
       type="button"
       onClick={onClick}
-      aria-label={`Car arrives ${date} — ${
-        holder === "you" ? "waiting on you" : "on track"
-      }. View purchase status.`}
+      aria-label={`Car arrives ${date}. ${statusPhrase}. View purchase status.`}
       className={[styles.concierge_echo_in_0, "concierge-echo-in"].filter(Boolean).join(" ")}
     >
       <span aria-hidden className={styles.relative_1}>
@@ -356,6 +372,8 @@ export function ConciergeTurnShell({
     replies?.length || timeSkip || altTimeSkips.length || footnote || callLabel || footerExtra,
   );
 
+  const turnDateHolder = resolveTurnDateHolder(dateHolder, replies);
+
   /** Room for the fixed footer — taller when footnote + CTA + call link stack. */
   const mainBottomPad = !hasFooter
     ? styles.pb_16_7
@@ -372,7 +390,7 @@ export function ConciergeTurnShell({
         <div className={styles.pointer_events_none_9}>
           <div className={styles.mx_auto_10}>
             <DeliveryDatePill
-              holder={dateHolder ?? (replies?.length ? "you" : "shivi")}
+              holder={turnDateHolder}
               onClick={() => manage.setOpen(true)}
             />
             <MenuButton open={manage.open} onClick={() => manage.setOpen((v) => !v)} />
@@ -450,7 +468,10 @@ export function ConciergeTurnShell({
                     etaLabel={working.etaLabel}
                     ongoingDoneCount={working.doneCount}
                     startWhen={contentShown}
-                    onAllDone={() => setReady(true)}
+                    onAllDone={() => {
+                      setReady(true);
+                      working.onAllDone?.();
+                    }}
                   />
                 ) : null}
                 {footnote && footnoteInline && ready ? (
@@ -527,6 +548,7 @@ export function ConciergeTurnShell({
               <TimeSkipChip
                 label={timeSkip.label}
                 href={timeSkip.href}
+                onSelect={timeSkip.onSelect}
                 onBeforeNavigate={timeSkip.onBeforeNavigate}
                 className={replies?.length || callLabel ? styles.mt_4_10 : undefined}
               />
@@ -549,7 +571,7 @@ export function ConciergeTurnShell({
           shown={manage.shown}
           onClose={() => manage.setOpen(false)}
           showVehicleIdentification={manageShowVehicleIdentification}
-          dateHolder={dateHolder ?? (replies?.length ? "you" : "shivi")}
+          dateHolder={turnDateHolder}
         />
       ) : null}
       {callLabel ? (
