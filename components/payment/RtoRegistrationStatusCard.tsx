@@ -10,8 +10,6 @@ const RTO_REGISTRATION_INFO_COPY =
  */
 export function RtoRegistrationStatusCard() {
   return (
-    <ShimmerInfoCard icon="info">
-      {RTO_REGISTRATION_INFO_COPY}
-    </ShimmerInfoCard>
+    <ShimmerInfoCard>{RTO_REGISTRATION_INFO_COPY}</ShimmerInfoCard>
   );
 }

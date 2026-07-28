@@ -1,15 +1,13 @@
 "use client";
 
-import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 
 import {
-  INSURANCE_TENURE_COMPARE_BENEFITS,
-  INSURANCE_TENURE_COMPARE_ROWS,
   INSURANCE_TENURE_COMPARE_SHEET_TITLE,
-  INSURANCE_TENURE_COMPARE_WHAT_YOU_GET,
-  type InsuranceCoverageItem,
+  insuranceTenureCompareRowsForSelection,
+  type InsuranceAddonId,
+  type InsuranceTenureCompareRow,
 } from "@/components/payment/insurance-coverage-content";
 import { BottomSheetCloseIcon } from "@/components/ui/BottomSheetCloseIcon";
 import { BottomSheetPortal } from "@/components/ui/BottomSheetPortal";
@@ -36,28 +34,7 @@ function CompareYearCell({ years }: { years: number }) {
   );
 }
 
-function CompareBenefitRow({ iconSrc, title, description }: InsuranceCoverageItem) {
-  return (
-    <li className={styles.coverageRow}>
-      <span className={styles.coverageIcon} aria-hidden>
-        <Image
-          src={iconSrc}
-          alt=""
-          width={48}
-          height={48}
-          className={styles.coverageIconAsset}
-          unoptimized
-        />
-      </span>
-      <div className={styles.coverageCopy}>
-        <p className={styles.coverageTitle}>{title}</p>
-        <p className={styles.coverageDetail}>{description}</p>
-      </div>
-    </li>
-  );
-}
-
-function CompareTable() {
+function CompareTable({ rows }: { rows: readonly InsuranceTenureCompareRow[] }) {
   return (
     <div className={styles.overflow_hidden_10}>
       {/* Use relative positioning so the Extended column gradient can be an absolute overlay */}
@@ -91,8 +68,8 @@ function CompareTable() {
           </p>
         </div>
 
-        {/* Data rows */}
-        {INSURANCE_TENURE_COMPARE_ROWS.map((row) => (
+        {/* Data rows — base Shield + selected add-ons */}
+        {rows.map((row) => (
           <Fragment key={row.id}>
             <div className={styles.flex_18}>
               {row.lines.map((line) => (
@@ -115,6 +92,8 @@ function CompareTable() {
 export type InsuranceTenureCompareBottomSheetProps = {
   open: boolean;
   onClose: () => void;
+  /** Optional add-ons on this quote — appended as compare-table rows. */
+  selectedAddonIds?: readonly InsuranceAddonId[];
 };
 
 /**
@@ -124,10 +103,12 @@ export type InsuranceTenureCompareBottomSheetProps = {
 export function InsuranceTenureCompareBottomSheet({
   open,
   onClose,
+  selectedAddonIds = [],
 }: InsuranceTenureCompareBottomSheetProps) {
   const [mounted, setMounted] = useState(false);
   const [animateIn, setAnimateIn] = useState(false);
   const exitTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const compareRows = insuranceTenureCompareRowsForSelection(selectedAddonIds);
 
   useEffect(() => {
     if (!open) return;
@@ -216,18 +197,7 @@ export function InsuranceTenureCompareBottomSheet({
               className={cn(styles.min_h_0_3, BOTTOM_SHEET_BODY_BEFORE_CTA_CLASS)}
             >
               <div className={styles.flex_27}>
-                <CompareTable />
-
-                <div className={styles.benefitsSection}>
-                  <p className={styles.benefitsHeading}>
-                    {INSURANCE_TENURE_COMPARE_WHAT_YOU_GET}
-                  </p>
-                  <ul className={styles.coverageList}>
-                    {INSURANCE_TENURE_COMPARE_BENEFITS.map((item) => (
-                      <CompareBenefitRow key={item.title} {...item} />
-                    ))}
-                  </ul>
-                </div>
+                <CompareTable rows={compareRows} />
               </div>
             </div>
 

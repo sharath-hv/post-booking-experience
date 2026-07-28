@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { Fragment, useEffect, useRef, useState, type ReactNode } from "react";
 
-import shiviAvatar from "@/assets/Shivi small.png";
+import shiviAvatar from "@/assets/Shivi image.png";
 import { WordByWordLine } from "@/components/payment/WordByWordLine";
 import { instantRevealEnabled } from "@/lib/concierge/instant";
 import { cn } from "@/lib/utils";

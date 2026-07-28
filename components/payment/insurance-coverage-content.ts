@@ -121,10 +121,9 @@ export const INSURANCE_TENURE_OPTIONS: readonly InsuranceTenureOption[] = [
 ] as const;
 
 /** Text link below tenure cards — opens the standard vs extended compare sheet. */
-export const INSURANCE_TENURE_DIFFERENCE_CTA = "Not sure yet? compare now";
+export const INSURANCE_TENURE_DIFFERENCE_CTA = "Not sure yet? Compare now";
 
-export const INSURANCE_TENURE_SCREEN_TITLE =
-  "One last choice before you pay: how long do you want this locked in?";
+export const INSURANCE_TENURE_SCREEN_TITLE = "How long do you want this locked in?";
 
 export const INSURANCE_TENURE_OPTIONS_HEADING = "Choose tenure";
 
@@ -139,8 +138,6 @@ export function insuranceTenureScreenSubline(addonCount: number): string {
 /** Compare sheet — [Figma 322:5666](https://www.figma.com/design/FEPATa8H2Eflz7FZm5LKuL/3-3-insurance-upsell?node-id=322-5666). */
 export const INSURANCE_TENURE_COMPARE_SHEET_TITLE = "Compare Standard and Extended cover";
 
-export const INSURANCE_TENURE_COMPARE_WHAT_YOU_GET = "What you'll get";
-
 export type InsuranceTenureCompareRow = {
   id: string;
   lines: readonly string[];
@@ -148,6 +145,7 @@ export type InsuranceTenureCompareRow = {
   extendedYears: number;
 };
 
+/** Base Shield rows — always shown in the tenure compare table. */
 export const INSURANCE_TENURE_COMPARE_ROWS: readonly InsuranceTenureCompareRow[] = [
   {
     id: "tp",
@@ -178,32 +176,6 @@ export const INSURANCE_TENURE_COMPARE_ROWS: readonly InsuranceTenureCompareRow[]
     lines: ["15 lakh personal accident cover"],
     standardYears: 1,
     extendedYears: 3,
-  },
-] as const;
-
-/** Benefit rows below the compare table — Figma copy order. */
-export const INSURANCE_TENURE_COMPARE_BENEFITS: readonly InsuranceCoverageItem[] = [
-  {
-    iconSrc: zdCoverIcon,
-    title: "Zero depreciation Own Damage (Bumper to bumper) Cover",
-    description:
-      "Covers theft and damage caused to your car by accidents, natural calamities and fire. It also pays 100% of the cost of replaced parts during a claim.",
-  },
-  {
-    iconSrc: tpCoverIcon,
-    title: "Third Party Cover",
-    description: "Covers damage caused by your car to others and their property.",
-  },
-  {
-    iconSrc: extraCarProtectIcon,
-    title: "Extra car protection",
-    description:
-      "Provides 24x7 car breakdown assistance. Covers the cost of key repair/replacement up to ₹7,000. It also pays accommodation expenses up to ₹6,500 during outstation repairs.",
-  },
-  {
-    iconSrc: personalAccidentIcon,
-    title: "15 lakh personal accident cover",
-    description: "Pays up to ₹15 lakh for accidental death or injury of the car owner.",
   },
 ] as const;
 
@@ -371,9 +343,9 @@ export const INSURANCE_INCLUDED_ADDONS = INSURANCE_OPTIONAL_ADDONS.map(({ title,
   detail,
 }));
 
-export const INSURANCE_ADDONS_SECTION_HEADING = "Want more protection?";
+export const INSURANCE_ADDONS_SECTION_HEADING = "Want to add more protection?";
 export const INSURANCE_ADDONS_SECTION_SUBLINE =
-  "These are optional. Tap Add — your premium updates instantly.";
+  "All optional — skip anything you don't need. Tap Add and your premium updates instantly.";
 
 /** Section label / a11y name for the optional add-on list. */
 export const INSURANCE_ADDONS_AVAILABLE_HEADING = "Optional add-ons";
@@ -402,6 +374,25 @@ export function serializeInsuranceAddonIds(ids: readonly InsuranceAddonId[]): st
   return INSURANCE_OPTIONAL_ADDONS.map((a) => a.id)
     .filter((id) => seen.has(id))
     .join(",");
+}
+
+/**
+ * Compare-table rows for the current quote: base Shield + any selected add-ons.
+ * Add-ons follow OD tenure (1 year standard / 3 year extended).
+ */
+export function insuranceTenureCompareRowsForSelection(
+  addonIds: readonly InsuranceAddonId[] = [],
+): InsuranceTenureCompareRow[] {
+  const selected = new Set(addonIds);
+  const addonRows = INSURANCE_OPTIONAL_ADDONS.filter((addon) => selected.has(addon.id)).map(
+    (addon): InsuranceTenureCompareRow => ({
+      id: addon.id,
+      lines: [addon.title],
+      standardYears: 1,
+      extendedYears: 3,
+    }),
+  );
+  return [...INSURANCE_TENURE_COMPARE_ROWS, ...addonRows];
 }
 
 export function insuranceBasePremiumInr(tenure: InsuranceTenureId): number {
@@ -492,6 +483,3 @@ export const INSURANCE_POLICY_FACTS: readonly InsurancePolicyFact[] = [
   { label: "Zero depreciation", value: "1 year" },
   { label: "Third-party cover", value: "3 years" },
 ] as const;
-
-export const INSURANCE_CLAIMS_LINE =
-  "If anything ever happens: open the app, add photos, and I take the claim from there — garage, approvals, updates, all tracked here.";

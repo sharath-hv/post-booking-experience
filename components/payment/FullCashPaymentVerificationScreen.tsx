@@ -60,8 +60,8 @@ export function FullCashPaymentVerificationScreen() {
             status="processing"
             rows={[{ label: "Sent to", value: PARTNER_DEALER_LABEL_CAPITALIZED }]}
           />
-          <ShimmerInfoCard icon="info">
-            <strong>One thing still ahead:</strong>{` your ${formatInr(FULL_PAYMENT_INSURANCE_INR)} insurance. The RTO won't register your car without a live policy, and I'll ask you at exactly the right moment.`}
+          <ShimmerInfoCard lead="One thing still ahead">
+            {`Your ${formatInr(FULL_PAYMENT_INSURANCE_INR)} insurance. The RTO won't register your car without a live policy, and I'll ask you at exactly the right moment.`}
           </ShimmerInfoCard>
         </div>
       }

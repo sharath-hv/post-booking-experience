@@ -481,9 +481,7 @@ export function ConciergeTurnShell({
                 {footnote && footnoteInline && ready ? (
                   <div className={[styles.kyc_stagger_16, "kyc-stagger"].filter(Boolean).join(" ")}>
                     {typeof footnote === "string" ? (
-                      <ShimmerInfoCard icon="info" lead={footnoteLead}>
-                        {footnote}
-                      </ShimmerInfoCard>
+                      <ShimmerInfoCard lead={footnoteLead}>{footnote}</ShimmerInfoCard>
                     ) : (
                       footnote
                     )}
@@ -521,9 +519,7 @@ export function ConciergeTurnShell({
             {footnote && !footnoteInline ? (
               <div className={styles.mb_3_18}>
                 {typeof footnote === "string" ? (
-                  <ShimmerInfoCard icon="info" lead={footnoteLead}>
-                    {footnote}
-                  </ShimmerInfoCard>
+                  <ShimmerInfoCard lead={footnoteLead}>{footnote}</ShimmerInfoCard>
                 ) : (
                   footnote
                 )}

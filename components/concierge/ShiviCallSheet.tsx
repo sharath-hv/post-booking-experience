@@ -4,7 +4,7 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { useEffect, useRef, useState } from "react";
 
-import shiviAvatar from "@/assets/Shivi small.png";
+import shiviAvatar from "@/assets/Shivi image.png";
 import { BOTTOM_SHEET_OVERLAY_Z_CLASS } from "@/components/ui/bottom-sheet-layout";
 import { BottomSheetPortal } from "@/components/ui/BottomSheetPortal";
 import styles from "./ShiviCallSheet.module.scss";

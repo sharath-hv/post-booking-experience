@@ -5,7 +5,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import {
   INSURANCE_ADDONS_SECTION_HEADING,
-  INSURANCE_CLAIMS_LINE,
   INSURANCE_COVERAGE_ITEMS,
   INSURANCE_COVERAGE_SHEET_TITLE,
   INSURANCE_COVER_HERO,
@@ -229,7 +228,12 @@ export function InsuranceCoverageBottomSheet({
                   </div>
                 ) : null}
 
-                {owned ? <ShimmerInfoCard icon="info">{INSURANCE_CLAIMS_LINE}</ShimmerInfoCard> : null}
+                {owned ? (
+                  <ShimmerInfoCard lead="If anything ever happens">
+                    Open the app, add photos, and I take the claim from there — garage, approvals,
+                    updates, all tracked here.
+                  </ShimmerInfoCard>
+                ) : null}
               </div>
             </div>
 

@@ -27,7 +27,7 @@ export function SelfFinanceActionScreen() {
     () => (
       <div className={styles.flex_0}>
         <ProformaInvoiceCard />
-        <ShimmerInfoCard icon="info">{CTA_WARNING_LINE}</ShimmerInfoCard>
+        <ShimmerInfoCard>{CTA_WARNING_LINE}</ShimmerInfoCard>
       </div>
     ),
     [],

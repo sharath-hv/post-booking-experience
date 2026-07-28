@@ -10,11 +10,11 @@ import { buildInsuranceAddonsHref } from "@/lib/paymentUrls";
 
 const HEADLINE = "Your car's nearly ready. One last payment.";
 const SUBLINE =
-  "The RTO won't register a car without an active policy, so insurance is the final gate before delivery. Start with ACKO Drive Shield, add protection if you want, then choose how long to lock it in.";
+  "The RTO won't register a car without an active policy, so this is the last step before delivery. Here's your ACKO Drive Shield quote.";
 
 /**
  * Step 1 of insurance — Shivi's intro + base ACKO Drive Shield quote.
- * CTA proceeds to the standalone add-on selection page, then tenure.
+ * CTA reads "Continue" (add-ons are optional, pitched on the next page).
  */
 export function PayInsurancePremiumScreen() {
   const searchParams = useSearchParams();
@@ -35,8 +35,7 @@ export function PayInsurancePremiumScreen() {
       heroIllustrationSrc={KYC_ASSETS.insurancePremiumHero}
       nextHref={nextHref}
       prefetchHref={nextHref}
-      nextCtaLabel="Add more protection"
-      replyEcho="Let's add more protection"
+      nextCtaLabel="Continue"
       heroSummaryCard={<ShieldPolicyCard mode="quote" />}
       callLabel="Coverage questions? I can call you"
       manageBookingShowVehicleIdentification
