@@ -269,6 +269,51 @@
   color: var(--quote-text-tertiary);
 }
 
+.addonsBlock {
+  border-radius: 14px;
+  border: 1px solid #efe9fb;
+  background-color: #f9f6ff;
+  padding: 14px 16px;
+}
+
+.addonsHeading {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #5920c5;
+}
+
+.addonsList {
+  display: flex;
+  list-style: none;
+  flex-direction: column;
+  gap: 12px;
+  margin: 12px 0 0;
+  padding: 0;
+}
+
+.addonRow {
+  margin: 0;
+}
+
+.addonTitle {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  color: #121212;
+}
+
+.addonDetail {
+  margin: 2px 0 0;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--quote-text-tertiary);
+}
+
 .footer {
   position: relative;
   flex-shrink: 0;

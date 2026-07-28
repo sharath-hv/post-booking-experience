@@ -8,6 +8,8 @@ import { BankTransferUtrConfirmBottomSheet } from "@/components/payment/BankTran
 import { MarginMoneySlipCard } from "@/components/payment/MarginMoneySlipCard";
 import { PARTNER_DEALER_LABEL } from "@/lib/dealer-attribution-content";
 
+const SLIP_READY_QUERY = "slip_ready";
+
 /**
  * Self finance — dealer down-payment confirm takes 2-3 hours (ongoing wait).
  * Demo skip reveals the margin money slip; then the user can confirm the bank transfer.
@@ -18,9 +20,22 @@ export function MarginMoneySlipActionScreen() {
   const bank = searchParams.get("bank");
   const loanAmount = searchParams.get("loan_amount");
   const originalDownPayment = searchParams.get("original_down_payment");
+  const dealerConfirmed = searchParams.get(SLIP_READY_QUERY) === "1";
 
   const [bankTransferSheetOpen, setBankTransferSheetOpen] = useState(false);
-  const [dealerConfirmed, setDealerConfirmed] = useState(false);
+
+  const marginMoneyHref = useCallback(
+    (slipReady: boolean) => {
+      const q = new URLSearchParams();
+      if (bank) q.set("bank", bank);
+      if (loanAmount) q.set("loan_amount", loanAmount);
+      if (originalDownPayment) q.set("original_down_payment", originalDownPayment);
+      if (slipReady) q.set(SLIP_READY_QUERY, "1");
+      const qs = q.toString();
+      return qs ? `/payment/margin-money-slip?${qs}` : "/payment/margin-money-slip";
+    },
+    [bank, loanAmount, originalDownPayment],
+  );
 
   const transferVerificationHref = useMemo(() => {
     const q = new URLSearchParams();
@@ -33,10 +48,34 @@ export function MarginMoneySlipActionScreen() {
       : "/payment/self-finance-transfer-verification";
   }, [bank, loanAmount, originalDownPayment]);
 
+  const loanConfirmedHref = useMemo(() => {
+    const q = new URLSearchParams();
+    if (loanAmount) q.set("loan_amount", loanAmount);
+    const qs = q.toString();
+    return qs
+      ? `/payment/self-finance-loan-confirmed?${qs}`
+      : "/payment/self-finance-loan-confirmed";
+  }, [loanAmount]);
+
   const onBankTransferConfirm = useCallback(() => {
     setBankTransferSheetOpen(false);
     router.push(transferVerificationHref);
   }, [router, transferVerificationHref]);
+
+  const markSlipReady = useCallback(() => {
+    // Replace so history keeps one margin-money entry (slip-ready), and browser
+    // back from transfer-verification restores this beat instead of the wait.
+    router.replace(marginMoneyHref(true));
+  }, [marginMoneyHref, router]);
+
+  const onBack = useCallback(() => {
+    // Same-URL two-beat turn — don't skip the checking state via history.
+    if (dealerConfirmed) {
+      router.replace(marginMoneyHref(false));
+      return;
+    }
+    router.replace(loanConfirmedHref);
+  }, [dealerConfirmed, loanConfirmedHref, marginMoneyHref, router]);
 
   const says = useMemo(
     () =>
@@ -64,8 +103,8 @@ export function MarginMoneySlipActionScreen() {
             : {
                 mode: "ongoing",
                 lines: [
-                  "Checking with our dealer partner",
-                  "Confirming they've received your down payment",
+                  "Reaching out to our dealer partner",
+                  "Verifying they've received your payment",
                 ],
                 etaLabel: "Usually 2-3 hours. I'll message you when it's confirmed.",
               }
@@ -87,10 +126,11 @@ export function MarginMoneySlipActionScreen() {
             ? undefined
             : {
                 label: "Dealer confirmed down payment",
-                onSelect: () => setDealerConfirmed(true),
+                onSelect: markSlipReady,
               }
         }
         dateHolder={dealerConfirmed ? "you" : "shivi"}
+        onBack={onBack}
         callLabel="Questions? I can call you"
         showMenu
         manageShowVehicleIdentification

@@ -42,17 +42,26 @@ export const INSURANCE_COVERAGE_ITEMS: readonly InsuranceCoverageItem[] = [
 ] as const;
 
 /* ------------------------------------------------------------------------ */
-/* Premium                                                                    */
+/* Premium — base Shield + optional add-ons                                   */
 /* ------------------------------------------------------------------------ */
 
+/** ACKO Drive Shield base (core covers only) — standard 1+3. */
+export const INSURANCE_BASE_PREMIUM_INR = 28_000;
+/** ACKO Drive Shield base — extended 3+3. */
+export const INSURANCE_EXTENDED_BASE_PREMIUM_INR = 40_000;
+
+/**
+ * Recommended full package (base + all optional add-ons) — 1+3.
+ * Kept as the journey “typical” insurance amount in price-identity copy.
+ */
 export const INSURANCE_PREMIUM_INR = 37_000;
-/** Compare-at premium shown struck through beside the payable amount. */
+/** Compare-at premium shown struck through beside the full-package amount. */
 export const INSURANCE_COMPARE_AT_PREMIUM_INR = 60_000;
 
 export const INSURANCE_EXTENDED_PREMIUM_INR = 52_000;
 /**
  * Extended compare-at — same market discount ratio as standard 1+3
- * (₹37,000 vs ₹60,000), applied to the 3+3 premium.
+ * (₹37,000 vs ₹60,000), applied to the 3+3 full package.
  */
 export const INSURANCE_EXTENDED_COMPARE_AT_INR = Math.round(
   (INSURANCE_EXTENDED_PREMIUM_INR * INSURANCE_COMPARE_AT_PREMIUM_INR) / INSURANCE_PREMIUM_INR,
@@ -72,7 +81,9 @@ export type InsuranceTenureOption = {
   illustrationSrc: StaticImageData;
   ownDamageYears: number;
   thirdPartyYears: number;
+  /** Base Shield premium for this tenure (before optional add-ons). */
   premiumInr: number;
+  /** Compare-at for the recommended full package on this tenure. */
   compareAtInr: number;
   badge: string;
   /** Shivi-voice product copy below the card title — matches payment option cards. */
@@ -85,11 +96,11 @@ export type InsuranceTenureOption = {
 export const INSURANCE_TENURE_OPTIONS: readonly InsuranceTenureOption[] = [
   {
     id: "1+3",
-    label: "1 + 3 Years",
+    label: "Standard cover",
     illustrationSrc: insuranceTenure13Icon,
     ownDamageYears: 1,
     thirdPartyYears: 3,
-    premiumInr: INSURANCE_PREMIUM_INR,
+    premiumInr: INSURANCE_BASE_PREMIUM_INR,
     compareAtInr: INSURANCE_COMPARE_AT_PREMIUM_INR,
     badge: "Standard",
     blurb:
@@ -97,11 +108,11 @@ export const INSURANCE_TENURE_OPTIONS: readonly InsuranceTenureOption[] = [
   },
   {
     id: "3+3",
-    label: "3 + 3 Years",
+    label: "Extended cover",
     illustrationSrc: insuranceTenure33Icon,
     ownDamageYears: 3,
     thirdPartyYears: 3,
-    premiumInr: INSURANCE_EXTENDED_PREMIUM_INR,
+    premiumInr: INSURANCE_EXTENDED_BASE_PREMIUM_INR,
     compareAtInr: INSURANCE_EXTENDED_COMPARE_AT_INR,
     badge: "Extended",
     blurb:
@@ -111,6 +122,19 @@ export const INSURANCE_TENURE_OPTIONS: readonly InsuranceTenureOption[] = [
 
 /** Text link below tenure cards — opens the standard vs extended compare sheet. */
 export const INSURANCE_TENURE_DIFFERENCE_CTA = "Not sure yet? compare now";
+
+export const INSURANCE_TENURE_SCREEN_TITLE =
+  "One last choice before you pay: how long do you want this locked in?";
+
+export const INSURANCE_TENURE_OPTIONS_HEADING = "Choose tenure";
+
+export function insuranceTenureScreenSubline(addonCount: number): string {
+  const addonNote =
+    addonCount > 0
+      ? `Your premium includes the ${addonCount} add-on${addonCount === 1 ? "" : "s"} you picked.`
+      : "This is base ACKO Drive Shield — you can go back to add protection.";
+  return `Extended cover locks in your premium for 3 years. No renewals, no rate hikes. ${addonNote}`;
+}
 
 /** Compare sheet — [Figma 322:5666](https://www.figma.com/design/FEPATa8H2Eflz7FZm5LKuL/3-3-insurance-upsell?node-id=322-5666). */
 export const INSURANCE_TENURE_COMPARE_SHEET_TITLE = "Compare Standard and Extended cover";
@@ -217,16 +241,203 @@ export const INSURANCE_CARD_HIGHLIGHTS = [
 ] as const;
 
 /* ------------------------------------------------------------------------ */
-/* Add-ons included (no extra charge)                                         */
+/* Optional add-ons — opt in on top of base Shield                            */
 /* ------------------------------------------------------------------------ */
 
-export const INSURANCE_INCLUDED_ADDONS = [
-  { title: "Return to Invoice", detail: "Total loss pays the on-road price, not the depreciated value" },
-  { title: "Engine & gearbox protect", detail: "Water ingress and oil-leak damage — usually excluded" },
-  { title: "Consumables cover", detail: "Oils, nuts, bolts and fluids paid in full during claims" },
-  { title: "24×7 roadside assistance", detail: "Towing, jumpstart, flat tyre — anywhere in India" },
-  { title: "Key & lock replacement", detail: "Lost or stolen keys replaced without a claim hit" },
+export type InsuranceAddonId =
+  | "engine"
+  | "ncb"
+  | "rti"
+  | "consumables"
+  | "electrical"
+  | "non_electrical"
+  | "passenger"
+  | "paid_driver";
+
+export type InsuranceAddonOption = {
+  id: InsuranceAddonId;
+  /** Product name in the grey footer, e.g. "Engine Protect". */
+  title: string;
+  /** Joiner before the price — "-" or "@" as in the design. */
+  priceConnector: "-" | "@";
+  /** Benefit headline in the white body. */
+  headline: string;
+  detail: string;
+  /** Extra premium on standard 1+3. */
+  premiumInr: number;
+  /** Extra premium on extended 3+3. */
+  extendedPremiumInr: number;
+};
+
+/** Demo add-on price shown on standard tenure (matches design). */
+const ADDON_PREMIUM_INR = 399;
+/** Extended tenure uplift — same market ratio as full-package anchors. */
+const ADDON_EXTENDED_PREMIUM_INR = Math.round(
+  (ADDON_PREMIUM_INR * INSURANCE_EXTENDED_PREMIUM_INR) / INSURANCE_PREMIUM_INR,
+);
+
+/**
+ * Optional protection on top of ACKO Drive Shield.
+ * Card layout: [Figma 2961:9254](https://www.figma.com/design/nW5SWmJdxxsCEDlqBN7C0L/Post-booking-experience?node-id=2961-9254).
+ */
+export const INSURANCE_OPTIONAL_ADDONS: readonly InsuranceAddonOption[] = [
+  {
+    id: "engine",
+    title: "Engine Protect",
+    priceConnector: "-",
+    headline: "Save yourself from costly engine repairs",
+    detail:
+      "Covers engine and gearbox damage caused by non-accidental events like floods, heavy rains, and oil leaks",
+    premiumInr: ADDON_PREMIUM_INR,
+    extendedPremiumInr: ADDON_EXTENDED_PREMIUM_INR,
+  },
+  {
+    id: "ncb",
+    title: "NCB Protection",
+    priceConnector: "-",
+    headline: "Protect your No Claim Bonus",
+    detail: "Make a claim without losing your No Claim Bonus (NCB). Valid only for 1 claim.",
+    premiumInr: ADDON_PREMIUM_INR,
+    extendedPremiumInr: ADDON_EXTENDED_PREMIUM_INR,
+  },
+  {
+    id: "rti",
+    title: "Return to Invoice Cover",
+    priceConnector: "-",
+    headline: "Ensure full coverage for total loss",
+    detail:
+      "Get the complete invoice value of your car or the current on-road price, whichever is lower, if your car is stolen or damaged beyond repair.",
+    premiumInr: ADDON_PREMIUM_INR,
+    extendedPremiumInr: ADDON_EXTENDED_PREMIUM_INR,
+  },
+  {
+    id: "consumables",
+    title: "Consumables Cover",
+    priceConnector: "-",
+    headline: "Save on repair extras",
+    detail:
+      "Covers the cost of consumables like nuts, bolts, brake oil, engine oil etc. that get replaced during repair. These are not covered by your base plan.",
+    premiumInr: ADDON_PREMIUM_INR,
+    extendedPremiumInr: ADDON_EXTENDED_PREMIUM_INR,
+  },
+  {
+    id: "electrical",
+    title: "Electrical Accessories Cover",
+    priceConnector: "-",
+    headline: "Protect your car accessories",
+    detail:
+      "Cover theft or damage of items like music system, speakers, and other electrical car accessories",
+    premiumInr: ADDON_PREMIUM_INR,
+    extendedPremiumInr: ADDON_EXTENDED_PREMIUM_INR,
+  },
+  {
+    id: "non_electrical",
+    title: "Non-electrical Accessories Cover",
+    priceConnector: "-",
+    headline: "Secure non-electrical items",
+    detail:
+      "Cover theft or damage of items like alloy wheels, seat covers, and other non-electrical accessories.",
+    premiumInr: ADDON_PREMIUM_INR,
+    extendedPremiumInr: ADDON_EXTENDED_PREMIUM_INR,
+  },
+  {
+    id: "passenger",
+    title: "Passenger Protection",
+    priceConnector: "-",
+    headline: "For your loved ones",
+    detail:
+      "Pays up to ₹2 lakh per passenger if they are permanently disabled or die in an accident.",
+    premiumInr: ADDON_PREMIUM_INR,
+    extendedPremiumInr: ADDON_EXTENDED_PREMIUM_INR,
+  },
+  {
+    id: "paid_driver",
+    title: "Paid Driver Protection",
+    priceConnector: "-",
+    headline: "For your driver",
+    detail:
+      "Pays up to your legal obligation amount if your paid driver is permanently disabled or dies in an accident.",
+    premiumInr: ADDON_PREMIUM_INR,
+    extendedPremiumInr: ADDON_EXTENDED_PREMIUM_INR,
+  },
 ] as const;
+
+export const INSURANCE_ADDON_ADD_LABEL = "Add";
+export const INSURANCE_ADDON_ADDED_LABEL = "Added";
+
+/** @deprecated Use {@link INSURANCE_OPTIONAL_ADDONS} — kept for any residual imports. */
+export const INSURANCE_INCLUDED_ADDONS = INSURANCE_OPTIONAL_ADDONS.map(({ title, detail }) => ({
+  title,
+  detail,
+}));
+
+export const INSURANCE_ADDONS_SECTION_HEADING = "Want more protection?";
+export const INSURANCE_ADDONS_SECTION_SUBLINE =
+  "These are optional. Tap Add — your premium updates instantly.";
+
+/** Section label / a11y name for the optional add-on list. */
+export const INSURANCE_ADDONS_AVAILABLE_HEADING = "Optional add-ons";
+
+export const INSURANCE_ADDONS_CONTINUE_CTA = "Choose your tenure";
+export const INSURANCE_ADDONS_TOTAL_LABEL = "Total premium";
+
+const ADDON_ID_SET = new Set<string>(INSURANCE_OPTIONAL_ADDONS.map((a) => a.id));
+
+export function isInsuranceAddonId(value: string): value is InsuranceAddonId {
+  return ADDON_ID_SET.has(value);
+}
+
+export function parseInsuranceAddonIds(raw: string | null | undefined): InsuranceAddonId[] {
+  if (!raw) return [];
+  const seen = new Set<InsuranceAddonId>();
+  for (const part of raw.split(",")) {
+    const id = part.trim();
+    if (isInsuranceAddonId(id)) seen.add(id);
+  }
+  return INSURANCE_OPTIONAL_ADDONS.map((a) => a.id).filter((id) => seen.has(id));
+}
+
+export function serializeInsuranceAddonIds(ids: readonly InsuranceAddonId[]): string {
+  const seen = new Set(ids);
+  return INSURANCE_OPTIONAL_ADDONS.map((a) => a.id)
+    .filter((id) => seen.has(id))
+    .join(",");
+}
+
+export function insuranceBasePremiumInr(tenure: InsuranceTenureId): number {
+  return tenure === "3+3" ? INSURANCE_EXTENDED_BASE_PREMIUM_INR : INSURANCE_BASE_PREMIUM_INR;
+}
+
+export function insuranceAddonPremiumInr(
+  addonIds: readonly InsuranceAddonId[],
+  tenure: InsuranceTenureId,
+): number {
+  const selected = new Set(addonIds);
+  return INSURANCE_OPTIONAL_ADDONS.reduce((sum, addon) => {
+    if (!selected.has(addon.id)) return sum;
+    return sum + (tenure === "3+3" ? addon.extendedPremiumInr : addon.premiumInr);
+  }, 0);
+}
+
+/** Payable premium for a tenure + add-on selection. */
+export function insurancePremiumForSelection(
+  tenure: InsuranceTenureId,
+  addonIds: readonly InsuranceAddonId[] = [],
+): number {
+  return insuranceBasePremiumInr(tenure) + insuranceAddonPremiumInr(addonIds, tenure);
+}
+
+/** Struck-through compare-at — same market ratio as the full-package anchors. */
+export function insuranceCompareAtForSelection(
+  tenure: InsuranceTenureId,
+  addonIds: readonly InsuranceAddonId[] = [],
+): number {
+  const premium = insurancePremiumForSelection(tenure, addonIds);
+  if (tenure === "3+3") {
+    return Math.round((premium * INSURANCE_EXTENDED_COMPARE_AT_INR) / INSURANCE_EXTENDED_PREMIUM_INR);
+  }
+  return Math.round((premium * INSURANCE_COMPARE_AT_PREMIUM_INR) / INSURANCE_PREMIUM_INR);
+}
 
 /* ------------------------------------------------------------------------ */
 /* Why it's priced this way — the policy argues for itself                    */
@@ -243,14 +454,14 @@ export const INSURANCE_VALUE_POINTS: readonly InsuranceValuePoint[] = [
       "Most quotes trim a new car's declared value by ~5% to look cheaper upfront. Shield holds the full ₹9,54,900 — that's ₹47,745 more cover behind every claim.",
   },
   {
-    title: "A write-off pays what you actually spent",
+    title: "A write-off can pay what you actually spent",
     detail:
-      "Return to Invoice covers the on-road price — ₹13,73,780 with registration and all — not a depreciated number.",
+      "Add Return to Invoice and a total loss pays the on-road price — ₹13,73,780 with registration and all — not a depreciated number.",
   },
   {
-    title: "The five add-ons are usually paid extras",
+    title: "Add-ons only when you want them",
     detail:
-      "Engine protect, consumables, roadside assistance, key cover, RTI — built into one price instead of sold line by line.",
+      "Engine protect, NCB, RTI, consumables, accessories, passenger and driver cover — pick what matters; your premium updates before you choose tenure.",
   },
 ] as const;
 

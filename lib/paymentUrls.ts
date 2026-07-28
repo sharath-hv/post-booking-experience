@@ -63,7 +63,9 @@ export type InsuranceJourneyQuery = {
   loanAmount?: string | null;
   /** Selected tenure id — `"1+3"` or `"3+3"`. */
   tenure?: string | null;
-  /** Premium for the selected tenure, in paise-less INR integer string. */
+  /** Comma-separated optional add-on ids (e.g. `rti,engine`). */
+  addons?: string | null;
+  /** Premium for the selected tenure + add-ons, in paise-less INR integer. */
   insuranceAmount?: number | null;
 };
 
@@ -78,7 +80,16 @@ function appendInsuranceJourneyQuery(
   }
   if (params?.loanAmount) q.set("loan_amount", params.loanAmount);
   if (params?.tenure) q.set("tenure", params.tenure);
+  if (params?.addons) q.set("addons", params.addons);
   if (params?.insuranceAmount != null) q.set("insurance_amount", String(Math.round(params.insuranceAmount)));
+}
+
+/** Add-on selection step — standalone page between the Shivi intro and choosing tenure. */
+export function buildInsuranceAddonsHref(params?: InsuranceJourneyQuery): string {
+  const q = new URLSearchParams();
+  appendInsuranceJourneyQuery(q, params);
+  const qs = q.toString();
+  return qs ? `/payment/insurance-addons?${qs}` : "/payment/insurance-addons";
 }
 
 /** Tenure selection step — before pay-insurance-premium. */
@@ -206,6 +217,7 @@ export function buildCarDeliveryInsurancePrepHref(params?: InsuranceJourneyQuery
   }
   if (params?.loanAmount) q.set("loan_amount", params.loanAmount);
   if (params?.tenure) q.set("tenure", params.tenure);
+  if (params?.addons) q.set("addons", params.addons);
   const qs = q.toString();
   return qs ? `/payment/car-delivery-insurance-prep?${qs}` : "/payment/car-delivery-insurance-prep";
 }
@@ -282,6 +294,8 @@ export function buildMarginMoneySlipActionHref(params: {
   bank: string | null;
   loanAmount: string | null;
   originalDownPaymentInr?: number | null;
+  /** When true, open the slip-ready beat (after dealer confirmed down payment). */
+  slipReady?: boolean;
 }): string {
   const q = new URLSearchParams();
   if (params.bank) q.set("bank", params.bank);
@@ -293,6 +307,7 @@ export function buildMarginMoneySlipActionHref(params: {
   ) {
     q.set("original_down_payment", String(Math.round(params.originalDownPaymentInr)));
   }
+  if (params.slipReady) q.set("slip_ready", "1");
   const qs = q.toString();
   return qs ? `/payment/margin-money-slip?${qs}` : "/payment/margin-money-slip";
 }

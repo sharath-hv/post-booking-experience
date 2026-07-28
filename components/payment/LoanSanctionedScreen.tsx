@@ -53,20 +53,25 @@ export function LoanSanctionedScreen() {
       says={says}
       artifact={
         <div className={styles.flex_0}>
+          <NextStepCard
+            title={`Watch for ${PARTNER_DEALER_LABEL}'s call`}
+            body="Pick up their call. They'll share the payment details so you can pay them directly."
+          />
           <AmountReceivedCard
             amountInr={BANK_DISBURSEMENT_INR}
             title={`Approved by ${bank.name}`}
             variant="glass"
           />
-          <NextStepCard
-            title={`Watch for ${PARTNER_DEALER_LABEL}'s call`}
-            body="Pick up their call. They'll share the payment details so you can pay them directly."
-          />
         </div>
       }
-      // No reply chips — the dealer call + down payment is the user action.
       dateHolder="you"
-      timeSkip={{ label: "After the dealer's call · demo", href: dealerConfirmedHref }}
+      replies={[
+        {
+          label: "I've paid the down payment",
+          href: dealerConfirmedHref,
+          echo: "I've paid the down payment",
+        },
+      ]}
       callLabel="Questions on the loan? I can call you"
       showMenu
     />

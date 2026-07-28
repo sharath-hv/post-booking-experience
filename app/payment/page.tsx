@@ -260,6 +260,7 @@ function MockRazorpayPaymentPageContent() {
         bank: searchParams.get("bank"),
         loanAmount: searchParams.get("loan_amount"),
         tenure: searchParams.get("tenure"),
+        addons: searchParams.get("addons"),
       });
       if (PROCESSING_MS <= 0) {
         router.push(pendingSuccessHref.current);

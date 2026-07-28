@@ -1,22 +1,41 @@
 "use client";
 
 import Image from "next/image";
-import { cn } from "@/lib/utils";
-import { useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useCallback, useMemo, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
-import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
+import { ModifySelectionPageHeading } from "@/components/kyc/ModifySelectionPageHeading";
+import { ModifySelectionScreenHeader } from "@/components/kyc/ModifySelectionScreenHeader";
+import { modifySelectionSelectableCardClassName } from "@/components/kyc/modify-selection-option-card-ui";
 import { InsuranceTenureCompareBottomSheet } from "@/components/payment/InsuranceTenureCompareBottomSheet";
+import { PAYMENT_CHOOSE_ASSETS } from "@/components/payment/payment-choose-assets";
 import {
   INSURANCE_TENURE_DIFFERENCE_CTA,
   INSURANCE_TENURE_OPTIONS,
+  INSURANCE_TENURE_OPTIONS_HEADING,
+  INSURANCE_TENURE_SCREEN_TITLE,
+  insuranceCompareAtForSelection,
+  insurancePremiumForSelection,
+  insuranceTenureScreenSubline,
+  parseInsuranceAddonIds,
+  serializeInsuranceAddonIds,
   type InsuranceTenureId,
   type InsuranceTenureOption,
 } from "@/components/payment/insurance-coverage-content";
-import { PAYMENT_CHOOSE_ASSETS } from "@/components/payment/payment-choose-assets";
+import { MODIFY_SELECTION_PAGE_SHELL_CLASS } from "@/lib/modify-selection-content";
+import {
+  modifySelectionCardStaggerDelay,
+  MODIFY_SELECTION_STAGGER_MS,
+} from "@/lib/modify-selection-stagger";
 import { buildInsurancePremiumCheckoutHref } from "@/lib/paymentUrls";
+import { cn } from "@/lib/utils";
 import styles from "./ChooseInsuranceTenureScreen.module.scss";
 
+const {
+  title: STAGGER_TITLE_MS,
+  subtext: STAGGER_SUBTEXT_MS,
+  firstCard: STAGGER_FIRST_CARD_MS,
+} = MODIFY_SELECTION_STAGGER_MS;
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -26,26 +45,35 @@ function formatInr(amount: number) {
   }).format(Math.max(0, Math.round(amount)));
 }
 
-function RadioIndicator({ selected }: { selected: boolean }) {
-  const src = selected ? PAYMENT_CHOOSE_ASSETS.radioOn : PAYMENT_CHOOSE_ASSETS.radioOff;
-
+function TenureRadioIndicator({ selected }: { selected: boolean }) {
   return (
-    <span className={styles.relative_0} aria-hidden>
-      <Image src={src} alt="" fill className={styles.object_contain_1} unoptimized sizes="16px" />
-    </span>
+    <Image
+      src={selected ? PAYMENT_CHOOSE_ASSETS.radioOn : PAYMENT_CHOOSE_ASSETS.radioOff}
+      alt=""
+      width={16}
+      height={16}
+      className={styles.radioImg}
+      unoptimized
+      aria-hidden
+    />
   );
 }
+
+type PricedTenureOption = InsuranceTenureOption & {
+  pricedPremiumInr: number;
+  pricedCompareAtInr: number;
+};
 
 function TenureCard({
   option,
   selected,
   onSelect,
 }: {
-  option: InsuranceTenureOption;
+  option: PricedTenureOption;
   selected: boolean;
   onSelect: () => void;
 }) {
-  const savings = option.compareAtInr - option.premiumInr;
+  const savings = option.pricedCompareAtInr - option.pricedPremiumInr;
   const isStandard = option.id === "1+3";
 
   return (
@@ -54,63 +82,52 @@ function TenureCard({
       id={`insurance-tenure-${option.id}`}
       onClick={onSelect}
       aria-pressed={selected}
-      className={cn(styles.w_full_0, "card-elevated", selected ? styles.border_selected_0 : styles.border_transparent_0)}
+      className={modifySelectionSelectableCardClassName(selected, false, styles.cardPad)}
     >
-      <div className={styles.flex_2}>
-        <div className={styles.relative_3}>
+      <div className={styles.cardHeader}>
+        <div className={styles.illustration}>
           <Image
             src={option.illustrationSrc}
             alt=""
             fill
-            className={styles.object_contain_1}
+            className={styles.illustrationImg}
             unoptimized
             sizes="40px"
           />
         </div>
-        <div className={styles.min_w_0_4}>
-          <span className={styles.inline_flex_5}>
-            {option.badge}
-          </span>
-          <p className={styles.mt_1_6}>{option.label}</p>
+        <div className={styles.cardCopy}>
+          <p className={styles.cardLabel}>{option.label}</p>
         </div>
-        <span className={styles.mt_1_7}>
-          <RadioIndicator selected={selected} />
+        <span className={styles.radio}>
+          <TenureRadioIndicator selected={selected} />
         </span>
       </div>
 
-      <p className={styles.mt_2_5_8}>{option.blurb}</p>
+      <p className={styles.blurb}>{option.blurb}</p>
 
-      <div className={styles.mt_3_9}>
-        <div className={styles.min_w_0_10}>
-          <p className={styles.text_sm_11}>
+      <div className={styles.statsRow}>
+        <div className={styles.statCol}>
+          <p className={styles.statValue}>
             {option.ownDamageYears} {option.ownDamageYears === 1 ? "year" : "years"}
           </p>
-          <p className={styles.mt_0_5_12}>Zero depreciation cover</p>
+          <p className={styles.statCaption}>Zero depreciation cover</p>
         </div>
-        <div className={styles.min_w_0_13}>
-          <p className={styles.text_sm_11}>
+        <div className={cn(styles.statCol, styles.statColDivider)}>
+          <p className={styles.statValue}>
             {option.thirdPartyYears} {option.thirdPartyYears === 1 ? "year" : "years"}
           </p>
-          <p className={styles.mt_0_5_12}>Third party cover</p>
+          <p className={styles.statCaption}>Third party cover</p>
         </div>
       </div>
 
-      <div className={styles.mt_3_14}>
-        {option.upgradeBlurb ? (
-          <p className={styles.mb_3_15}>{option.upgradeBlurb}</p>
-        ) : null}
-        <p className={styles.flex_16}>
-          <span className={styles.text_base_17}>
-            {formatInr(option.premiumInr)}
-          </span>
+      <div className={styles.priceBlock}>
+        {option.upgradeBlurb ? <p className={styles.upgradeBlurb}>{option.upgradeBlurb}</p> : null}
+        <p className={styles.priceRow}>
+          <span className={styles.price}>{formatInr(option.pricedPremiumInr)}</span>
           {!isStandard ? (
             <>
-              <span className={styles.text_sm_18}>
-                {formatInr(option.compareAtInr)}
-              </span>
-              <span className={styles.text_xs_19}>
-                Save {formatInr(savings)}
-              </span>
+              <span className={styles.compareAt}>{formatInr(option.pricedCompareAtInr)}</span>
+              <span className={styles.savings}>Save {formatInr(savings)}</span>
             </>
           ) : null}
         </p>
@@ -120,76 +137,134 @@ function TenureCard({
 }
 
 /**
- * Tenure selection step — user picks 1+3 (standard) or 3+3 (extended)
- * before paying the insurance premium.
+ * Tenure selection — static white page matching change-selection / add-ons layout.
+ * Prices reflect the add-on set from the previous page; pay goes to mock checkout.
  */
 export function ChooseInsuranceTenureScreen() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const [tenureId, setTenureId] = useState<InsuranceTenureId>("1+3");
   const [compareSheetOpen, setCompareSheetOpen] = useState(false);
 
+  const addonIds = useMemo(
+    () => parseInsuranceAddonIds(searchParams.get("addons")),
+    [searchParams],
+  );
+  const addonsQuery = useMemo(
+    () => serializeInsuranceAddonIds(addonIds) || null,
+    [addonIds],
+  );
+
+  const pricedOptions = useMemo(
+    (): readonly PricedTenureOption[] =>
+      INSURANCE_TENURE_OPTIONS.map((option) => ({
+        ...option,
+        pricedPremiumInr: insurancePremiumForSelection(option.id, addonIds),
+        pricedCompareAtInr: insuranceCompareAtForSelection(option.id, addonIds),
+      })),
+    [addonIds],
+  );
+
   const selected = useMemo(
-    () => INSURANCE_TENURE_OPTIONS.find((o) => o.id === tenureId)!,
-    [tenureId],
+    () => pricedOptions.find((o) => o.id === tenureId)!,
+    [pricedOptions, tenureId],
   );
 
   const ctaHref = useMemo(
     () =>
-      buildInsurancePremiumCheckoutHref(selected.premiumInr, {
+      buildInsurancePremiumCheckoutHref(selected.pricedPremiumInr, {
         bank: searchParams.get("bank"),
         loanAmount: searchParams.get("loan_amount"),
         tenure: tenureId,
+        addons: addonsQuery,
+        insuranceAmount: selected.pricedPremiumInr,
       }),
-    [searchParams, tenureId, selected.premiumInr],
+    [addonsQuery, searchParams, selected.pricedPremiumInr, tenureId],
   );
 
-  const says = useMemo(
-    () => [
-      "One last choice before you pay: how long do you want this locked in?",
-      "Extended cover locks in your premium for 3 years. No renewals, no rate hikes. Most people who go extended are glad they did.",
-    ],
-    [],
+  const onPay = useCallback(() => router.push(ctaHref), [router, ctaHref]);
+
+  const subline = useMemo(
+    () => insuranceTenureScreenSubline(addonIds.length),
+    [addonIds.length],
   );
 
   return (
-    <>
-      <ConciergeTurnShell
-        says={says}
-        artifact={
-          <div className={styles.flex_20}>
-            {INSURANCE_TENURE_OPTIONS.map((option) => (
-              <TenureCard
+    <div className={MODIFY_SELECTION_PAGE_SHELL_CLASS}>
+      <ModifySelectionScreenHeader />
+
+      <main className={styles.main}>
+        <header className={styles.lead}>
+          <ModifySelectionPageHeading
+            title={INSURANCE_TENURE_SCREEN_TITLE}
+            subline={subline}
+            titleDelayMs={STAGGER_TITLE_MS}
+            sublineDelayMs={STAGGER_SUBTEXT_MS}
+          />
+        </header>
+
+        <section
+          className={styles.tenureSection}
+          aria-labelledby="insurance-tenure-options-heading"
+        >
+          <h2 id="insurance-tenure-options-heading" className={styles.srOnly}>
+            {INSURANCE_TENURE_OPTIONS_HEADING}
+          </h2>
+
+          <div
+            className={styles.optionList}
+            role="radiogroup"
+            aria-label={INSURANCE_TENURE_OPTIONS_HEADING}
+          >
+            {pricedOptions.map((option, index) => (
+              <div
                 key={option.id}
-                option={option}
-                selected={option.id === tenureId}
-                onSelect={() => setTenureId(option.id)}
-              />
+                className={cn(styles.optionListItem, "payment-success-stagger")}
+                style={{
+                  animationDelay: `${modifySelectionCardStaggerDelay(index, STAGGER_FIRST_CARD_MS)}ms`,
+                }}
+              >
+                <TenureCard
+                  option={option}
+                  selected={option.id === tenureId}
+                  onSelect={() => setTenureId(option.id)}
+                />
+              </div>
             ))}
-            <button
-              type="button"
-              onClick={() => setCompareSheetOpen(true)}
-              className={[styles.tertiary_cta_21, "tertiary-cta"].filter(Boolean).join(" ")}
-            >
-              {INSURANCE_TENURE_DIFFERENCE_CTA}
-            </button>
           </div>
-        }
-        replies={[
-          {
-            label: `Pay ${formatInr(selected.premiumInr)}`,
-            href: ctaHref,
-            kind: "primary",
-            echo: null,
-          },
-        ]}
-        callLabel="Coverage questions? I can call you"
-        showMenu
-      />
+
+          <button
+            type="button"
+            onClick={() => setCompareSheetOpen(true)}
+            className={cn(
+              "tertiary-cta",
+              styles.compareLink,
+              "payment-success-stagger",
+            )}
+            style={{
+              animationDelay: `${modifySelectionCardStaggerDelay(
+                pricedOptions.length,
+                STAGGER_FIRST_CARD_MS,
+              )}ms`,
+            }}
+          >
+            {INSURANCE_TENURE_DIFFERENCE_CTA}
+          </button>
+        </section>
+      </main>
+
+      <div className={cn(styles.footer, "footer-elevated")}>
+        <div className={styles.footerInner}>
+          <button type="button" onClick={onPay} className={cn(styles.cta, "primary-cta")}>
+            Pay {formatInr(selected.pricedPremiumInr)}
+          </button>
+        </div>
+      </div>
 
       <InsuranceTenureCompareBottomSheet
         open={compareSheetOpen}
         onClose={() => setCompareSheetOpen(false)}
       />
-    </>
+    </div>
   );
 }

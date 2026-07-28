@@ -1,0 +1,96 @@
+/* InsuranceAddonSelectionScreen — modify-selection static page layout */
+
+.main {
+  margin-inline: auto;
+  display: flex;
+  width: 100%;
+  max-width: 640px;
+  flex: 1;
+  flex-direction: column;
+  padding-inline: calc(var(--spacing) * 5);
+  padding-bottom: calc(7rem + env(safe-area-inset-bottom));
+  padding-top: calc(var(--spacing) * 2);
+}
+
+.lead {
+  display: flex;
+  flex-direction: column;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.addons {
+  display: flex;
+  flex-direction: column;
+  margin-top: calc(var(--spacing) * 6);
+}
+
+.addonList {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing) * 4);
+}
+
+.addonListItem {
+  width: 100%;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.footerInner {
+  margin-inline: auto;
+  display: flex;
+  width: 100%;
+  max-width: 640px;
+  align-items: center;
+  gap: 16px;
+  background-color: var(--color-white);
+  padding-inline: calc(var(--spacing) * 5);
+  padding-block: calc(var(--spacing) * 4);
+}
+
+.totalBlock {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.totalLabel {
+  font-size: 12px;
+  line-height: 16px;
+  color: #4b4b4b;
+}
+
+.totalValue {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 24px;
+  font-variant-numeric: tabular-nums;
+  color: #121212;
+}
+
+.cta {
+  flex-shrink: 0;
+  width: auto;
+  min-width: 0;
+  padding-inline: 20px;
+}
