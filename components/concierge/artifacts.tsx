@@ -515,7 +515,6 @@ export function CarSummaryCardLite({
   deliveryIconSrc,
   dealerName,
   dealerDetail,
-  hero = "car",
   statusChip,
   statusChipVariant = "green",
   engineNo,
