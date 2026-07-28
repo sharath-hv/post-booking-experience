@@ -30,9 +30,7 @@ export function ShimmerInfoCard({ lead, children, className }: ShimmerInfoCardPr
     <div className={cn(styles.next_step_shimmer_0, "next-step-shimmer", className)}>
       <div className={styles.text_xs_3}>
         {lead ? <p className={styles.lead}>{lead}</p> : null}
-        {children != null ? (
-          lead ? <div className={styles.body}>{children}</div> : children
-        ) : null}
+        {children != null ? <div className={styles.body}>{children}</div> : null}
       </div>
     </div>
   );

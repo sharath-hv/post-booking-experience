@@ -187,7 +187,7 @@ export function ShieldPolicyCard({
               onClick={() => setSheetOpen(true)}
               className={["tertiary-cta", styles.footerCtaLeft].filter(Boolean).join(" ")}
             >
-              See what's included
+              See what&apos;s included
             </button>
           )}
         </div>
