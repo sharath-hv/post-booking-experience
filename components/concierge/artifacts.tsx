@@ -317,7 +317,7 @@ export type NoteCalloutProps = {
 
 /** Aside in the shimmer info-callout style (matches “A quick heads-up”). */
 export function NoteCallout({ children }: NoteCalloutProps) {
-  return <ShimmerInfoCard icon="info">{children}</ShimmerInfoCard>;
+  return <ShimmerInfoCard>{children}</ShimmerInfoCard>;
 }
 
 /* ----------------------------------------------------------------------- */

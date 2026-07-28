@@ -12,7 +12,7 @@ import {
   appendKycMockUpload,
 } from "@/lib/kyc-mock-upload";
 import type { KycUploadsState } from "@/lib/kyc-upload-state";
-import { ShimmerInfoCard } from "@/components/ui/ShimmerInfoCard";
+import { ShimmerInfoCard, ShimmerInfoCheckList } from "@/components/ui/ShimmerInfoCard";
 import { OVERLAY_GLASS_CARD_CLASS } from "@/lib/overlay-glass-card";
 import { cn } from "@/lib/utils";
 
@@ -178,14 +178,13 @@ export function ConciergeDocumentsCard({
           {/* Pre-action caveat — only for the initial upload (both docs, no prior context).
               Re-upload turns already have Shivi's explanation above, so suppress it. */}
           {onlyDocs == null ? (
-            <ShimmerInfoCard icon="none" lead="Quick check:">
-              <ul className={styles.checkList}>
-                <li>
-                  Name should match on Aadhaar and PAN. I&apos;ll register the car, and the loan
-                  if you take one, against this name.
-                </li>
-                <li>Aadhaar address should show Bengaluru, since that&apos;s where the car gets registered.</li>
-              </ul>
+            <ShimmerInfoCard lead="Quick check">
+              <ShimmerInfoCheckList
+                items={[
+                  "Name should match on Aadhaar and PAN. I'll register the car, and the loan if you take one, against this name.",
+                  "Aadhaar address should show Bengaluru, since that's where the car gets registered.",
+                ]}
+              />
             </ShimmerInfoCard>
           ) : null}
 

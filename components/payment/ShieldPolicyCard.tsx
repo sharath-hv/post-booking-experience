@@ -41,26 +41,6 @@ function formatInr(amount: number) {
   }).format(Math.max(0, Math.round(amount)));
 }
 
-/**
- * Whisper-quiet shield watermark behind the hero. Faded out leftwards with an
- * alpha mask (alpha-only — not a colour fade, so no Safari dirty-fade risk).
- */
-function ShieldWatermark() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      aria-hidden
-      className={styles.watermark}
-    >
-      <path
-        d="M12 2.5 4.5 5.4v6.1c0 4.6 3.2 8.1 7.5 9.9 4.3-1.8 7.5-5.3 7.5-9.9V5.4z"
-        fill="currentColor"
-      />
-    </svg>
-  );
-}
-
 export type ShieldPolicyCardProps = {
   /** `quote` — before the premium is paid. `active` — the owned policy. */
   mode: "quote" | "active";
@@ -92,10 +72,7 @@ export function ShieldPolicyCard({
     selectedAddonCount > 0
       ? `Built for your new Creta · ${selectedAddonCount} add-on${selectedAddonCount === 1 ? "" : "s"}`
       : "Built for your new Creta";
-  const activeSubtitle =
-    selectedAddonCount > 0
-      ? `${odYears} year Zero depreciation · ${selectedAddonCount} add-on${selectedAddonCount === 1 ? "" : "s"}`
-      : `${odYears} year Zero depreciation cover for your Creta`;
+  const activeSubtitle = `${odYears} year Zero depreciation cover for your Creta`;
 
   const highlightRows = useMemo(() => {
     const selected = new Set(selectedAddonIds);
@@ -127,41 +104,36 @@ export function ShieldPolicyCard({
         aria-label={isActive ? "Your active car insurance policy" : "Car insurance coverage"}
       >
         <div className={styles.header}>
-          <ShieldWatermark />
+          <div className={styles.logoWrap}>
+            <Image
+              src={ackoLogo}
+              alt="ACKO"
+              width={40}
+              height={40}
+              className={styles.logo}
+              unoptimized
+            />
+          </div>
 
-          <div className={styles.brandRow}>
-            <div className={styles.brandCopy}>
-              {isActive ? (
-                <span className={styles.activeBadge}>
-                  <span className={styles.pulseWrap} aria-hidden>
-                    <span className={styles.pulseRing} />
-                    <span className={styles.pulseDot} />
-                  </span>
-                  Active
+          <div className={styles.brandCopy}>
+            {isActive ? (
+              <span className={styles.activeBadge}>
+                <span className={styles.pulseWrap} aria-hidden>
+                  <span className={styles.pulseRing} />
+                  <span className={styles.pulseDot} />
                 </span>
-              ) : null}
-              <p className={styles.title}>ACKO Drive Shield</p>
-              <p className={styles.subtitle}>
-                {isActive ? activeSubtitle : quoteSubtitle}
-              </p>
-            </div>
-            <div className={styles.logoWrap}>
-              <Image
-                src={ackoLogo}
-                alt="ACKO"
-                width={36}
-                height={36}
-                className={styles.logo}
-                unoptimized
-              />
-            </div>
+                Active
+              </span>
+            ) : null}
+            <p className={styles.title}>ACKO Drive Shield</p>
+            <p className={styles.subtitle}>
+              {isActive ? activeSubtitle : quoteSubtitle}
+            </p>
           </div>
 
           {!isActive ? (
             <div className={styles.priceBlock}>
-              <div className={styles.brandCopy}>
-                <p className={styles.price}>{formatInr(premiumInr)}</p>
-              </div>
+              <p className={styles.price}>{formatInr(premiumInr)}</p>
             </div>
           ) : null}
         </div>
@@ -197,7 +169,10 @@ export function ShieldPolicyCard({
         <div className={styles.footerActive}>
           {isActive ? (
             <div className={styles.policyMeta}>
-              <p className={styles.policyValue}>{INSURANCE_POLICY_NUMBER}</p>
+              <div className={styles.policyIdentity}>
+                <p className={styles.policyLabel}>Policy number</p>
+                <p className={styles.policyValue}>{INSURANCE_POLICY_NUMBER}</p>
+              </div>
               <button
                 type="button"
                 onClick={onDownloadPolicy}
@@ -212,7 +187,7 @@ export function ShieldPolicyCard({
               onClick={() => setSheetOpen(true)}
               className={["tertiary-cta", styles.footerCtaLeft].filter(Boolean).join(" ")}
             >
-              See coverage
+              See what's included
             </button>
           )}
         </div>

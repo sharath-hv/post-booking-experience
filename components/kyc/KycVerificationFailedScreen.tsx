@@ -211,9 +211,7 @@ export function KycVerificationFailedScreen() {
                 className={cn(styles.transition_opacity_5, HERO_FADE_DURATION_CLASS, styles.ease_out_5, showWarning ? styles.opacity_100_5 : styles.opacity_0_5)}
                 aria-hidden={!showWarning}
               >
-                <ShimmerInfoCard icon="alert">
-                  {KYC_VERIFICATION_FAILED_CTA_WARNING}
-                </ShimmerInfoCard>
+                <ShimmerInfoCard>{KYC_VERIFICATION_FAILED_CTA_WARNING}</ShimmerInfoCard>
               </div>
               <button
                 type="button"

@@ -30,7 +30,7 @@ export const KYC_ASSETS = {
   /** Post–full down payment received (`/payment/down-payment-insurance-setup`). */
   downPaymentCompleteHero: asset("Downpayment complete.svg"),
   avatar: asset("Shivi image.png"),
-  /** Shivi avatar — compact crop for nav “Get help” pill. */
+  /** Compact crop for nav “Get help” pill. */
   avatarSmall: asset("Shivi small.png"),
   getHelp: asset("get help.svg"),
   onlineDot: asset("online.svg"),

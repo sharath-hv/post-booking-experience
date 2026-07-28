@@ -1,68 +1,38 @@
-import type { CSSProperties, ReactNode } from "react";
-
-import infoIcon from "@/assets/Info.svg";
-import timeIcon from "@/assets/Time.svg";
-import warningIcon from "@/assets/Warning.svg";
+import type { ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
 import styles from "./ShimmerInfoCard.module.scss";
 
-type ShimmerInfoIcon = "alert" | "clock" | "info" | "none";
-
-const WARNING_ICON_MASK_STYLE = {
-  maskImage: `url(${warningIcon.src})`,
-  WebkitMaskImage: `url(${warningIcon.src})`,
-} satisfies CSSProperties;
-
-const INFO_ICON_MASK_STYLE = {
-  maskImage: `url(${infoIcon.src})`,
-  WebkitMaskImage: `url(${infoIcon.src})`,
-} satisfies CSSProperties;
-
-const CLOCK_ICON_MASK_STYLE = {
-  maskImage: `url(${timeIcon.src})`,
-  WebkitMaskImage: `url(${timeIcon.src})`,
-} satisfies CSSProperties;
-
 export type ShimmerInfoCardProps = {
-  /** `alert` for caveats/checks, `clock` for deadlines/expectations, `info` for general information. */
-  icon?: ShimmerInfoIcon;
-  /** Bold scent-word prefix, e.g. “Quick check:”. */
+  /** Bold header line, e.g. “A quick heads-up”. */
   lead?: string;
   children: ReactNode;
   className?: string;
 };
 
-/**
- * The app's highlighted-info style: amber outline, soft yellow-to-white
- * gradient, shimmer sweep. Use wherever a line of info must not be missed
- * (caveats, deadlines, stakes).
- */
-export function ShimmerInfoCard({ icon = "alert", lead, children, className }: ShimmerInfoCardProps) {
+/** Bullet list under a lead — used by the KYC quick-check callout. */
+export function ShimmerInfoCheckList({ items }: { items: readonly string[] }) {
   return (
-    <div
-      className={cn(styles.next_step_shimmer_0, "next-step-shimmer",
-        className
-      )}
-    >
-      {icon === "alert" ? (
-        <span
-          aria-hidden
-          className={styles.h_4_0}
-          style={WARNING_ICON_MASK_STYLE}
-        />
-      ) : icon === "info" ? (
-        <span
-          aria-hidden
-          className={styles.h_5_1}
-          style={INFO_ICON_MASK_STYLE}
-        />
-      ) : icon === "clock" ? (
-        <span aria-hidden className={styles.clockIcon} style={CLOCK_ICON_MASK_STYLE} />
-      ) : null}
+    <ul className={styles.checkList}>
+      {items.map((item) => (
+        <li key={item}>{item}</li>
+      ))}
+    </ul>
+  );
+}
+
+/**
+ * Highlighted info callout: amber outline, soft gradient, shimmer sweep.
+ * Optional lead sits on its own line; body follows below. No icon.
+ */
+export function ShimmerInfoCard({ lead, children, className }: ShimmerInfoCardProps) {
+  return (
+    <div className={cn(styles.next_step_shimmer_0, "next-step-shimmer", className)}>
       <div className={styles.text_xs_3}>
-        {lead ? <span className={styles.font_semibold_4}>{lead} </span> : null}
-        {children}
+        {lead ? <p className={styles.lead}>{lead}</p> : null}
+        {children != null ? (
+          lead ? <div className={styles.body}>{children}</div> : children
+        ) : null}
       </div>
     </div>
   );

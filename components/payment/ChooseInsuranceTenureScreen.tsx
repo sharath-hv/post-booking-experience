@@ -264,6 +264,7 @@ export function ChooseInsuranceTenureScreen() {
       <InsuranceTenureCompareBottomSheet
         open={compareSheetOpen}
         onClose={() => setCompareSheetOpen(false)}
+        selectedAddonIds={addonIds}
       />
     </div>
   );

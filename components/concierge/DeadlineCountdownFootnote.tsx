@@ -65,7 +65,7 @@ export function DeadlineCountdownFootnote({
   const timeLeft = formatTimeLeft(deadlineAt == null ? durationMs : deadlineAt - now);
 
   return (
-    <ShimmerInfoCard icon="clock">
+    <ShimmerInfoCard>
       {copy}{" "}
       <span className={styles.timeLeft} aria-live="polite" aria-atomic="true">
         {timeLeft}

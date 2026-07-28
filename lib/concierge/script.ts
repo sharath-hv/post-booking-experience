@@ -148,7 +148,7 @@ export function getArrivalLeadPaid(flow: ExperienceFlow): string {
   return (isStandardDeliveryFlow(flow) ? STANDARD_ARRIVAL : EXPRESS_ARRIVAL).says[0]!;
 }
 
-const DEALER_SEARCH_FOOTNOTE_LEAD = "A quick heads-up:";
+const DEALER_SEARCH_FOOTNOTE_LEAD = "A quick heads-up";
 /** Fees kick in after this turn — once a partner is locked on the next step. */
 const DEALER_SEARCH_FOOTNOTE =
   "From the next step, changing your pick costs ₹5,000, and if you cancel, half your booking amount stays with us.";
