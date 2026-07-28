@@ -4,13 +4,16 @@ import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import {
+  INSURANCE_ADDONS_SECTION_HEADING,
   INSURANCE_CLAIMS_LINE,
   INSURANCE_COVERAGE_ITEMS,
   INSURANCE_COVERAGE_SHEET_TITLE,
   INSURANCE_COVER_HERO,
+  INSURANCE_OPTIONAL_ADDONS,
   INSURANCE_OWNED_SHEET_TITLE,
   INSURANCE_POLICY_FACTS,
   INSURANCE_TENURE_OPTIONS,
+  type InsuranceAddonId,
   type InsuranceCoverageItem,
   type InsuranceTenureId,
 } from "@/components/payment/insurance-coverage-content";
@@ -71,6 +74,8 @@ export type InsuranceCoverageBottomSheetProps = {
   mode?: "purchase" | "owned";
   /** Selected tenure — used in owned mode to show correct cover durations. Defaults to `"1+3"`. */
   tenure?: InsuranceTenureId;
+  /** Optional add-ons on the current quote / owned policy. */
+  selectedAddonIds?: readonly InsuranceAddonId[];
 };
 
 /**
@@ -82,6 +87,7 @@ export function InsuranceCoverageBottomSheet({
   onClose,
   mode = "purchase",
   tenure = "1+3",
+  selectedAddonIds = [],
 }: InsuranceCoverageBottomSheetProps) {
   const tenureOption = INSURANCE_TENURE_OPTIONS.find((o) => o.id === tenure) ?? INSURANCE_TENURE_OPTIONS[0];
   const policyFacts = INSURANCE_POLICY_FACTS.map((fact) => {
@@ -100,6 +106,8 @@ export function InsuranceCoverageBottomSheet({
   const [animateIn, setAnimateIn] = useState(false);
   const exitTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const owned = mode === "owned";
+  const selectedAddonSet = new Set(selectedAddonIds);
+  const selectedAddons = INSURANCE_OPTIONAL_ADDONS.filter((a) => selectedAddonSet.has(a.id));
 
   useEffect(() => {
     if (!open) return;
@@ -206,6 +214,20 @@ export function InsuranceCoverageBottomSheet({
                     <CoverageDetailRow key={item.title} {...item} />
                   ))}
                 </ul>
+
+                {selectedAddons.length > 0 ? (
+                  <div className={styles.addonsBlock}>
+                    <p className={styles.addonsHeading}>{INSURANCE_ADDONS_SECTION_HEADING}</p>
+                    <ul className={styles.addonsList}>
+                      {selectedAddons.map((addon) => (
+                        <li key={addon.id} className={styles.addonRow}>
+                          <p className={styles.addonTitle}>{addon.title}</p>
+                          <p className={styles.addonDetail}>{addon.detail}</p>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
 
                 {owned ? <ShimmerInfoCard icon="info">{INSURANCE_CLAIMS_LINE}</ShimmerInfoCard> : null}
               </div>

@@ -11,10 +11,10 @@ import { normalizeAppPathname } from "@/lib/journey-routes";
  * layer (timeline, receipts) and the delivery-date pill.
  *
  * Stage map (see docs/PLAN.md spine):
- * 0 paperwork — arrival through KYC
- * 1 exact car — dealer search → booking-accepted (OTP) / allocation-pending
- * 2 money — booking-confirmed (car reserved) through payment choose / finance
- * 3 delivery — insurance / RTO / schedule
+ * 0 paperwork — arrival through document upload
+ * 1 exact car — docs verified → dealer search → booking-accepted (OTP) / allocation-pending
+ * 2 money — booking-confirmed (car reserved) through payment choose / finance in flight
+ * 3 delivery — funds landed (or insurance / RTO / schedule)
  */
 export type PlanStepStatus = "done" | "now" | "todo";
 
@@ -24,6 +24,16 @@ export type JourneyStageStep = {
   detail: string;
   status: PlanStepStatus;
 };
+
+/** Payment beats where the car/loan funds are confirmed — money chapter is done. */
+function isMoneyChapterComplete(path: string): boolean {
+  return (
+    path === "/payment/loan-disbursement-received" ||
+    path === "/payment/full-cash-payment-confirmed" ||
+    path === "/payment/self-finance-transfer-confirmed" ||
+    path === "/payment/down-payment-insurance-setup"
+  );
+}
 
 /**
  * Engine/chassis are on the card from booking-confirmed onward
@@ -36,7 +46,13 @@ export function isVehicleIdentificationAvailable(pathname: string): boolean {
 /** 0 paperwork · 1 exact car · 2 money · 3 delivery. */
 export function resolveJourneyStageIndex(pathname: string): number {
   const path = normalizeAppPathname(pathname);
-  if (path.includes("car-delivery") || path.includes("insurance")) return 3;
+  if (
+    path.includes("car-delivery") ||
+    path.includes("insurance") ||
+    isMoneyChapterComplete(path)
+  ) {
+    return 3;
+  }
   if (path === "/payment/booking-success") return 0;
   if (path.startsWith("/payment")) return 2;
   // Car reserved (VIN on card) — exact-car chapter is done; money is next.
@@ -46,7 +62,10 @@ export function resolveJourneyStageIndex(pathname: string): number {
   if (
     path.startsWith("/car-allocation") ||
     path === "/kyc/processing" ||
-    path === "/kyc/booking-accepted"
+    path === "/kyc/booking-accepted" ||
+    // Docs verified (or verifying wrap) — paperwork done; exact-car is next.
+    path === "/kyc/documents-received" ||
+    path === "/kyc/verification-in-progress"
   ) {
     return 1;
   }
@@ -170,17 +189,11 @@ const STEP_COPY: readonly StepCopy[] = [
 /** Paperwork `now` detail — path-aware so it matches waiting-on-you vs on-track. */
 function paperworkNowDetail(pathname: string): string {
   const path = normalizeAppPathname(pathname);
-  if (
-    path === "/kyc/manual-verification" ||
-    path === "/kyc/verification-in-progress"
-  ) {
+  if (path === "/kyc/manual-verification") {
     return "Nothing needed from you. I'll update you when there's news.";
   }
   if (path === "/kyc/verification-failed") {
     return "Re-upload so I can try verifying again";
-  }
-  if (path === "/kyc/documents-received") {
-    return "I'm verifying your documents now";
   }
   return "Two minutes from you, Shivi files the rest";
 }
@@ -188,6 +201,12 @@ function paperworkNowDetail(pathname: string): string {
 /** "Your exact car" step, `now` state — path-aware so copy matches the turn. */
 function exactCarNowDetail(pathname: string, flow?: ExperienceFlow): string {
   const path = normalizeAppPathname(pathname);
+  if (path === "/kyc/documents-received") {
+    return "I'll line up dealers as soon as verification wraps";
+  }
+  if (path === "/kyc/verification-in-progress") {
+    return "I'm lining up dealers for your car now";
+  }
   if (path === "/kyc/booking-accepted") {
     return "Share the one-time code when our partner calls";
   }
@@ -221,12 +240,8 @@ function moneyNowDetail(pathname: string): string {
   }
   if (
     path === "/payment/down-payment-dealer-confirmed" ||
-    path === "/payment/loan-disbursement-received" ||
     path === "/payment/full-cash-payment-verification" ||
-    path === "/payment/full-cash-payment-confirmed" ||
-    path === "/payment/self-finance-transfer-verification" ||
-    path === "/payment/self-finance-transfer-confirmed" ||
-    path === "/payment/down-payment-insurance-setup"
+    path === "/payment/self-finance-transfer-verification"
   ) {
     return "Nothing needed from you right now";
   }
@@ -274,6 +289,7 @@ export type JourneyReceipt = {
 
 /** Paper trail by stage — what exists so far, oldest first. */
 export function getJourneyReceipts(pathname: string): JourneyReceipt[] {
+  const path = normalizeAppPathname(pathname);
   const stage = resolveJourneyStageIndex(pathname);
   const receipts: JourneyReceipt[] = [
     { title: "Booking amount receipt", meta: "₹10,000 · paid" },
@@ -281,8 +297,10 @@ export function getJourneyReceipts(pathname: string): JourneyReceipt[] {
   if (stage >= 2) {
     receipts.push({ title: "Proforma invoice", meta: "On-road price breakup" });
   }
-  if (stage >= 3) {
-    receipts.push({ title: "Insurance policy", meta: "ACKO Drive Shield · zero dep" });
+  // Policy only once the insurance / delivery chapter screens are in play —
+  // not merely because funds landed (stage 3).
+  if (path.includes("car-delivery") || path.includes("insurance")) {
+    receipts.push({ title: "Insurance policy", meta: "ACKO Drive Shield · your cover" });
   }
   return receipts;
 }

@@ -1,7 +1,7 @@
 "use client";
 
-import { useMemo } from "react";
-import { useSearchParams } from "next/navigation";
+import { useCallback, useMemo, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { AmountReceivedCard } from "@/components/concierge/artifacts";
 import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
@@ -11,7 +11,10 @@ import {
   BANK_DISBURSEMENT_INR,
   cashDownPaymentDueInr,
 } from "@/components/payment/loan-amount-demo-constants";
-import { PARTNER_DEALER_LABEL_CAPITALIZED } from "@/lib/dealer-attribution-content";
+import {
+  PARTNER_DEALER_LABEL,
+  PARTNER_DEALER_LABEL_CAPITALIZED,
+} from "@/lib/dealer-attribution-content";
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -28,11 +31,11 @@ function parseLoanAmount(raw: string | null): number {
 }
 
 /**
- * Dealer has confirmed the down payment — Shivi instructs the bank to disburse.
- * Bridges loan-sanctioned → loan-disbursement-received; the bank disbursement
- * is now in flight (AmountReceivedCard in "processing" state).
+ * After the user pays the down payment: first confirm with the dealer (hours),
+ * then instruct the bank to disburse. Bridges loan-sanctioned → loan-disbursement-received.
  */
 export function LoanDealerDownPaymentConfirmedScreen() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const bankId = searchParams.get("bank");
   const bank = useMemo(() => bankForQueryParam(bankId), [bankId]);
@@ -40,10 +43,31 @@ export function LoanDealerDownPaymentConfirmedScreen() {
     () => parseLoanAmount(searchParams.get("loan_amount")),
     [searchParams],
   );
+  const [dealerConfirmed, setDealerConfirmed] = useState(false);
 
   const downPaymentInr = useMemo(() => cashDownPaymentDueInr(loanAmountInr), [loanAmountInr]);
 
-  const says = useMemo(
+  const onBack = useCallback(() => {
+    // Same-URL two-beat turn — don't skip the checking state via history.
+    if (dealerConfirmed) {
+      setDealerConfirmed(false);
+      return;
+    }
+    const params = new URLSearchParams();
+    if (bankId) params.set("bank", bankId);
+    const qs = params.toString();
+    router.replace(qs ? `/payment/loan-sanctioned?${qs}` : "/payment/loan-sanctioned");
+  }, [bankId, dealerConfirmed, router]);
+
+  const waitingSays = useMemo(
+    () => [
+      "I'm checking your down payment with the dealer, Sharath.",
+      `Confirming the details with ${PARTNER_DEALER_LABEL} usually takes 2-3 hours. Once they confirm, I'll ask ${bank.name} to release the loan.`,
+    ],
+    [bank.name],
+  );
+
+  const confirmedSays = useMemo(
     () => [
       "Down payment confirmed.",
       `${PARTNER_DEALER_LABEL_CAPITALIZED} confirmed your ${formatInr(downPaymentInr)}. All good on my end.`,
@@ -61,21 +85,46 @@ export function LoanDealerDownPaymentConfirmedScreen() {
 
   return (
     <ConciergeTurnShell
-      says={says}
-      artifact={
-        <AmountReceivedCard
-          amountInr={loanAmountInr}
-          title={`${bank.name} disbursement · in progress`}
-          status="processing"
-          variant="glass"
-          rows={[
-            { label: "Down payment confirmed", value: formatInr(downPaymentInr) },
-            { label: "Releasing to", value: PARTNER_DEALER_LABEL_CAPITALIZED },
-          ]}
-          note="Typically completes within 1–2 business days."
-        />
+      key={dealerConfirmed ? "dp-confirmed" : "dp-checking"}
+      says={dealerConfirmed ? confirmedSays : waitingSays}
+      workingBeforeArtifact={!dealerConfirmed}
+      working={
+        dealerConfirmed
+          ? undefined
+          : {
+              mode: "ongoing",
+              lines: [
+                "Reaching out to our dealer partner",
+                "Verifying they've received your payment",
+              ],
+              etaLabel: "Usually 2-3 hours. I'll message you when it's confirmed.",
+            }
       }
-      timeSkip={{ label: "Once the bank disburses", href: disbursementReceivedHref }}
+      artifact={
+        dealerConfirmed ? (
+          <AmountReceivedCard
+            amountInr={loanAmountInr}
+            title={`${bank.name} disbursement · in progress`}
+            status="processing"
+            variant="glass"
+            rows={[
+              { label: "Down payment confirmed", value: formatInr(downPaymentInr) },
+              { label: "Releasing to", value: PARTNER_DEALER_LABEL_CAPITALIZED },
+            ]}
+            note="Typically completes within 1-2 business days."
+          />
+        ) : null
+      }
+      timeSkip={
+        dealerConfirmed
+          ? { label: "Once the bank disburses", href: disbursementReceivedHref }
+          : {
+              label: "Dealer confirmed down payment",
+              onSelect: () => setDealerConfirmed(true),
+            }
+      }
+      dateHolder="shivi"
+      onBack={onBack}
       callLabel="Questions? I can call you"
       showMenu
     />

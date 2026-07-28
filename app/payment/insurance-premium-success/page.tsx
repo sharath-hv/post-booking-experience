@@ -36,6 +36,7 @@ function InsurancePremiumSuccessInner() {
         bank: searchParams.get("bank"),
         loanAmount: searchParams.get("loan_amount"),
         tenure: searchParams.get("tenure"),
+        addons: searchParams.get("addons"),
       }),
     };
   }, [searchParams]);

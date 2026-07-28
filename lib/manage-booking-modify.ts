@@ -105,6 +105,7 @@ const CAR_PAYMENT_STARTED_PATHS = new Set<string>([
   "/payment/loan-disbursement-received",
   "/payment/margin-money-slip",
   "/payment/pay-insurance-premium",
+  "/payment/insurance-addons",
   "/payment/choose-insurance-tenure",
   "/payment/insurance-premium-success",
   "/payment/car-delivery-schedule",

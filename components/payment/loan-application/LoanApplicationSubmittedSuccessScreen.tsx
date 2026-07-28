@@ -75,7 +75,8 @@ export function LoanApplicationSubmittedSuccessScreen() {
               Loan application submitted
             </h1>
             <p className={styles.max_w_sm_9}>
-              I&apos;ve sent it to {bank.name}. I&apos;ll chase the review and keep you posted.
+              I&apos;m reviewing your application now, then I&apos;ll forward it to{" "}
+              {bank.name}. I&apos;ll keep you posted as it moves.
             </p>
           </div>
         </div>

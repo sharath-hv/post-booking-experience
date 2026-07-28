@@ -102,6 +102,8 @@ export type ConciergeTurnShellProps = ConciergeTurn & {
   onContentShown?: () => void;
   /** Hide the back chevron on moments that shouldn't rewind (e.g. arrival). */
   hideBack?: boolean;
+  /** Override default `router.back()` (e.g. step within a same-URL multi-beat turn). */
+  onBack?: () => void;
   /** Nav menu opening the manage sheet (change selection / cancel entry points). */
   showMenu?: boolean;
   /** Manage sheet — show engine/chassis rows post-allocation. */
@@ -314,6 +316,7 @@ export function ConciergeTurnShell({
   footerExtra,
   onContentShown,
   hideBack = false,
+  onBack,
   showMenu = true,
   manageShowVehicleIdentification,
   children,
@@ -410,6 +413,7 @@ export function ConciergeTurnShell({
       >
       <KycTopNavHeader
         transparent
+        onBack={onBack}
         className={hideBack ? styles._div_first_of_type_butto_9 : undefined}
       />
 

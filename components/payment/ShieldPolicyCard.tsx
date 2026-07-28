@@ -1,25 +1,37 @@
 "use client";
 
 import Image from "next/image";
-import { useState, type CSSProperties } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import ackoLogo from "@/assets/ACKO logo.svg";
-import arrowRightIcon from "@/assets/Arrow_right.svg";
 import { InsuranceCoverageBottomSheet } from "@/components/payment/InsuranceCoverageBottomSheet";
-import styles from "./ShieldPolicyCard.module.scss";
-
-const FOOTER_ARROW_MASK_STYLE = {
-  maskImage: `url(${arrowRightIcon.src})`,
-  WebkitMaskImage: `url(${arrowRightIcon.src})`,
-} satisfies CSSProperties;
-
 import {
   INSURANCE_CARD_HIGHLIGHTS,
   INSURANCE_COVER_HERO,
-  INSURANCE_PREMIUM_INR,
+  INSURANCE_BASE_PREMIUM_INR,
+  INSURANCE_OPTIONAL_ADDONS,
+  INSURANCE_POLICY_NUMBER,
   INSURANCE_TENURE_OPTIONS,
+  type InsuranceAddonId,
   type InsuranceTenureId,
 } from "@/components/payment/insurance-coverage-content";
+import styles from "./ShieldPolicyCard.module.scss";
+
+/** Stub download — replace with a real policy PDF URL when available. */
+function triggerDemoPolicyDownload() {
+  const blob = new Blob(
+    [`ACKO Drive Shield policy (demo)\nPolicy number: ${INSURANCE_POLICY_NUMBER}\n`],
+    { type: "text/plain;charset=utf-8" },
+  );
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "acko-drive-shield-policy-demo.txt";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -54,6 +66,10 @@ export type ShieldPolicyCardProps = {
   mode: "quote" | "active";
   /** Selected tenure — determines cover durations shown in active mode. Defaults to `"1+3"`. */
   tenure?: InsuranceTenureId;
+  /** Live quote premium (base + selected add-ons). Defaults to base Shield. */
+  premiumInr?: number;
+  /** Optional add-ons on this quote / policy — drives subtitle + coverage sheet. */
+  selectedAddonIds?: readonly InsuranceAddonId[];
 };
 
 /**
@@ -61,11 +77,48 @@ export type ShieldPolicyCardProps = {
  * fact panel; coverage rows stay scannable. Same facts for quote and active
  * so the card “becomes yours” after payment.
  */
-export function ShieldPolicyCard({ mode, tenure = "1+3" }: ShieldPolicyCardProps) {
+export function ShieldPolicyCard({
+  mode,
+  tenure = "1+3",
+  premiumInr = INSURANCE_BASE_PREMIUM_INR,
+  selectedAddonIds = [],
+}: ShieldPolicyCardProps) {
   const [sheetOpen, setSheetOpen] = useState(false);
   const isActive = mode === "active";
   const tenureOption = INSURANCE_TENURE_OPTIONS.find((o) => o.id === tenure) ?? INSURANCE_TENURE_OPTIONS[0];
   const odYears = tenureOption.ownDamageYears;
+  const selectedAddonCount = selectedAddonIds.length;
+  const quoteSubtitle =
+    selectedAddonCount > 0
+      ? `Built for your new Creta · ${selectedAddonCount} add-on${selectedAddonCount === 1 ? "" : "s"}`
+      : "Built for your new Creta";
+  const activeSubtitle =
+    selectedAddonCount > 0
+      ? `${odYears} year Zero depreciation · ${selectedAddonCount} add-on${selectedAddonCount === 1 ? "" : "s"}`
+      : `${odYears} year Zero depreciation cover for your Creta`;
+
+  const highlightRows = useMemo(() => {
+    const selected = new Set(selectedAddonIds);
+    const addonRows = INSURANCE_OPTIONAL_ADDONS.filter((addon) => selected.has(addon.id)).map(
+      (addon) => ({
+        title: addon.title,
+        detail: addon.detail,
+      }),
+    );
+    return [...INSURANCE_CARD_HIGHLIGHTS, ...addonRows];
+  }, [selectedAddonIds]);
+
+  const onDownloadPolicy = useCallback(() => {
+    triggerDemoPolicyDownload();
+  }, []);
+
+  const idvPanel = (
+    <div className={styles.idvPanel}>
+      <p className={styles.idvEyebrow}>{INSURANCE_COVER_HERO.eyebrow}</p>
+      <p className={styles.idvValue}>{INSURANCE_COVER_HERO.value}</p>
+      <p className={styles.idvCaption}>{INSURANCE_COVER_HERO.caption}</p>
+    </div>
+  );
 
   return (
     <>
@@ -89,9 +142,7 @@ export function ShieldPolicyCard({ mode, tenure = "1+3" }: ShieldPolicyCardProps
               ) : null}
               <p className={styles.title}>ACKO Drive Shield</p>
               <p className={styles.subtitle}>
-                {isActive
-                  ? `${odYears} year Zero depreciation cover for your Creta`
-                  : "Built for your new Creta"}
+                {isActive ? activeSubtitle : quoteSubtitle}
               </p>
             </div>
             <div className={styles.logoWrap}>
@@ -109,15 +160,17 @@ export function ShieldPolicyCard({ mode, tenure = "1+3" }: ShieldPolicyCardProps
           {!isActive ? (
             <div className={styles.priceBlock}>
               <div className={styles.brandCopy}>
-                <p className={styles.price}>{formatInr(INSURANCE_PREMIUM_INR)}</p>
+                <p className={styles.price}>{formatInr(premiumInr)}</p>
               </div>
             </div>
           ) : null}
         </div>
 
         <div className={styles.body}>
+          {isActive ? idvPanel : null}
+
           <ul className={styles.highlights}>
-            {INSURANCE_CARD_HIGHLIGHTS.map((row) => (
+            {highlightRows.map((row) => (
               <li key={row.title} className={styles.highlightRow}>
                 <span className={styles.checkIcon} aria-hidden>
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
@@ -138,22 +191,30 @@ export function ShieldPolicyCard({ mode, tenure = "1+3" }: ShieldPolicyCardProps
             ))}
           </ul>
 
-          <div className={styles.idvPanel}>
-            <p className={styles.idvEyebrow}>{INSURANCE_COVER_HERO.eyebrow}</p>
-            <p className={styles.idvValue}>{INSURANCE_COVER_HERO.value}</p>
-            <p className={styles.idvCaption}>{INSURANCE_COVER_HERO.caption}</p>
-          </div>
+          {!isActive ? idvPanel : null}
         </div>
 
-        <div className={styles.footer}>
-          <button
-            type="button"
-            onClick={() => setSheetOpen(true)}
-            className={["tertiary-cta", styles.footerCta].filter(Boolean).join(" ")}
-          >
-            {isActive ? "View policy" : "See detailed coverage"}
-            <span className={styles.footerArrow} style={FOOTER_ARROW_MASK_STYLE} aria-hidden />
-          </button>
+        <div className={styles.footerActive}>
+          {isActive ? (
+            <div className={styles.policyMeta}>
+              <p className={styles.policyValue}>{INSURANCE_POLICY_NUMBER}</p>
+              <button
+                type="button"
+                onClick={onDownloadPolicy}
+                className={["tertiary-cta", styles.footerCta].filter(Boolean).join(" ")}
+              >
+                Download policy
+              </button>
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setSheetOpen(true)}
+              className={["tertiary-cta", styles.footerCtaLeft].filter(Boolean).join(" ")}
+            >
+              See coverage
+            </button>
+          )}
         </div>
       </section>
 
@@ -162,6 +223,7 @@ export function ShieldPolicyCard({ mode, tenure = "1+3" }: ShieldPolicyCardProps
         onClose={() => setSheetOpen(false)}
         mode={mode === "active" ? "owned" : "purchase"}
         tenure={tenure}
+        selectedAddonIds={selectedAddonIds}
       />
     </>
   );

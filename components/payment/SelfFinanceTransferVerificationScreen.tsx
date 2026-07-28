@@ -1,12 +1,13 @@
 "use client";
 
-import { useMemo } from "react";
-import { useSearchParams } from "next/navigation";
+import { useCallback, useMemo } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { AmountReceivedCard } from "@/components/concierge/artifacts";
 import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
 import { SELF_FINANCE_LOAN_DEFAULT_INR } from "@/components/payment/loan-amount-demo-constants";
 import { PARTNER_DEALER_LABEL, PARTNER_DEALER_LABEL_CAPITALIZED } from "@/lib/dealer-attribution-content";
+import { buildMarginMoneySlipActionHref } from "@/lib/paymentUrls";
 
 
 function formatInr(amount: number) {
@@ -28,7 +29,10 @@ function parseLoanAmount(raw: string | null): number {
  * Shown after the user confirms the bank has transferred the loan amount.
  */
 export function SelfFinanceTransferVerificationScreen() {
+  const router = useRouter();
   const searchParams = useSearchParams();
+  const bank = searchParams.get("bank");
+  const originalDownPayment = searchParams.get("original_down_payment");
   const loanAmountInr = useMemo(
     () => parseLoanAmount(searchParams.get("loan_amount")),
     [searchParams],
@@ -47,6 +51,21 @@ export function SelfFinanceTransferVerificationScreen() {
     [loanAmountInr],
   );
 
+  const onBack = useCallback(() => {
+    // Land on slip-ready beat, not the dealer-check wait.
+    router.replace(
+      buildMarginMoneySlipActionHref({
+        bank,
+        loanAmount: String(loanAmountInr),
+        originalDownPaymentInr:
+          originalDownPayment != null && Number.isFinite(Number(originalDownPayment))
+            ? Number(originalDownPayment)
+            : null,
+        slipReady: true,
+      }),
+    );
+  }, [bank, loanAmountInr, originalDownPayment, router]);
+
   return (
     <ConciergeTurnShell
       says={says}
@@ -62,6 +81,7 @@ export function SelfFinanceTransferVerificationScreen() {
         />
       }
       timeSkip={{ label: "Once dealer confirms", href: nextHref }}
+      onBack={onBack}
       callLabel="Questions? I can call you"
       showMenu
     />
