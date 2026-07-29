@@ -124,7 +124,9 @@ export function CarDeliveryScheduleScreen() {
     const nextFlow = readExperienceFlow();
     setFlow(nextFlow);
     const nextDays = nextFlow === "standard" ? STANDARD_DAYS : EXPRESS_DAYS;
-    setDay((current) => (current != null && nextDays.includes(current) ? current : nextDays[0]));
+    setDay((current) =>
+      current != null && nextDays.some((d) => d === current) ? current : nextDays[0]
+    );
   }, []);
 
   const days = flow === "standard" ? STANDARD_DAYS : EXPRESS_DAYS;
