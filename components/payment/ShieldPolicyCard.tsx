@@ -183,7 +183,7 @@ export function ShieldPolicyCard({
             </div>
           ) : (
             <p className={styles.footerQuote}>
-              <span className={styles.footerContext}>Curious what's covered?</span>
+              <span className={styles.footerContext}>Curious what&apos;s covered?</span>
               <button
                 type="button"
                 onClick={() => setSheetOpen(true)}
