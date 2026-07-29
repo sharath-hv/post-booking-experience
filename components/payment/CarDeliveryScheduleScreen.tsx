@@ -116,12 +116,15 @@ function WindowChips({
  */
 export function CarDeliveryScheduleScreen() {
   const [flow, setFlow] = useState<ExperienceFlow>(DEFAULT_EXPERIENCE_FLOW);
-  const [day, setDay] = useState<string | null>(null);
+  const [day, setDay] = useState<string | null>(EXPRESS_DAYS[0]);
   const [windowSlot, setWindowSlot] = useState<string | null>(null);
   const [scheduled, setScheduled] = useState(false);
 
   useEffect(() => {
-    setFlow(readExperienceFlow());
+    const nextFlow = readExperienceFlow();
+    setFlow(nextFlow);
+    const nextDays = nextFlow === "standard" ? STANDARD_DAYS : EXPRESS_DAYS;
+    setDay((current) => (current != null && nextDays.includes(current) ? current : nextDays[0]));
   }, []);
 
   const days = flow === "standard" ? STANDARD_DAYS : EXPRESS_DAYS;
