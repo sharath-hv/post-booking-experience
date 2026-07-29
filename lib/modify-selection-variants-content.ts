@@ -125,7 +125,7 @@ export const MODIFY_SELECTION_VARIANT_COLOUR_SCREEN_SUBLINE =
 
 export const MODIFY_SELECTION_VARIANT_CONFIRM_PATH = "/kyc/modify-selection/variant/confirm";
 
-export const MODIFY_SELECTION_VARIANT_CONFIRM_TITLE = "Ready to lock this in?";
+export const MODIFY_SELECTION_VARIANT_CONFIRM_TITLE = "Confirm your changes";
 
 export const MODIFY_SELECTION_VARIANT_CONFIRM_SUBLINE =
   "Your ₹10,000 price lock carries forward — I'll adjust anything extra. Delivery may shift with the variant you pick.";

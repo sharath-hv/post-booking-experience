@@ -13,9 +13,7 @@ import {
 import { BookingProcessingScreen } from "@/components/organisms/BookingProcessingScreen";
 import { KYC_ASSETS } from "@/lib/kyc-assets";
 import { useFullPaymentJourney } from "@/components/payment/use-full-payment-journey";
-import { RtoRegistrationStatusCard } from "@/components/payment/RtoRegistrationStatusCard";
 import { CAR_SOURCE_DETAIL, CAR_SOURCE_NAME } from "@/lib/dealer-attribution-content";
-import styles from "./CarDeliveryRtoPrepScreen.module.scss";
 
 const HEADLINE = "Your file is at the RTO, Sharath.";
 const SUBLINE =
@@ -37,18 +35,15 @@ export function CarDeliveryRtoPrepScreen() {
       prefetchHref={withBank("/payment/car-delivery-schedule")}
       nextCtaLabel="Next"
       heroSummaryCard={
-        <div className={styles.flex_0}>
-          <RtoRegistrationStatusCard />
-          <CarSummaryCardLite
-            title={BOOKING_CAR_TITLE}
-            variant={BOOKING_CAR_VARIANT}
-            colour={BOOKING_CAR_COLOR}
-            dealerName={CAR_SOURCE_NAME}
-            dealerDetail={CAR_SOURCE_DETAIL}
-            engineNo={DEMO_VEHICLE_ENGINE_NO}
-            chassisNo={DEMO_VEHICLE_CHASSIS_NO}
-          />
-        </div>
+        <CarSummaryCardLite
+          title={BOOKING_CAR_TITLE}
+          variant={BOOKING_CAR_VARIANT}
+          colour={BOOKING_CAR_COLOR}
+          dealerName={CAR_SOURCE_NAME}
+          dealerDetail={CAR_SOURCE_DETAIL}
+          engineNo={DEMO_VEHICLE_ENGINE_NO}
+          chassisNo={DEMO_VEHICLE_CHASSIS_NO}
+        />
       }
       manageBookingShowVehicleIdentification
     />

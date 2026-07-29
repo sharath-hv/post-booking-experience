@@ -12,6 +12,7 @@ import {
   formatModifySelectionInrSigned,
   MODIFY_SELECTION_OTHER_CHARGES_LINE_ITEMS,
   MODIFY_SELECTION_REVIEW_PAY_ACKO_DRIVE_PRICE_LABEL,
+  MODIFY_SELECTION_REVIEW_PAY_CAR_PRICE_HINT,
   type ModifySelectionReviewPaySummary,
 } from "@/lib/modify-selection-review-pay-content";
 
@@ -72,10 +73,7 @@ export function ModifySelectionReviewPaymentSummary({
   const [totalDiscountOpen, setTotalDiscountOpen] = useState(false);
 
   return (
-    <section
-      className={styles.section}
-      aria-labelledby="modify-selection-car-price-heading"
-    >
+    <section aria-labelledby="modify-selection-car-price-heading">
       <div className={cn(styles.card, MODIFY_SELECTION_SUMMARY_CARD_CLASS)}>
         <button
           type="button"
@@ -83,13 +81,13 @@ export function ModifySelectionReviewPaymentSummary({
           onClick={() => setBreakupOpen((open) => !open)}
           aria-expanded={breakupOpen}
         >
-          <span
-            id="modify-selection-car-price-heading"
-            className={styles.summaryLabel}
-          >
-            {MODIFY_SELECTION_REVIEW_PAY_ACKO_DRIVE_PRICE_LABEL}
-          </span>
-          <span className={styles.summaryAmountWrap}>
+          <span className={styles.summaryTopRow}>
+            <span
+              id="modify-selection-car-price-heading"
+              className={styles.summaryLabel}
+            >
+              {MODIFY_SELECTION_REVIEW_PAY_ACKO_DRIVE_PRICE_LABEL}
+            </span>
             <span className={styles.summaryAmount}>
               {formatModifySelectionInr(summary.ackoDrivePriceInr)}
             </span>
@@ -98,6 +96,9 @@ export function ModifySelectionReviewPaymentSummary({
               aria-hidden
               strokeWidth={2}
             />
+          </span>
+          <span className={styles.summaryHint}>
+            {MODIFY_SELECTION_REVIEW_PAY_CAR_PRICE_HINT}
           </span>
         </button>
 

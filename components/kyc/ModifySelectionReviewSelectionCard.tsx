@@ -9,7 +9,6 @@ import { BOOKING_CAR_TITLE, BOOKING_CAR_VARIANT } from "@/lib/booking-car-card-c
 import {
   BOOKING_EXPRESS_DELIVERY_TEXT_CLASS,
   BOOKING_STANDARD_DELIVERY_TEXT_CLASS,
-  splitBookingDeliveryLine,
 } from "@/lib/experience-flow-content";
 import { getModifySelectionCarCutoutForColour } from "@/lib/modify-selection-car-cutouts";
 import { cn } from "@/lib/utils";
@@ -71,7 +70,6 @@ export function ModifySelectionReviewSelectionCard({
 }: ModifySelectionReviewSelectionCardProps) {
   const titleLabel = carTitle ?? BOOKING_CAR_TITLE;
   const variantLabel = carVariant ?? BOOKING_CAR_VARIANT;
-  const deliveryParts = splitBookingDeliveryLine(deliveryLine);
   const deliveryTextClass = isExpressDelivery
     ? BOOKING_EXPRESS_DELIVERY_TEXT_CLASS
     : BOOKING_STANDARD_DELIVERY_TEXT_CLASS;
@@ -137,14 +135,7 @@ export function ModifySelectionReviewSelectionCard({
         <div className={styles.mt_2_16}>
           <span className={styles.shrink_0_13}>Delivery:</span>
           <span className={cn(styles.text_xs_18, deliveryTextClass)}>
-            {deliveryParts ? (
-              <>
-                {deliveryParts.prefix}
-                <span className={styles.font_semibold_17}>{deliveryParts.date}</span>
-              </>
-            ) : (
-              deliveryLine
-            )}
+            {deliveryLine}
           </span>
           {showDeliveryEdit ? (
             <EditLinkButton label="Change delivery" onClick={onEditDelivery} />
