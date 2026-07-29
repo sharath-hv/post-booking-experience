@@ -4,7 +4,7 @@ import Image, { type StaticImageData } from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useState, type ReactNode } from "react";
 
-import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
+import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
 import { writeChangeEntryStage } from "@/lib/change-policy";
 import { writeConciergeEcho } from "@/lib/concierge/echo";
 import { writeExperienceFlow } from "@/lib/experience-flow";

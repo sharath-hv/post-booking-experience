@@ -4,8 +4,8 @@ import { useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 
 import moneyRoundIcon from "@/assets/Money round.svg";
-import { AmountReceivedCard, NextStepCard } from "@/components/concierge/artifacts";
-import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
+import { AmountReceivedCard, NextStepCard } from "@/components/organisms/artifacts";
+import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
 import styles from "./FullPaymentConfirmedScreen.module.scss";
 
 import {
@@ -13,7 +13,7 @@ import {
   FULL_PAYMENT_CAR_AMOUNT_INR,
   FULL_PAYMENT_INSURANCE_INR,
   ON_ROAD_PRICE_INR,
-} from "@/components/payment/loan-amount-demo-constants";
+} from "@/lib/loan-amount-demo-constants";
 import {
   PARTNER_DEALER_LABEL,
   PARTNER_DEALER_LABEL_CAPITALIZED,

@@ -2,7 +2,7 @@ import {
   BOOKING_CAR_COLOR,
   BOOKING_CAR_TITLE,
   BOOKING_CAR_VARIANT,
-} from "@/components/kyc/booking-car-card-content";
+} from "@/lib/booking-car-card-content";
 import type { ExperienceFlow } from "@/lib/experience-flow";
 import { isStandardDeliveryFlow } from "@/lib/experience-flow-content";
 import { getDeliveryDateShort, getVehicleUpdateDateFull } from "@/lib/journey-stage";

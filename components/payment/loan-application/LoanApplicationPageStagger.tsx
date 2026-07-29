@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 
-import { PaymentSuccessStagger } from "@/components/ui/stagger-container";
+import { RevealStagger } from "@/components/molecules/stagger-container";
 
 type LoanApplicationPageStaggerProps = {
   children: ReactNode;
@@ -17,8 +17,8 @@ export function LoanApplicationPageStagger({
   delayMs,
 }: LoanApplicationPageStaggerProps) {
   return (
-    <PaymentSuccessStagger className={className} delay={delayMs / 1000}>
+    <RevealStagger className={className} delay={delayMs / 1000}>
       {children}
-    </PaymentSuccessStagger>
+    </RevealStagger>
   );
 }

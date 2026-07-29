@@ -4,9 +4,9 @@ import Image from "next/image";
 import { useCallback, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { ModifySelectionPageHeading } from "@/components/kyc/ModifySelectionPageHeading";
-import { ModifySelectionScreenHeader } from "@/components/kyc/ModifySelectionScreenHeader";
-import { modifySelectionSelectableCardClassName } from "@/components/kyc/modify-selection-option-card-ui";
+import { PageLeadHeading } from "@/components/organisms/PageLeadHeading";
+import { StandaloneScreenHeader } from "@/components/organisms/StandaloneScreenHeader";
+import { modifySelectionSelectableCardClassName } from "@/components/molecules/modify-selection-option-card-ui";
 import { InsuranceTenureCompareBottomSheet } from "@/components/payment/InsuranceTenureCompareBottomSheet";
 import { PAYMENT_CHOOSE_ASSETS } from "@/components/payment/payment-choose-assets";
 import {
@@ -191,11 +191,11 @@ export function ChooseInsuranceTenureScreen() {
 
   return (
     <div className={MODIFY_SELECTION_PAGE_SHELL_CLASS}>
-      <ModifySelectionScreenHeader />
+      <StandaloneScreenHeader />
 
       <main className={styles.main}>
         <header className={styles.lead}>
-          <ModifySelectionPageHeading
+          <PageLeadHeading
             title={INSURANCE_TENURE_SCREEN_TITLE}
             subline={subline}
             titleDelayMs={STAGGER_TITLE_MS}

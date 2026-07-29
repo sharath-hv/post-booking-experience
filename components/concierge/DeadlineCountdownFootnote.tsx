@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { ShimmerInfoCard } from "@/components/ui/ShimmerInfoCard";
+import { ShimmerInfoCard } from "@/components/molecules/ShimmerInfoCard";
 import styles from "./DeadlineCountdownFootnote.module.scss";
 
 const TICK_MS = 1_000;

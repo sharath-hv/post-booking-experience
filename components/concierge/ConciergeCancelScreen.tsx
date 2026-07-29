@@ -3,9 +3,9 @@
 import { useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { AmountReceivedCard } from "@/components/concierge/artifacts";
-import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
-import { CancelBookingReasonBottomSheet } from "@/components/kyc/CancelBookingReasonBottomSheet";
+import { AmountReceivedCard } from "@/components/organisms/artifacts";
+import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
+import { CancelBookingReasonBottomSheet } from "@/components/organisms/CancelBookingReasonBottomSheet";
 import { MODIFY_BOOKING_CANCEL_FEE_INR } from "@/lib/manage-booking-modify";
 import { BOOKING_LOCK_AMOUNT_INR } from "@/lib/paymentUrls";
 

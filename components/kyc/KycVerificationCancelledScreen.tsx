@@ -9,17 +9,17 @@ import infoIcon from "@/assets/Info.svg";
 import kycFailedHero from "@/assets/KYC failed.svg";
 import menuIcon from "@/assets/menu.svg";
 import { KYC_VERIFICATION_CANCELLED_COPY } from "@/components/kyc/kyc-verification-cancelled-content";
-import { GetHelpPillButton } from "@/components/kyc/GetHelpPillButton";
-import { KycTopNavHeader } from "@/components/kyc/KycTopNavHeader";
-import { ManageBookingBottomSheet } from "@/components/kyc/ManageBookingBottomSheet";
-import { WordByWordLine } from "@/components/payment/WordByWordLine";
-import { AuroraLightLayer } from "@/components/ui/aurora-light-layer";
+import { GetHelpPillButton } from "@/components/molecules/GetHelpPillButton";
+import { TopNavHeader } from "@/components/organisms/TopNavHeader";
+import { ManageBookingBottomSheet } from "@/components/organisms/ManageBookingBottomSheet";
+import { WordByWordLine } from "@/components/molecules/WordByWordLine";
+import { AuroraLightLayer } from "@/components/atoms/aurora-light-layer";
 import styles from "./KycVerificationCancelledScreen.module.scss";
 
 import {
   HERO_ACTION_HEADLINE_SUBLINE_GAP_CLASS,
   HERO_ILLUSTRATION_TO_COPY_MT,
-} from "@/components/ui/success-screen-layout";
+} from "@/lib/layout/success-screen-layout";
 
 const HEADLINE_WORD_DELAY_MS = 135;
 const HERO_FADE_DURATION_CLASS = styles.heroFadeDuration;
@@ -85,7 +85,7 @@ export function KycVerificationCancelledScreen() {
         <div
           className={cn(styles.kyc_pending_hero_card_0, "kyc-pending-hero-card", HERO_MIN_HEIGHT)}
         >
-          <KycTopNavHeader
+          <TopNavHeader
             transparent
             endSlot={
               <div className={styles.flex_5}>

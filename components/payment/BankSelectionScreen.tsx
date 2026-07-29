@@ -3,9 +3,9 @@
 import { useCallback, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { ShiviCallSheet } from "@/components/concierge/ShiviCallSheet";
-import { GetHelpPillButton } from "@/components/kyc/GetHelpPillButton";
-import { KycTopNavHeader } from "@/components/kyc/KycTopNavHeader";
+import { ShiviCallSheet } from "@/components/organisms/ShiviCallSheet";
+import { GetHelpPillButton } from "@/components/molecules/GetHelpPillButton";
+import { TopNavHeader } from "@/components/organisms/TopNavHeader";
 import { BankLoanCard } from "@/components/payment/BankLoanCard";
 import { BankLoanDetailBottomSheet } from "@/components/payment/BankLoanDetailBottomSheet";
 import { BANK_LOAN_TERMS, bankLoanTermsForId } from "@/components/payment/bank-loan-terms";
@@ -63,8 +63,9 @@ export function BankSelectionScreen() {
 
   return (
     <div className={styles.min_h_dvh_0}>
-      <KycTopNavHeader
+      <TopNavHeader
         surface="white"
+        solid
         endSlot={<GetHelpPillButton onClick={() => setCallSheetOpen(true)} />}
       />
 

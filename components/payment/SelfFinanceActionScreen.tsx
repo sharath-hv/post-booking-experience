@@ -2,10 +2,10 @@
 
 import { useMemo } from "react";
 
-import { KycBookingProcessingScreen } from "@/components/kyc/KycBookingProcessingScreen";
+import { BookingProcessingScreen } from "@/components/organisms/BookingProcessingScreen";
 import { PAYMENT_CHOOSE_ASSETS } from "@/components/payment/payment-choose-assets";
 import { ProformaInvoiceCard } from "@/components/payment/ProformaInvoiceCard";
-import { ShimmerInfoCard } from "@/components/ui/ShimmerInfoCard";
+import { ShimmerInfoCard } from "@/components/molecules/ShimmerInfoCard";
 import styles from "./SelfFinanceActionScreen.module.scss";
 
 
@@ -34,7 +34,7 @@ export function SelfFinanceActionScreen() {
   );
 
   return (
-    <KycBookingProcessingScreen
+    <BookingProcessingScreen
       headline={HEADLINE_LINE_1}
       headlineLine2={HEADLINE_LINE_2}
       subline={SUBLINE}

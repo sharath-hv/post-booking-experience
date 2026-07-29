@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { ChevronUp } from "lucide-react";
 
-import { MODIFY_SELECTION_SUMMARY_CARD_CLASS } from "@/components/kyc/modify-selection-option-card-ui";
+import { MODIFY_SELECTION_SUMMARY_CARD_CLASS } from "@/components/molecules/modify-selection-option-card-ui";
 import styles from "./ModifySelectionReviewPaymentSummary.module.scss";
 import { cn } from "@/lib/utils";
 

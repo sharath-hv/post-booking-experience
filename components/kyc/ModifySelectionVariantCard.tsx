@@ -5,8 +5,8 @@ import Image from "next/image";
 import {
   ModifySelectionRadioIndicator,
   modifySelectionSelectableCardClassName,
-} from "@/components/kyc/modify-selection-option-card-ui";
-import { BOOKING_CONFIRMED_ASSETS } from "@/components/kyc/kyc-booking-confirmed-assets";
+} from "@/components/molecules/modify-selection-option-card-ui";
+import { BOOKING_CONFIRMED_ASSETS } from "@/lib/kyc-booking-confirmed-assets";
 import {
   BOOKING_EXPRESS_DELIVERY_TEXT_CLASS,
   BOOKING_STANDARD_DELIVERY_TEXT_CLASS,

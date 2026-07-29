@@ -3,9 +3,9 @@
 import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 
-import { AmountReceivedCard, NextStepCard } from "@/components/concierge/artifacts";
-import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
-import { SELF_FINANCE_LOAN_DEFAULT_INR } from "@/components/payment/loan-amount-demo-constants";
+import { AmountReceivedCard, NextStepCard } from "@/components/organisms/artifacts";
+import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
+import { SELF_FINANCE_LOAN_DEFAULT_INR } from "@/lib/loan-amount-demo-constants";
 import { buildMarginMoneySlipActionHref } from "@/lib/paymentUrls";
 import { PARTNER_DEALER_LABEL, PARTNER_DEALER_LABEL_CAPITALIZED } from "@/lib/dealer-attribution-content";
 import styles from "./SelfFinanceLoanConfirmedScreen.module.scss";

@@ -1,12 +1,12 @@
 import {
   BOOKING_CAR_COLOR,
   BOOKING_EXPRESS_DELIVERY_LINE,
-} from "@/components/kyc/booking-car-card-content";
+} from "@/lib/booking-car-card-content";
 import { BOOKING_STANDARD_DELIVERY_LINE } from "@/lib/experience-flow-content";
 import {
   ON_ROAD_LIST_PRICE_INR,
   ON_ROAD_PRICE_INR,
-} from "@/components/payment/loan-amount-demo-constants";
+} from "@/lib/loan-amount-demo-constants";
 
 export type ModifySelectionColourOption = {
   id: string;

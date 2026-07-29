@@ -1,7 +1,7 @@
 "use client";
 
-import { KycBookingProcessingScreen } from "@/components/kyc/KycBookingProcessingScreen";
-import { KYC_ASSETS } from "@/components/kyc/kyc-assets";
+import { BookingProcessingScreen } from "@/components/organisms/BookingProcessingScreen";
+import { KYC_ASSETS } from "@/lib/kyc-assets";
 import { DownPaymentSummaryCard } from "@/components/payment/DownPaymentSummaryCard";
 import { BOOKING_PAYMENT_SUMMARY_INR } from "@/lib/payment-summary-demo";
 
@@ -13,12 +13,12 @@ const HERO_SUBTEXT =
 const PAYMENT_WARNING_LINE = "Confirm by 24 Apr, 3:00 PM to avoid cancellation";
 
 /**
- * Payment default — same shell and motion as `KycBookingProcessingScreen` (e.g. `/car-allocation/pending`):
+ * Payment default — same shell and motion as `BookingProcessingScreen` (e.g. `/car-allocation/pending`):
  * nav + manage booking sheet, payment hero illustration, primary CTA.
  */
 export function PaymentDefaultScreen() {
   return (
-    <KycBookingProcessingScreen
+    <BookingProcessingScreen
       headline={PAYMENT_DEFAULT_HEADLINE}
       subline={HERO_SUBTEXT}
       heroSummaryCard={

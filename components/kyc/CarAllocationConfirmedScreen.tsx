@@ -4,7 +4,7 @@ import { BookingCelebrationSuccessScreen } from "@/components/kyc/BookingCelebra
 import {
   DEMO_VEHICLE_CHASSIS_NO,
   DEMO_VEHICLE_ENGINE_NO,
-} from "@/components/kyc/demo-vehicle-identification";
+} from "@/lib/demo-vehicle-identification";
 
 const USER_NAME = "Sharath";
 

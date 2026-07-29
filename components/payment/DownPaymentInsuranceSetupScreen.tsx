@@ -3,14 +3,14 @@
 import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 
-import { KycBookingProcessingScreen } from "@/components/kyc/KycBookingProcessingScreen";
-import { KYC_ASSETS } from "@/components/kyc/kyc-assets";
+import { BookingProcessingScreen } from "@/components/organisms/BookingProcessingScreen";
+import { KYC_ASSETS } from "@/lib/kyc-assets";
 import { bankForQueryParam } from "@/components/payment/acko-drive-finance-bank";
 import { MoneyPlanCard, type MoneyPlanStep } from "@/components/payment/MoneyPlanCard";
 import { useFullPaymentJourney } from "@/components/payment/use-full-payment-journey";
-import { FULL_PAYMENT_INSURANCE_INR } from "@/components/payment/loan-amount-demo-constants";
+import { FULL_PAYMENT_INSURANCE_INR } from "@/lib/loan-amount-demo-constants";
 import { buildLoanDisbursementReceivedHref, buildPayInsurancePremiumHref } from "@/lib/paymentUrls";
-import { PARTNER_DEALER_LABEL_CAPITALIZED } from "@/lib/dealer-attribution-content";
+import { NAMED_DEALER_LABEL, NAMED_DEALER_LABEL_CAPITALIZED } from "@/lib/dealer-attribution-content";
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -23,12 +23,12 @@ function formatInr(amount: number) {
 const LOAN_HEADLINE = "Down payment received";
 const LOAN_BANK_TRANSFER_HEADLINE = "Payment received";
 const LOAN_SUBLINE =
-  "The bank is moving your loan to the dealer. Banks take 24 to 48 hours here. I'll confirm the moment it lands.";
+  `The bank is moving your loan to ${NAMED_DEALER_LABEL}. Banks take 24 to 48 hours here. I'll confirm the moment it lands.`;
 const LOAN_BANK_TRANSFER_SUBLINE =
   "I'm confirming the transfer from your bank. It takes 24 to 48 hours to clear. The moment it does, I start your delivery prep.";
 const SELF_FINANCE_HEADLINE = "Transfer confirmed.";
 const SELF_FINANCE_SUBLINE =
-  `${PARTNER_DEALER_LABEL_CAPITALIZED} has confirmed the transfer. Just one more thing before your car arrives.`;
+  `${NAMED_DEALER_LABEL_CAPITALIZED} has confirmed the transfer. Just one more thing before your car arrives.`;
 
 const FULL_PAYMENT_HEADLINE = "Your payment is complete";
 const FULL_PAYMENT_SUBLINE = "Your car is now being prepared for delivery.";
@@ -102,7 +102,7 @@ export function DownPaymentInsuranceSetupScreen() {
               state: "done",
               title: "Down payment",
               amountLabel: paidLabel,
-              detail: "Confirmed by the dealer.",
+              detail: `Confirmed by ${NAMED_DEALER_LABEL}.`,
             },
             {
               state: "done",
@@ -148,7 +148,7 @@ export function DownPaymentInsuranceSetupScreen() {
           },
           {
             state: "moving",
-            title: `${bankName} sends the loan to the dealer`,
+            title: `${bankName} sends the loan to ${NAMED_DEALER_LABEL}`,
             detail: "24 to 48 hours. Nothing needed from you, I'm chasing it.",
           },
           INSURANCE_STEP,
@@ -167,7 +167,7 @@ export function DownPaymentInsuranceSetupScreen() {
       : buildLoanDisbursementReceivedHref(loanAmount);
 
   return (
-    <KycBookingProcessingScreen
+    <BookingProcessingScreen
       headline={headline}
       subline={subline}
       callLabel="Want an update? I can call you"

@@ -11,19 +11,19 @@ import {
   NoteCallout,
   PlanList,
   type PlanItem,
-} from "@/components/concierge/artifacts";
-import { ConciergeTurnShell, type ConciergeTurn } from "@/components/concierge/ConciergeTurnShell";
+} from "@/components/organisms/artifacts";
+import { ConciergeTurnShell, type ConciergeTurn } from "@/components/organisms/ConciergeTurnShell";
 import { PaperworkDeadlineFootnote } from "@/components/concierge/DeadlineCountdownFootnote";
 import {
   BOOKING_CAR_COLOR,
   BOOKING_CAR_TITLE,
   BOOKING_CAR_VARIANT,
-} from "@/components/kyc/booking-car-card-content";
+} from "@/lib/booking-car-card-content";
 import {
   DEMO_VEHICLE_CHASSIS_NO,
   DEMO_VEHICLE_ENGINE_NO,
-} from "@/components/kyc/demo-vehicle-identification";
-import { PaymentSummaryCard } from "@/components/payment/PaymentSummaryCard";
+} from "@/lib/demo-vehicle-identification";
+import { PaymentSummaryCard } from "@/components/organisms/PaymentSummaryCard";
 import { readActiveBookingSnapshot } from "@/lib/active-booking-snapshot";
 import { getArrivalLeadPaid, getTurnWords, type ConciergeMomentId } from "@/lib/concierge/script";
 import {
@@ -47,7 +47,7 @@ import {
 } from "@/lib/kyc-verification-attempts";
 import {
   resolveKycVerificationFailureReason,
-} from "@/components/kyc/kyc-verification-failed-content";
+} from "@/lib/kyc-verification-failed-content";
 import {
   getKycVerificationNextHref,
   KYC_VERIFICATION_FAILED_HREF,

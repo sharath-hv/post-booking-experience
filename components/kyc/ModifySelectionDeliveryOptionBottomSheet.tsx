@@ -3,15 +3,15 @@
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 
 import { ModifySelectionDeliveryOptionCard } from "@/components/kyc/ModifySelectionDeliveryOptionCard";
-import { BOOKING_CONFIRMED_ASSETS } from "@/components/kyc/kyc-booking-confirmed-assets";
-import { BottomSheetCloseIcon } from "@/components/ui/BottomSheetCloseIcon";
-import { BottomSheetPortal } from "@/components/ui/BottomSheetPortal";
+import { BOOKING_CONFIRMED_ASSETS } from "@/lib/kyc-booking-confirmed-assets";
+import { BottomSheetCloseIcon } from "@/components/atoms/BottomSheetCloseIcon";
+import { BottomSheetPortal } from "@/components/molecules/BottomSheetPortal";
 import {
   BOTTOM_SHEET_BODY_BEFORE_CTA_CLASS,
   BOTTOM_SHEET_CTA_STRIP_TOP_CLASS,
   BOTTOM_SHEET_MAX_HEIGHT_CLASS,
   BOTTOM_SHEET_OVERLAY_Z_CLASS,
-} from "@/components/ui/bottom-sheet-layout";
+} from "@/lib/layout/bottom-sheet-layout";
 import {
   BOOKING_EXPRESS_DELIVERY_TEXT_CLASS,
   BOOKING_STANDARD_DELIVERY_TEXT_CLASS,

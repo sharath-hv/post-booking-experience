@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
-import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
+import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
 import { ackoDriveFinanceActionPath } from "@/components/payment/acko-drive-finance-bank";
 import { writeConciergeEcho } from "@/lib/concierge/echo";
 import { FullPaymentConfirmBottomSheet } from "@/components/payment/FullPaymentConfirmBottomSheet";
@@ -14,7 +14,7 @@ import {
   BANK_DISBURSEMENT_INR,
   DEFAULT_TENURE_MONTHS,
   FULL_PAYMENT_CAR_AMOUNT_INR,
-} from "@/components/payment/loan-amount-demo-constants";
+} from "@/lib/loan-amount-demo-constants";
 import {
   BANK_SHEET_OPTIONS,
   PARTNER_BANK_LOGOS,

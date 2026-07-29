@@ -4,9 +4,9 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
 import { CancelBookingCarCard } from "@/components/kyc/CancelBookingCarCard";
-import { CancelBookingReasonBottomSheet } from "@/components/kyc/CancelBookingReasonBottomSheet";
+import { CancelBookingReasonBottomSheet } from "@/components/organisms/CancelBookingReasonBottomSheet";
 import { CancelBookingRefundSummaryCard } from "@/components/kyc/CancelBookingRefundSummaryCard";
-import { KycTopNavHeader } from "@/components/kyc/KycTopNavHeader";
+import { TopNavHeader } from "@/components/organisms/TopNavHeader";
 import {
   CANCEL_BOOKING_CONFIRM_CTA,
   CANCEL_BOOKING_CONFIRM_OVERLINE,
@@ -69,7 +69,7 @@ export function CancelBookingConfirmScreen() {
   return (
     <div className={styles.relative_0}>
       <div className={styles.relative_1}>
-        <KycTopNavHeader onBack={onGoBack} transparent />
+        <TopNavHeader onBack={onGoBack} transparent />
 
         <main className={styles.flex_2}>
           <section className={styles.px_5_3}>

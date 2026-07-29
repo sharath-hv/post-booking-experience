@@ -3,14 +3,14 @@
 import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 
-import { AmountReceivedCard } from "@/components/concierge/artifacts";
-import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
-import { ShimmerInfoCard } from "@/components/ui/ShimmerInfoCard";
+import { AmountReceivedCard } from "@/components/organisms/artifacts";
+import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
+import { ShimmerInfoCard } from "@/components/molecules/ShimmerInfoCard";
 import {
   FULL_PAYMENT_CAR_AMOUNT_INR,
   FULL_PAYMENT_INSURANCE_INR,
-} from "@/components/payment/loan-amount-demo-constants";
-import { PARTNER_DEALER_LABEL, PARTNER_DEALER_LABEL_CAPITALIZED } from "@/lib/dealer-attribution-content";
+} from "@/lib/loan-amount-demo-constants";
+import { NAMED_DEALER_LABEL, NAMED_DEALER_LABEL_CAPITALIZED } from "@/lib/dealer-attribution-content";
 import styles from "./FullCashPaymentVerificationScreen.module.scss";
 
 
@@ -40,8 +40,8 @@ export function FullCashPaymentVerificationScreen() {
   );
 
   const says = [
-    "Checking with the dealer now.",
-    `I've notified ${PARTNER_DEALER_LABEL} about your transfer. I'll update you here as soon as they confirm receipt.`,
+    `Checking with ${NAMED_DEALER_LABEL} now.`,
+    `I've notified ${NAMED_DEALER_LABEL} about your transfer. I'll update you here as soon as they confirm receipt.`,
   ];
 
   const nextHref = useMemo(
@@ -58,7 +58,7 @@ export function FullCashPaymentVerificationScreen() {
             amountInr={carAmountInr}
             title="Payment · verifying with dealer"
             status="processing"
-            rows={[{ label: "Sent to", value: PARTNER_DEALER_LABEL_CAPITALIZED }]}
+            rows={[{ label: "Sent to", value: NAMED_DEALER_LABEL_CAPITALIZED }]}
           />
           <ShimmerInfoCard lead="One thing still ahead">
             {`Your ${formatInr(FULL_PAYMENT_INSURANCE_INR)} insurance. The RTO won't register your car without a live policy, and I'll ask you at exactly the right moment.`}

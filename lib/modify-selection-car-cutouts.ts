@@ -4,7 +4,7 @@ import cretaAbyssBlack from "@/assets/Creta_Abyss black.png";
 import cretaAtlasWhite from "@/assets/Creta_Atlas white.png";
 import cretaRobustEmeraldPearl from "@/assets/Creta_Robust Emerald Pearl.png";
 import cretaTitanGrey from "@/assets/Creta_Titan grey.png";
-import { BOOKING_CONFIRMED_ASSETS } from "@/components/kyc/kyc-booking-confirmed-assets";
+import { BOOKING_CONFIRMED_ASSETS } from "@/lib/kyc-booking-confirmed-assets";
 
 const MODIFY_SELECTION_CAR_CUTOUT_BY_COLOUR_ID: Record<string, StaticImageData> = {
   atlas_white: cretaAtlasWhite,

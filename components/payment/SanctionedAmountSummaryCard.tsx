@@ -1,6 +1,6 @@
 "use client";
 
-import { HeroLabelValueSummaryCard } from "@/components/ui/HeroLabelValueSummaryCard";
+import { HeroLabelValueSummaryCard } from "@/components/molecules/HeroLabelValueSummaryCard";
 
 export type SanctionedAmountSummaryCardProps = {
   /** Sanctioned loan amount in INR (whole rupees). */

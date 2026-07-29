@@ -3,14 +3,14 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
-import { ConciergeDocumentsCard } from "@/components/concierge/ConciergeDocumentsCard";
+import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
+import { ConciergeDocumentsCard } from "@/components/organisms/ConciergeDocumentsCard";
 import { ReuploadDeadlineFootnote } from "@/components/concierge/DeadlineCountdownFootnote";
-import { VerificationFailureReasonSwitcher } from "@/components/kyc/VerificationFailureReasonSwitcher";
+import { VerificationFailureReasonSwitcher } from "@/components/organisms/VerificationFailureReasonSwitcher";
 import {
   resolveKycVerificationFailureReason,
   type KycVerificationFailureReason,
-} from "@/components/kyc/kyc-verification-failed-content";
+} from "@/lib/kyc-verification-failed-content";
 import { JOURNEY_PATHS } from "@/lib/journey-routes";
 import {
   createEmptyKycUploads,

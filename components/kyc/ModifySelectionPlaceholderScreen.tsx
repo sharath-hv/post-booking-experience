@@ -2,9 +2,9 @@
 
 import { useRouter } from "next/navigation";
 
-import { ModifySelectionPageHeading } from "@/components/kyc/ModifySelectionPageHeading";
-import { ModifySelectionScreenHeader } from "@/components/kyc/ModifySelectionScreenHeader";
-import { BookingCarSummaryCard } from "@/components/kyc/BookingCarSummaryCard";
+import { PageLeadHeading } from "@/components/organisms/PageLeadHeading";
+import { StandaloneScreenHeader } from "@/components/organisms/StandaloneScreenHeader";
+import { BookingCarSummaryCard } from "@/components/organisms/BookingCarSummaryCard";
 import { MODIFY_SELECTION_PAGE_SHELL_CLASS, MODIFY_SELECTION_PATH, modifySelectionChoiceLabel } from "@/lib/modify-selection-content";
 import { MODIFY_SELECTION_STAGGER_MS } from "@/lib/modify-selection-stagger";
 import styles from "./ModifySelectionPlaceholderScreen.module.scss";
@@ -24,10 +24,10 @@ export function ModifySelectionPlaceholderScreen({ choiceSlug }: ModifySelection
 
   return (
     <div className={MODIFY_SELECTION_PAGE_SHELL_CLASS}>
-      <ModifySelectionScreenHeader />
+      <StandaloneScreenHeader />
 
       <main className={styles.mx_auto_0}>
-        <ModifySelectionPageHeading title={label} titleDelayMs={STAGGER_TITLE_MS} />
+        <PageLeadHeading title={label} titleDelayMs={STAGGER_TITLE_MS} />
         <div
           className={[styles.payment_success_stagger_1, "payment-success-stagger"].filter(Boolean).join(" ")}
           style={{ animationDelay: `${STAGGER_SECTION_MS}ms` }}

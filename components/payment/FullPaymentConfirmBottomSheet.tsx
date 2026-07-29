@@ -7,16 +7,16 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import phoneIcon from "@/assets/Phone.svg";
 import moneyIcon from "@/assets/money.svg";
 import { PAYMENT_CHOOSE_ASSETS } from "@/components/payment/payment-choose-assets";
-import type { BottomSheetConfirmBulletPoint } from "@/components/ui/BottomSheetConfirmBulletList";
+import type { BottomSheetConfirmBulletPoint } from "@/components/molecules/BottomSheetConfirmBulletList";
 import {
   BOTTOM_SHEET_BODY_BEFORE_CTA_CLASS,
   BOTTOM_SHEET_CTA_STRIP_TOP_CLASS,
   BOTTOM_SHEET_MAX_HEIGHT_CLASS,
   BOTTOM_SHEET_OVERLAY_Z_CLASS,
-} from "@/components/ui/bottom-sheet-layout";
-import { bottomSheetTitleWidthWithIllustration } from "@/components/ui/bottom-sheet-title-layout";
-import { BottomSheetCloseIcon } from "@/components/ui/BottomSheetCloseIcon";
-import { BottomSheetConfirmBulletList } from "@/components/ui/BottomSheetConfirmBulletList";
+} from "@/lib/layout/bottom-sheet-layout";
+import { bottomSheetTitleWidthWithIllustration } from "@/lib/layout/bottom-sheet-title-layout";
+import { BottomSheetCloseIcon } from "@/components/atoms/BottomSheetCloseIcon";
+import { BottomSheetConfirmBulletList } from "@/components/molecules/BottomSheetConfirmBulletList";
 import { PARTNER_DEALER_LABEL_CAPITALIZED } from "@/lib/dealer-attribution-content";
 import styles from "./FullPaymentConfirmBottomSheet.module.scss";
 

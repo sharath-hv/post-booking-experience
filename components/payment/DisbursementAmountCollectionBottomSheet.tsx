@@ -11,16 +11,16 @@ import {
   type ChangeEvent,
 } from "react";
 
-import { MIN_DOWN_PAYMENT_INR, ON_ROAD_PRICE_INR } from "@/components/payment/loan-amount-demo-constants";
+import { MIN_DOWN_PAYMENT_INR, ON_ROAD_PRICE_INR } from "@/lib/loan-amount-demo-constants";
 import { PAYMENT_CHOOSE_ASSETS } from "@/components/payment/payment-choose-assets";
 import {
   BOTTOM_SHEET_BODY_BEFORE_CTA_CLASS,
   BOTTOM_SHEET_CTA_STRIP_TOP_CLASS,
   BOTTOM_SHEET_MAX_HEIGHT_CLASS,
   BOTTOM_SHEET_OVERLAY_Z_CLASS,
-} from "@/components/ui/bottom-sheet-layout";
-import { bottomSheetTitleWidthWithIllustration } from "@/components/ui/bottom-sheet-title-layout";
-import { BottomSheetCloseIcon } from "@/components/ui/BottomSheetCloseIcon";
+} from "@/lib/layout/bottom-sheet-layout";
+import { bottomSheetTitleWidthWithIllustration } from "@/lib/layout/bottom-sheet-title-layout";
+import { BottomSheetCloseIcon } from "@/components/atoms/BottomSheetCloseIcon";
 import styles from "./DisbursementAmountCollectionBottomSheet.module.scss";
 
 

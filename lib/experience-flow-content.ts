@@ -1,6 +1,6 @@
 import timeDeliveryIcon from "@/assets/Time.svg";
-import { BOOKING_CONFIRMED_ASSETS } from "@/components/kyc/kyc-booking-confirmed-assets";
-import { BOOKING_EXPRESS_DELIVERY_LINE } from "@/components/kyc/booking-car-card-content";
+import { BOOKING_CONFIRMED_ASSETS } from "@/lib/kyc-booking-confirmed-assets";
+import { BOOKING_EXPRESS_DELIVERY_LINE } from "@/lib/booking-car-card-content";
 import styles from "./experience-flow-content.module.scss";
 
 import {

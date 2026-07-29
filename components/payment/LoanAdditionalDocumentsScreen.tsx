@@ -7,10 +7,10 @@ import { useSearchParams } from "next/navigation";
 import deleteIcon from "@/assets/Delete.svg";
 import done01Icon from "@/assets/done 01.png";
 
-import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
-import docStyles from "@/components/concierge/ConciergeDocumentsCard.module.scss";
-import { KycUploadSourceBottomSheet } from "@/components/kyc/KycUploadSourceBottomSheet";
-import { KYC_MOCK_UPLOAD_NAMES, type KycUploadSource } from "@/components/kyc/kyc-upload-content";
+import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
+import docStyles from "@/components/organisms/document-upload-card-layout.module.scss";
+import { UploadSourceBottomSheet } from "@/components/organisms/UploadSourceBottomSheet";
+import { KYC_MOCK_UPLOAD_NAMES, type KycUploadSource } from "@/lib/kyc-upload-content";
 import { bankForQueryParam } from "@/components/payment/acko-drive-finance-bank";
 import { loanProcessingPath } from "@/lib/loan-application-urls";
 import { OVERLAY_GLASS_CARD_CLASS } from "@/lib/overlay-glass-card";
@@ -139,7 +139,7 @@ export function LoanAdditionalDocumentsScreen() {
         callLabel="Questions? I can call you"
         manageShowVehicleIdentification
       />
-      <KycUploadSourceBottomSheet
+      <UploadSourceBottomSheet
         open={sourceSheetOpen}
         onClose={() => setSourceSheetOpen(false)}
         onSelect={handleMockUpload}

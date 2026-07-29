@@ -3,10 +3,10 @@
 import { useCallback, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { AmountReceivedCard } from "@/components/concierge/artifacts";
-import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
-import { SELF_FINANCE_LOAN_DEFAULT_INR } from "@/components/payment/loan-amount-demo-constants";
-import { PARTNER_DEALER_LABEL, PARTNER_DEALER_LABEL_CAPITALIZED } from "@/lib/dealer-attribution-content";
+import { AmountReceivedCard } from "@/components/organisms/artifacts";
+import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
+import { SELF_FINANCE_LOAN_DEFAULT_INR } from "@/lib/loan-amount-demo-constants";
+import { NAMED_DEALER_LABEL, NAMED_DEALER_LABEL_CAPITALIZED } from "@/lib/dealer-attribution-content";
 import { buildMarginMoneySlipActionHref } from "@/lib/paymentUrls";
 
 
@@ -40,8 +40,8 @@ export function SelfFinanceTransferVerificationScreen() {
 
   const says = useMemo(
     () => [
-      "Checking with the dealer now.",
-      `I'm checking with ${PARTNER_DEALER_LABEL} to confirm they've received the ${formatInr(loanAmountInr)} from your bank.`,
+      `Checking with ${NAMED_DEALER_LABEL} now.`,
+      `I'm checking with ${NAMED_DEALER_LABEL} to confirm they've received the ${formatInr(loanAmountInr)} from your bank.`,
     ],
     [loanAmountInr],
   );
@@ -75,7 +75,7 @@ export function SelfFinanceTransferVerificationScreen() {
           title="Bank transfer - verifying with dealer"
           status="processing"
           rows={[
-            { label: "Sent to", value: PARTNER_DEALER_LABEL_CAPITALIZED },
+            { label: "Sent to", value: NAMED_DEALER_LABEL_CAPITALIZED },
           ]}
           note="Confirmation typically takes 1-2 business days."
         />

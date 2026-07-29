@@ -4,7 +4,7 @@ import styles from "./layout.module.scss";
 
 import { EUCLID_FONT_ORIGIN, EUCLID_PRELOAD_FONT_FILES, euclidFontHref } from "@/lib/euclid-font-preload";
 import { AnimationProvider } from "@/components/providers";
-import { AppToastHost } from "@/components/ui/AppToastHost";
+import { AppToastHost } from "@/components/organisms/AppToastHost";
 
 export const metadata: Metadata = {
   title: "Post-booking experience",

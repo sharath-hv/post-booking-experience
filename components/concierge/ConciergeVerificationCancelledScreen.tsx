@@ -1,7 +1,7 @@
 "use client";
 
-import { AmountReceivedCard } from "@/components/concierge/artifacts";
-import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
+import { AmountReceivedCard } from "@/components/organisms/artifacts";
+import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
 import { BOOKING_LOCK_AMOUNT_INR } from "@/lib/paymentUrls";
 
 function formatInr(amount: number) {

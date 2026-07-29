@@ -8,12 +8,12 @@ import { useCallback, useEffect, useState } from "react";
 import infoIcon from "@/assets/Info.svg";
 import bookingCancelledHero from "@/assets/Booking cancelled.svg";
 import { CANCEL_BOOKING_SUCCESS_COPY } from "@/lib/cancel-booking-success-content";
-import { WordByWordLine } from "@/components/payment/WordByWordLine";
+import { WordByWordLine } from "@/components/molecules/WordByWordLine";
 import styles from "./CancelBookingSuccessScreen.module.scss";
 
 import {
   SUCCESS_SCREEN_HEADLINE_SUBTEXT_GAP_CLASS,
-} from "@/components/ui/success-screen-layout";
+} from "@/lib/layout/success-screen-layout";
 
 const HEADLINE_WORD_DELAY_MS = 135;
 const HERO_FADE_DURATION_CLASS = styles.heroFadeDuration;

@@ -345,7 +345,7 @@ Post-allocation car card is enabled when `manageBookingShowVehicleIdentification
 
 ### White page surface & card shadows
 
-All `/kyc/modify-selection/*` screens use **`MODIFY_SELECTION_PAGE_SHELL_CLASS`** (`min-h-dvh bg-white font-sans`). Sticky nav uses `ModifySelectionScreenHeader` → `KycTopNavHeader` with **`surface="white"`** (white scroll fade — not the blue `#F7FAFF` gradient used elsewhere).
+All `/kyc/modify-selection/*` screens use **`MODIFY_SELECTION_PAGE_SHELL_CLASS`** (`min-h-dvh bg-white font-sans`). Sticky nav uses `StandaloneScreenHeader` → `TopNavHeader` with **`surface="white"`** (white scroll fade — not the blue `#F7FAFF` gradient used elsewhere).
 
 **No card shadows on modify-selection pages.** Cards on the white background are **flat bordered** shells — **`border border-[#e8e8e8]`**, **never** `card-elevated`. Shared tokens in `components/kyc/modify-selection-option-card-ui.tsx`:
 
@@ -358,7 +358,7 @@ Sticky/fixed footers may still use **`footer-elevated`**; bottom sheets use **`s
 
 **Shivi concierge pages unchanged** — turns on **`#F1F5FD` / `#F7FAFF`** keep **`card-elevated`** (and glass variants where specified) per `.cursor/rules/concierge-spacing.mdc`. Do not remove shadows from concierge artifacts to match modify-selection.
 
-**Get help:** every modify-selection screen uses `ModifySelectionGetHelpButton` → **`ShiviCallSheet`** (callback confirmation).
+**Get help:** every modify-selection screen uses `GetHelpCallButton` → **`ShiviCallSheet`** (callback confirmation).
 
 **Booking amount:** `bookingAmountToPayInr` = max(0, new booking lock − paid lock) + change fee (₹5,000 when post-lock / modify-with-charges). When paid lock exceeds new lock, surplus is **not refunded** on this screen — shown as “will be adjusted in your final car amount” (`bookingAmountSurplusInr` on `ModifySelectionReviewBookingAmountCard`).
 
@@ -435,7 +435,7 @@ The card renders an edit control only when the matching callback is non-null (or
 | **modify_with_charges** | Payment received | `/kyc/processing` (dealer search) |
 | **express / standard** (e.g. allocation-failed → pick a different car, or manage-booking change after KYC) | Payment received | `/kyc/processing` — resume express or standard spine from delivery choice; **do not** re-ask for verification |
 
-**Key files:** `components/kyc/modify-selection-option-card-ui.tsx`, `ModifySelectionScreenHeader.tsx`, `ModifySelectionReviewPayScreen.tsx`, `ModifySelectionReviewPayDemoSwitcher.tsx`, `ModifySelectionReviewSelectionCard.tsx`, `ModifySelectionReviewBookingAmountCard.tsx`, `KycBookingConfirmedScreen.tsx`, `KycBookingConfirmedPageClient.tsx`, `DownPaymentInstalmentSuccess.tsx`, `lib/modify-selection-review-pay-content.ts`, `lib/modify-selection-review-pay-demo.ts`, `lib/modify-selection-*-pending.ts`, `lib/active-booking-snapshot.ts`, `lib/paymentUrls.ts`.
+**Key files:** `components/kyc/modify-selection-option-card-ui.tsx`, `StandaloneScreenHeader.tsx`, `ModifySelectionReviewPayScreen.tsx`, `ModifySelectionReviewPayDemoSwitcher.tsx`, `ModifySelectionReviewSelectionCard.tsx`, `ModifySelectionReviewBookingAmountCard.tsx`, `KycBookingConfirmedScreen.tsx`, `KycBookingConfirmedPageClient.tsx`, `DownPaymentInstalmentSuccess.tsx`, `lib/modify-selection-review-pay-content.ts`, `lib/modify-selection-review-pay-demo.ts`, `lib/modify-selection-*-pending.ts`, `lib/active-booking-snapshot.ts`, `lib/paymentUrls.ts`.
 
 ---
 
@@ -491,7 +491,7 @@ On **`/kyc/verification-in-progress`**, demo **Next** is hidden when `isCancelNo
 | Cancel prompt | Still want to cancel? |
 | Refund card | Booking amount ₹10,000 · Cancellation fee 0 · Refund amount ₹10,000 + “You'll get your refund in 5-7 business days” |
 | Confirm CTA | **Yes, cancel my booking** — `demo-nav-cta` → opens reason bottom sheet |
-| Back | `KycTopNavHeader` (`transparent`) chevron → `router.back()`; solid **`bg-white`** on scroll |
+| Back | `TopNavHeader` (`transparent`) chevron → `router.back()`; solid **`bg-white`** on scroll |
 
 **Layout:** Gradient section (`from-white to-[#f5f5f5]`) wraps overline + headline + car card with **20px** padding below card (`pb-5`); white section starts **24px** below (`pt-8`). **16px** between refund card and confirm CTA (`mt-4`). **32px** page bottom padding below confirm CTA.
 

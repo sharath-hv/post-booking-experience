@@ -3,12 +3,12 @@
 import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 
-import { AmountReceivedCard, NextStepCard } from "@/components/concierge/artifacts";
-import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
+import { AmountReceivedCard, NextStepCard } from "@/components/organisms/artifacts";
+import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
 import { bankForQueryParam } from "@/components/payment/acko-drive-finance-bank";
 import styles from "./LoanSanctionedScreen.module.scss";
 
-import { BANK_DISBURSEMENT_INR } from "@/components/payment/loan-amount-demo-constants";
+import { BANK_DISBURSEMENT_INR } from "@/lib/loan-amount-demo-constants";
 import {
   PARTNER_DEALER_LABEL,
   PARTNER_DEALER_LABEL_CAPITALIZED,

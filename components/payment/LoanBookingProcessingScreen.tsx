@@ -3,9 +3,9 @@
 import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 
-import { NextStepCard } from "@/components/concierge/artifacts";
+import { NextStepCard } from "@/components/organisms/artifacts";
 import { bankForQueryParam } from "@/components/payment/acko-drive-finance-bank";
-import { KycBookingProcessingScreen } from "@/components/kyc/KycBookingProcessingScreen";
+import { BookingProcessingScreen } from "@/components/organisms/BookingProcessingScreen";
 import {
   loanAdditionalDocumentsPath,
 } from "@/lib/loan-application-urls";
@@ -38,7 +38,7 @@ export function LoanBookingProcessingScreen() {
   );
 
   return (
-    <KycBookingProcessingScreen
+    <BookingProcessingScreen
       headline={LOAN_PROCESSING_HEADLINE}
       subline={subline}
       heroSummaryCard={
@@ -69,6 +69,7 @@ export function LoanBookingProcessingScreen() {
       dateHolder="you"
       callLabel="Anxious about the loan? I can call you"
       manageBookingShowVehicleIdentification
+      suppressEcho
     />
   );
 }

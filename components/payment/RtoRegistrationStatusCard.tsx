@@ -1,6 +1,6 @@
 "use client";
 
-import { ShimmerInfoCard } from "@/components/ui/ShimmerInfoCard";
+import { ShimmerInfoCard } from "@/components/molecules/ShimmerInfoCard";
 
 const RTO_REGISTRATION_INFO_COPY =
   "I'll share your registration number as soon as the RTO issues it.";

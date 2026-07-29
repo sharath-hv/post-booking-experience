@@ -4,12 +4,12 @@ import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useMemo } from "react";
 
-import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
+import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
 import { bankForQueryParam } from "@/components/payment/acko-drive-finance-bank";
 import {
   BANK_DISBURSEMENT_INR,
   DEFAULT_TENURE_MONTHS,
-} from "@/components/payment/loan-amount-demo-constants";
+} from "@/lib/loan-amount-demo-constants";
 import { BANK_SHEET_OPTIONS } from "@/components/payment/payment-choose-assets";
 import { writeConciergeEcho } from "@/lib/concierge/echo";
 import { estimateMonthlyEmiInr, parseAnnualRateFromLabel } from "@/lib/loan-emi";

@@ -14,7 +14,7 @@ import {
   MODIFY_SELECTION_REVIEW_PAY_DUE_TODAY_LABEL,
   type ModifySelectionReviewPaySummary,
 } from "@/lib/modify-selection-review-pay-content";
-import { MODIFY_SELECTION_SUMMARY_CARD_CLASS } from "@/components/kyc/modify-selection-option-card-ui";
+import { MODIFY_SELECTION_SUMMARY_CARD_CLASS } from "@/components/molecules/modify-selection-option-card-ui";
 import { cn } from "@/lib/utils";
 import styles from "./ModifySelectionReviewBookingAmountCard.module.scss";
 

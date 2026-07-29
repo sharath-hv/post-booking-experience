@@ -4,8 +4,8 @@ import Image from "next/image";
 
 import carBackgroundSmall from "@/assets/Car background small.png";
 import editIcon from "@/assets/Edit.svg";
-import { MODIFY_SELECTION_SUMMARY_CARD_CLASS } from "@/components/kyc/modify-selection-option-card-ui";
-import { BOOKING_CAR_TITLE, BOOKING_CAR_VARIANT } from "@/components/kyc/booking-car-card-content";
+import { MODIFY_SELECTION_SUMMARY_CARD_CLASS } from "@/components/molecules/modify-selection-option-card-ui";
+import { BOOKING_CAR_TITLE, BOOKING_CAR_VARIANT } from "@/lib/booking-car-card-content";
 import {
   BOOKING_EXPRESS_DELIVERY_TEXT_CLASS,
   BOOKING_STANDARD_DELIVERY_TEXT_CLASS,

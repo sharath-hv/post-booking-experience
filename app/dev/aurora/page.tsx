@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { AuroraBackgroundDemo } from "@/components/ui/aurora-background-demo";
+import { AuroraBackgroundDemo } from "./aurora-background-demo";
 
 export const metadata: Metadata = {
   title: "Aurora background (dev)",

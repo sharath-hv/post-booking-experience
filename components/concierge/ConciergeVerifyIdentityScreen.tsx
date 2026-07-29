@@ -2,8 +2,8 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 
-import { ConciergeDocumentsCard } from "@/components/concierge/ConciergeDocumentsCard";
-import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
+import { ConciergeDocumentsCard } from "@/components/organisms/ConciergeDocumentsCard";
+import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
 import { VERIFY_IDENTITY_WORDS } from "@/lib/concierge/script";
 import { JOURNEY_PATHS } from "@/lib/journey-routes";
 import {

@@ -3,8 +3,8 @@
 import { useCallback, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { ModifySelectionPageHeading } from "@/components/kyc/ModifySelectionPageHeading";
-import { ModifySelectionScreenHeader } from "@/components/kyc/ModifySelectionScreenHeader";
+import { PageLeadHeading } from "@/components/organisms/PageLeadHeading";
+import { StandaloneScreenHeader } from "@/components/organisms/StandaloneScreenHeader";
 import { InsuranceAddonCard } from "@/components/payment/InsuranceAddonPicker";
 import {
   INSURANCE_ADDONS_AVAILABLE_HEADING,
@@ -79,11 +79,11 @@ export function InsuranceAddonSelectionScreen() {
 
   return (
     <div className={MODIFY_SELECTION_PAGE_SHELL_CLASS}>
-      <ModifySelectionScreenHeader />
+      <StandaloneScreenHeader />
 
       <main className={styles.main}>
         <header className={styles.lead}>
-          <ModifySelectionPageHeading
+          <PageLeadHeading
             title={INSURANCE_ADDONS_SECTION_HEADING}
             subline={INSURANCE_ADDONS_SECTION_SUBLINE}
             titleDelayMs={STAGGER_TITLE_MS}

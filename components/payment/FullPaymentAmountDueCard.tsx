@@ -6,7 +6,7 @@ import {
   FULL_PAYMENT_INSURANCE_DUE_LINE,
   FULL_PAYMENT_INSURANCE_INR,
   ON_ROAD_PRICE_INR,
-} from "@/components/payment/loan-amount-demo-constants";
+} from "@/lib/loan-amount-demo-constants";
 import styles from "./FullPaymentAmountDueCard.module.scss";
 
 export type FullPaymentAmountDueCardProps = {

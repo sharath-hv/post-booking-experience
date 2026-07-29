@@ -9,15 +9,15 @@ import chevronRightIcon from "@/assets/Chevron_right.svg";
 import editIcon from "@/assets/Edit.svg";
 import tickIcon from "@/assets/tick.svg";
 
-import { GetHelpPillButton } from "@/components/kyc/GetHelpPillButton";
-import { KycTopNavHeader } from "@/components/kyc/KycTopNavHeader";
+import { GetHelpPillButton } from "@/components/molecules/GetHelpPillButton";
+import { TopNavHeader } from "@/components/organisms/TopNavHeader";
 import {
   ACKO_DRIVE_DISCOUNT_INR,
   MIN_DOWN_PAYMENT_INR,
   ON_ROAD_LIST_PRICE_INR,
   ON_ROAD_PRICE_INR,
   SLIDER_STEP,
-} from "@/components/payment/loan-amount-demo-constants";
+} from "@/lib/loan-amount-demo-constants";
 import { DisbursementAmountCollectionBottomSheet } from "@/components/payment/DisbursementAmountCollectionBottomSheet";
 import { BOOKING_LOCK_AMOUNT_INR, buildDownPaymentCheckoutHref } from "@/lib/paymentUrls";
 import styles from "./EnterSanctionedLoanAmountScreen.module.scss";
@@ -101,7 +101,7 @@ export function EnterSanctionedLoanAmountScreen() {
 
   return (
     <div className={styles.flex_0}>
-      <KycTopNavHeader endSlot={<GetHelpPillButton />} />
+      <TopNavHeader solid endSlot={<GetHelpPillButton />} />
 
       <main className={styles.mx_auto_1}>
         <h1

@@ -5,7 +5,7 @@ import { useCallback, useMemo, type ReactNode } from "react";
 
 import { BuyingGuideProgress } from "@/components/kyc/BuyingGuideProgress";
 import { isBuyingGuideStep } from "@/components/kyc/buying-guide-content";
-import { KycTopNavHeader } from "@/components/kyc/KycTopNavHeader";
+import { TopNavHeader } from "@/components/organisms/TopNavHeader";
 import styles from "./BuyingGuideShell.module.scss";
 
 type BuyingGuideShellProps = {
@@ -29,8 +29,9 @@ export function BuyingGuideShell({ children }: BuyingGuideShellProps) {
 
   return (
     <div className={styles.relative_0}>
-      <KycTopNavHeader
+      <TopNavHeader
         onBack={handleBack}
+        solid
         afterBack={<BuyingGuideProgress currentStep={currentStep} />}
       />
       {children}

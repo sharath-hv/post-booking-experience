@@ -3,15 +3,15 @@
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState, type ChangeEvent } from "react";
 
-import { ShiviCallSheet } from "@/components/concierge/ShiviCallSheet";
-import { GetHelpPillButton } from "@/components/kyc/GetHelpPillButton";
-import { KycTopNavHeader } from "@/components/kyc/KycTopNavHeader";
+import { ShiviCallSheet } from "@/components/organisms/ShiviCallSheet";
+import { GetHelpPillButton } from "@/components/molecules/GetHelpPillButton";
+import { TopNavHeader } from "@/components/organisms/TopNavHeader";
 import {
   MIN_LOAN_INR,
   ON_ROAD_PRICE_INR,
   SELF_FINANCE_LOAN_DEFAULT_INR,
   SLIDER_STEP,
-} from "@/components/payment/loan-amount-demo-constants";
+} from "@/lib/loan-amount-demo-constants";
 import { formatInrAmountDigits, parseInrAmountInput } from "@/lib/loan-emi";
 import styles from "./EnterDisbursementAmountScreen.module.scss";
 
@@ -96,7 +96,7 @@ export function EnterDisbursementAmountScreen() {
 
   return (
     <div className={styles.min_h_dvh_0}>
-      <KycTopNavHeader endSlot={<GetHelpPillButton onClick={() => setShiviSheetOpen(true)} />} />
+      <TopNavHeader solid endSlot={<GetHelpPillButton onClick={() => setShiviSheetOpen(true)} />} />
 
       <main className={styles.mx_auto_1}>
         <h1

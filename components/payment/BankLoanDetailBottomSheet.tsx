@@ -13,8 +13,8 @@ import {
   BOTTOM_SHEET_CTA_STRIP_TOP_CLASS,
   BOTTOM_SHEET_MAX_HEIGHT_CLASS,
   BOTTOM_SHEET_OVERLAY_Z_CLASS,
-} from "@/components/ui/bottom-sheet-layout";
-import { BottomSheetCloseIcon } from "@/components/ui/BottomSheetCloseIcon";
+} from "@/lib/layout/bottom-sheet-layout";
+import { BottomSheetCloseIcon } from "@/components/atoms/BottomSheetCloseIcon";
 import styles from "./BankLoanDetailBottomSheet.module.scss";
 
 /** Enter/exit slide duration — parity with the rest of the payment sheet family. */
