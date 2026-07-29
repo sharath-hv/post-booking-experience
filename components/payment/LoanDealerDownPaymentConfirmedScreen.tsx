@@ -63,7 +63,7 @@ export function LoanDealerDownPaymentConfirmedScreen() {
   const waitingSays = useMemo(
     () => [
       `I'm checking your down payment with ${NAMED_DEALER_LABEL}, Sharath.`,
-      `Confirming the details with ${NAMED_DEALER_LABEL} usually takes 2-3 hours. Once they confirm, I'll ask ${bank.name} to release the loan.`,
+      `It usually takes 2-3 hours. Once they confirm, I'll ask ${bank.name} to release the loan.`,
     ],
     [bank.name],
   );

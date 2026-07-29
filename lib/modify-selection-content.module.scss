@@ -1,7 +1,9 @@
 /* Auto-generated from utility classNames — visual parity migration */
 
 .modifySelectionPageShell {
+  display: flex;
   min-height: 100dvh;
+  flex-direction: column;
   background-color: var(--color-white);
   font-family: "Euclid Circular B", -apple-system, BlinkMacSystemFont, sans-serif;
 }

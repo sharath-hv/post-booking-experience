@@ -17,15 +17,47 @@ export const MODIFY_SELECTION_BOOKING_AMOUNT_PAID_INR = 10_000;
 /** New booking lock for the updated selection — demo default (Figma 2696:9233). */
 export const MODIFY_SELECTION_NEW_BOOKING_AMOUNT_INR = 15_000;
 
-export const MODIFY_SELECTION_REVIEW_PAY_TITLE = "Ready to lock this in?";
+export const MODIFY_SELECTION_REVIEW_PAY_TITLE = "Confirm your changes";
 
-export const MODIFY_SELECTION_REVIEW_PAY_DUE_TODAY_HEADING = "What you'll pay";
-export const MODIFY_SELECTION_REVIEW_PAY_DUE_TODAY_LABEL = "Due today";
+/** Sticky footer + booking card — what the user pays on this step. */
+export const MODIFY_SELECTION_REVIEW_PAY_NOW_LABEL = "Amount due";
+export const MODIFY_SELECTION_REVIEW_PAY_NOTHING_DUE_LABEL = "No payment needed";
 export const MODIFY_SELECTION_REVIEW_PAY_BREAKDOWN_TOGGLE = "How we calculated this";
-/** Primary label on the expandable car-price summary row. */
-export const MODIFY_SELECTION_REVIEW_PAY_ACKO_DRIVE_PRICE_LABEL =
-  "ACKO Drive price";
+/** Full on-road style price — secondary to the pay-now card. */
+export const MODIFY_SELECTION_REVIEW_PAY_ACKO_DRIVE_PRICE_LABEL = "ACKO Drive price";
+export const MODIFY_SELECTION_REVIEW_PAY_CAR_PRICE_HINT =
+  "Your car's full on-road price. This step only covers the booking update.";
 
+/**
+ * Lock/fee shape for the booking-amount card.
+ * Covers the five demo cases plus lower+fee if policy ever stacks both.
+ */
+export type ModifySelectionBookingAmountCase =
+  | "higher"
+  | "higher_fee"
+  | "lower"
+  | "lower_fee"
+  | "same"
+  | "same_fee";
+
+export type ModifySelectionBookingAmountCardCopy = {
+  caseId: ModifySelectionBookingAmountCase;
+  dueLabel: string;
+  /** One why-line under the amount — never stacks fee + situation as separate lines. */
+  whyLine: string;
+  priceLockTopUpInr: number;
+  /**
+   * Big number in the hero. Null when a ₹0 would feel empty (e.g. same lock, covered).
+   * For surplus cases this is the credit amount, not the ₹0 due.
+   */
+  heroAmountInr: number | null;
+  /** Visual tone for the hero amount. */
+  heroAmountTone: "pay" | "credit";
+  /** Breakdown footer label — “Amount due” or “Amount adjusted” for surplus. */
+  totalLabel: string;
+  /** Breakdown footer amount — due today, or surplus adjusted on lower (no fee). */
+  totalAmountInr: number;
+};
 /** Price summary demo totals — Figma 2699:9390. */
 export const MODIFY_SELECTION_PRICE_SUMMARY_DEMO = {
   exShowroomPriceInr: 2_016_300,
@@ -62,8 +94,6 @@ export type ModifySelectionReviewPaySummary = {
    * When paid lock exceeds new lock — surplus adjusted into final car amount (not refunded here).
    */
   bookingAmountSurplusInr: number;
-  /** Plain-language situation for the due-today card — omitted when lock is unchanged. */
-  situationLine: string | null;
   deliveryLine: string;
   isExpressDelivery: boolean;
 };
@@ -110,15 +140,6 @@ export function buildModifySelectionColourReviewPaySummary(
   const bookingAmountToPayInr = Math.max(0, lockDeltaInr) + changeSelectionFeeInr;
   const bookingAmountSurplusInr = Math.max(0, -lockDeltaInr);
 
-  const situationLine =
-    demo != null
-      ? demo.situationLine
-      : bookingAmountSurplusInr > 0
-        ? "You've already paid more than this car's price lock."
-        : lockDeltaInr > 0
-          ? "This car needs a higher price lock."
-          : null;
-
   return {
     exShowroomPriceInr,
     otherChargesTotalInr,
@@ -130,10 +151,111 @@ export function buildModifySelectionColourReviewPaySummary(
     changeSelectionFeeInr,
     bookingAmountToPayInr,
     bookingAmountSurplusInr,
-    situationLine,
     deliveryLine: quote.deliveryLine,
     isExpressDelivery: quote.isExpressDelivery,
   };
+}
+
+/**
+ * Card IA for review-and-pay booking amount — one label, one meaningful amount, one why-line.
+ * Lower/surplus cases lead with the credit (not ₹0). Fee math stays in the breakdown.
+ */
+export function getModifySelectionBookingAmountCardCopy(
+  summary: Pick<
+    ModifySelectionReviewPaySummary,
+    | "newBookingAmountInr"
+    | "bookingAmountPaidInr"
+    | "changeSelectionFeeInr"
+    | "bookingAmountToPayInr"
+    | "bookingAmountSurplusInr"
+  >,
+): ModifySelectionBookingAmountCardCopy {
+  const priceLockTopUpInr = Math.max(
+    0,
+    summary.newBookingAmountInr - summary.bookingAmountPaidInr,
+  );
+  const surplusInr = summary.bookingAmountSurplusInr;
+  const feeInr = summary.changeSelectionFeeInr;
+  const dueInr = summary.bookingAmountToPayInr;
+  const hasFee = feeInr > 0;
+
+  let caseId: ModifySelectionBookingAmountCase;
+  if (priceLockTopUpInr > 0) {
+    caseId = hasFee ? "higher_fee" : "higher";
+  } else if (surplusInr > 0) {
+    caseId = hasFee ? "lower_fee" : "lower";
+  } else {
+    caseId = hasFee ? "same_fee" : "same";
+  }
+
+  switch (caseId) {
+    case "higher":
+      return {
+        caseId,
+        dueLabel: MODIFY_SELECTION_REVIEW_PAY_NOW_LABEL,
+        whyLine: "Your new car has a higher booking amount",
+        priceLockTopUpInr,
+        heroAmountInr: dueInr,
+        heroAmountTone: "pay",
+        totalLabel: MODIFY_SELECTION_REVIEW_PAY_NOW_LABEL,
+        totalAmountInr: dueInr,
+      };
+    case "higher_fee":
+      return {
+        caseId,
+        dueLabel: MODIFY_SELECTION_REVIEW_PAY_NOW_LABEL,
+        whyLine: `Your new car has a higher booking amount. A one-time ${formatModifySelectionInr(feeInr)} change fee also applies`,
+        priceLockTopUpInr,
+        heroAmountInr: dueInr,
+        heroAmountTone: "pay",
+        totalLabel: MODIFY_SELECTION_REVIEW_PAY_NOW_LABEL,
+        totalAmountInr: dueInr,
+      };
+    case "lower":
+      return {
+        caseId,
+        dueLabel: "Comes off your final car price",
+        whyLine: `Your new car has a lower booking amount. The ${formatModifySelectionInr(surplusInr)} extra comes off your car's final price.`,
+        priceLockTopUpInr,
+        heroAmountInr: surplusInr,
+        heroAmountTone: "credit",
+        totalLabel: "Amount adjusted",
+        totalAmountInr: surplusInr,
+      };
+    case "lower_fee":
+      return {
+        caseId,
+        dueLabel: MODIFY_SELECTION_REVIEW_PAY_NOW_LABEL,
+        whyLine: `${formatModifySelectionInr(surplusInr)} will come off the final price. You only pay the change fee now.`,
+        priceLockTopUpInr,
+        heroAmountInr: dueInr,
+        heroAmountTone: "pay",
+        totalLabel: MODIFY_SELECTION_REVIEW_PAY_NOW_LABEL,
+        totalAmountInr: dueInr,
+      };
+    case "same":
+      return {
+        caseId,
+        dueLabel: MODIFY_SELECTION_REVIEW_PAY_NOTHING_DUE_LABEL,
+        whyLine: "You've already paid for this booking.",
+        priceLockTopUpInr,
+        heroAmountInr: null,
+        heroAmountTone: "pay",
+        totalLabel: MODIFY_SELECTION_REVIEW_PAY_NOW_LABEL,
+        totalAmountInr: dueInr,
+      };
+    case "same_fee":
+      return {
+        caseId,
+        dueLabel: "One-time fee",
+        whyLine: "This is a one-time fee for updating your booking",
+        priceLockTopUpInr,
+        heroAmountInr: dueInr,
+        heroAmountTone: "pay",
+        totalLabel: MODIFY_SELECTION_REVIEW_PAY_NOW_LABEL,
+        totalAmountInr: dueInr,
+      };
+  }
 }
 
 export function formatModifySelectionInr(amount: number): string {
