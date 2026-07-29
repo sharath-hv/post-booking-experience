@@ -182,13 +182,16 @@ export function ShieldPolicyCard({
               </button>
             </div>
           ) : (
-            <button
-              type="button"
-              onClick={() => setSheetOpen(true)}
-              className={["tertiary-cta", styles.footerCtaLeft].filter(Boolean).join(" ")}
-            >
-              See what&apos;s included
-            </button>
+            <p className={styles.footerQuote}>
+              <span className={styles.footerContext}>Curious what's covered?</span>
+              <button
+                type="button"
+                onClick={() => setSheetOpen(true)}
+                className={["tertiary-cta", styles.footerCtaLeft].filter(Boolean).join(" ")}
+              >
+                See coverage
+              </button>
+            </p>
           )}
         </div>
       </section>

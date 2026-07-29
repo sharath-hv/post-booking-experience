@@ -25,13 +25,14 @@ export type InsuranceAddonCardProps = {
 
 /**
  * Optional add-on card — Figma 2961:9254.
- * Benefit copy on white, product name + price on a grey bar, Add / Added control.
+ * Selected state matches change-selection cards (lavender border + wash);
+ * Add / Added stays the control (no radio).
  */
 export function InsuranceAddonCard({ addon, selected, onToggle }: InsuranceAddonCardProps) {
   return (
     <article
       id={`insurance-addon-${addon.id}`}
-      className={styles.card}
+      className={cn(styles.card, selected && styles.cardSelected)}
       aria-label={`${addon.title}, ${formatInr(addon.premiumInr)}`}
     >
       <div className={styles.body}>

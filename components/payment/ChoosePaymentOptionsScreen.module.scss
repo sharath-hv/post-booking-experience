@@ -76,6 +76,10 @@
   align-items: flex-start;
 }
 
+.flex_9_center {
+  align-items: center;
+}
+
 .relative_10 {
   position: relative;
   margin-right: calc(var(--spacing) * 3);
@@ -107,11 +111,14 @@
   color: #5920c5;
 }
 
-.mt_1_13 {
-  margin-top: var(--spacing);
+.radio_13 {
   margin-left: calc(var(--spacing) * 3);
   display: flex;
   flex-shrink: 0;
+}
+
+.radio_13_offset {
+  margin-top: var(--spacing);
 }
 
 .mt_3_14 {
@@ -165,6 +172,31 @@
   flex-direction: column;
   gap: calc(var(--spacing) * 4);
   overflow-anchor: none;
+}
+
+.otherOptionsHeader {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing) * 1);
+  padding-top: calc(var(--spacing) * 2);
+}
+
+.otherOptionsTitle {
+  margin: 0;
+  font-size: 14px;
+  --tw-font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-semibold);
+  --tw-leading: calc(var(--spacing) * 5);
+  line-height: calc(var(--spacing) * 5);
+  color: #121212;
+}
+
+.otherOptionsSubtext {
+  margin: 0;
+  font-size: 12px;
+  --tw-leading: calc(var(--spacing) * 4.5);
+  line-height: calc(var(--spacing) * 4.5);
+  color: #757575;
 }
 
 .payment_success_stagger_20 {
