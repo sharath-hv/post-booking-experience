@@ -292,7 +292,7 @@ export function ChoosePaymentOptionsScreen() {
       <ConciergeTurnShell
         says={[
           "How do you want to pay the remaining ₹13,63,780?",
-          "Pick what suits you. I'll make any of these painless.",
+          "You picked ACKO Drive financing at booking, so it's already selected here, with your ₹5,000 discount applied.",
         ]}
         artifact={
           <div className={styles.flex_19}>
@@ -326,7 +326,7 @@ export function ChoosePaymentOptionsScreen() {
             >
               <p className={styles.otherOptionsTitle}>Other payment options</p>
               <p className={styles.otherOptionsSubtext}>
-                You&apos;ll lose the ₹10,000 loan discount if you pick either of these.
+                These don&apos;t carry the ₹5,000 discount that comes with ACKO Drive financing.
               </p>
             </div>
 
@@ -340,6 +340,7 @@ export function ChoosePaymentOptionsScreen() {
                 onSelect={() => setChoice("self_finance")}
                 illustrationSrc={PAYMENT_CHOOSE_ASSETS.selfFinance}
                 title="Arrange the loan yourself"
+                chip="Self-arranged"
                 blurb="Pick any bank you like and apply on your own. Bring me the sanction letter and I take it from there."
                 stats={[
                   { value: "5–7 days", caption: "typical bank approval" },
@@ -364,6 +365,7 @@ export function ChoosePaymentOptionsScreen() {
                 onSelect={() => setChoice("full_payment")}
                 illustrationSrc={PAYMENT_CHOOSE_ASSETS.fullCash}
                 title="Pay in full, no loan"
+                chip="Fastest"
                 blurb="No loan, no EMI, no paperwork. Pay and your car gets ready for delivery."
                 stats={[
                   { value: formatInr(FULL_PAYMENT_CAR_AMOUNT_INR), caption: "due now" },
