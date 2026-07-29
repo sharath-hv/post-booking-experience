@@ -10,7 +10,7 @@ import { buildInsuranceAddonsHref } from "@/lib/paymentUrls";
 
 const HEADLINE = "Your car's nearly ready. One last payment.";
 const SUBLINE =
-  "The RTO won't register a car without an active policy, so this is the last step before delivery. Here's your ACKO Drive Shield quote.";
+  "The RTO won't register your car without an active policy, so here's your ACKO Drive Shield quote, your last step before delivery.";
 
 /**
  * Step 1 of insurance — Shivi's intro + base ACKO Drive Shield quote.

@@ -184,7 +184,7 @@ function OptionCard({
       aria-pressed={selected}
       className={cn(styles.w_full_2, "card-elevated", selected ? styles.border_selected_2 : styles.border_transparent_2)}
     >
-      <div className={styles.flex_9}>
+      <div className={cn(styles.flex_9, !chip && styles.flex_9_center)}>
         <div className={styles.relative_10}>
           <Image
             src={illustrationSrc}
@@ -195,7 +195,7 @@ function OptionCard({
             sizes="40px"
           />
         </div>
-        {/* Uniform two-line lockup (chip, title) so every card's header is the same height. */}
+        {/* With chip: two-line lockup. Without: title (+ radio) vertically centers with the icon. */}
         <div className={styles.min_w_0_11}>
           {chip ? (
             <span className={styles.inline_flex_12}>
@@ -206,7 +206,7 @@ function OptionCard({
             {title}
           </p>
         </div>
-        <span className={styles.mt_1_13}>
+        <span className={cn(styles.radio_13, chip && styles.radio_13_offset)}>
           <RadioIndicator selected={selected} />
         </span>
       </div>
@@ -303,7 +303,7 @@ export function ChoosePaymentOptionsScreen() {
                 onSelect={() => setChoice("acko_drive")}
                 illustrationSrc={PAYMENT_CHOOSE_ASSETS.ackoDriveFinance}
                 title="Finance with ACKO Drive"
-                chip="Easiest"
+                chip="Pre-approved loan"
                 blurb="You pick the bank, I handle the paperwork and every follow-up after."
                 stats={[
                   { value: "2 days", caption: "approx. approval time" },
@@ -321,8 +321,18 @@ export function ChoosePaymentOptionsScreen() {
             </div>
 
             <div
-              className={[styles.payment_success_stagger_20, "payment-success-stagger"].filter(Boolean).join(" ")}
+              className={[styles.otherOptionsHeader, styles.payment_success_stagger_20, "payment-success-stagger"].filter(Boolean).join(" ")}
               style={{ animationDelay: `${STAGGER_OPTION_STEP_MS}ms` }}
+            >
+              <p className={styles.otherOptionsTitle}>Other payment options</p>
+              <p className={styles.otherOptionsSubtext}>
+                You&apos;ll lose the ₹10,000 loan discount if you pick either of these.
+              </p>
+            </div>
+
+            <div
+              className={[styles.payment_success_stagger_20, "payment-success-stagger"].filter(Boolean).join(" ")}
+              style={{ animationDelay: `${2 * STAGGER_OPTION_STEP_MS}ms` }}
             >
               <OptionCard
                 id="self_finance"
@@ -330,7 +340,6 @@ export function ChoosePaymentOptionsScreen() {
                 onSelect={() => setChoice("self_finance")}
                 illustrationSrc={PAYMENT_CHOOSE_ASSETS.selfFinance}
                 title="Arrange the loan yourself"
-                chip="Self-arranged"
                 blurb="Pick any bank you like and apply on your own. Bring me the sanction letter and I take it from there."
                 stats={[
                   { value: "5–7 days", caption: "typical bank approval" },
@@ -347,7 +356,7 @@ export function ChoosePaymentOptionsScreen() {
 
             <div
               className={[styles.payment_success_stagger_20, "payment-success-stagger"].filter(Boolean).join(" ")}
-              style={{ animationDelay: `${2 * STAGGER_OPTION_STEP_MS}ms` }}
+              style={{ animationDelay: `${3 * STAGGER_OPTION_STEP_MS}ms` }}
             >
               <OptionCard
                 id="full_payment"
@@ -355,7 +364,6 @@ export function ChoosePaymentOptionsScreen() {
                 onSelect={() => setChoice("full_payment")}
                 illustrationSrc={PAYMENT_CHOOSE_ASSETS.fullCash}
                 title="Pay in full, no loan"
-                chip="Fastest"
                 blurb="No loan, no EMI, no paperwork. Pay and your car gets ready for delivery."
                 stats={[
                   { value: formatInr(FULL_PAYMENT_CAR_AMOUNT_INR), caption: "due now" },

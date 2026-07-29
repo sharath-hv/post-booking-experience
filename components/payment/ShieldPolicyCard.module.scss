@@ -278,6 +278,21 @@
   margin-left: auto;
 }
 
+.footerQuote {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.footerContext {
+  color: var(--color-text-secondary);
+  font-weight: 400;
+}
+
 .footerCtaLeft {
   flex-shrink: 0;
 }
