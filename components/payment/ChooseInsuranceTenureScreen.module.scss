@@ -74,12 +74,35 @@
   align-self: center;
 }
 
+.cardCopyWithBadge {
+  align-self: flex-start;
+}
+
+.cardBadge {
+  display: inline-flex;
+  border-radius: calc(infinity * 1px);
+  background-color: #efe9fb;
+  padding-inline: calc(var(--spacing) * 2);
+  padding-block: calc(var(--spacing) * 0.5);
+  /* label-sm / overline */
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #5920c5;
+}
+
 .cardLabel {
   margin: 0;
   font-size: 16px;
   font-weight: 600;
   line-height: 24px;
   color: #121212;
+}
+
+.cardCopyWithBadge .cardLabel {
+  margin-top: 4px;
 }
 
 .radio {
@@ -90,6 +113,10 @@
   justify-content: center;
   height: 16px;
   width: 16px;
+}
+
+.radioWithBadge {
+  margin-top: 2px;
 }
 
 .radioImg {
