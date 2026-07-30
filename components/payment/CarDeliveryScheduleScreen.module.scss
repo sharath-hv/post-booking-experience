@@ -169,8 +169,9 @@
 }
 
 .chipSelected {
-  border-color: #121212;
-  background-color: #f5f5f5;
+  /* Match payment / modify-selection selected cards */
+  border-color: #bda6e8;
+  background-color: #f4eefe;
 }
 
 .chipIdle {

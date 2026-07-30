@@ -85,7 +85,8 @@ export type InsuranceTenureOption = {
   premiumInr: number;
   /** Compare-at for the recommended full package on this tenure. */
   compareAtInr: number;
-  badge: string;
+  /** Optional highlight chip above the label (e.g. “Best value” on extended). */
+  badge?: string;
   /** Shivi-voice product copy below the card title — matches payment option cards. */
   blurb: string;
   /** Why this is worth the upgrade — always shown in the card footer on extended. */
@@ -102,7 +103,6 @@ export const INSURANCE_TENURE_OPTIONS: readonly InsuranceTenureOption[] = [
     thirdPartyYears: 3,
     premiumInr: INSURANCE_BASE_PREMIUM_INR,
     compareAtInr: INSURANCE_COMPARE_AT_PREMIUM_INR,
-    badge: "Standard",
     blurb:
       "You'll need to renew after 1st year, and premiums typically go up each renewal.",
   },
@@ -114,7 +114,7 @@ export const INSURANCE_TENURE_OPTIONS: readonly InsuranceTenureOption[] = [
     thirdPartyYears: 3,
     premiumInr: INSURANCE_EXTENDED_BASE_PREMIUM_INR,
     compareAtInr: INSURANCE_EXTENDED_COMPARE_AT_INR,
-    badge: "Extended",
+    badge: "Best value",
     blurb:
       "I'd lock you in for 3 years — today's rate, no renewal at year one, and nothing creeping up on you.",
   },

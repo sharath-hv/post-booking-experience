@@ -292,7 +292,7 @@ export function ChoosePaymentOptionsScreen() {
       <ConciergeTurnShell
         says={[
           "How do you want to pay the remaining ₹13,63,780?",
-          "You picked ACKO Drive financing at booking, so it's already selected here, with your ₹5,000 discount applied.",
+          "You opted to finance with ACKO Drive during booking — I've kept it selected, with your ₹5,000 discount already applied.",
         ]}
         artifact={
           <div className={styles.flex_19}>

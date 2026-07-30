@@ -95,10 +95,11 @@ function TenureCard({
             sizes="40px"
           />
         </div>
-        <div className={styles.cardCopy}>
+        <div className={cn(styles.cardCopy, option.badge ? styles.cardCopyWithBadge : "")}>
+          {option.badge ? <span className={styles.cardBadge}>{option.badge}</span> : null}
           <p className={styles.cardLabel}>{option.label}</p>
         </div>
-        <span className={styles.radio}>
+        <span className={cn(styles.radio, option.badge ? styles.radioWithBadge : "")}>
           <TenureRadioIndicator selected={selected} />
         </span>
       </div>
