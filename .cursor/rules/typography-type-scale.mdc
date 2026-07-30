@@ -1,0 +1,56 @@
+---
+description: Enforce ACKO type scale from skills/typography.md and skills/primitives.md for all UI text
+globs: "**/*.{scss,css,tsx,ts}"
+alwaysApply: true
+---
+
+# Typography type scale (mandatory)
+
+Before adding or changing any text styles, follow `skills/typography.md` and the type scale in `skills/primitives.md` (Typography section).
+
+## Allowed `font-size` values only
+
+`11` · `12` · `14` · `16` · `18` · `20` · `24` · `32` · `40` · `48` · `56` · `72` (px)
+
+| Role | Size / line-height | Notes |
+|------|--------------------|--------|
+| label-sm / overline | 11 / 14 or 16 | Absolute minimum; badges, eyebrows |
+| label-md / caption | 12 / 16 | Form labels, fine print |
+| body-sm / label-lg | 14 / 20 | Body floor; supporting UI |
+| body-md | 16 / 24 | Default body |
+| body-lg / heading-sm | 18 / 28 or 24 | Lead / small heading |
+| heading-md | 20 / 28 | Card / sheet titles |
+| heading-lg | 24 / 32 | Section titles |
+| heading-xl | 32 / 40 | Large amounts / page emphasis |
+| display-* | 40+ | Marketing heroes only |
+
+## Hard rules
+
+- **Never** use off-scale sizes (`10px`, `13px`, `15px`, `17px`, `19px`, `22px`, `28px`, `34px`, etc.).
+- If a design/spec uses an off-scale size, **snap to the nearest allowed size** (e.g. `13 → 14`, `10 → 11`, `15 → 14` or `16`).
+- Pair size with the matching line-height from the table above (do not leave orphan `18px`/`19px` line-heights on `14px` text).
+- Font family: `'Euclid Circular B', -apple-system, BlinkMacSystemFont, sans-serif`.
+- Body text minimum **14px**; labels minimum **12px**; never below **11px**.
+- Prefer semantic tokens / comments naming the variant (`/* body-sm */`) when hardcoding in CSS modules.
+- Do not invent one-off sizes for density; use `label-sm` / `caption` instead of shrinking body.
+
+## Examples
+
+```scss
+/* ❌ BAD */
+font-size: 13px;
+line-height: 18px;
+
+/* ✅ GOOD — body-sm */
+font-size: 14px;
+line-height: 20px;
+```
+
+```scss
+/* ❌ BAD */
+font-size: 10px;
+
+/* ✅ GOOD — label-sm / overline */
+font-size: 11px;
+line-height: 14px; /* or 16px for overline */
+```
