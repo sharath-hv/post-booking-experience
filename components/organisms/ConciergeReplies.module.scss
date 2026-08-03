@@ -6,3 +6,12 @@
   flex-direction: column;
   gap: calc(var(--spacing) * 3);
 }
+
+.row {
+  flex-direction: row;
+
+  > button {
+    flex: 1;
+    min-width: 0;
+  }
+}

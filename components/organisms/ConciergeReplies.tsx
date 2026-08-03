@@ -31,10 +31,12 @@ export type ConciergeReply = {
 export type ConciergeRepliesProps = {
   replies: readonly ConciergeReply[];
   className?: string;
+  /** Side-by-side buttons for two short replies (default: stacked). */
+  layout?: "column" | "row";
 };
 
 /** The user's reply affordances — buttons that act as their side of the dialogue. */
-export function ConciergeReplies({ replies, className }: ConciergeRepliesProps) {
+export function ConciergeReplies({ replies, className, layout = "column" }: ConciergeRepliesProps) {
   const router = useRouter();
   const [sending, setSending] = useState(false);
   const sentRef = useRef(false);
@@ -66,7 +68,7 @@ export function ConciergeReplies({ replies, className }: ConciergeRepliesProps) 
   };
 
   return (
-    <div className={cn(styles.flex_0, className)}>
+    <div className={cn(styles.flex_0, layout === "row" && styles.row, className)}>
       {replies.map((reply) => (
         <button
           key={reply.label}

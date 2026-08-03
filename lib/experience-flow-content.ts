@@ -3,6 +3,7 @@ import { BOOKING_CONFIRMED_ASSETS } from "@/lib/kyc-booking-confirmed-assets";
 import { BOOKING_EXPRESS_DELIVERY_LINE } from "@/lib/booking-car-card-content";
 import styles from "./experience-flow-content.module.scss";
 
+import { readEarlyDeliveryLineOverride } from "@/lib/concierge/early-delivery";
 import {
   readExperienceFlow,
   type ExperienceFlow,
@@ -38,9 +39,12 @@ export function isExpressDeliveryFlow(flow?: ExperienceFlow): boolean {
 
 /** Delivery line on car cards — standard-only vs express (default for other flows). */
 export function getBookingDeliveryLine(flow?: ExperienceFlow): string {
-  return isStandardDeliveryFlow(flow)
-    ? BOOKING_STANDARD_DELIVERY_LINE
-    : BOOKING_EXPRESS_DELIVERY_LINE;
+  if (isStandardDeliveryFlow(flow)) {
+    const early = readEarlyDeliveryLineOverride();
+    if (early != null) return early;
+    return BOOKING_STANDARD_DELIVERY_LINE;
+  }
+  return BOOKING_EXPRESS_DELIVERY_LINE;
 }
 
 /** Delivery icon on car cards — standard uses clock; express uses bolt. */

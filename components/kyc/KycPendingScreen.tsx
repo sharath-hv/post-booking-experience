@@ -12,7 +12,7 @@ import { TopNavHeader } from "@/components/organisms/TopNavHeader";
 import { ManageBookingBottomSheet } from "@/components/organisms/ManageBookingBottomSheet";
 import { ShiviIntroBottomSheet } from "@/components/kyc/ShiviIntroBottomSheet";
 import { WordByWordLine } from "@/components/molecules/WordByWordLine";
-import { AuroraLightLayer } from "@/components/atoms/aurora-light-layer";
+import { ExperienceBackdrop } from "@/components/atoms/experience-backdrop";
 import {
   HERO_ACTION_HEADLINE_SUBLINE_GAP_CLASS,
   HERO_ICON_TOP_PT,
@@ -154,7 +154,7 @@ export function KycPendingScreen() {
               </div>
             }
           />
-          <AuroraLightLayer />
+          <ExperienceBackdrop />
           <div className={cn(styles.relative_1_0, HERO_ICON_TOP_PT)}>
             <div className={styles.relative_6}>
               <Image

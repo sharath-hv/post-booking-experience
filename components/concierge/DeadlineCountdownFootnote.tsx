@@ -18,7 +18,8 @@ function readDeadlineAt(storageKey: string, durationMs: number): number {
     const existing = sessionStorage.getItem(storageKey);
     if (existing != null) {
       const parsed = Number(existing);
-      if (Number.isFinite(parsed)) return parsed;
+      // Still in the future — keep counting down from the original start.
+      if (Number.isFinite(parsed) && parsed > Date.now()) return parsed;
     }
   } catch {
     /* private mode / blocked storage */

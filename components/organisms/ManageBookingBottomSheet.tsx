@@ -52,8 +52,10 @@ import {
   FULL_PAYMENT_BANK_ID,
   INSURANCE_PAYMENT_KIND,
 } from "@/lib/paymentUrls";
+import { useBackdropMode } from "@/lib/concierge/use-backdrop-mode";
 import { cn } from "@/lib/utils";
 import { OVERLAY_GLASS_CARD_CLASS } from "@/lib/overlay-glass-card";
+import { Sparkles } from "lucide-react";
 import styles from "./ManageBookingBottomSheet.module.scss";
 
 
@@ -105,6 +107,37 @@ function ModifyBookingActionRow({
         />
       </span>
     </button>
+  );
+}
+
+function VideoBackgroundSwitchRow() {
+  const [mode, setMode] = useBackdropMode();
+  const checked = mode === "video";
+
+  return (
+    <div className={styles.flex_14}>
+      <span className={styles.flex_0} aria-hidden>
+        <Sparkles size={20} strokeWidth={1.75} className={styles.shrink_0_1} />
+      </span>
+      <span className={styles.min_w_0_2}>
+        <span className={styles.block_3} id="video-background-label">
+          Video background
+        </span>
+        <span className={styles.mt_1_4}>
+          Replace aurora lights with the animation video
+        </span>
+      </span>
+      <button
+        type="button"
+        role="switch"
+        aria-checked={checked}
+        aria-labelledby="video-background-label"
+        className={cn(styles.switchTrack, checked && styles.switchTrackOn)}
+        onClick={() => setMode(checked ? "aurora" : "video")}
+      >
+        <span className={cn(styles.switchThumb, checked && styles.switchThumbOn)} />
+      </button>
+    </div>
   );
 }
 
@@ -445,6 +478,24 @@ export function ManageBookingSections({
           </div>
         </section>
       ) : null}
+
+      <section aria-labelledby="manage-booking-background-heading">
+        <h3
+          id="manage-booking-background-heading"
+          className={styles.mb_4_8}
+        >
+          Appearance
+        </h3>
+        <div
+          className={cn(
+            surface === "overlay"
+              ? OVERLAY_GLASS_CARD_CLASS
+              : styles.overflow_hidden_18,
+          )}
+        >
+          <VideoBackgroundSwitchRow />
+        </div>
+      </section>
     </div>
   );
 }

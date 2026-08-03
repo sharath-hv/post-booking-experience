@@ -24,7 +24,15 @@ import {
   DEMO_VEHICLE_ENGINE_NO,
 } from "@/lib/demo-vehicle-identification";
 import { PaymentSummaryCard } from "@/components/organisms/PaymentSummaryCard";
-import { readActiveBookingSnapshot } from "@/lib/active-booking-snapshot";
+import {
+  readActiveBookingSnapshot,
+  writeActiveBookingSnapshot,
+} from "@/lib/active-booking-snapshot";
+import {
+  acceptEarlyDelivery,
+  clearEarlyDeliveryOverride,
+  EARLY_STANDARD_DELIVERY_LINE,
+} from "@/lib/concierge/early-delivery";
 import { getArrivalLeadPaid, getTurnWords, type ConciergeMomentId } from "@/lib/concierge/script";
 import {
   DEFAULT_EXPERIENCE_FLOW,
@@ -34,6 +42,7 @@ import {
   type ExperienceFlow,
 } from "@/lib/experience-flow";
 import {
+  BOOKING_STANDARD_DELIVERY_LINE,
   getBookingDeliveryIconSrc,
   getBookingDeliveryLine,
   getBookingDeliveryStripContainerClass,
@@ -87,6 +96,13 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
     setFlowReady(true);
   }, []);
 
+  // Fresh early-offer / keep-date beats — drop any prior accept so the original date holds.
+  useEffect(() => {
+    if (moment === "earlyDeliveryOffer" || moment === "earlyDeliveryKept") {
+      clearEarlyDeliveryOverride();
+    }
+  }, [moment]);
+
   // kyc_failed (fresh submission, not a re-upload) skips the inline OCR-failure
   // choice screen entirely — straight to manual review.
   const shouldRedirectToManualVerification =
@@ -130,6 +146,18 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
     }, [flowReady]);
 
   const earlyAllocation = searchParams.get("early") === "1";
+  const earlyDealerChange = searchParams.get("earlyDealer") === "1";
+
+  const commitEarlyDeliveryDate = () => {
+    acceptEarlyDelivery();
+    const snapshot = readActiveBookingSnapshot();
+    if (snapshot != null) {
+      writeActiveBookingSnapshot({
+        ...snapshot,
+        deliveryLine: EARLY_STANDARD_DELIVERY_LINE,
+      });
+    }
+  };
 
   const words = useMemo(
     () =>
@@ -137,8 +165,9 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
         car,
         afterSelectionChange,
         earlyAllocation: moment === "allocationDone" ? earlyAllocation : false,
+        earlyDealerChange: moment === "dealerFound" ? earlyDealerChange : false,
       }),
-    [moment, flow, car, afterSelectionChange, earlyAllocation],
+    [moment, flow, car, afterSelectionChange, earlyAllocation, earlyDealerChange],
   );
 
   const deliveryFlow =
@@ -338,6 +367,11 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
         // cancel_with_charges parks here once the partner is locked (charged cancel demo).
         const parkForCancelCharges = isCancelWithChargesFlow(flow);
         const isStandard = isStandardDeliveryFlow(flow);
+        const otpBody = earlyDealerChange
+          ? "Our partner will call you shortly. Share the OTP with them to verify and lock in your faster delivery."
+          : isStandard
+            ? "Our partner will call you shortly. Share the OTP with them. Once it's verified, Hyundai can start building your car."
+            : "Our partner will call you shortly. Share the OTP with them. That's how Hyundai assigns this exact car to you.";
         return {
           ...base,
           // No reply buttons here, but the date is in the user's hands — the call is the action.
@@ -346,11 +380,7 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
             <div className={styles.flex_0}>
               <NextStepCard
                 title="Confirm with a one-time code"
-                body={
-                  isStandard
-                    ? "Our partner will call you shortly. Share the OTP with them. Once it's verified, Hyundai can start building your car."
-                    : "Our partner will call you shortly. Share the OTP with them. That's how Hyundai assigns this exact car to you."
-                }
+                body={otpBody}
               />
               <CarSummaryCardLite
                 title={car.title}
@@ -363,20 +393,27 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
                 dealerName={CAR_SOURCE_NAME}
                 dealerDetail={CAR_SOURCE_DETAIL}
               />
-              <p className={styles.px_1_1}>
-                <span className={styles.font_semibold_2}>Having second thoughts?</span> From this step on, a
-                change costs ₹5,000 and cancelling holds back half of your booking amount. Both are in the
-                menu up top.
-              </p>
+              {earlyDealerChange ? null : (
+                <p className={styles.px_1_1}>
+                  <span className={styles.font_semibold_2}>Having second thoughts?</span> From this step on, a
+                  change costs ₹5,000 and cancelling holds back half of your booking amount. Both are in the
+                  menu up top.
+                </p>
+              )}
             </div>
           ),
           timeSkip:
             words.timeSkipLabel && !parkForCancelCharges
               ? {
                   label: words.timeSkipLabel,
-                  href: isStandard
-                    ? JOURNEY_PATHS.carAllocation.pending
-                    : JOURNEY_PATHS.kyc.bookingConfirmed,
+                  href: earlyDealerChange
+                    ? `${JOURNEY_PATHS.carAllocation.confirmed}?early=1`
+                    : isStandard
+                      ? JOURNEY_PATHS.carAllocation.pending
+                      : JOURNEY_PATHS.kyc.bookingConfirmed,
+                  onBeforeNavigate: earlyDealerChange
+                    ? commitEarlyDeliveryDate
+                    : undefined,
                 }
               : undefined,
         };
@@ -434,13 +471,86 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
           timeSkip: words.timeSkipLabel
             ? { label: words.timeSkipLabel, href: JOURNEY_PATHS.carAllocation.confirmed }
             : undefined,
-          // Standard: early-allocation demo. Express: inability-to-deliver demo.
+          // Standard: early-delivery choice. Express: inability-to-deliver demo.
           altTimeSkip: isStandardDeliveryFlow(flow)
             ? {
                 label: "Car ready early",
-                href: `${JOURNEY_PATHS.carAllocation.confirmed}?early=1`,
+                href: JOURNEY_PATHS.carAllocation.earlyOffer,
               }
             : { label: "If no car is found", href: JOURNEY_PATHS.carAllocation.failed },
+        };
+
+      case "earlyDeliveryOffer":
+        return {
+          ...base,
+          // Always show the original standard date while the user decides.
+          artifact: (
+            <CarSummaryCardLite
+              title={car.title}
+              variant={car.variant}
+              colour={car.colour}
+              deliveryLine={BOOKING_STANDARD_DELIVERY_LINE}
+              deliveryLineClassName={deliveryLineClass}
+              deliveryStripClassName={deliveryStripClass}
+              deliveryIconSrc={deliveryIconSrc}
+              dealerName={CAR_SOURCE_NAME}
+              dealerDetail={CAR_SOURCE_DETAIL}
+            />
+          ),
+          repliesLayout: "row",
+          replies: [
+            {
+              label: "Keep original date",
+              href: JOURNEY_PATHS.carAllocation.keepingDate,
+              echo: "Keep original date",
+              kind: "soft",
+            },
+            {
+              label: "Deliver early",
+              href: JOURNEY_PATHS.carAllocation.earlyConfirming,
+              echo: "Deliver early",
+            },
+          ],
+        };
+
+      case "earlyDeliveryKept":
+        return {
+          ...base,
+          artifact: (
+            <CarSummaryCardLite
+              title={car.title}
+              variant={car.variant}
+              colour={car.colour}
+              deliveryLine={BOOKING_STANDARD_DELIVERY_LINE}
+              deliveryLineClassName={deliveryLineClass}
+              deliveryStripClassName={deliveryStripClass}
+              deliveryIconSrc={deliveryIconSrc}
+              dealerName={CAR_SOURCE_NAME}
+              dealerDetail={CAR_SOURCE_DETAIL}
+            />
+          ),
+          workingBeforeArtifact: true,
+          working,
+          timeSkip: words.timeSkipLabel
+            ? { label: words.timeSkipLabel, href: JOURNEY_PATHS.carAllocation.confirmed }
+            : undefined,
+        };
+
+      case "earlyDeliveryConfirming":
+        return {
+          ...base,
+          dateHolder: "shivi",
+          working,
+          // Demo: direct assign vs OTP verify for faster delivery.
+          timeSkip: {
+            label: "Confirmed · same dealer",
+            href: `${JOURNEY_PATHS.carAllocation.confirmed}?early=1`,
+            onBeforeNavigate: commitEarlyDeliveryDate,
+          },
+          altTimeSkip: {
+            label: "Needs verification · different dealer",
+            href: `${JOURNEY_PATHS.kyc.bookingAccepted}?earlyDealer=1`,
+          },
         };
 
       case "moneyIntro":
@@ -451,7 +561,19 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
           replies: primaryReply(JOURNEY_PATHS.payment.choose),
         };
     }
-  }, [moment, words, flow, car, deliveryLine, deliveryLineClass, deliveryStripClass, deliveryIconSrc, arrivalPaid, searchParams]);
+  }, [
+    moment,
+    words,
+    flow,
+    car,
+    deliveryLine,
+    deliveryLineClass,
+    deliveryStripClass,
+    deliveryIconSrc,
+    arrivalPaid,
+    searchParams,
+    earlyDealerChange,
+  ]);
 
   if (shouldRedirectToManualVerification) return null;
 

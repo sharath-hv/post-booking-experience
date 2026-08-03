@@ -20,7 +20,7 @@ import { TopNavHeader } from "@/components/organisms/TopNavHeader";
 import { ManageBookingBottomSheet } from "@/components/organisms/ManageBookingBottomSheet";
 import { VerificationFailureReasonSwitcher } from "@/components/organisms/VerificationFailureReasonSwitcher";
 import { WordByWordLine } from "@/components/molecules/WordByWordLine";
-import { AuroraLightLayer } from "@/components/atoms/aurora-light-layer";
+import { ExperienceBackdrop } from "@/components/atoms/experience-backdrop";
 import { ShimmerInfoCard } from "@/components/molecules/ShimmerInfoCard";
 import styles from "./KycVerificationFailedScreen.module.scss";
 
@@ -138,7 +138,7 @@ export function KycVerificationFailedScreen() {
           <div className={styles.relative_6}>
             <VerificationFailureReasonSwitcher value={reason} onChange={onReasonChange} />
           </div>
-          <AuroraLightLayer />
+          <ExperienceBackdrop />
           <div className={styles.relative_7}>
             <div className={styles.relative_8}>
               <Image

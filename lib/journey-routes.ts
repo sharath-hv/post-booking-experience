@@ -22,6 +22,12 @@ export const JOURNEY_PATHS = {
   },
   carAllocation: {
     pending: "/car-allocation/pending",
+    /** Standard demo — car built early; user chooses early vs original date. */
+    earlyOffer: "/car-allocation/early-offer",
+    /** Standard demo — confirming early delivery with partner. */
+    earlyConfirming: "/car-allocation/early-confirming",
+    /** Standard demo — user kept original date; manufacturing wait resumes. */
+    keepingDate: "/car-allocation/keeping-date",
     confirmed: "/car-allocation/confirmed",
     failed: "/car-allocation/failed",
   },

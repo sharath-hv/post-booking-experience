@@ -20,7 +20,7 @@ import {
   type WorkingNarrationMode,
 } from "@/components/organisms/WorkingNarration";
 import { TopNavHeader } from "@/components/organisms/TopNavHeader";
-import { AuroraLightLayer } from "@/components/atoms/aurora-light-layer";
+import { ExperienceBackdrop } from "@/components/atoms/experience-backdrop";
 import { ShimmerInfoCard } from "@/components/molecules/ShimmerInfoCard";
 import { consumeConciergeEcho } from "@/lib/concierge/echo";
 import { instantRevealEnabled } from "@/lib/concierge/instant";
@@ -67,6 +67,8 @@ export type ConciergeTurn = {
   };
   /** Your reply affordances (fixed footer). */
   replies?: readonly ConciergeReply[];
+  /** Side-by-side buttons for two short replies (default: stacked). */
+  repliesLayout?: "column" | "row";
   /** Demo time travel to the next turn (fixed footer, below replies). */
   timeSkip?: {
     label: string;
@@ -79,7 +81,9 @@ export type ConciergeTurn = {
    * Alternate demo branch(es) under the time skip — e.g. failure or
    * “bank needs more docs”. Pass one object or a list.
    */
-  altTimeSkip?: { label: string; href: string } | readonly { label: string; href: string }[];
+  altTimeSkip?:
+    | { label: string; href: string; onBeforeNavigate?: () => void }
+    | readonly { label: string; href: string; onBeforeNavigate?: () => void }[];
   /** Orange commitment line above the footer (deadlines, expectations). */
   footnote?: ReactNode;
   /** Semibold prefix for the footnote card. */
@@ -311,6 +315,7 @@ export function ConciergeTurnShell({
   workingBeforeArtifact = false,
   working,
   replies,
+  repliesLayout,
   timeSkip,
   altTimeSkip,
   footnote,
@@ -393,7 +398,7 @@ export function ConciergeTurnShell({
 
   return (
     <div className={styles.relative_8}>
-      <AuroraLightLayer />
+      <ExperienceBackdrop />
 
       {/* Floats above both layers; morphs expand → close while the manage layer is up. */}
       {showMenu ? (
@@ -532,7 +537,9 @@ export function ConciergeTurnShell({
                 )}
               </div>
             ) : null}
-            {replies?.length ? <ConciergeReplies replies={replies} /> : null}
+            {replies?.length ? (
+              <ConciergeReplies replies={replies} layout={repliesLayout} />
+            ) : null}
             {callLabel ? (
               <button
                 type="button"
@@ -565,6 +572,7 @@ export function ConciergeTurnShell({
                 key={`${skip.label}-${skip.href}`}
                 label={skip.label}
                 href={skip.href}
+                onBeforeNavigate={skip.onBeforeNavigate}
                 className={styles.mt_2_20}
               />
             ))}

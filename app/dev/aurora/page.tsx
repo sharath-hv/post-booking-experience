@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { AuroraBackgroundDemo } from "./aurora-background-demo";
 
 export const metadata: Metadata = {
-  title: "Aurora background (dev)",
+  title: "Video background experiment (dev)",
 };
 
 export default function AuroraDevPage() {
