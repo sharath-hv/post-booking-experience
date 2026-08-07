@@ -210,7 +210,10 @@ function exactCarNowDetail(pathname: string, flow?: ExperienceFlow): string {
   if (path === "/kyc/booking-accepted") {
     return "Share the one-time code when our partner calls";
   }
-  if (path === "/car-allocation/failed") {
+  if (
+    path === "/car-allocation/failed" ||
+    path === "/car-allocation/variant-unavailable"
+  ) {
     return "Pick a path forward so we can keep your delivery moving";
   }
   if (path.startsWith("/car-allocation")) {
@@ -228,6 +231,9 @@ function moneyNowDetail(pathname: string): string {
   if (path === "/payment/loan-processing") {
     return "Pick up the bank's verification call and share the OTP";
   }
+  if (path === "/payment/loan-under-review") {
+    return "I'm chasing the bank while they process your loan";
+  }
   if (
     path === "/payment/loan-sanctioned" ||
     path === "/payment/self-finance-loan-confirmed" ||
@@ -237,6 +243,9 @@ function moneyNowDetail(pathname: string): string {
   }
   if (path === "/payment/loan-additional-documents") {
     return "Upload the document the bank asked for";
+  }
+  if (path === "/payment/car-delivery-rto-additional-documents") {
+    return "Upload the document the RTO asked for";
   }
   if (
     path === "/payment/down-payment-dealer-confirmed" ||
@@ -249,16 +258,42 @@ function moneyNowDetail(pathname: string): string {
 }
 
 /**
+ * Short focus for the waiting chip — what the user must do now, not the
+ * chapter headline. Delivery chapter is "To your door" but often the ask is
+ * still insurance / RTO / schedule.
+ */
+function waitingFocusLabel(pathname: string, nowStepTitle?: string): string {
+  const path = normalizeAppPathname(pathname);
+  if (
+    path.includes("insurance") ||
+    path === "/payment/pay-insurance-premium" ||
+    path === "/payment/choose-insurance-tenure"
+  ) {
+    return "insurance";
+  }
+  if (path.includes("car-delivery-rto") || path.endsWith("/rto")) {
+    return "registration";
+  }
+  if (path.includes("car-delivery-schedule")) {
+    return "delivery date";
+  }
+  return (nowStepTitle ?? "this step").toLowerCase();
+}
+
+/**
  * Purchase-state chip next to Arriving — same holder as the Arrives pill.
- * No em dash; middot separates the chapter when waiting on the user.
+ * No em dash; middot separates the waiting focus when it's on the user.
  */
 export function getBookingStatusChipLabel(
   dateHolder: "you" | "shivi",
   nowStepTitle?: string,
+  pathname?: string,
 ): string {
   if (dateHolder === "shivi") return "On track";
-  const chapter = (nowStepTitle ?? "this step").toLowerCase();
-  return `Waiting on you · ${chapter}`;
+  const focus = pathname
+    ? waitingFocusLabel(pathname, nowStepTitle)
+    : (nowStepTitle ?? "this step").toLowerCase();
+  return `Waiting on you · ${focus}`;
 }
 
 /** Timeline for the purchase-state layer, with the promise ledger in the details. */

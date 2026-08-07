@@ -292,6 +292,30 @@
   justify-content: center;
 }
 
+.altTimeSkipRow {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: stretch;
+  gap: calc(var(--spacing) * 2);
+}
+
+/* Two+ demo pills share the row end-to-end; a single pill stays content-sized. */
+.altTimeSkipRowSplit {
+  justify-content: stretch;
+}
+
+.altTimeSkipChip {
+  flex: 1 1 0;
+  min-width: 0;
+  width: auto;
+
+  :global(.time-skip-chip) {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 
 .transition_scale_filter__0 {
   transform: scale(1);

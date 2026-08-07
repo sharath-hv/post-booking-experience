@@ -55,7 +55,12 @@ export function AmountReceivedCard({
 }: AmountReceivedCardProps) {
   const processing = status === "processing";
   const isGlass = variant === "glass";
-  const defaultBg = processing ? styles.bg_fff7e5__3 : styles.bg_e7f6ee__4;
+  // Custom icons use the neutral grey well (same as manage-menu document rows).
+  const defaultBg = iconSrc
+    ? styles.bg_f5f5f5__1
+    : processing
+      ? styles.bg_fff7e5__3
+      : styles.bg_e7f6ee__4;
   return (
     <div
       className={cn(

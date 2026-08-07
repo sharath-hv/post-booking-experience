@@ -8,9 +8,8 @@
 
 .px_1_1 {
   padding-inline: var(--spacing);
+  /* caption / label-md */
   font-size: 12px;
-  line-height: var(--tw-leading, 16px);
-  --tw-leading: 16px;
   line-height: 16px;
   color: #757575;
 }

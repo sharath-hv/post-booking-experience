@@ -93,19 +93,8 @@ export type InsuranceTenureOption = {
   upgradeBlurb?: string;
 };
 
-/** Standard (default) 1+3 and extended 3+3 cover options. */
+/** Extended 3+3 (default, listed first) and standard 1+3 cover options. */
 export const INSURANCE_TENURE_OPTIONS: readonly InsuranceTenureOption[] = [
-  {
-    id: "1+3",
-    label: "Standard cover",
-    illustrationSrc: insuranceTenure13Icon,
-    ownDamageYears: 1,
-    thirdPartyYears: 3,
-    premiumInr: INSURANCE_BASE_PREMIUM_INR,
-    compareAtInr: INSURANCE_COMPARE_AT_PREMIUM_INR,
-    blurb:
-      "You'll need to renew after 1st year, and premiums typically go up each renewal.",
-  },
   {
     id: "3+3",
     label: "Extended cover",
@@ -117,6 +106,17 @@ export const INSURANCE_TENURE_OPTIONS: readonly InsuranceTenureOption[] = [
     badge: "Best value",
     blurb:
       "I'd lock you in for 3 years — today's rate, no renewal at year one, and nothing creeping up on you.",
+  },
+  {
+    id: "1+3",
+    label: "Standard cover",
+    illustrationSrc: insuranceTenure13Icon,
+    ownDamageYears: 1,
+    thirdPartyYears: 3,
+    premiumInr: INSURANCE_BASE_PREMIUM_INR,
+    compareAtInr: INSURANCE_COMPARE_AT_PREMIUM_INR,
+    blurb:
+      "You'll need to renew after 1st year, and premiums typically go up each renewal.",
   },
 ] as const;
 

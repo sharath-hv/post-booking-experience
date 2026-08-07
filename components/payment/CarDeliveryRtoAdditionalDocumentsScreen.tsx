@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useCallback, useMemo, useRef, useState } from "react";
-import { useSearchParams } from "next/navigation";
 
 import deleteIcon from "@/assets/Delete.svg";
 import done01Icon from "@/assets/done 01.png";
@@ -10,22 +9,19 @@ import done01Icon from "@/assets/done 01.png";
 import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
 import docStyles from "@/components/organisms/document-upload-card-layout.module.scss";
 import { UploadSourceBottomSheet } from "@/components/organisms/UploadSourceBottomSheet";
+import { useFullPaymentJourney } from "@/components/payment/use-full-payment-journey";
 import { KYC_MOCK_UPLOAD_NAMES, type KycUploadSource } from "@/lib/kyc-upload-content";
-import { bankForQueryParam } from "@/components/payment/acko-drive-finance-bank";
-import { loanUnderReviewPath } from "@/lib/loan-application-urls";
 import { OVERLAY_GLASS_CARD_CLASS } from "@/lib/overlay-glass-card";
 import { cn } from "@/lib/utils";
 
 type UploadedFile = { id: string; name: string };
 
 /**
- * Mid-review document request — bank needs one more file before they can
- * finish. Submit returns the user to the loan-under-review turn.
+ * Mid-RTO document request — registration needs one more file before they
+ * can finish. Submit returns the user to the RTO wait turn.
  */
-export function LoanAdditionalDocumentsScreen() {
-  const searchParams = useSearchParams();
-  const bankId = searchParams.get("bank");
-  const bank = useMemo(() => bankForQueryParam(bankId), [bankId]);
+export function CarDeliveryRtoAdditionalDocumentsScreen() {
+  const { withBank } = useFullPaymentJourney();
   const mockUploadCounterRef = useRef(0);
   const [files, setFiles] = useState<UploadedFile[]>([]);
   const [sourceSheetOpen, setSourceSheetOpen] = useState(false);
@@ -37,15 +33,15 @@ export function LoanAdditionalDocumentsScreen() {
     setFiles((prev) => [
       ...prev,
       {
-        id: `extra-doc-${source}-${uploadIndex}-${Date.now()}`,
+        id: `rto-doc-${source}-${uploadIndex}-${Date.now()}`,
         name: KYC_MOCK_UPLOAD_NAMES[uploadIndex % KYC_MOCK_UPLOAD_NAMES.length]!,
       },
     ]);
   }, []);
 
   const returnHref = useMemo(
-    () => (bankId ? loanUnderReviewPath(bankId) : "/payment/loan-under-review"),
-    [bankId],
+    () => withBank("/payment/car-delivery-rto"),
+    [withBank],
   );
 
   const replies = useMemo(
@@ -66,8 +62,8 @@ export function LoanAdditionalDocumentsScreen() {
     <>
       <ConciergeTurnShell
         says={[
-          `${bank.name} needs one more document before they can finish reviewing.`,
-          "Upload it below and I'll send it across right away — then we're back to waiting on their call.",
+          "The RTO needs one more document before they can finish registration.",
+          "Upload it below and I'll send it across right away — then we're back to waiting on their update.",
         ]}
         artifact={
           <div className={cn(OVERLAY_GLASS_CARD_CLASS, "card-elevated")}>
@@ -75,9 +71,11 @@ export function LoanAdditionalDocumentsScreen() {
               <div className={docStyles.flex_7}>
                 <div className={docStyles.min_w_0_8}>
                   <div className={docStyles.flex_9}>
-                    <p className={docStyles.text_sm_10}>Form 16 — last 2 years</p>
+                    <p className={docStyles.text_sm_10}>Address proof — current residence</p>
                   </div>
-                  <p className={docStyles.mt_0_5_11}>Both assessment years, clear scans or photos</p>
+                  <p className={docStyles.mt_0_5_11}>
+                    Clear scan or photo of a recent utility bill or Aadhaar
+                  </p>
                 </div>
                 {!hasFiles ? (
                   <button

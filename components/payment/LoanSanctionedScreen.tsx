@@ -6,6 +6,10 @@ import { useSearchParams } from "next/navigation";
 import { AmountReceivedCard, NextStepCard } from "@/components/organisms/artifacts";
 import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
 import { bankForQueryParam } from "@/components/payment/acko-drive-finance-bank";
+import {
+  bankLoanTermsForId,
+  formatBankRate,
+} from "@/components/payment/bank-loan-terms";
 import styles from "./LoanSanctionedScreen.module.scss";
 
 import { BANK_DISBURSEMENT_INR } from "@/lib/loan-amount-demo-constants";
@@ -31,14 +35,15 @@ export function LoanSanctionedScreen() {
   const searchParams = useSearchParams();
   const bankId = searchParams.get("bank");
   const bank = useMemo(() => bankForQueryParam(bankId), [bankId]);
+  const bankTerms = useMemo(() => bankLoanTermsForId(bankId), [bankId]);
 
   const says = useMemo(
     () => [
       "Your loan is approved, Sharath.",
-      `${bank.name} has sanctioned ${formatInr(BANK_DISBURSEMENT_INR)}. ${PARTNER_DEALER_LABEL_CAPITALIZED} will call you to arrange the down payment. Pay it directly to them.`,
+      `${bank.name} has sanctioned ${formatInr(BANK_DISBURSEMENT_INR)} at ${formatBankRate(bankTerms)}. ${PARTNER_DEALER_LABEL_CAPITALIZED} will call you to arrange the down payment. Pay it directly to them.`,
       `Once they confirm receipt, I'll instruct ${bank.name} to release the funds to the dealer.`,
     ],
-    [bank.name],
+    [bank.name, bankTerms],
   );
 
   const dealerConfirmedHref = useMemo(() => {

@@ -567,15 +567,27 @@ export function ConciergeTurnShell({
                 className={replies?.length || callLabel ? styles.mt_4_10 : undefined}
               />
             ) : null}
-            {altTimeSkips.map((skip) => (
-              <TimeSkipChip
-                key={`${skip.label}-${skip.href}`}
-                label={skip.label}
-                href={skip.href}
-                onBeforeNavigate={skip.onBeforeNavigate}
-                className={styles.mt_2_20}
-              />
-            ))}
+            {altTimeSkips.length > 0 ? (
+              <div
+                className={cn(
+                  styles.altTimeSkipRow,
+                  altTimeSkips.length > 1 && styles.altTimeSkipRowSplit,
+                  timeSkip || replies?.length || callLabel ? styles.mt_2_20 : undefined,
+                )}
+              >
+                {altTimeSkips.map((skip) => (
+                  <TimeSkipChip
+                    key={`${skip.label}-${skip.href}`}
+                    label={skip.label}
+                    href={skip.href}
+                    onBeforeNavigate={skip.onBeforeNavigate}
+                    className={
+                      altTimeSkips.length > 1 ? styles.altTimeSkipChip : undefined
+                    }
+                  />
+                ))}
+              </div>
+            ) : null}
           </div>
         </div>
       ) : null}

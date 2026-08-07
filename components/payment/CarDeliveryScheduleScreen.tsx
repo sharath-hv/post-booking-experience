@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import locationIcon from "@/assets/Location.svg";
 import { CarSummaryCardLite } from "@/components/organisms/artifacts";
@@ -142,9 +142,15 @@ export function CarDeliveryScheduleScreen() {
     [day, windowSlot]
   );
 
+  // Same-URL two-beat turn — don't skip the day/window picker via history.
+  const onBackFromLocked = useCallback(() => {
+    setScheduled(false);
+  }, []);
+
   if (scheduled && day && windowSlot) {
     return (
       <ConciergeTurnShell
+        key="schedule-locked"
         says={[
           `Locked: ${day}, ${windowSlot.toLowerCase()}.`,
           "Your Creta will be ready at the dealership. I'll send the bay details and your registration number the day before. It's been a pleasure, Sharath. Enjoy every kilometre.",
@@ -169,12 +175,14 @@ export function CarDeliveryScheduleScreen() {
           </div>
         }
         timeSkip={{ label: "Start over", href: "/quote" }}
+        onBack={onBackFromLocked}
       />
     );
   }
 
   return (
     <ConciergeTurnShell
+      key="schedule-picker"
       says={[
         "Your Creta is ready, Sharath.",
         "Registered, insured, and ready to roll. Come collect it — pick a day and a window, and I'll have it waiting.",

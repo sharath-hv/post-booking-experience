@@ -6,6 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import {
   formatBankRate,
+  SHOW_PRE_APPROVED_LOAN_UI,
   type BankLoanTerms,
 } from "@/components/payment/bank-loan-terms";
 import {
@@ -150,7 +151,7 @@ export function BankLoanDetailBottomSheet({
                   />
                 </div>
                 <div className={styles.brandCopy}>
-                  {renderedBank.preApproved ? (
+                  {SHOW_PRE_APPROVED_LOAN_UI && renderedBank.preApproved ? (
                     <span className={styles.preApprovedChip}>Pre-approved loan available for you</span>
                   ) : null}
                   <h2 id="bank-detail-sheet-title" className={styles.bankName}>
@@ -208,6 +209,10 @@ export function BankLoanDetailBottomSheet({
                     showDivider={index > 0}
                   />
                 ))}
+              <p className={styles.bankDecisionNote}>
+                <span className={styles.bankDecisionNoteLead}>Note:</span> The
+                bank holds the final decision on your loan.
+              </p>
             </div>
           </div>
 

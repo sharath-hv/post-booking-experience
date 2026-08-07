@@ -2,7 +2,9 @@
 
 import Image from "next/image";
 
-import phoneIcon from "@/assets/Phone.svg";
+import otpCallIcon from "@/assets/OTP_Call.svg";
+import { OVERLAY_GLASS_CARD_CLASS } from "@/lib/overlay-glass-card";
+import { cn } from "@/lib/utils";
 import styles from "./NextStepCard.module.scss";
 
 export type NextStepCardProps = {
@@ -12,28 +14,22 @@ export type NextStepCardProps = {
 };
 
 /**
- * The user's single pending action. Action grammar: purple outline +
- * lavender fill, with a slow radar pulse on the node — something is coming
- * for you. Stakes go in a ShimmerInfoCard next to it, not in here.
+ * The user's single pending action. Glass artifact surface + purple icon node.
+ * Stakes go in a ShimmerInfoCard next to it, not in here.
  */
 export function NextStepCard({ title, body }: NextStepCardProps) {
   return (
-    <div className={[styles.rounded_2xl_31, "card-elevated"].filter(Boolean).join(" ")}>
+    <div className={cn(styles.card, OVERLAY_GLASS_CARD_CLASS)}>
       <div className={styles.flex_32}>
-        <span className={styles.relative_33}>
-          <span
-            aria-hidden
-            className={styles.absolute_34}
-          />
+        <span className={styles.relative_33} aria-hidden>
           <span className={styles.relative_35}>
             <Image
-              src={phoneIcon}
+              src={otpCallIcon}
               alt=""
               width={20}
               height={20}
               className={styles.shrink_0_36}
               unoptimized
-              aria-hidden
             />
           </span>
         </span>

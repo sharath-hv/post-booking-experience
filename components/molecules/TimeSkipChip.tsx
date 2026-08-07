@@ -51,9 +51,7 @@ export function TimeSkipChip({
             fillOpacity="0.7"
           />
         </svg>
-        <span>
-          {label} <span className={styles.text_a6a6a6__1}>· demo</span>
-        </span>
+        <span className={styles.label}>{label}</span>
       </button>
     </div>
   );

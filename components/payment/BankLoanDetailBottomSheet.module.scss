@@ -236,6 +236,24 @@
   background-color: #c2c2c2;
 }
 
+.bankDecisionNote {
+  margin: 0;
+  padding-top: 16px;
+  border-top: 1px dashed #e8e8e8;
+  /* caption */
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+  color: #757575;
+}
+
+.bankDecisionNoteLead {
+  /* label-md, semibold */
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  color: #4b4b4b;
+}
+
 .footer {
   flex-shrink: 0;
   background-color: #fff;

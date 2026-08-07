@@ -37,7 +37,7 @@ function pickAlternativeBank(rejectedId: string) {
 /**
  * Bank declined — the journey's most likely real-world failure, handled the
  * way every other car-buying experience doesn't: dignity first, a concrete
- * pre-approved alternative, zero rework, and the car never at risk.
+ * alternative bank, zero rework, and the car never at risk.
  */
 export function LoanRejectedScreen() {
   const router = useRouter();
@@ -78,7 +78,7 @@ export function LoanRejectedScreen() {
     <ConciergeTurnShell
       says={[
         `${rejected.name} wasn't able to approve this loan.`,
-        `That's on their lending criteria, not on you. ${alt.name} has already pre-approved you at ${alt.rate} for the same amount, and your one free switch covers this move. Nothing restarts, your application carries over and only the bank changes.`,
+        `That's on their lending criteria, not on you. ${alt.name} can take the same amount at ${alt.rate}, and your one free switch covers this move. Nothing restarts, your application carries over and only the bank changes.`,
       ]}
       artifact={
         <div className={OVERLAY_GLASS_CARD_CLASS}>
@@ -97,9 +97,6 @@ export function LoanRejectedScreen() {
               <p className={styles.text_base_4}>{alt.name}</p>
               <p className={styles.text_xs_5}>Same loan, better rate</p>
             </div>
-            <span className={styles.shrink_0_6}>
-              Pre-approved
-            </span>
           </div>
           <div className={styles.border_t_7}>
             <div className={styles.flex_8}>

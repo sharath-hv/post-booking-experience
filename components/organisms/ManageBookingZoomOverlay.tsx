@@ -167,7 +167,7 @@ export function ManageBookingZoomOverlay({
                       : styles.bg_e7f6ee__25
                   )}
                 >
-                  {getBookingStatusChipLabel(dateHolder, nowStep?.title)}
+                  {getBookingStatusChipLabel(dateHolder, nowStep?.title, pathname)}
                 </span>
               </div>
 

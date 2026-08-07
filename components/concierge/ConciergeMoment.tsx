@@ -356,10 +356,16 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
             : undefined,
           altTimeSkip: isStandardDeliveryFlow(flow)
             ? undefined
-            : {
-                label: "If no car is found",
-                href: JOURNEY_PATHS.carAllocation.failed,
-              },
+            : [
+                {
+                  label: "No car found",
+                  href: JOURNEY_PATHS.carAllocation.failed,
+                },
+                {
+                  label: "Variant discontinued",
+                  href: JOURNEY_PATHS.carAllocation.variantUnavailable,
+                },
+              ],
         };
       }
 
@@ -471,13 +477,22 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
           timeSkip: words.timeSkipLabel
             ? { label: words.timeSkipLabel, href: JOURNEY_PATHS.carAllocation.confirmed }
             : undefined,
-          // Standard: early-delivery choice. Express: inability-to-deliver demo.
+          // Standard: early-delivery choice. Express: inability-to-deliver demos.
           altTimeSkip: isStandardDeliveryFlow(flow)
             ? {
                 label: "Car ready early",
                 href: JOURNEY_PATHS.carAllocation.earlyOffer,
               }
-            : { label: "If no car is found", href: JOURNEY_PATHS.carAllocation.failed },
+            : [
+                {
+                  label: "No car found",
+                  href: JOURNEY_PATHS.carAllocation.failed,
+                },
+                {
+                  label: "Variant discontinued",
+                  href: JOURNEY_PATHS.carAllocation.variantUnavailable,
+                },
+              ],
         };
 
       case "earlyDeliveryOffer":

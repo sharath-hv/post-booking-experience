@@ -71,10 +71,9 @@ export function LoanDealerDownPaymentConfirmedScreen() {
   const confirmedSays = useMemo(
     () => [
       "Down payment confirmed.",
-      `${NAMED_DEALER_LABEL_CAPITALIZED} confirmed your ${formatInr(downPaymentInr)}. All good on my end.`,
       `I've asked ${bank.name} to release the funds to ${NAMED_DEALER_LABEL}. Nothing more needed from you. I'll let you know the moment it lands.`,
     ],
-    [bank.name, downPaymentInr],
+    [bank.name],
   );
 
   const disbursementReceivedHref = useMemo(() => {

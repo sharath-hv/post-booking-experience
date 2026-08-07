@@ -111,7 +111,7 @@ function TenureCard({
           <p className={styles.statValue}>
             {option.ownDamageYears} {option.ownDamageYears === 1 ? "year" : "years"}
           </p>
-          <p className={styles.statCaption}>Zero depreciation cover</p>
+          <p className={styles.statCaption}>Zero dep cover</p>
         </div>
         <div className={cn(styles.statCol, styles.statColDivider)}>
           <p className={styles.statValue}>
@@ -144,7 +144,7 @@ function TenureCard({
 export function ChooseInsuranceTenureScreen() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [tenureId, setTenureId] = useState<InsuranceTenureId>("1+3");
+  const [tenureId, setTenureId] = useState<InsuranceTenureId>("3+3");
   const [compareSheetOpen, setCompareSheetOpen] = useState(false);
 
   const addonIds = useMemo(

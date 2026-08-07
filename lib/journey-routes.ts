@@ -30,6 +30,8 @@ export const JOURNEY_PATHS = {
     keepingDate: "/car-allocation/keeping-date",
     confirmed: "/car-allocation/confirmed",
     failed: "/car-allocation/failed",
+    /** Express demo — selected variant discontinued; no standard-delivery out. */
+    variantUnavailable: "/car-allocation/variant-unavailable",
   },
   payment: {
     /** Arrival after price-lock — before KYC / dealer (not the money chapter). */
@@ -40,6 +42,15 @@ export const JOURNEY_PATHS = {
     payDownPayment: "/payment/pay-down-payment",
     dealerDownPaymentConfirmed: "/payment/down-payment-dealer-confirmed",
     loanDisbursementReceived: "/payment/loan-disbursement-received",
+    /** Bank verification OTP after loan application submit. */
+    loanProcessing: "/payment/loan-processing",
+    /** Post-OTP — bank processing the loan (2–3 working days). */
+    loanUnderReview: "/payment/loan-under-review",
+    /** RTO registration wait. */
+    carDeliveryRto: "/payment/car-delivery-rto",
+    /** RTO mid-registration — additional document requested (demo). */
+    carDeliveryRtoAdditionalDocuments:
+      "/payment/car-delivery-rto-additional-documents",
   },
 } as const;
 

@@ -34,6 +34,10 @@ export function CarDeliveryRtoPrepScreen() {
       nextHref={withBank("/payment/car-delivery-schedule")}
       prefetchHref={withBank("/payment/car-delivery-schedule")}
       nextCtaLabel="Next"
+      altTimeSkip={{
+        label: "More docs needed",
+        href: withBank("/payment/car-delivery-rto-additional-documents"),
+      }}
       heroSummaryCard={
         <CarSummaryCardLite
           title={BOOKING_CAR_TITLE}

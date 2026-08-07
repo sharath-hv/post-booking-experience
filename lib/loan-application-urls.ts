@@ -53,7 +53,12 @@ export function loanProcessingPath(bankId: string) {
   return `/payment/loan-processing?bank=${encodeURIComponent(bankId)}`;
 }
 
-/** Bank asked for an extra document mid-review — demo branch off loan processing. */
+/** Post–bank OTP — loan under review for 2–3 working days. */
+export function loanUnderReviewPath(bankId: string) {
+  return `/payment/loan-under-review?bank=${encodeURIComponent(bankId)}`;
+}
+
+/** Bank asked for an extra document mid-review — demo branch off under-review. */
 export function loanAdditionalDocumentsPath(bankId: string) {
   return `/payment/loan-additional-documents?bank=${encodeURIComponent(bankId)}`;
 }

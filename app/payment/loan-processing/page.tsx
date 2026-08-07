@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import { LoanBookingProcessingScreen } from "@/components/payment/LoanBookingProcessingScreen";
 
 /**
- * Loan application — post-documents processing (layout aligned with `/kyc/processing`).
+ * Loan application — bank verification OTP after submit.
  */
 export default function LoanProcessingPage() {
   return (

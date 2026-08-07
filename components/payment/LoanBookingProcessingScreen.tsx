@@ -6,40 +6,27 @@ import { useSearchParams } from "next/navigation";
 import { NextStepCard } from "@/components/organisms/artifacts";
 import { bankForQueryParam } from "@/components/payment/acko-drive-finance-bank";
 import { BookingProcessingScreen } from "@/components/organisms/BookingProcessingScreen";
-import {
-  loanAdditionalDocumentsPath,
-} from "@/lib/loan-application-urls";
+import { loanUnderReviewPath } from "@/lib/loan-application-urls";
 import styles from "./LoanBookingProcessingScreen.module.scss";
 
-
-const LOAN_PROCESSING_HEADLINE = "Your application is with the bank.";
-
-function loanSanctionedHref(bank: string | null) {
-  return bank
-    ? `/payment/loan-sanctioned?bank=${encodeURIComponent(bank)}`
-    : "/payment/loan-sanctioned";
-}
-
 /**
- * Loan under review — bank reviews take days (honest time), and the bank's
- * verification call is the user's pending action (NextStepCard with stakes).
- * “Skip ahead” goes to `/payment/loan-sanctioned` (preserves `?bank=`).
- * Demo branches: bank declines, or bank asks for one more document.
+ * Bank verification call — user confirms the OTP. Skip ahead → under-review
+ * (loan processing for 2–3 working days).
  */
 export function LoanBookingProcessingScreen() {
   const searchParams = useSearchParams();
   const bankId = searchParams.get("bank");
   const bank = useMemo(() => bankForQueryParam(bankId), [bankId]);
-  const nextHref = loanSanctionedHref(bankId);
+  const nextHref = bankId ? loanUnderReviewPath(bankId) : "/payment/loan-under-review";
   const subline = useMemo(
     () =>
-      `${bank.name} usually takes 2–3 business days to review. I'll chase them and message you the moment there's news.`,
+      `${bank.name} will call to confirm your details. Share the OTP they ask for — that's how the application moves into processing.`,
     [bank.name],
   );
 
   return (
     <BookingProcessingScreen
-      headline={LOAN_PROCESSING_HEADLINE}
+      headline="Confirm with a one-time code."
       subline={subline}
       heroSummaryCard={
         <div className={styles.flex_0}>
@@ -51,21 +38,7 @@ export function LoanBookingProcessingScreen() {
       }
       nextHref={nextHref}
       prefetchHref={nextHref}
-      altTimeSkip={[
-        {
-          label: "If the bank needs more docs",
-          href: bankId
-            ? loanAdditionalDocumentsPath(bankId)
-            : "/payment/loan-additional-documents",
-        },
-        {
-          label: "If the bank declines",
-          href: bankId
-            ? `/payment/loan-rejected?bank=${encodeURIComponent(bankId)}`
-            : "/payment/loan-rejected",
-        },
-      ]}
-      // Demo skip only — the bank verification call is the pending user action.
+      timeSkipLabel="After the call"
       dateHolder="you"
       callLabel="Anxious about the loan? I can call you"
       manageBookingShowVehicleIdentification

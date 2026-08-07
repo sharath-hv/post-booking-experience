@@ -1,6 +1,12 @@
 import { BANK_SHEET_OPTIONS } from "@/components/payment/payment-choose-assets";
 
 /**
+ * Flip to `true` to surface pre-approved banners, sort-to-top, and detail chips.
+ * Bank `preApproved` data stays in place as a backup.
+ */
+export const SHOW_PRE_APPROVED_LOAN_UI = false;
+
+/**
  * Bank selection — full page + detail sheet data model.
  * Migration brief: bank selection moves from a bare bottom sheet (name + rate)
  * to a full page of cards, each opening a sheet with plain-language loan terms.
@@ -39,6 +45,7 @@ export interface BankLoanTerms {
   /**
    * True when a phone-number lookup found a pre-approved offer at this bank.
    * Drive the card/sheet badge from this flag — never hardcode bank ids in UI.
+   * Surface only when {@link SHOW_PRE_APPROVED_LOAN_UI} is true.
    */
   preApproved?: boolean;
 
@@ -175,7 +182,7 @@ export function bankLoanTermsForId(bankId: string | null | undefined): BankLoanT
 }
 
 export function formatBankRate(bank: Pick<BankLoanTerms, "interestRate">): string {
-  return `${bank.interestRate.value}% p.a.`;
+  return `${bank.interestRate.value}% per year`;
 }
 
 /** Card one-liner — "No foreclosure for 6 months" / "for 1 month". Null when there's nothing to say yet. */
