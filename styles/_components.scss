@@ -267,7 +267,7 @@
 
 /* Figma 3303:12317 — circular leading icon well (no outer drop shadow). */
 .icon-well-surface {
-  border: 0.5px solid #e8e8e8;
+  border: 1px solid #e8e8e8;
   background-color: transparent;
   background-image: linear-gradient(to bottom, #e7e7e7, #ffffff);
   box-shadow: inset 0 0 0 2px #ffffff;
@@ -275,7 +275,7 @@
 
 .icon-well-surface-green {
   overflow: hidden;
-  border: 0.5px solid #bfe8d2;
+  border: 1px solid #bfe8d2;
   background-color: transparent;
   background-image: linear-gradient(180deg, #dff1e8 0%, #ffffff 100%);
   box-shadow: inset 0 0 0 2px #ffffff;
@@ -283,7 +283,7 @@
 
 .icon-well-surface-amber {
   overflow: hidden;
-  border: 0.5px solid #f0ddb0;
+  border: 1px solid #f0ddb0;
   background-color: transparent;
   background-image: linear-gradient(180deg, #ffefd0 0%, #ffffff 100%);
   box-shadow: inset 0 0 0 2px #ffffff;
