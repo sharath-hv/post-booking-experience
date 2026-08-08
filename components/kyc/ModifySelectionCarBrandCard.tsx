@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-import { modifySelectionSelectableCardClass } from "@/components/kyc/modify-selection-option-card-ui";
+import { modifySelectionSelectableCardClass } from "@/components/molecules/modify-selection-option-card-ui";
 import type { ModifySelectionCarBrandOption } from "@/lib/modify-selection-car-brands-content";
 import { cn } from "@/lib/utils";
 import styles from "./ModifySelectionCarBrandCard.module.scss";

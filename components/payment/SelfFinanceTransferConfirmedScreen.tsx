@@ -3,19 +3,20 @@
 import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 
-import { AmountReceivedCard } from "@/components/concierge/artifacts";
-import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
-import { ShimmerInfoCard } from "@/components/ui/ShimmerInfoCard";
+import { AmountReceivedCard } from "@/components/organisms/artifacts";
+import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
+import { ShimmerInfoCard } from "@/components/molecules/ShimmerInfoCard";
 import {
+  DEMO_LOAN_DISBURSEMENT_TRANSACTION_ID,
   FULL_PAYMENT_INSURANCE_INR,
   SELF_FINANCE_LOAN_DEFAULT_INR,
-} from "@/components/payment/loan-amount-demo-constants";
+} from "@/lib/loan-amount-demo-constants";
 import { buildPayInsurancePremiumHref } from "@/lib/paymentUrls";
 import styles from "./SelfFinanceTransferConfirmedScreen.module.scss";
 
 import {
-  PARTNER_DEALER_LABEL,
-  PARTNER_DEALER_LABEL_CAPITALIZED,
+  NAMED_DEALER_LABEL,
+  NAMED_DEALER_LABEL_CAPITALIZED,
 } from "@/lib/dealer-attribution-content";
 
 function formatInr(amount: number) {
@@ -34,7 +35,7 @@ function parseLoanAmount(raw: string | null): number {
 
 /**
  * Self finance — dealer has confirmed the bank transfer.
- * Mirrors {@link LoanDisbursementReceivedScreen} for the self-finance journey.
+ * Card layout mirrors ACKO Drive {@link LoanDisbursementReceivedScreen}.
  */
 export function SelfFinanceTransferConfirmedScreen() {
   const searchParams = useSearchParams();
@@ -43,10 +44,17 @@ export function SelfFinanceTransferConfirmedScreen() {
     [searchParams],
   );
 
+  const transactionId = useMemo(() => {
+    const fromUrl = searchParams.get("transaction_id")?.trim();
+    return fromUrl && fromUrl.length > 0
+      ? fromUrl
+      : DEMO_LOAN_DISBURSEMENT_TRANSACTION_ID;
+  }, [searchParams]);
+
   const says = useMemo(
     () => [
       "Transfer confirmed, Sharath.",
-      `${PARTNER_DEALER_LABEL_CAPITALIZED} has confirmed they received the loan amount. Delivery prep starts now, and nothing more is needed from you until just before the car arrives.`,
+      `${NAMED_DEALER_LABEL_CAPITALIZED} has confirmed they received the loan amount. Delivery prep starts now, and nothing more is needed from you until just before the car arrives.`,
     ],
     [],
   );
@@ -67,12 +75,14 @@ export function SelfFinanceTransferConfirmedScreen() {
         <div className={styles.flex_0}>
           <AmountReceivedCard
             amountInr={loanAmountInr}
-            title={`Received by ${PARTNER_DEALER_LABEL}`}
+            title={`Received by ${NAMED_DEALER_LABEL}`}
             status="received"
+            variant="glass"
             rows={[
-              { label: "Transferred to", value: PARTNER_DEALER_LABEL_CAPITALIZED },
+              { label: "Transferred to", value: NAMED_DEALER_LABEL_CAPITALIZED },
+              { label: "Transaction ID", value: transactionId },
             ]}
-            note="Funds are with the dealer. Delivery prep is now underway."
+            note={`Funds are with ${NAMED_DEALER_LABEL}. Delivery prep is now underway.`}
           />
           <ShimmerInfoCard lead="One thing still ahead">
             {`Your ${formatInr(FULL_PAYMENT_INSURANCE_INR)} insurance. The RTO won't register your car without a live policy, and I'll ask you at exactly the right moment.`}

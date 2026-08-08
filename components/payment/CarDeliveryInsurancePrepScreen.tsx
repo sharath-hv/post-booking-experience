@@ -2,8 +2,8 @@
 
 import { useSearchParams } from "next/navigation";
 
-import { KycBookingProcessingScreen } from "@/components/kyc/KycBookingProcessingScreen";
-import { KYC_ASSETS } from "@/components/kyc/kyc-assets";
+import { BookingProcessingScreen } from "@/components/organisms/BookingProcessingScreen";
+import { KYC_ASSETS } from "@/lib/kyc-assets";
 import { useFullPaymentJourney } from "@/components/payment/use-full-payment-journey";
 import { ShieldPolicyCard } from "@/components/payment/ShieldPolicyCard";
 import {
@@ -26,7 +26,7 @@ export function CarDeliveryInsurancePrepScreen() {
       : "Zero depreciation cover, active from today. Next, I'll take your registration file to the RTO.";
 
   return (
-    <KycBookingProcessingScreen
+    <BookingProcessingScreen
       headline={HEADLINE}
       subline={subline}
       callLabel="Questions about coverage? I can call you"
@@ -35,6 +35,7 @@ export function CarDeliveryInsurancePrepScreen() {
       prefetchHref={withBank("/payment/car-delivery-rto")}
       nextCtaLabel={DEMO_NAV_CTA_LABEL}
       timeSkipLabel="RTO registration"
+      suppressEcho
       heroSummaryCard={
         <ShieldPolicyCard mode="active" tenure={tenure} selectedAddonIds={selectedAddonIds} />
       }

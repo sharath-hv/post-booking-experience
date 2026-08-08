@@ -4,9 +4,9 @@ import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "rea
 import { cn } from "@/lib/utils";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { KycTopNavHeader } from "@/components/kyc/KycTopNavHeader";
+import { TopNavHeader } from "@/components/organisms/TopNavHeader";
 
-import { FULL_PAYMENT_INSURANCE_INR } from "@/components/payment/loan-amount-demo-constants";
+import { FULL_PAYMENT_INSURANCE_INR } from "@/lib/loan-amount-demo-constants";
 import styles from "./page.module.scss";
 
 import {
@@ -327,7 +327,7 @@ function MockRazorpayPaymentPageContent() {
 
   return (
     <div className={styles.min_h_dvh_4}>
-        <KycTopNavHeader title="Checkout" />
+        <TopNavHeader title="Checkout" solid />
 
         <main className={styles.mx_auto_5}>
         <div className={[styles.overflow_hidden_6, "card-elevated"].filter(Boolean).join(" ")}>

@@ -4,8 +4,8 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
 
-import { KYC_ASSETS } from "@/components/kyc/kyc-assets";
-import type { TimelineStepStatus } from "@/components/kyc/WhatsNextTimeline";
+import { KYC_ASSETS } from "@/lib/kyc-assets";
+import type { TimelineStepStatus } from "@/lib/timeline-step-status";
 import styles from "./LoanApplicationMilestoneRail.module.scss";
 
 import {

@@ -1,6 +1,9 @@
 import Image from "next/image";
 
-import { SELF_FINANCE_HOW_IT_WORKS_STEPS } from "@/components/payment/self-finance-confirmed-content";
+import {
+  SELF_FINANCE_HOW_IT_WORKS_STEPS,
+  type SelfFinanceHowItWorksStep,
+} from "@/components/payment/self-finance-confirmed-content";
 import styles from "./SelfFinanceHowItWorksCard.module.scss";
 
 
@@ -9,11 +12,14 @@ type SelfFinanceHowItWorksCardProps = {
   showTitle?: boolean;
   /** `embedded` — grey fill for bottom sheet; default keeps bordered card on success screen. */
   variant?: "card" | "embedded";
+  /** Override steps (e.g. full-payment confirm sheet). Defaults to self-finance steps. */
+  steps?: readonly SelfFinanceHowItWorksStep[];
 };
 
 export function SelfFinanceHowItWorksCard({
   showTitle = true,
   variant = "card",
+  steps = SELF_FINANCE_HOW_IT_WORKS_STEPS,
 }: SelfFinanceHowItWorksCardProps) {
   const isEmbedded = variant === "embedded";
 
@@ -25,10 +31,10 @@ export function SelfFinanceHowItWorksCard({
         </h2>
       )}
       <div className={isEmbedded ? styles.space_y_5 : styles.space_y_4}>
-        {SELF_FINANCE_HOW_IT_WORKS_STEPS.map((step, index) => (
+        {steps.map((step, index) => (
           <div key={index} className={styles.flex_1}>
             <div
-              className={styles.relative_2}
+              className={isEmbedded ? styles.step_icon_embedded : styles.relative_2}
             >
               <Image
                 src={step.icon}

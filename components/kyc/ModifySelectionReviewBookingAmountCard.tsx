@@ -1,20 +1,16 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
 import { ChevronUp } from "lucide-react";
 
-import moneyIcon from "@/assets/money.svg";
-import warningAmberIcon from "@/assets/Warning amber.svg";
 import {
   formatModifySelectionInr,
   formatModifySelectionInrSigned,
+  getModifySelectionBookingAmountCardCopy,
   MODIFY_SELECTION_REVIEW_PAY_BREAKDOWN_TOGGLE,
-  MODIFY_SELECTION_REVIEW_PAY_DUE_TODAY_HEADING,
-  MODIFY_SELECTION_REVIEW_PAY_DUE_TODAY_LABEL,
   type ModifySelectionReviewPaySummary,
 } from "@/lib/modify-selection-review-pay-content";
-import { MODIFY_SELECTION_SUMMARY_CARD_CLASS } from "@/components/kyc/modify-selection-option-card-ui";
+import { MODIFY_SELECTION_SUMMARY_CARD_CLASS } from "@/components/molecules/modify-selection-option-card-ui";
 import { cn } from "@/lib/utils";
 import styles from "./ModifySelectionReviewBookingAmountCard.module.scss";
 
@@ -26,15 +22,23 @@ type ModifySelectionReviewBookingAmountCardProps = {
 };
 
 /**
- * Due-today hero for review-and-pay — composed card, situation + amount first.
+ * Booking-amount card IA:
+ * - Pay cases → “Amount due for this change” + amount
+ * - Surplus (lower) → credit amount as hero (not ₹0)
+ * - Covered same lock, no fee → omit entirely (nothing to explain)
  */
 export function ModifySelectionReviewBookingAmountCard({
   summary,
   sectionRef,
 }: ModifySelectionReviewBookingAmountCardProps) {
   const [breakdownOpen, setBreakdownOpen] = useState(false);
+  const copy = getModifySelectionBookingAmountCardCopy(summary);
   const hasFee = summary.changeSelectionFeeInr > 0;
-  const hasSurplus = summary.bookingAmountSurplusInr > 0;
+
+  // Same booking amount, no fee — card would only say “nothing to pay.”
+  if (copy.caseId === "same") {
+    return null;
+  }
 
   return (
     <section
@@ -44,65 +48,31 @@ export function ModifySelectionReviewBookingAmountCard({
       aria-labelledby="modify-selection-due-today-heading"
     >
       <div className={cn(styles.card, MODIFY_SELECTION_SUMMARY_CARD_CLASS)}>
-        <div className={styles.hero}>
-          <div className={styles.heroCopy}>
-            <span className={styles.headingIcon} aria-hidden>
-              <Image
-                src={moneyIcon}
-                alt=""
-                width={20}
-                height={20}
-                className={styles.headingIconImage}
-                unoptimized
-              />
-            </span>
-            <div className={styles.heroCopyText}>
-              <h2 id="modify-selection-due-today-heading" className={styles.heading}>
-                {MODIFY_SELECTION_REVIEW_PAY_DUE_TODAY_HEADING}
-              </h2>
-              {summary.situationLine ? (
-                <p className={styles.situation}>{summary.situationLine}</p>
-              ) : null}
-            </div>
-          </div>
-
+        <div
+          className={cn(
+            styles.hero,
+            copy.heroAmountTone === "credit" ? styles.heroCredit : styles.heroPay,
+          )}
+        >
           <div className={styles.amountBlock}>
-            <div className={styles.amountMain}>
-              <p className={styles.dueLabel}>{MODIFY_SELECTION_REVIEW_PAY_DUE_TODAY_LABEL}</p>
-              <p className={styles.dueAmount}>
-                {formatModifySelectionInr(summary.bookingAmountToPayInr)}
+            <h2 id="modify-selection-due-today-heading" className={styles.dueLabel}>
+              {copy.dueLabel}
+            </h2>
+            {copy.heroAmountInr != null ? (
+              <p
+                className={cn(
+                  styles.dueAmount,
+                  copy.heroAmountTone === "credit" ? styles.dueAmountCredit : "",
+                )}
+              >
+                {formatModifySelectionInr(copy.heroAmountInr)}
               </p>
-            </div>
+            ) : null}
           </div>
 
-          {hasFee || hasSurplus ? (
-            <div className={styles.notices}>
-              {hasFee ? (
-                <p className={styles.feeHint} role="status">
-                  <Image
-                    src={warningAmberIcon}
-                    alt=""
-                    width={14}
-                    height={14}
-                    className={styles.feeHintIcon}
-                    unoptimized
-                  />
-                  <span>
-                    {summary.bookingAmountToPayInr === summary.changeSelectionFeeInr
-                      ? `One-time change fee of ${formatModifySelectionInr(summary.changeSelectionFeeInr)}`
-                      : `Includes ${formatModifySelectionInr(summary.changeSelectionFeeInr)} one-time change fee`}
-                  </span>
-                </p>
-              ) : null}
-
-              {hasSurplus ? (
-                <p className={styles.surplusNote}>
-                  {formatModifySelectionInr(summary.bookingAmountSurplusInr)} will be
-                  adjusted in your final car amount.
-                </p>
-              ) : null}
-            </div>
-          ) : null}
+          <p className={styles.situation} role="status">
+            {copy.whyLine}
+          </p>
         </div>
 
         <div className={styles.breakdown}>
@@ -144,9 +114,9 @@ export function ModifySelectionReviewBookingAmountCard({
               ) : null}
               <div className={styles.breakdownDivider} aria-hidden />
               <div className={styles.totalRow}>
-                <span className={styles.totalLabel}>Amount to be paid</span>
+                <span className={styles.totalLabel}>{copy.totalLabel}</span>
                 <span className={styles.totalValue}>
-                  {formatModifySelectionInr(summary.bookingAmountToPayInr)}
+                  {formatModifySelectionInr(copy.totalAmountInr)}
                 </span>
               </div>
             </div>

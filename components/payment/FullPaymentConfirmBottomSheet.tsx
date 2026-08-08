@@ -4,46 +4,22 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import phoneIcon from "@/assets/Phone.svg";
-import moneyIcon from "@/assets/money.svg";
 import { PAYMENT_CHOOSE_ASSETS } from "@/components/payment/payment-choose-assets";
-import type { BottomSheetConfirmBulletPoint } from "@/components/ui/BottomSheetConfirmBulletList";
+import { FULL_PAYMENT_HOW_IT_WORKS_STEPS } from "@/components/payment/full-payment-confirmed-content";
+import { SelfFinanceHowItWorksCard } from "@/components/payment/SelfFinanceHowItWorksCard";
 import {
   BOTTOM_SHEET_BODY_BEFORE_CTA_CLASS,
   BOTTOM_SHEET_CTA_STRIP_TOP_CLASS,
   BOTTOM_SHEET_MAX_HEIGHT_CLASS,
   BOTTOM_SHEET_OVERLAY_Z_CLASS,
-} from "@/components/ui/bottom-sheet-layout";
-import { bottomSheetTitleWidthWithIllustration } from "@/components/ui/bottom-sheet-title-layout";
-import { BottomSheetCloseIcon } from "@/components/ui/BottomSheetCloseIcon";
-import { BottomSheetConfirmBulletList } from "@/components/ui/BottomSheetConfirmBulletList";
-import { PARTNER_DEALER_LABEL_CAPITALIZED } from "@/lib/dealer-attribution-content";
+} from "@/lib/layout/bottom-sheet-layout";
+import { bottomSheetTitleWidthWithIllustration } from "@/lib/layout/bottom-sheet-title-layout";
+import { BottomSheetCloseIcon } from "@/components/atoms/BottomSheetCloseIcon";
 import styles from "./FullPaymentConfirmBottomSheet.module.scss";
 
 
 /** Enter/exit slide duration — keep in sync with `SelfFinanceConfirmBottomSheet` */
 const SHEET_TRANSITION_MS = 280;
-
-const BEFORE_YOU_PROCEED_POINTS: readonly BottomSheetConfirmBulletPoint[] = [
-  {
-    content: (
-      <>
-        {PARTNER_DEALER_LABEL_CAPITALIZED} will call you to share the payment details. Transfer the
-        car amount directly to them.
-      </>
-    ),
-    icon: phoneIcon,
-  },
-  {
-    content: (
-      <>
-        Complete your full payment by <span className={styles.font_semibold_0}>30 May</span> to keep your
-        booking active.
-      </>
-    ),
-    icon: moneyIcon,
-  },
-];
 
 type FullPaymentConfirmBottomSheetProps = {
   open: boolean;
@@ -121,7 +97,7 @@ export function FullPaymentConfirmBottomSheet({
         role="dialog"
         aria-modal="true"
         aria-labelledby="full-payment-things-to-know-title"
-        aria-describedby="full-payment-before-proceed-list"
+        aria-describedby="full-payment-how-it-works"
       >
         <div className={styles.relative_1}>
           <button
@@ -150,13 +126,16 @@ export function FullPaymentConfirmBottomSheet({
               id="full-payment-things-to-know-title"
               className={cn(styles.mt_6_4, bottomSheetTitleWidthWithIllustration, styles.text_left_4)}
             >
-              Things to know before you continue!
+              Here is how paying in full works
             </h2>
 
-            <BottomSheetConfirmBulletList
-              id="full-payment-before-proceed-list"
-              points={BEFORE_YOU_PROCEED_POINTS}
-            />
+            <div id="full-payment-how-it-works" className={styles.mt_5_4}>
+              <SelfFinanceHowItWorksCard
+                showTitle={false}
+                variant="embedded"
+                steps={FULL_PAYMENT_HOW_IT_WORKS_STEPS}
+              />
+            </div>
           </div>
 
           <div

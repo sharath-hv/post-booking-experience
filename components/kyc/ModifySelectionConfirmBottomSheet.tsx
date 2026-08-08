@@ -9,14 +9,14 @@ import {
   BOTTOM_SHEET_CTA_STRIP_TOP_CLASS,
   BOTTOM_SHEET_MAX_HEIGHT_CLASS,
   BOTTOM_SHEET_OVERLAY_Z_CLASS,
-} from "@/components/ui/bottom-sheet-layout";
+} from "@/lib/layout/bottom-sheet-layout";
 import {
   BottomSheetConfirmBulletList,
   type BottomSheetConfirmBulletPoint,
-} from "@/components/ui/BottomSheetConfirmBulletList";
-import { bottomSheetTitleWidthWithIllustration } from "@/components/ui/bottom-sheet-title-layout";
-import { BottomSheetCloseIcon } from "@/components/ui/BottomSheetCloseIcon";
-import { BottomSheetPortal } from "@/components/ui/BottomSheetPortal";
+} from "@/components/molecules/BottomSheetConfirmBulletList";
+import { bottomSheetTitleWidthWithIllustration } from "@/lib/layout/bottom-sheet-title-layout";
+import { BottomSheetCloseIcon } from "@/components/atoms/BottomSheetCloseIcon";
+import { BottomSheetPortal } from "@/components/molecules/BottomSheetPortal";
 import styles from "./ModifySelectionConfirmBottomSheet.module.scss";
 
 

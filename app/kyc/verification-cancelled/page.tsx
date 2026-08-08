@@ -1,9 +1,16 @@
+import { Suspense } from "react";
+
 import { ConciergeVerificationCancelledScreen } from "@/components/concierge/ConciergeVerificationCancelledScreen";
 
 /**
- * Second KYC failure — purchase auto-cancelled, full refund initiated.
- * Also reachable directly via the demo alt-skip on `/kyc/verification-failed`.
+ * Second KYC failure, or the re-upload SLA timer running out — purchase
+ * auto-cancelled, full refund initiated. Also reachable directly via the
+ * demo alt-skips on `/kyc/verification-failed`.
  */
 export default function KycVerificationCancelledPage() {
-  return <ConciergeVerificationCancelledScreen />;
+  return (
+    <Suspense fallback={null}>
+      <ConciergeVerificationCancelledScreen />
+    </Suspense>
+  );
 }

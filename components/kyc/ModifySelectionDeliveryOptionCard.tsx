@@ -7,7 +7,7 @@ import {
   modifySelectionSelectableCardClass,
   MODIFY_SELECTION_SELECTABLE_CARD_BASE_CLASS,
   ModifySelectionRadioIndicator,
-} from "@/components/kyc/modify-selection-option-card-ui";
+} from "@/components/molecules/modify-selection-option-card-ui";
 import { formatModifySelectionInr } from "@/lib/modify-selection-review-pay-content";
 import { cn } from "@/lib/utils";
 import styles from "./ModifySelectionDeliveryOptionCard.module.scss";

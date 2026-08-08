@@ -3,13 +3,13 @@
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { KycTopNavHeader } from "@/components/kyc/KycTopNavHeader";
+import { TopNavHeader } from "@/components/organisms/TopNavHeader";
 import { KycPanAadhaarDocumentUploadSections } from "@/components/kyc/KycPanAadhaarDocumentUploadSections";
 import {
   KYC_UPLOAD_HEADLINE,
   KYC_UPLOAD_SUBMIT_LABEL,
-} from "@/components/kyc/kyc-upload-content";
-import { PaymentSuccessStagger } from "@/components/ui/stagger-container";
+} from "@/lib/kyc-upload-content";
+import { RevealStagger } from "@/components/molecules/stagger-container";
 import { writeConciergeEcho } from "@/lib/concierge/echo";
 import styles from "./KycDocumentUploadScreen.module.scss";
 
@@ -71,32 +71,32 @@ export function KycDocumentUploadScreen() {
 
   return (
     <div className={styles.min_h_dvh_0}>
-      <KycTopNavHeader />
+      <TopNavHeader solid />
 
       <main className={styles.mx_auto_1}>
-        <PaymentSuccessStagger delay={STAGGER_HEADLINE}>
+        <RevealStagger delay={STAGGER_HEADLINE}>
           <h1 className={styles.text_2xl_2}>
             {KYC_UPLOAD_HEADLINE}
           </h1>
-        </PaymentSuccessStagger>
+        </RevealStagger>
 
         <KycPanAadhaarDocumentUploadSections
           uploads={uploads}
           onUploadsChange={setUploads}
           mockUploadCounterRef={mockUploadCounterRef}
           wrapTips={(node) => (
-            <PaymentSuccessStagger delay={STAGGER_INFO_BOX}>{node}</PaymentSuccessStagger>
+            <RevealStagger delay={STAGGER_INFO_BOX}>{node}</RevealStagger>
           )}
           wrapCard={(kind, card) => (
-            <PaymentSuccessStagger delay={staggerByKind[kind] ?? STAGGER_AADHAAR}>
+            <RevealStagger delay={staggerByKind[kind] ?? STAGGER_AADHAAR}>
               {card}
-            </PaymentSuccessStagger>
+            </RevealStagger>
           )}
         />
       </main>
 
       <div className={styles.fixed_3}>
-        <PaymentSuccessStagger className={styles.mx_auto_4} delay={STAGGER_CTA}>
+        <RevealStagger className={styles.mx_auto_4} delay={STAGGER_CTA}>
           <button
             type="button"
             disabled={!canSubmit}
@@ -105,7 +105,7 @@ export function KycDocumentUploadScreen() {
           >
             {KYC_UPLOAD_SUBMIT_LABEL}
           </button>
-        </PaymentSuccessStagger>
+        </RevealStagger>
       </div>
     </div>
   );

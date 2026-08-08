@@ -9,8 +9,8 @@ import {
   type InsuranceAddonId,
   type InsuranceTenureCompareRow,
 } from "@/components/payment/insurance-coverage-content";
-import { BottomSheetCloseIcon } from "@/components/ui/BottomSheetCloseIcon";
-import { BottomSheetPortal } from "@/components/ui/BottomSheetPortal";
+import { BottomSheetCloseIcon } from "@/components/atoms/BottomSheetCloseIcon";
+import { BottomSheetPortal } from "@/components/molecules/BottomSheetPortal";
 import styles from "./InsuranceTenureCompareBottomSheet.module.scss";
 
 import {
@@ -18,7 +18,7 @@ import {
   BOTTOM_SHEET_CTA_STRIP_TOP_CLASS,
   BOTTOM_SHEET_MAX_HEIGHT_CLASS,
   BOTTOM_SHEET_OVERLAY_Z_CLASS,
-} from "@/components/ui/bottom-sheet-layout";
+} from "@/lib/layout/bottom-sheet-layout";
 
 /** Enter/exit slide duration — keep in sync with `InsuranceCoverageBottomSheet` */
 const SHEET_TRANSITION_MS = 280;

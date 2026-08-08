@@ -2,7 +2,7 @@
 
 import carAllocationHero from "@/assets/Car allocation.svg";
 
-import { KycBookingProcessingScreen } from "@/components/kyc/KycBookingProcessingScreen";
+import { BookingProcessingScreen } from "@/components/organisms/BookingProcessingScreen";
 import { CAR_ALLOCATION_PENDING_INFO_BOX_EXPRESS } from "@/lib/experience-flow-content";
 
 /**
@@ -11,7 +11,7 @@ import { CAR_ALLOCATION_PENDING_INFO_BOX_EXPRESS } from "@/lib/experience-flow-c
  */
 export function CarAllocationPendingPageClient() {
   return (
-    <KycBookingProcessingScreen
+    <BookingProcessingScreen
       headline="A car is being assigned to your booking, Sharath"
       subline="We're allocating your exact Creta variant and colour. This usually takes 24-48 hours."
       infoBox={{ body: CAR_ALLOCATION_PENDING_INFO_BOX_EXPRESS }}

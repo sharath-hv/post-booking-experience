@@ -4,7 +4,7 @@ import Image, { type StaticImageData } from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useState, type ReactNode } from "react";
 
-import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
+import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
 import { writeChangeEntryStage } from "@/lib/change-policy";
 import { writeConciergeEcho } from "@/lib/concierge/echo";
 import { writeExperienceFlow } from "@/lib/experience-flow";
@@ -30,6 +30,8 @@ import styles from "./ConciergeAllocationFailedScreen.module.scss";
 const BOOKING_LOCK_LABEL = `₹${BOOKING_LOCK_AMOUNT_INR.toLocaleString("en-IN")}`;
 const STANDARD_DELIVERY_DATE =
   splitBookingDeliveryLine(BOOKING_STANDARD_DELIVERY_LINE)?.date ?? "in ~3 months";
+
+export type AllocationFailedMode = "express_miss" | "discontinued";
 
 type AllocationFailedOptionId = "standard_delivery" | "different_car" | "refund";
 
@@ -108,19 +110,30 @@ function AllocationFailedOptionCard({
   );
 }
 
+export type ConciergeAllocationFailedScreenProps = {
+  /**
+   * `express_miss` — exact unit unavailable on express (includes wait-for-standard).
+   * `discontinued` — selected variant discontinued; no standard-delivery out.
+   */
+  mode?: AllocationFailedMode;
+};
+
 /**
  * Allocation / dealer-search failed — policy §1.14 remediation.
  * Radio-selectable option cards (one decision-driving fact each, in the payment
  * card's dashed-strip slot) with a contextual footer CTA.
  *
- * Only reachable from the express-only "If no car is found" pill, so it never
- * needs to guard against a standard-flow visit — including the back-nav case
- * right after picking "Wait for standard delivery" (that choice switches the
- * flow to standard, and the user should land back on this screen, not skip past it).
+ * Express-only demo entries: “If no car is found” → `express_miss`;
+ * “If the variant is discontinued” → `discontinued`.
  */
-export function ConciergeAllocationFailedScreen() {
+export function ConciergeAllocationFailedScreen({
+  mode = "express_miss",
+}: ConciergeAllocationFailedScreenProps) {
   const router = useRouter();
-  const [choice, setChoice] = useState<AllocationFailedOptionId>("standard_delivery");
+  const isDiscontinued = mode === "discontinued";
+  const [choice, setChoice] = useState<AllocationFailedOptionId>(
+    isDiscontinued ? "different_car" : "standard_delivery",
+  );
 
   const onContinue = useCallback(() => {
     if (choice === "standard_delivery") {
@@ -140,7 +153,15 @@ export function ConciergeAllocationFailedScreen() {
     );
   }, [choice, router]);
 
-  const bodyLine = `We couldn't source your exact Creta on the express timeline. This one's on me, not you, so whatever you choose below, your ${BOOKING_LOCK_LABEL} stays exactly where it is and comes with you.`;
+  const says = isDiscontinued
+    ? ([
+        "I'm sorry, Sharath. That Creta variant isn't available anymore.",
+        `Hyundai has discontinued the exact variant you locked. This one's on me, not you, so whatever you choose below, your ${BOOKING_LOCK_LABEL} stays exactly where it is and comes with you.`,
+      ] as const)
+    : ([
+        "I'm sorry, Sharath. I couldn't find your car.",
+        `We couldn't source your exact Creta on the express timeline. This one's on me, not you, so whatever you choose below, your ${BOOKING_LOCK_LABEL} stays exactly where it is and comes with you.`,
+      ] as const);
 
   const ctaLabel =
     choice === "standard_delivery"
@@ -151,30 +172,36 @@ export function ConciergeAllocationFailedScreen() {
 
   return (
     <ConciergeTurnShell
-      says={["I'm sorry, Sharath. I couldn't find your car.", bodyLine]}
+      says={says}
       dateHolder="you"
       artifact={
         <div className={styles.flex_11}>
-          <AllocationFailedOptionCard
-            selected={choice === "standard_delivery"}
-            onSelect={() => setChoice("standard_delivery")}
-            illustrationSrc={standardDeliveryIllustration}
-            title="Wait for standard delivery"
-            subtitle="The exact same Creta, same spec, sourced on the standard timeline instead of express."
-            detailIcon={clockIcon}
-            detail={
-              <>
-                Estimated delivery by{" "}
-                <span className={styles.font_semibold_12}>{STANDARD_DELIVERY_DATE}</span>
-              </>
-            }
-          />
+          {isDiscontinued ? null : (
+            <AllocationFailedOptionCard
+              selected={choice === "standard_delivery"}
+              onSelect={() => setChoice("standard_delivery")}
+              illustrationSrc={standardDeliveryIllustration}
+              title="Wait for standard delivery"
+              subtitle="The exact same Creta, same spec, sourced on the standard timeline instead of express."
+              detailIcon={clockIcon}
+              detail={
+                <>
+                  Estimated delivery by{" "}
+                  <span className={styles.font_semibold_12}>{STANDARD_DELIVERY_DATE}</span>
+                </>
+              }
+            />
+          )}
           <AllocationFailedOptionCard
             selected={choice === "different_car"}
             onSelect={() => setChoice("different_car")}
             illustrationSrc={changeCarIllustration}
             title="Change your selection"
-            subtitle="Pick a different model, variant, or colour that can reach you sooner."
+            subtitle={
+              isDiscontinued
+                ? "Pick a different model, variant, or colour that's still available."
+                : "Pick a different model, variant, or colour that can reach you sooner."
+            }
             detailIcon={lockIcon}
             detail={
               <>

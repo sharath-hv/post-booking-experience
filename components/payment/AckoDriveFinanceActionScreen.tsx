@@ -3,7 +3,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useMemo } from "react";
 
-import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
+import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
 import { AckoDriveBankPartnerRow } from "@/components/payment/AckoDriveBankPartnerRow";
 import { LoanDocumentsChecklistCard } from "@/components/payment/LoanDocumentsChecklistCard";
 import {
@@ -52,7 +52,7 @@ export function AckoDriveFinanceActionScreen() {
   );
 
   const replies = useMemo(
-    () => [{ label: "Start my loan application", href: uploadHref }],
+    () => [{ label: "Start my loan application", href: uploadHref, echo: null }],
     [uploadHref],
   );
 

@@ -10,7 +10,7 @@ import {
   BOOKING_PAYMENT_SUCCESS_HERO,
   BOOKING_SUCCESS_LOTTIE_TICK_DATA,
 } from "@/components/payment/booking-success-shared";
-import { SUCCESS_SCREEN_HEADLINE_SUBTEXT_GAP_CLASS } from "@/components/ui/success-screen-layout";
+import { SUCCESS_SCREEN_HEADLINE_SUBTEXT_GAP_CLASS } from "@/lib/layout/success-screen-layout";
 import styles from "./FullPaymentOptionConfirmedScreen.module.scss";
 
 

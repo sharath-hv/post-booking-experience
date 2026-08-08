@@ -3,14 +3,14 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
-import { ConciergeDocumentsCard } from "@/components/concierge/ConciergeDocumentsCard";
+import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
+import { ConciergeDocumentsCard } from "@/components/organisms/ConciergeDocumentsCard";
 import { ReuploadDeadlineFootnote } from "@/components/concierge/DeadlineCountdownFootnote";
-import { VerificationFailureReasonSwitcher } from "@/components/kyc/VerificationFailureReasonSwitcher";
+import { VerificationFailureReasonSwitcher } from "@/components/organisms/VerificationFailureReasonSwitcher";
 import {
   resolveKycVerificationFailureReason,
   type KycVerificationFailureReason,
-} from "@/components/kyc/kyc-verification-failed-content";
+} from "@/lib/kyc-verification-failed-content";
 import { JOURNEY_PATHS } from "@/lib/journey-routes";
 import {
   createEmptyKycUploads,
@@ -58,6 +58,14 @@ const COPY: Record<Exclude<KycVerificationFailureReason, "image_not_clear">, Fai
     ],
     requiredDocs: ["aadhaar"],
     replyEcho: "I've re-uploaded my Aadhaar",
+  },
+  name_and_address_mismatch: {
+    says: [
+      "Your PAN and Aadhaar names don't match, and your Aadhaar address is outside Bengaluru.",
+      "Both need fixing: the names should be spelled identically, and the Aadhaar address needs to show Bengaluru, since that's where your car gets registered. Upload fresh copies of both.",
+    ],
+    requiredDocs: ["pan", "aadhaar"],
+    replyEcho: "I've re-uploaded them",
   },
 };
 
@@ -144,7 +152,10 @@ export function ConciergeVerificationFailedScreen() {
       }
       footnote={<ReuploadDeadlineFootnote />}
       replies={replies}
-      altTimeSkip={{ label: "If retries are exhausted", href: "/kyc/verification-cancelled" }}
+      altTimeSkip={[
+        { label: "Retries exhausted", href: "/kyc/verification-cancelled" },
+        { label: "SLA timed out", href: "/kyc/verification-cancelled?cause=timeout" },
+      ]}
       callLabel="Questions? I can call you"
     />
   );

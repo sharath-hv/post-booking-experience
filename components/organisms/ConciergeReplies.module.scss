@@ -1,0 +1,17 @@
+/* Component styles */
+
+.flex_0 {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: calc(var(--spacing) * 3);
+}
+
+.row {
+  flex-direction: row;
+
+  > button {
+    flex: 1;
+    min-width: 0;
+  }
+}

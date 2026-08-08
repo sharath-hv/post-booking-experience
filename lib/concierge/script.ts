@@ -2,9 +2,14 @@ import {
   BOOKING_CAR_COLOR,
   BOOKING_CAR_TITLE,
   BOOKING_CAR_VARIANT,
-} from "@/components/kyc/booking-car-card-content";
+} from "@/lib/booking-car-card-content";
 import type { ExperienceFlow } from "@/lib/experience-flow";
 import { isStandardDeliveryFlow } from "@/lib/experience-flow-content";
+import { EARLY_STANDARD_DELIVERY_LINE } from "@/lib/concierge/early-delivery";
+import {
+  BOOKING_STANDARD_DELIVERY_LINE,
+  splitBookingDeliveryLine,
+} from "@/lib/experience-flow-content";
 import { getDeliveryDateShort, getVehicleUpdateDateFull } from "@/lib/journey-stage";
 import { BOOKING_PAYMENT_SUMMARY_INR } from "@/lib/payment-summary-demo";
 
@@ -36,6 +41,9 @@ export type ConciergeMomentId =
   | "dealerFound"
   | "carReserved"
   | "allocationPending"
+  | "earlyDeliveryOffer"
+  | "earlyDeliveryConfirming"
+  | "earlyDeliveryKept"
   | "allocationDone"
   | "moneyIntro";
 
@@ -50,8 +58,16 @@ export type TurnWordsContext = {
   car?: ConciergeCarRef;
   /** True when `/kyc/processing` (etc.) follows a completed modify-selection pay. */
   afterSelectionChange?: boolean;
-  /** Demo: manufacturing finished ahead of the estimated date (`?early=1`). */
+  /**
+   * User accepted early delivery — confirmed turn after the confirming beat
+   * (`?early=1`). Delivery line override is already written.
+   */
   earlyAllocation?: boolean;
+  /**
+   * Early delivery landed with a different partner — OTP again on
+   * `/kyc/booking-accepted?earlyDealer=1`.
+   */
+  earlyDealerChange?: boolean;
 };
 
 export type TurnWords = {
@@ -346,6 +362,50 @@ const EXPRESS_SCRIPT: Record<ConciergeMomentId, TurnWords> = {
     ...paymentHandoffCta(),
   },
 
+  /** Standard demo — car ready early; user chooses early vs original date. */
+  earlyDeliveryOffer: {
+    says: [
+      "Good news, Sharath. Your Creta is ready earlier than we planned.",
+      "Would you like early delivery, or keep your original delivery date?",
+    ],
+    callLabel: "Want to talk it through? I can call you",
+  },
+
+  /** Standard demo — partner confirmation after the user opts into early delivery. */
+  earlyDeliveryConfirming: {
+    says: [
+      "On it, Sharath. I'm confirming early delivery with our partner.",
+      "I'll message you once the earlier slot is locked in. Nothing needed from you right now.",
+    ],
+    workingLines: [
+      "Checking unit availability",
+      "Confirming the earlier delivery slot with our partner",
+    ],
+    workingMode: "ongoing",
+    workingDoneCount: 1,
+    workingEtaLabel: "Usually confirmed within a few hours",
+    callLabel: "Questions while you wait? I can call you",
+  },
+
+  /**
+   * Standard demo — user kept the original date after an early-ready offer;
+   * manufacturing wait resumes (same shape as allocationPending).
+   */
+  earlyDeliveryKept: {
+    says: [
+      "Understood, Sharath. We'll stick with your original delivery date.",
+      "Your Creta stays in manufacturing. Nothing needed from you until it's built.",
+    ],
+    workingLines: [
+      "Keeping your original delivery date",
+      "Building your Creta, fresh off the line",
+    ],
+    workingMode: "ongoing",
+    workingDoneCount: 1,
+    timeSkipLabel: "A few months later",
+    callLabel: "Questions while it's built? I can call you",
+  },
+
   /**
    * Legacy alias — `/payment/default` redirects to choose. Kept so the moment
    * id still type-checks if anything references it.
@@ -389,6 +449,16 @@ export function getTurnWords(
   }
 
   if (moment === "dealerFound") {
+    if (context?.earlyDealerChange) {
+      return {
+        says: [
+          "Verify to lock in your earlier delivery, Sharath.",
+          "Share the one-time code when our partner calls. Once it's verified, your earlier delivery date is confirmed.",
+        ],
+        timeSkipLabel: "After the call",
+        callLabel: "Questions? I can call you",
+      };
+    }
     return dealerFoundWords(car, afterSelectionChange, isStandardDeliveryFlow(flow));
   }
 
@@ -415,15 +485,75 @@ export function getTurnWords(
       workingEtaLabel: allocationPendingEta(flow),
     };
   }
+  if (moment === "earlyDeliveryOffer") {
+    const familiar = carFamiliarName(car.title);
+    // Always the catalogue standard date — not a prior early-accept override.
+    const originalDate =
+      splitBookingDeliveryLine(BOOKING_STANDARD_DELIVERY_LINE)?.date.replace(/\s*'\d+$/, "") ??
+      "25 Oct";
+    return {
+      ...base,
+      says: [
+        `Good news, Sharath. Your ${familiar} is ready earlier than we planned.`,
+        `Would you like early delivery, or keep your original date of ${originalDate}?`,
+      ],
+      callLabel: "Want to talk it through? I can call you",
+    };
+  }
+
+  if (moment === "earlyDeliveryConfirming") {
+    return {
+      ...base,
+      says: [
+        "On it, Sharath. I'm confirming early delivery with our partner.",
+        "I'll message you once the earlier slot is locked in. Nothing needed from you right now.",
+      ],
+      workingLines: [
+        "Checking unit availability",
+        "Confirming the earlier delivery slot with our partner",
+      ],
+      workingMode: "ongoing",
+      workingDoneCount: 1,
+      workingEtaLabel: "Usually confirmed within a few hours",
+      callLabel: "Questions while you wait? I can call you",
+    };
+  }
+
+  if (moment === "earlyDeliveryKept") {
+    const familiar = carFamiliarName(car.title);
+    const originalDate =
+      splitBookingDeliveryLine(BOOKING_STANDARD_DELIVERY_LINE)?.date.replace(/\s*'\d+$/, "") ??
+      "25 Oct";
+    return {
+      ...base,
+      says: [
+        `Understood, Sharath. We'll stick with your original ${originalDate} delivery.`,
+        `Your ${familiar} stays in manufacturing. Nothing needed from you until it's built.`,
+      ],
+      workingLines: [
+        "Keeping your original delivery date",
+        `Building your ${familiar}, fresh off the line`,
+      ],
+      workingMode: "ongoing",
+      workingDoneCount: 1,
+      workingEtaLabel: allocationPendingEta(flow),
+      timeSkipLabel: "A few months later",
+      callLabel: "Questions while it's built? I can call you",
+    };
+  }
+
   if (moment === "allocationDone") {
     const familiar = carFamiliarName(car.title);
     const footnote = moneyIntroFootnote(flow);
     if (context?.earlyAllocation) {
+      const earlyDate =
+        splitBookingDeliveryLine(EARLY_STANDARD_DELIVERY_LINE)?.date.replace(/\s*'\d+$/, "") ??
+        "4 Oct";
       return {
         ...base,
         footnote,
         says: [
-          `Good news, Sharath. Your ${familiar} is ready earlier than we planned. It's assigned to you.`,
+          `All set. Your ${familiar} is assigned to you, with delivery moved up to ${earlyDate}.`,
           paymentHandoffBody(),
         ],
         ...paymentHandoffCta(),

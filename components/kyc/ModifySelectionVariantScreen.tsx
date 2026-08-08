@@ -3,9 +3,9 @@
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { BookingCarSummaryCard } from "@/components/kyc/BookingCarSummaryCard";
-import { ModifySelectionPageHeading } from "@/components/kyc/ModifySelectionPageHeading";
-import { ModifySelectionScreenHeader } from "@/components/kyc/ModifySelectionScreenHeader";
+import { BookingCarSummaryCard } from "@/components/organisms/BookingCarSummaryCard";
+import { PageLeadHeading } from "@/components/organisms/PageLeadHeading";
+import { StandaloneScreenHeader } from "@/components/organisms/StandaloneScreenHeader";
 import { ModifySelectionVariantCard } from "@/components/kyc/ModifySelectionVariantCard";
 import { ModifySelectionVariantFilterChips } from "@/components/kyc/ModifySelectionVariantFilterChips";
 import { writeModifySelectionVariantChoice } from "@/lib/modify-selection-variant-choice";
@@ -74,10 +74,10 @@ export function ModifySelectionVariantScreen() {
 
   return (
     <div className={MODIFY_SELECTION_PAGE_SHELL_CLASS}>
-      <ModifySelectionScreenHeader />
+      <StandaloneScreenHeader />
 
       <main className={styles.mx_auto_0}>
-        <ModifySelectionPageHeading
+        <PageLeadHeading
           title={MODIFY_SELECTION_VARIANT_SCREEN_TITLE}
           subline={MODIFY_SELECTION_VARIANT_SCREEN_SUBLINE}
           titleDelayMs={STAGGER_TITLE_MS}

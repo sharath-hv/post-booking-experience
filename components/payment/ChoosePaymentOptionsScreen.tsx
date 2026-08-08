@@ -2,10 +2,12 @@
 
 import Image, { type StaticImageData } from "next/image";
 import { cn } from "@/lib/utils";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
-import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
+import { JOURNEY_PATHS } from "@/lib/journey-routes";
+
+import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
 import { ackoDriveFinanceActionPath } from "@/components/payment/acko-drive-finance-bank";
 import { writeConciergeEcho } from "@/lib/concierge/echo";
 import { FullPaymentConfirmBottomSheet } from "@/components/payment/FullPaymentConfirmBottomSheet";
@@ -14,7 +16,7 @@ import {
   BANK_DISBURSEMENT_INR,
   DEFAULT_TENURE_MONTHS,
   FULL_PAYMENT_CAR_AMOUNT_INR,
-} from "@/components/payment/loan-amount-demo-constants";
+} from "@/lib/loan-amount-demo-constants";
 import {
   BANK_SHEET_OPTIONS,
   PARTNER_BANK_LOGOS,
@@ -243,9 +245,16 @@ function OptionCard({
  * Choose payment option — the money fork, as a Shivi turn: the remaining
  * amount anchors the question, the three paths are the artifact, the reply
  * adapts to the selection.
+ *
+ * ACKO Drive is always the default selection. Demo `?preselect=0` only swaps
+ * Shivi's body copy (no booking-time “kept it selected” framing).
  */
 export function ChoosePaymentOptionsScreen() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  /** `false` = demo variation without booking-time finance opt-in copy. */
+  const bookingOptInCopy = searchParams.get("preselect") !== "0";
+
   const [choice, setChoice] = useState<PaymentOptionId>("acko_drive");
   const [selfFinanceConfirmOpen, setSelfFinanceConfirmOpen] = useState(false);
   const [fullPaymentConfirmOpen, setFullPaymentConfirmOpen] = useState(false);
@@ -287,12 +296,16 @@ export function ChoosePaymentOptionsScreen() {
         ? "I'll use my own bank loan"
         : "I'll pay in full";
 
+  const bodyLine = bookingOptInCopy
+    ? "You opted to finance with ACKO Drive during booking — I've kept it selected, with your ₹5,000 discount already applied."
+    : "ACKO Drive financing includes a ₹5,000 discount on your car. Pick the path that works for you.";
+
   return (
     <>
       <ConciergeTurnShell
         says={[
           "How do you want to pay the remaining ₹13,63,780?",
-          "You picked ACKO Drive financing at booking, so it's already selected here, with your ₹5,000 discount applied.",
+          bodyLine,
         ]}
         artifact={
           <div className={styles.flex_19}>
@@ -303,7 +316,7 @@ export function ChoosePaymentOptionsScreen() {
                 onSelect={() => setChoice("acko_drive")}
                 illustrationSrc={PAYMENT_CHOOSE_ASSETS.ackoDriveFinance}
                 title="Finance with ACKO Drive"
-                chip="Pre-approved loan"
+                chip="Easiest"
                 blurb="You pick the bank, I handle the paperwork and every follow-up after."
                 stats={[
                   { value: "2 days", caption: "approx. approval time" },
@@ -381,6 +394,17 @@ export function ChoosePaymentOptionsScreen() {
           </div>
         }
         replies={[{ label: ctaLabel, onClick: onContinue, echo: null }]}
+        altTimeSkip={
+          bookingOptInCopy
+            ? {
+                label: "No ACKO Drive finance preselect",
+                href: `${JOURNEY_PATHS.payment.choose}?preselect=0`,
+              }
+            : {
+                label: "ACKO Drive finance preselect",
+                href: JOURNEY_PATHS.payment.choose,
+              }
+        }
         footnote="Your delivery date locks in once the money plan is set. Best done now."
         callLabel="Not sure? I can call you"
         manageShowVehicleIdentification

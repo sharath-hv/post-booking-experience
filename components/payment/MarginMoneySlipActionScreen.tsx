@@ -3,10 +3,10 @@
 import { useCallback, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
+import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
 import { BankTransferUtrConfirmBottomSheet } from "@/components/payment/BankTransferUtrConfirmBottomSheet";
 import { MarginMoneySlipCard } from "@/components/payment/MarginMoneySlipCard";
-import { PARTNER_DEALER_LABEL } from "@/lib/dealer-attribution-content";
+import { NAMED_DEALER_LABEL, NAMED_DEALER_NAME } from "@/lib/dealer-attribution-content";
 
 const SLIP_READY_QUERY = "slip_ready";
 
@@ -82,11 +82,11 @@ export function MarginMoneySlipActionScreen() {
       dealerConfirmed
         ? [
             "Your margin money slip is ready, Sharath.",
-            `The dealer has confirmed your down payment. Share this slip with your bank and they will release the loan amount directly to ${PARTNER_DEALER_LABEL}.`,
+            `${NAMED_DEALER_NAME} has confirmed your down payment. Share this slip with your bank and they will release the loan amount directly to ${NAMED_DEALER_LABEL}.`,
           ]
         : [
-            "I'm checking with the dealer on your down payment, Sharath.",
-            `Confirming with ${PARTNER_DEALER_LABEL} usually takes 2-3 hours. I'll hand you the margin money slip the moment they confirm.`,
+            `I'm checking with ${NAMED_DEALER_LABEL} on your down payment, Sharath.`,
+            `Confirming with ${NAMED_DEALER_LABEL} usually takes 2-3 hours. I'll hand you the margin money slip the moment they confirm.`,
           ],
     [dealerConfirmed],
   );
@@ -103,13 +103,13 @@ export function MarginMoneySlipActionScreen() {
             : {
                 mode: "ongoing",
                 lines: [
-                  "Reaching out to our dealer partner",
+                  `Reaching out to ${NAMED_DEALER_NAME}`,
                   "Verifying they've received your payment",
                 ],
                 etaLabel: "Usually 2-3 hours. I'll message you when it's confirmed.",
               }
         }
-        artifact={dealerConfirmed ? <MarginMoneySlipCard /> : null}
+        artifact={dealerConfirmed ? <MarginMoneySlipCard variant="glass" /> : null}
         replies={
           dealerConfirmed
             ? [

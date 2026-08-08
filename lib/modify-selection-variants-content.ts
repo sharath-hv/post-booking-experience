@@ -1,4 +1,4 @@
-import { BOOKING_CAR_VARIANT, BOOKING_EXPRESS_DELIVERY_LINE } from "@/components/kyc/booking-car-card-content";
+import { BOOKING_CAR_VARIANT, BOOKING_EXPRESS_DELIVERY_LINE } from "@/lib/booking-car-card-content";
 import { BOOKING_STANDARD_DELIVERY_LINE } from "@/lib/experience-flow-content";
 import {
   MODIFY_SELECTION_EXPRESS_EXTRA_CHARGE_INR,
@@ -10,7 +10,7 @@ import {
 import {
   ON_ROAD_LIST_PRICE_INR,
   ON_ROAD_PRICE_INR,
-} from "@/components/payment/loan-amount-demo-constants";
+} from "@/lib/loan-amount-demo-constants";
 
 export type ModifySelectionVariantFuel = "petrol" | "diesel";
 export type ModifySelectionVariantTransmission = "manual" | "automatic";
@@ -125,7 +125,7 @@ export const MODIFY_SELECTION_VARIANT_COLOUR_SCREEN_SUBLINE =
 
 export const MODIFY_SELECTION_VARIANT_CONFIRM_PATH = "/kyc/modify-selection/variant/confirm";
 
-export const MODIFY_SELECTION_VARIANT_CONFIRM_TITLE = "Ready to lock this in?";
+export const MODIFY_SELECTION_VARIANT_CONFIRM_TITLE = "Confirm your changes";
 
 export const MODIFY_SELECTION_VARIANT_CONFIRM_SUBLINE =
   "Your ₹10,000 price lock carries forward — I'll adjust anything extra. Delivery may shift with the variant you pick.";

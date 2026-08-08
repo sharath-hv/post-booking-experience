@@ -7,16 +7,16 @@ import { useCallback, useEffect, useState } from "react";
 import menuIcon from "@/assets/menu.svg";
 import infoIcon from "@/assets/Info.svg";
 import kycInProgressHero from "@/assets/KYC in progress.svg";
-import { GetHelpPillButton } from "@/components/kyc/GetHelpPillButton";
-import { KycTopNavHeader } from "@/components/kyc/KycTopNavHeader";
-import { WordByWordLine } from "@/components/payment/WordByWordLine";
-import { AuroraLightLayer } from "@/components/ui/aurora-light-layer";
+import { GetHelpPillButton } from "@/components/molecules/GetHelpPillButton";
+import { TopNavHeader } from "@/components/organisms/TopNavHeader";
+import { WordByWordLine } from "@/components/molecules/WordByWordLine";
+import { ExperienceBackdrop } from "@/components/atoms/experience-backdrop";
 import {
   HERO_ACTION_HEADLINE_SUBLINE_GAP_CLASS,
   HERO_ICON_TOP_PT,
   HERO_ILLUSTRATION_TO_COPY_MT,
-} from "@/components/ui/success-screen-layout";
-import { ManageBookingBottomSheet } from "@/components/kyc/ManageBookingBottomSheet";
+} from "@/lib/layout/success-screen-layout";
+import { ManageBookingBottomSheet } from "@/components/organisms/ManageBookingBottomSheet";
 import { recordKycVerificationFailure } from "@/lib/kyc-verification-attempts";
 import { DEMO_NAV_CTA_LABEL } from "@/lib/demo-nav-cta";
 import { KYC_VERIFICATION_FAILED_HREF } from "@/lib/kyc-verification-outcome";
@@ -107,7 +107,7 @@ export function KycVerificationInProgressScreen({
         <div
           className={cn(styles.kyc_pending_hero_card_0, "kyc-pending-hero-card", HERO_MIN_HEIGHT)}
         >
-          <KycTopNavHeader
+          <TopNavHeader
             transparent
             endSlot={
               <div className={styles.flex_5}>
@@ -116,7 +116,7 @@ export function KycVerificationInProgressScreen({
               </div>
             }
           />
-          <AuroraLightLayer />
+          <ExperienceBackdrop />
           <div className={cn(styles.relative_1_0, HERO_ICON_TOP_PT)}>
             <div className={styles.relative_6}>
               <Image

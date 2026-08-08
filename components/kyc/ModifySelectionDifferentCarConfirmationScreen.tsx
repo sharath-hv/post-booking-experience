@@ -3,10 +3,10 @@
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { BookingCarSummaryCard } from "@/components/kyc/BookingCarSummaryCard";
-import { ModifySelectionPageHeading } from "@/components/kyc/ModifySelectionPageHeading";
-import { ModifySelectionScreenHeader } from "@/components/kyc/ModifySelectionScreenHeader";
-import { BOOKING_CONFIRMED_ASSETS } from "@/components/kyc/kyc-booking-confirmed-assets";
+import { BookingCarSummaryCard } from "@/components/organisms/BookingCarSummaryCard";
+import { PageLeadHeading } from "@/components/organisms/PageLeadHeading";
+import { StandaloneScreenHeader } from "@/components/organisms/StandaloneScreenHeader";
+import { BOOKING_CONFIRMED_ASSETS } from "@/lib/kyc-booking-confirmed-assets";
 import {
   BOOKING_EXPRESS_DELIVERY_TEXT_CLASS,
   BOOKING_STANDARD_DELIVERY_TEXT_CLASS,
@@ -95,10 +95,10 @@ export function ModifySelectionDifferentCarConfirmationScreen({
 
   return (
     <div className={MODIFY_SELECTION_PAGE_SHELL_CLASS}>
-      <ModifySelectionScreenHeader />
+      <StandaloneScreenHeader />
 
       <main className={styles.mx_auto_0}>
-        <ModifySelectionPageHeading
+        <PageLeadHeading
           title={MODIFY_SELECTION_DIFFERENT_CAR_CONFIRM_TITLE}
           subline={MODIFY_SELECTION_DIFFERENT_CAR_CONFIRM_SUBLINE}
           titleDelayMs={STAGGER_TITLE_MS}

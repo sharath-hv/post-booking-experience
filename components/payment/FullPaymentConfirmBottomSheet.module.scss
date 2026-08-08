@@ -1,10 +1,5 @@
 /* Component styles */
 
-.font_semibold_0 {
-  --tw-font-weight: var(--font-weight-semibold);
-  font-weight: var(--font-weight-semibold);
-}
-
 .relative_1 {
   position: relative;
   display: flex;
@@ -138,6 +133,10 @@
   overflow-y: auto;
   padding-inline: calc(var(--spacing) * 5);
   padding-top: calc(var(--spacing) * 6);
+}
+
+.mt_5_4 {
+  margin-top: calc(var(--spacing) * 5);
 }
 
 .mt_6_4 {

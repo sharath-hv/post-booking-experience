@@ -110,6 +110,7 @@ const CAR_PAYMENT_STARTED_PATHS = new Set<string>([
   "/payment/insurance-premium-success",
   "/payment/car-delivery-schedule",
   "/payment/car-delivery-rto",
+  "/payment/car-delivery-rto-additional-documents",
   "/payment/car-delivery-insurance-prep",
 ]);
 

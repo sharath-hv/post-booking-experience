@@ -16,15 +16,15 @@ import {
   type InsuranceCoverageItem,
   type InsuranceTenureId,
 } from "@/components/payment/insurance-coverage-content";
-import { BottomSheetCloseIcon } from "@/components/ui/BottomSheetCloseIcon";
-import { BottomSheetPortal } from "@/components/ui/BottomSheetPortal";
+import { BottomSheetCloseIcon } from "@/components/atoms/BottomSheetCloseIcon";
+import { BottomSheetPortal } from "@/components/molecules/BottomSheetPortal";
 import {
   BOTTOM_SHEET_BODY_BEFORE_CTA_CLASS,
   BOTTOM_SHEET_CTA_STRIP_TOP_CLASS,
   BOTTOM_SHEET_MAX_HEIGHT_CLASS,
   BOTTOM_SHEET_OVERLAY_Z_CLASS,
-} from "@/components/ui/bottom-sheet-layout";
-import { ShimmerInfoCard } from "@/components/ui/ShimmerInfoCard";
+} from "@/lib/layout/bottom-sheet-layout";
+import { ShimmerInfoCard } from "@/components/molecules/ShimmerInfoCard";
 import { cn } from "@/lib/utils";
 import styles from "./InsuranceCoverageBottomSheet.module.scss";
 

@@ -5,16 +5,16 @@ import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { ModifySelectionPageHeading } from "@/components/kyc/ModifySelectionPageHeading";
+import { PageLeadHeading } from "@/components/organisms/PageLeadHeading";
 import { ModifySelectionConfirmBottomSheet } from "@/components/kyc/ModifySelectionConfirmBottomSheet";
-import { ModifySelectionScreenHeader } from "@/components/kyc/ModifySelectionScreenHeader";
+import { StandaloneScreenHeader } from "@/components/organisms/StandaloneScreenHeader";
 import styles from "./ChooseModifyBookingScreen.module.scss";
 
 import {
   modifySelectionSelectableCardClass,
   MODIFY_SELECTION_SELECTABLE_CARD_BASE_CLASS,
   ModifySelectionRadioIndicator,
-} from "@/components/kyc/modify-selection-option-card-ui";
+} from "@/components/molecules/modify-selection-option-card-ui";
 import {
   MODIFY_SELECTION_OPTIONS,
   MODIFY_SELECTION_PAGE_SHELL_CLASS,
@@ -109,10 +109,10 @@ export function ChooseModifyBookingScreen() {
 
   return (
     <div className={MODIFY_SELECTION_PAGE_SHELL_CLASS}>
-      <ModifySelectionScreenHeader />
+      <StandaloneScreenHeader />
 
       <main className={styles.mx_auto_6}>
-        <ModifySelectionPageHeading
+        <PageLeadHeading
           title={MODIFY_SELECTION_TITLE}
           subline={subline}
           titleDelayMs={STAGGER_TITLE_MS}

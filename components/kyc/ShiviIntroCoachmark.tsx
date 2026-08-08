@@ -1,6 +1,6 @@
 "use client";
 
-import { GetHelpPillButton } from "@/components/kyc/GetHelpPillButton";
+import { GetHelpPillButton } from "@/components/molecules/GetHelpPillButton";
 import { ShiviIntroNavArrow } from "@/components/kyc/ShiviIntroNavArrow";
 import styles from "./ShiviIntroCoachmark.module.scss";
 

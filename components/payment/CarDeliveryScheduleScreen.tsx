@@ -1,23 +1,24 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import locationIcon from "@/assets/Location.svg";
-import { CarSummaryCardLite } from "@/components/concierge/artifacts";
-import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
+import { CarSummaryCardLite } from "@/components/organisms/artifacts";
+import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
 import {
   BOOKING_CAR_COLOR,
   BOOKING_CAR_TITLE,
   BOOKING_CAR_VARIANT,
-} from "@/components/kyc/booking-car-card-content";
+} from "@/lib/booking-car-card-content";
 import {
   DEMO_VEHICLE_CHASSIS_NO,
   DEMO_VEHICLE_ENGINE_NO,
-} from "@/components/kyc/demo-vehicle-identification";
+  DEMO_VEHICLE_REGISTRATION_NO,
+} from "@/lib/demo-vehicle-identification";
 import { PartnerGarageCard } from "@/components/payment/PartnerGarageCard";
 import { fireBasicCannon } from "@/lib/confetti-basic-cannon";
-import { CAR_SOURCE_DETAIL, CAR_SOURCE_NAME } from "@/lib/dealer-attribution-content";
+import { CAR_SOURCE_DETAIL, CAR_SOURCE_NAME, NAMED_DEALER_DETAIL, NAMED_DEALER_NAME } from "@/lib/dealer-attribution-content";
 import {
   DEFAULT_EXPERIENCE_FLOW,
   readExperienceFlow,
@@ -25,10 +26,6 @@ import {
 } from "@/lib/experience-flow";
 import { cn } from "@/lib/utils";
 import styles from "./CarDeliveryScheduleScreen.module.scss";
-
-/** Real pickup address — kept as-is, not brand attribution. */
-const DEALER_NAME = "Advaith Hyundai";
-const DEALER_DETAIL = "Whitefield · Bengaluru";
 
 /** Candidate pickup days inside the promised window (flow-aware). */
 const EXPRESS_DAYS = ["Sat 7 Jun", "Sun 8 Jun", "Mon 9 Jun", "Tue 10 Jun"] as const;
@@ -146,9 +143,15 @@ export function CarDeliveryScheduleScreen() {
     [day, windowSlot]
   );
 
+  // Same-URL two-beat turn — don't skip the day/window picker via history.
+  const onBackFromLocked = useCallback(() => {
+    setScheduled(false);
+  }, []);
+
   if (scheduled && day && windowSlot) {
     return (
       <ConciergeTurnShell
+        key="schedule-locked"
         says={[
           `Locked: ${day}, ${windowSlot.toLowerCase()}.`,
           "Your Creta will be ready at the dealership. I'll send the bay details and your registration number the day before. It's been a pleasure, Sharath. Enjoy every kilometre.",
@@ -156,8 +159,8 @@ export function CarDeliveryScheduleScreen() {
         artifact={
           <div className={styles.artifactStack}>
             <PartnerGarageCard
-              name={DEALER_NAME}
-              detail={DEALER_DETAIL}
+              name={NAMED_DEALER_NAME}
+              detail={NAMED_DEALER_DETAIL}
               variant="glass"
             />
             <CarSummaryCardLite
@@ -169,16 +172,19 @@ export function CarDeliveryScheduleScreen() {
               dealerDetail={CAR_SOURCE_DETAIL}
               engineNo={DEMO_VEHICLE_ENGINE_NO}
               chassisNo={DEMO_VEHICLE_CHASSIS_NO}
+              registrationNo={DEMO_VEHICLE_REGISTRATION_NO}
             />
           </div>
         }
         timeSkip={{ label: "Start over", href: "/quote" }}
+        onBack={onBackFromLocked}
       />
     );
   }
 
   return (
     <ConciergeTurnShell
+      key="schedule-picker"
       says={[
         "Your Creta is ready, Sharath.",
         "Registered, insured, and ready to roll. Come collect it — pick a day and a window, and I'll have it waiting.",
@@ -199,8 +205,8 @@ export function CarDeliveryScheduleScreen() {
             />
           </span>
           <div className={styles.locationCopy}>
-            <p className={styles.locationName}>{DEALER_NAME}</p>
-            <p className={styles.locationDetail}>{DEALER_DETAIL}</p>
+            <p className={styles.locationName}>{NAMED_DEALER_NAME}</p>
+            <p className={styles.locationDetail}>{NAMED_DEALER_DETAIL}</p>
           </div>
         </div>
         <hr className={styles.locationSeparator} />

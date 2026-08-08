@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import Lottie from "lottie-react";
 
-import { BookingCarCardDetails } from "@/components/kyc/BookingCarCardDetails";
+import { BookingCarCardDetails } from "@/components/organisms/BookingCarCardDetails";
 import {
   BOOKING_CAR_CARD_SHELL_CLASS,
   BOOKING_CAR_HERO_HEIGHT_CLASS,
@@ -15,14 +15,14 @@ import {
   BOOKING_CAR_SUMMARY_PANEL_POSITION_CLASS,
   BookingCarCardBackdrop,
   BookingCarSummaryCardVisualStage,
-} from "@/components/kyc/BookingCarSummaryCard";
-import { BOOKING_CONFIRMED_ASSETS } from "@/components/kyc/kyc-booking-confirmed-assets";
+} from "@/components/organisms/BookingCarSummaryCard";
+import { BOOKING_CONFIRMED_ASSETS } from "@/lib/kyc-booking-confirmed-assets";
 import {
   CELEBRATION_LOTTIE_TO_HEADLINE_MT,
   HERO_ICON_TOP_PT,
   SUCCESS_SCREEN_HEADLINE_SUBTEXT_GAP_CLASS,
-} from "@/components/ui/success-screen-layout";
-import { PaymentSuccessStagger } from "@/components/ui/stagger-container";
+} from "@/lib/layout/success-screen-layout";
+import { RevealStagger } from "@/components/molecules/stagger-container";
 import { cn } from "@/lib/utils";
 
 import bookingSuccessLottie from "./lottie/booking-success.json";
@@ -185,7 +185,7 @@ export function BookingCelebrationSuccessScreen({
             </div>
 
             {showHeader && (
-              <PaymentSuccessStagger
+              <RevealStagger
                 className={cn(CELEBRATION_LOTTIE_TO_HEADLINE_MT, styles.flex_2_0, SUCCESS_SCREEN_HEADLINE_SUBTEXT_GAP_CLASS)}
                 delay={0.2}
               >
@@ -193,18 +193,18 @@ export function BookingCelebrationSuccessScreen({
                   {headline}
                 </h1>
                 {belowHeadline != null && (
-                  <PaymentSuccessStagger className={styles.w_full_6} delay={0.4}>
+                  <RevealStagger className={styles.w_full_6} delay={0.4}>
                     {belowHeadline}
-                  </PaymentSuccessStagger>
+                  </RevealStagger>
                 )}
-              </PaymentSuccessStagger>
+              </RevealStagger>
             )}
           </div>
 
           {showCar &&
             showCarSection &&
             (showDefaultCarCard ? (
-              <PaymentSuccessStagger
+              <RevealStagger
                 className={cn(styles.relative_15, BOOKING_CAR_CARD_SHELL_CLASS)}
                 delay={0.6}
               >
@@ -228,20 +228,20 @@ export function BookingCelebrationSuccessScreen({
                     />
                   </div>
                 </div>
-              </PaymentSuccessStagger>
+              </RevealStagger>
             ) : (
-              <PaymentSuccessStagger
+              <RevealStagger
                 className={styles.mt_8_7}
                 delay={0.6}
               >
                 {replaceCarCardWith}
-              </PaymentSuccessStagger>
+              </RevealStagger>
             ))}
         </div>
       </div>
 
       {showCar && (
-        <PaymentSuccessStagger
+        <RevealStagger
           className={styles.z_10_8}
           delay={0.8}
         >
@@ -264,7 +264,7 @@ export function BookingCelebrationSuccessScreen({
               </button>
             </div>
           </div>
-        </PaymentSuccessStagger>
+        </RevealStagger>
       )}
     </div>
   );

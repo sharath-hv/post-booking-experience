@@ -4,9 +4,9 @@ import Image from "next/image";
 import { useCallback, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { ModifySelectionPageHeading } from "@/components/kyc/ModifySelectionPageHeading";
-import { ModifySelectionScreenHeader } from "@/components/kyc/ModifySelectionScreenHeader";
-import { modifySelectionSelectableCardClassName } from "@/components/kyc/modify-selection-option-card-ui";
+import { PageLeadHeading } from "@/components/organisms/PageLeadHeading";
+import { StandaloneScreenHeader } from "@/components/organisms/StandaloneScreenHeader";
+import { modifySelectionSelectableCardClassName } from "@/components/molecules/modify-selection-option-card-ui";
 import { InsuranceTenureCompareBottomSheet } from "@/components/payment/InsuranceTenureCompareBottomSheet";
 import { PAYMENT_CHOOSE_ASSETS } from "@/components/payment/payment-choose-assets";
 import {
@@ -95,10 +95,11 @@ function TenureCard({
             sizes="40px"
           />
         </div>
-        <div className={styles.cardCopy}>
+        <div className={cn(styles.cardCopy, option.badge ? styles.cardCopyWithBadge : "")}>
+          {option.badge ? <span className={styles.cardBadge}>{option.badge}</span> : null}
           <p className={styles.cardLabel}>{option.label}</p>
         </div>
-        <span className={styles.radio}>
+        <span className={cn(styles.radio, option.badge ? styles.radioWithBadge : "")}>
           <TenureRadioIndicator selected={selected} />
         </span>
       </div>
@@ -110,7 +111,7 @@ function TenureCard({
           <p className={styles.statValue}>
             {option.ownDamageYears} {option.ownDamageYears === 1 ? "year" : "years"}
           </p>
-          <p className={styles.statCaption}>Zero depreciation cover</p>
+          <p className={styles.statCaption}>Zero dep cover</p>
         </div>
         <div className={cn(styles.statCol, styles.statColDivider)}>
           <p className={styles.statValue}>
@@ -143,7 +144,7 @@ function TenureCard({
 export function ChooseInsuranceTenureScreen() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [tenureId, setTenureId] = useState<InsuranceTenureId>("1+3");
+  const [tenureId, setTenureId] = useState<InsuranceTenureId>("3+3");
   const [compareSheetOpen, setCompareSheetOpen] = useState(false);
 
   const addonIds = useMemo(
@@ -191,11 +192,11 @@ export function ChooseInsuranceTenureScreen() {
 
   return (
     <div className={MODIFY_SELECTION_PAGE_SHELL_CLASS}>
-      <ModifySelectionScreenHeader />
+      <StandaloneScreenHeader />
 
       <main className={styles.main}>
         <header className={styles.lead}>
-          <ModifySelectionPageHeading
+          <PageLeadHeading
             title={INSURANCE_TENURE_SCREEN_TITLE}
             subline={subline}
             titleDelayMs={STAGGER_TITLE_MS}

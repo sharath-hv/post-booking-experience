@@ -25,8 +25,6 @@ export type ModifySelectionReviewPayDemoDefinition = {
   id: ModifySelectionReviewPayDemoScenario;
   /** Short label for the segmented demo control. */
   label: string;
-  /** One-line situation copy above the booking math — null when redundant. */
-  situationLine: string | null;
   newBookingAmountInr: number;
   bookingAmountPaidInr: number;
   /**
@@ -44,7 +42,6 @@ export const MODIFY_SELECTION_REVIEW_PAY_DEMO_DEFINITIONS: Record<
   higher: {
     id: "higher",
     label: "Higher",
-    situationLine: "This car needs a higher price lock.",
     newBookingAmountInr: 15_000,
     bookingAmountPaidInr: 10_000,
     forceChangeFee: false,
@@ -52,7 +49,6 @@ export const MODIFY_SELECTION_REVIEW_PAY_DEMO_DEFINITIONS: Record<
   higher_fee: {
     id: "higher_fee",
     label: "Hi+fee",
-    situationLine: "This car needs a higher price lock.",
     newBookingAmountInr: 15_000,
     bookingAmountPaidInr: 10_000,
     forceChangeFee: true,
@@ -60,7 +56,6 @@ export const MODIFY_SELECTION_REVIEW_PAY_DEMO_DEFINITIONS: Record<
   lower: {
     id: "lower",
     label: "Lower",
-    situationLine: "You've already paid more than this car's price lock.",
     newBookingAmountInr: 7_000,
     bookingAmountPaidInr: 10_000,
     forceChangeFee: false,
@@ -68,7 +63,6 @@ export const MODIFY_SELECTION_REVIEW_PAY_DEMO_DEFINITIONS: Record<
   same: {
     id: "same",
     label: "Same",
-    situationLine: null,
     newBookingAmountInr: 10_000,
     bookingAmountPaidInr: 10_000,
     forceChangeFee: false,
@@ -76,7 +70,6 @@ export const MODIFY_SELECTION_REVIEW_PAY_DEMO_DEFINITIONS: Record<
   same_fee: {
     id: "same_fee",
     label: "Same+fee",
-    situationLine: null,
     newBookingAmountInr: 10_000,
     bookingAmountPaidInr: 10_000,
     forceChangeFee: true,

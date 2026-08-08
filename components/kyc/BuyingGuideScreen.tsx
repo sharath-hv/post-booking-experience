@@ -7,7 +7,7 @@ import {
   BUYING_GUIDE_STEP_COUNT,
   type BuyingGuideStep,
 } from "@/components/kyc/buying-guide-content";
-import { PaymentSuccessStagger } from "@/components/ui/stagger-container";
+import { RevealStagger } from "@/components/molecules/stagger-container";
 import { buyingGuideNextPath } from "@/lib/buying-guide-urls";
 import { primaryOrDemoNavCtaClass } from "@/lib/demo-nav-cta";
 import { cn } from "@/lib/utils";
@@ -40,7 +40,7 @@ export function BuyingGuideScreen({ step }: BuyingGuideScreenProps) {
       <div
         className={cn(styles.mx_auto_0, MAIN_BOTTOM_PADDING_CLASS)}
       >
-        <PaymentSuccessStagger
+        <RevealStagger
           key={`image-${step.step}`}
           className={styles.relative_0}
           delay={STAGGER_IMAGE}
@@ -54,27 +54,27 @@ export function BuyingGuideScreen({ step }: BuyingGuideScreenProps) {
               priority={step.step === 1}
             />
           ) : null}
-        </PaymentSuccessStagger>
+        </RevealStagger>
 
         <div className={styles.mt_8_2} key={`copy-${step.step}`}>
-          <PaymentSuccessStagger delay={STAGGER_STEP_LABEL}>
+          <RevealStagger delay={STAGGER_STEP_LABEL}>
             <p className={styles.text_xs_3}>
               Step {step.step} of {BUYING_GUIDE_STEP_COUNT}
             </p>
-          </PaymentSuccessStagger>
-          <PaymentSuccessStagger delay={STAGGER_TITLE}>
+          </RevealStagger>
+          <RevealStagger delay={STAGGER_TITLE}>
             <h1 className={styles.text_20px__4}>
               {step.title}
             </h1>
-          </PaymentSuccessStagger>
-          <PaymentSuccessStagger delay={STAGGER_BODY}>
+          </RevealStagger>
+          <RevealStagger delay={STAGGER_BODY}>
             <p className={styles.text_sm_5}>{step.body}</p>
-          </PaymentSuccessStagger>
+          </RevealStagger>
         </div>
       </div>
 
       <div className={styles.fixed_6}>
-        <PaymentSuccessStagger
+        <RevealStagger
           key={`cta-${step.step}`}
           className={styles.mx_auto_7}
           delay={STAGGER_CTA}
@@ -89,7 +89,7 @@ export function BuyingGuideScreen({ step }: BuyingGuideScreenProps) {
           >
             {step.ctaLabel}
           </button>
-        </PaymentSuccessStagger>
+        </RevealStagger>
       </div>
     </>
   );

@@ -3,10 +3,13 @@
 import { useCallback, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { AmountReceivedCard } from "@/components/concierge/artifacts";
-import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
-import { SELF_FINANCE_LOAN_DEFAULT_INR } from "@/components/payment/loan-amount-demo-constants";
-import { PARTNER_DEALER_LABEL, PARTNER_DEALER_LABEL_CAPITALIZED } from "@/lib/dealer-attribution-content";
+import { AmountReceivedCard } from "@/components/organisms/artifacts";
+import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
+import {
+  cashDownPaymentDueInr,
+  SELF_FINANCE_LOAN_DEFAULT_INR,
+} from "@/lib/loan-amount-demo-constants";
+import { NAMED_DEALER_LABEL, NAMED_DEALER_LABEL_CAPITALIZED } from "@/lib/dealer-attribution-content";
 import { buildMarginMoneySlipActionHref } from "@/lib/paymentUrls";
 
 
@@ -27,6 +30,7 @@ function parseLoanAmount(raw: string | null): number {
 /**
  * Self finance — Shivi is verifying the bank transfer with the dealer.
  * Shown after the user confirms the bank has transferred the loan amount.
+ * Card layout mirrors ACKO Drive {@link LoanDealerDownPaymentConfirmedScreen} disbursement wait.
  */
 export function SelfFinanceTransferVerificationScreen() {
   const router = useRouter();
@@ -37,11 +41,17 @@ export function SelfFinanceTransferVerificationScreen() {
     () => parseLoanAmount(searchParams.get("loan_amount")),
     [searchParams],
   );
+  const downPaymentInr = useMemo(() => {
+    if (originalDownPayment != null && Number.isFinite(Number(originalDownPayment))) {
+      return Math.round(Number(originalDownPayment));
+    }
+    return cashDownPaymentDueInr(loanAmountInr);
+  }, [loanAmountInr, originalDownPayment]);
 
   const says = useMemo(
     () => [
-      "Checking with the dealer now.",
-      `I'm checking with ${PARTNER_DEALER_LABEL} to confirm they've received the ${formatInr(loanAmountInr)} from your bank.`,
+      `Checking with ${NAMED_DEALER_LABEL} now.`,
+      `I'm checking with ${NAMED_DEALER_LABEL} to confirm they've received the ${formatInr(loanAmountInr)} from your bank.`,
     ],
     [loanAmountInr],
   );
@@ -72,12 +82,14 @@ export function SelfFinanceTransferVerificationScreen() {
       artifact={
         <AmountReceivedCard
           amountInr={loanAmountInr}
-          title="Bank transfer - verifying with dealer"
+          title="Bank transfer · in progress"
           status="processing"
+          variant="glass"
           rows={[
-            { label: "Sent to", value: PARTNER_DEALER_LABEL_CAPITALIZED },
+            { label: "Down payment confirmed", value: formatInr(downPaymentInr) },
+            { label: "Sent to", value: NAMED_DEALER_LABEL_CAPITALIZED },
           ]}
-          note="Confirmation typically takes 1-2 business days."
+          note="Typically completes within 1-2 business days."
         />
       }
       timeSkip={{ label: "Once dealer confirms", href: nextHref }}

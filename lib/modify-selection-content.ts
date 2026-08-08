@@ -6,7 +6,7 @@ import changeVariantIcon from "@/assets/Change variant.svg";
 import moneyIcon from "@/assets/money.svg";
 import type { StaticImageData } from "next/image";
 
-import type { BottomSheetConfirmBulletPoint } from "@/components/ui/BottomSheetConfirmBulletList";
+import type { BottomSheetConfirmBulletPoint } from "@/components/molecules/BottomSheetConfirmBulletList";
 import { readChangeEntryStage } from "@/lib/change-policy";
 import {
   isModifyNoChargesFlow,

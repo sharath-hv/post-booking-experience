@@ -4,8 +4,8 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo } from "react";
 
 import { ModifySelectionCarModelRow } from "@/components/kyc/ModifySelectionCarModelRow";
-import { ModifySelectionPageHeading } from "@/components/kyc/ModifySelectionPageHeading";
-import { ModifySelectionScreenHeader } from "@/components/kyc/ModifySelectionScreenHeader";
+import { PageLeadHeading } from "@/components/organisms/PageLeadHeading";
+import { StandaloneScreenHeader } from "@/components/organisms/StandaloneScreenHeader";
 import {
   getModifySelectionCarBrandById,
   MODIFY_SELECTION_CAR_BRAND_PATH,
@@ -59,10 +59,10 @@ export function ModifySelectionCarModelScreen({ brandId }: ModifySelectionCarMod
 
   return (
     <div className={MODIFY_SELECTION_PAGE_SHELL_CLASS}>
-      <ModifySelectionScreenHeader />
+      <StandaloneScreenHeader />
 
       <main className={styles.mx_auto_0}>
-        <ModifySelectionPageHeading
+        <PageLeadHeading
           title={title}
           titleDelayMs={STAGGER_TITLE_MS}
         />

@@ -3,9 +3,9 @@
 import { useRouter } from "next/navigation";
 import { useCallback, useState, type ReactNode } from "react";
 
-import { ShiviCallSheet } from "@/components/concierge/ShiviCallSheet";
-import { GetHelpPillButton } from "@/components/kyc/GetHelpPillButton";
-import { KycTopNavHeader } from "@/components/kyc/KycTopNavHeader";
+import { ShiviCallSheet } from "@/components/organisms/ShiviCallSheet";
+import { GetHelpPillButton } from "@/components/molecules/GetHelpPillButton";
+import { TopNavHeader } from "@/components/organisms/TopNavHeader";
 import { LoanApplicationMilestoneRail } from "@/components/payment/loan-application/LoanApplicationMilestoneRail";
 import {
   LOAN_APPLICATION_HEADER_CLASS,
@@ -37,7 +37,7 @@ export function LoanApplicationShell({ currentRoute, children }: LoanApplication
     <div className={styles.relative_0}>
       <div className={styles.relative_1}>
         <div className={LOAN_APPLICATION_HEADER_CLASS}>
-          <KycTopNavHeader
+          <TopNavHeader
             inverted
             noSticky
             onBack={handleBack}

@@ -92,19 +92,24 @@
 }
 
 .logoFrame {
-  position: relative;
-  height: 48px;
-  width: 48px;
+  display: flex;
+  height: 52px;
+  width: 52px;
   flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
-  border-radius: 8px;
-  border: 1px solid #e8e8e8;
-  background-color: var(--color-white);
+  border-radius: calc(infinity * 1px);
+  border: 0.5px solid #e8e8e8;
+  background-color: transparent;
+  background-image: linear-gradient(to bottom, #e7e7e7, #ffffff);
+  box-shadow: inset 0 0 0 2px #ffffff;
 }
 
 .logo {
+  width: 32px;
+  height: 32px;
   object-fit: contain;
-  padding: 6px;
 }
 
 .brandCopy {
@@ -138,9 +143,9 @@
 
 .rateLine {
   margin: 4px 0 0;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 400;
-  line-height: 18px;
+  line-height: 20px;
   color: #757575;
 }
 
@@ -221,8 +226,8 @@
   padding-left: 14px;
   font-size: 12px;
   font-weight: 400;
-  line-height: 18px;
-  color: #757575;
+  line-height: 16px;
+  color: #4b4b4b;
 }
 
 .sectionBullet::before {
@@ -234,6 +239,24 @@
   width: 4px;
   border-radius: 50%;
   background-color: #c2c2c2;
+}
+
+.bankDecisionNote {
+  margin: 0;
+  padding-top: 16px;
+  border-top: 1px dashed #e8e8e8;
+  /* caption */
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+  color: #757575;
+}
+
+.bankDecisionNoteLead {
+  /* label-md, semibold */
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  color: #4b4b4b;
 }
 
 .footer {

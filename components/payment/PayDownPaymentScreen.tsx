@@ -3,12 +3,12 @@
 import { useEffect, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { KycBookingProcessingScreen } from "@/components/kyc/KycBookingProcessingScreen";
+import { BookingProcessingScreen } from "@/components/organisms/BookingProcessingScreen";
 import { DownPaymentSummaryCard } from "@/components/payment/DownPaymentSummaryCard";
 import {
   ACKO_LOAN_DOWN_PAYMENT_INR,
   BANK_DISBURSEMENT_INR,
-} from "@/components/payment/loan-amount-demo-constants";
+} from "@/lib/loan-amount-demo-constants";
 import { buildDownPaymentCheckoutHref } from "@/lib/paymentUrls";
 
 const HEADLINE_REMAINING = "Complete your remaining down payment, Sharath!";
@@ -72,7 +72,7 @@ export function PayDownPaymentScreen() {
   if (summary == null) return null;
 
   return (
-    <KycBookingProcessingScreen
+    <BookingProcessingScreen
       headline={HEADLINE_REMAINING}
       subline="The bank releases its disbursement to the dealer once your full down payment is in."
       nextHref={checkoutHref}

@@ -1,6 +1,6 @@
 "use client";
 
-import { FULL_PAYMENT_INSURANCE_INR } from "@/components/payment/loan-amount-demo-constants";
+import { FULL_PAYMENT_INSURANCE_INR } from "@/lib/loan-amount-demo-constants";
 import styles from "./DownPaymentAmountSummaryCard.module.scss";
 
 

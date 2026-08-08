@@ -91,7 +91,7 @@ function updatePageFile(filePath, transitionType) {
     
     if (lastImportIndex !== -1) {
       const insertIndex = lastImportIndex + imports[imports.length - 1].length;
-      const importStatement = `\nimport { ${transitionType} } from "@/components/ui/page-transition";`;
+      const importStatement = `\nimport { ${transitionType} } from "@/components/molecules/page-transition";`;
       content = content.slice(0, insertIndex) + importStatement + content.slice(insertIndex);
     }
     

@@ -10,7 +10,8 @@ import {
   BOOKING_PAYMENT_SUCCESS_HERO,
   BOOKING_SUCCESS_LOTTIE_TICK_DATA,
 } from "@/components/payment/booking-success-shared";
-import { SUCCESS_SCREEN_HEADLINE_SUBTEXT_GAP_CLASS } from "@/components/ui/success-screen-layout";
+import { clearConciergeEcho } from "@/lib/concierge/echo";
+import { SUCCESS_SCREEN_HEADLINE_SUBTEXT_GAP_CLASS } from "@/lib/layout/success-screen-layout";
 import { useLoanApplicationBank } from "@/components/payment/loan-application/use-loan-application-bank";
 import { loanProcessingPath } from "@/lib/loan-application-urls";
 import styles from "./LoanApplicationSubmittedSuccessScreen.module.scss";
@@ -25,6 +26,11 @@ export const LOAN_APPLICATION_SUBMITTED_AUTO_REDIRECT_MS = 3000;
 export function LoanApplicationSubmittedSuccessScreen() {
   const router = useRouter();
   const { bankId, bank } = useLoanApplicationBank();
+
+  useEffect(() => {
+    // Celebration is not a concierge turn — drop any prior reply chip.
+    clearConciergeEcho();
+  }, []);
 
   useEffect(() => {
     const redirect = window.setTimeout(() => {

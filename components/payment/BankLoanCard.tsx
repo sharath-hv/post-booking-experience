@@ -8,6 +8,7 @@ import styles from "./BankLoanCard.module.scss";
 import {
   bankLockInSummary,
   formatBankRate,
+  SHOW_PRE_APPROVED_LOAN_UI,
   type BankLoanTerms,
 } from "@/components/payment/bank-loan-terms";
 
@@ -32,15 +33,16 @@ type BankLoanCardProps = {
  */
 export function BankLoanCard({ bank, onOpen }: BankLoanCardProps) {
   const lockInSummary = bankLockInSummary(bank);
+  const showPreApproved = SHOW_PRE_APPROVED_LOAN_UI && Boolean(bank.preApproved);
 
   return (
     <button
       type="button"
       onClick={onOpen}
-      className={bank.preApproved ? styles.w_full_1_preApproved : styles.w_full_1}
-      aria-label={bank.preApproved ? `${bank.name}, pre-approved` : undefined}
+      className={showPreApproved ? styles.w_full_1_preApproved : styles.w_full_1}
+      aria-label={showPreApproved ? `${bank.name}, pre-approved` : undefined}
     >
-      {bank.preApproved ? (
+      {showPreApproved ? (
         <div className={styles.preApprovedBanner}>Pre-approved loan available for you</div>
       ) : null}
 
@@ -50,10 +52,10 @@ export function BankLoanCard({ bank, onOpen }: BankLoanCardProps) {
             <Image
               src={bank.logoSrc}
               alt=""
-              fill
+              width={24}
+              height={24}
               className={styles.object_contain_4}
               unoptimized
-              sizes="40px"
             />
           </div>
           <div className={styles.min_w_0_5}>

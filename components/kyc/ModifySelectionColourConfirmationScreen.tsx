@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import infoIcon from "@/assets/Info.svg";
-import { ModifySelectionPageHeading } from "@/components/kyc/ModifySelectionPageHeading";
-import { ModifySelectionScreenHeader } from "@/components/kyc/ModifySelectionScreenHeader";
+import { PageLeadHeading } from "@/components/organisms/PageLeadHeading";
+import { StandaloneScreenHeader } from "@/components/organisms/StandaloneScreenHeader";
 import {
   MODIFY_SELECTION_BOOKING_AMOUNT_SECTION_ID,
   ModifySelectionReviewBookingAmountCard,
@@ -132,10 +132,10 @@ export function ModifySelectionColourConfirmationScreen() {
 
   return (
     <div className={MODIFY_SELECTION_PAGE_SHELL_CLASS}>
-      <ModifySelectionScreenHeader />
+      <StandaloneScreenHeader />
 
       <main className={styles.mx_auto_0}>
-        <ModifySelectionPageHeading
+        <PageLeadHeading
           title={MODIFY_SELECTION_COLOUR_CONFIRM_TITLE}
           titleDelayMs={STAGGER_TITLE_MS}
         />

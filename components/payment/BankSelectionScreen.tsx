@@ -3,12 +3,16 @@
 import { useCallback, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { ShiviCallSheet } from "@/components/concierge/ShiviCallSheet";
-import { GetHelpPillButton } from "@/components/kyc/GetHelpPillButton";
-import { KycTopNavHeader } from "@/components/kyc/KycTopNavHeader";
+import { ShiviCallSheet } from "@/components/organisms/ShiviCallSheet";
+import { GetHelpPillButton } from "@/components/molecules/GetHelpPillButton";
+import { TopNavHeader } from "@/components/organisms/TopNavHeader";
 import { BankLoanCard } from "@/components/payment/BankLoanCard";
 import { BankLoanDetailBottomSheet } from "@/components/payment/BankLoanDetailBottomSheet";
-import { BANK_LOAN_TERMS, bankLoanTermsForId } from "@/components/payment/bank-loan-terms";
+import {
+  BANK_LOAN_TERMS,
+  SHOW_PRE_APPROVED_LOAN_UI,
+  bankLoanTermsForId,
+} from "@/components/payment/bank-loan-terms";
 import { writeConciergeEcho } from "@/lib/concierge/echo";
 import { resolveBankIdToken, resolveBankNameToken } from "@/lib/payment/bank-selection-urls";
 import styles from "./BankSelectionScreen.module.scss";
@@ -43,12 +47,13 @@ export function BankSelectionScreen() {
     [openBankId],
   );
 
-  /** Pre-approved offers float to the top so the phone-number match is easy to spot. */
-  const banks = useMemo(
-    () =>
-      [...BANK_LOAN_TERMS].sort((a, b) => Number(Boolean(b.preApproved)) - Number(Boolean(a.preApproved))),
-    [],
-  );
+  /** When enabled, pre-approved offers float to the top so the phone-number match is easy to spot. */
+  const banks = useMemo(() => {
+    if (!SHOW_PRE_APPROVED_LOAN_UI) return BANK_LOAN_TERMS;
+    return [...BANK_LOAN_TERMS].sort(
+      (a, b) => Number(Boolean(b.preApproved)) - Number(Boolean(a.preApproved)),
+    );
+  }, []);
 
   const onConfirm = useCallback(
     (bankId: string) => {
@@ -63,8 +68,9 @@ export function BankSelectionScreen() {
 
   return (
     <div className={styles.min_h_dvh_0}>
-      <KycTopNavHeader
+      <TopNavHeader
         surface="white"
+        solid
         endSlot={<GetHelpPillButton onClick={() => setCallSheetOpen(true)} />}
       />
 

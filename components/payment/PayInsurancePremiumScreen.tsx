@@ -3,8 +3,8 @@
 import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 
-import { KycBookingProcessingScreen } from "@/components/kyc/KycBookingProcessingScreen";
-import { KYC_ASSETS } from "@/components/kyc/kyc-assets";
+import { BookingProcessingScreen } from "@/components/organisms/BookingProcessingScreen";
+import { KYC_ASSETS } from "@/lib/kyc-assets";
 import { ShieldPolicyCard } from "@/components/payment/ShieldPolicyCard";
 import { buildInsuranceAddonsHref } from "@/lib/paymentUrls";
 
@@ -14,7 +14,8 @@ const SUBLINE =
 
 /**
  * Step 1 of insurance — Shivi's intro + base ACKO Drive Shield quote.
- * CTA reads "Continue" (add-ons are optional, pitched on the next page).
+ * CTA reads "Continue" (add-ons are optional, pitched on the next standalone page).
+ * No echo — the next screen isn't a concierge turn.
  */
 export function PayInsurancePremiumScreen() {
   const searchParams = useSearchParams();
@@ -29,13 +30,14 @@ export function PayInsurancePremiumScreen() {
   );
 
   return (
-    <KycBookingProcessingScreen
+    <BookingProcessingScreen
       headline={HEADLINE}
       subline={SUBLINE}
       heroIllustrationSrc={KYC_ASSETS.insurancePremiumHero}
       nextHref={nextHref}
       prefetchHref={nextHref}
       nextCtaLabel="Continue"
+      replyEcho={null}
       heroSummaryCard={<ShieldPolicyCard mode="quote" />}
       callLabel="Coverage questions? I can call you"
       manageBookingShowVehicleIdentification

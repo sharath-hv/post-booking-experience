@@ -1,16 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 
-import infoIcon from "@/assets/Info.svg";
-import { ModifySelectionPageHeading } from "@/components/kyc/ModifySelectionPageHeading";
-import { ModifySelectionScreenHeader } from "@/components/kyc/ModifySelectionScreenHeader";
-import {
-  MODIFY_SELECTION_BOOKING_AMOUNT_SECTION_ID,
-  ModifySelectionReviewBookingAmountCard,
-} from "@/components/kyc/ModifySelectionReviewBookingAmountCard";
+import { PageLeadHeading } from "@/components/organisms/PageLeadHeading";
+import { StandaloneScreenHeader } from "@/components/organisms/StandaloneScreenHeader";
+import { ModifySelectionReviewBookingAmountCard } from "@/components/kyc/ModifySelectionReviewBookingAmountCard";
 import { ModifySelectionDeliveryOptionBottomSheet } from "@/components/kyc/ModifySelectionDeliveryOptionBottomSheet";
 import { ModifySelectionReviewPayDemoSwitcher } from "@/components/kyc/ModifySelectionReviewPayDemoSwitcher";
 import { ModifySelectionReviewPaymentSummary } from "@/components/kyc/ModifySelectionReviewPaymentSummary";
@@ -45,7 +40,6 @@ import { writeModifySelectionDifferentCarVariantChoice } from "@/lib/modify-sele
 import {
   buildModifySelectionColourReviewPaySummary,
   formatModifySelectionInr,
-  MODIFY_SELECTION_REVIEW_PAY_DUE_TODAY_LABEL,
   MODIFY_SELECTION_REVIEW_PAY_TITLE,
 } from "@/lib/modify-selection-review-pay-content";
 import {
@@ -73,7 +67,7 @@ const { title: STAGGER_TITLE_MS, section: STAGGER_SELECTION_MS, bookingAmount: S
   MODIFY_SELECTION_STAGGER_MS;
 
 function reviewPayCtaLabel(amountToPayInr: number): string {
-  if (amountToPayInr <= 0) return "Confirm";
+  if (amountToPayInr <= 0) return "Confirm changes";
   return `Pay ${formatModifySelectionInr(amountToPayInr)}`;
 }
 
@@ -104,7 +98,6 @@ function ModifySelectionReviewPayScreenInner({
 }: ModifySelectionReviewPayScreenProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const bookingAmountSectionRef = useRef<HTMLElement>(null);
   const [deliverySheetOpen, setDeliverySheetOpen] = useState(false);
 
   const demoScenario = useMemo(
@@ -271,17 +264,6 @@ function ModifySelectionReviewPayScreenInner({
     [colourPending, differentCarPending, flow, variantPending],
   );
 
-  const scrollToBookingAmount = useCallback(() => {
-    const target =
-      bookingAmountSectionRef.current ??
-      document.getElementById(MODIFY_SELECTION_BOOKING_AMOUNT_SECTION_ID);
-    if (target == null) return;
-    const headerOffsetPx = 56;
-    const top =
-      target.getBoundingClientRect().top + window.scrollY - headerOffsetPx;
-    window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
-  }, []);
-
   /**
    * Edit cascades from review:
    * - Delivery → sheet only (in place)
@@ -345,10 +327,10 @@ function ModifySelectionReviewPayScreenInner({
 
   return (
     <div className={MODIFY_SELECTION_PAGE_SHELL_CLASS}>
-      <ModifySelectionScreenHeader />
+      <StandaloneScreenHeader />
 
       <main className={styles.mx_auto_0}>
-        <ModifySelectionPageHeading
+        <PageLeadHeading
           title={MODIFY_SELECTION_REVIEW_PAY_TITLE}
           titleDelayMs={STAGGER_TITLE_MS}
         />
@@ -378,49 +360,38 @@ function ModifySelectionReviewPayScreenInner({
           className={[styles.payment_success_stagger_2, "payment-success-stagger"].filter(Boolean).join(" ")}
           style={{ animationDelay: `${STAGGER_BOOKING_MS}ms` }}
         >
-          <ModifySelectionReviewBookingAmountCard
-            summary={resolved.summary}
-            sectionRef={bookingAmountSectionRef}
-          />
+          <ModifySelectionReviewBookingAmountCard summary={resolved.summary} />
         </div>
 
         <div
-          className={[styles.payment_success_stagger_2, "payment-success-stagger"].filter(Boolean).join(" ")}
+          className={[
+            styles.priceWash,
+            styles.payment_success_stagger_2,
+            "payment-success-stagger",
+          ]
+            .filter(Boolean)
+            .join(" ")}
           style={{ animationDelay: `${STAGGER_PRICE_MS}ms` }}
         >
           <ModifySelectionReviewPaymentSummary summary={resolved.summary} />
-        </div>
 
-        <div className={styles.demo_slot}>
-          <ModifySelectionReviewPayDemoSwitcher
-            value={demoScenario}
-            onChange={onDemoScenarioChange}
-          />
+          {/* QA-only — remove and the grey wash still ends the page at the footer */}
+          <div className={styles.demo_slot}>
+            <ModifySelectionReviewPayDemoSwitcher
+              value={demoScenario}
+              onChange={onDemoScenarioChange}
+            />
+          </div>
         </div>
       </main>
 
+      {/* Amount lives in the pay-now card — footer is action-only to avoid repeating ₹. */}
       <div className={[styles.fixed_3, "footer-elevated"].filter(Boolean).join(" ")}>
-        <div className={styles.mx_auto_4}>
-          <div className={styles.min_w_0_5}>
-            <p className={styles.text_xs_6}>{MODIFY_SELECTION_REVIEW_PAY_DUE_TODAY_LABEL}</p>
-            <div className={styles.mt_0_5_7}>
-              <span className={styles.text_lg_8}>
-                {formatModifySelectionInr(resolved.summary.bookingAmountToPayInr)}
-              </span>
-              <button
-                type="button"
-                onClick={scrollToBookingAmount}
-                className={styles.flex_9}
-                aria-label="View what you pay today"
-              >
-                <Image src={infoIcon} alt="" width={16} height={16} className={styles.size_4_10} unoptimized />
-              </button>
-            </div>
-          </div>
+        <div className={styles.footerInner}>
           <button
             type="button"
             onClick={onPay}
-            className={[styles.primary_cta_wide, "primary-cta"].filter(Boolean).join(" ")}
+            className={[styles.primary_cta_full, "primary-cta"].filter(Boolean).join(" ")}
           >
             {reviewPayCtaLabel(resolved.summary.bookingAmountToPayInr)}
           </button>

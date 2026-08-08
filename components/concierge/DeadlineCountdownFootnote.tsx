@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { ShimmerInfoCard } from "@/components/ui/ShimmerInfoCard";
+import { ShimmerInfoCard } from "@/components/molecules/ShimmerInfoCard";
 import styles from "./DeadlineCountdownFootnote.module.scss";
 
 const TICK_MS = 1_000;
@@ -18,7 +18,8 @@ function readDeadlineAt(storageKey: string, durationMs: number): number {
     const existing = sessionStorage.getItem(storageKey);
     if (existing != null) {
       const parsed = Number(existing);
-      if (Number.isFinite(parsed)) return parsed;
+      // Still in the future — keep counting down from the original start.
+      if (Number.isFinite(parsed) && parsed > Date.now()) return parsed;
     }
   } catch {
     /* private mode / blocked storage */

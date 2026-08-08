@@ -6,6 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import {
   formatBankRate,
+  SHOW_PRE_APPROVED_LOAN_UI,
   type BankLoanTerms,
 } from "@/components/payment/bank-loan-terms";
 import {
@@ -13,8 +14,8 @@ import {
   BOTTOM_SHEET_CTA_STRIP_TOP_CLASS,
   BOTTOM_SHEET_MAX_HEIGHT_CLASS,
   BOTTOM_SHEET_OVERLAY_Z_CLASS,
-} from "@/components/ui/bottom-sheet-layout";
-import { BottomSheetCloseIcon } from "@/components/ui/BottomSheetCloseIcon";
+} from "@/lib/layout/bottom-sheet-layout";
+import { BottomSheetCloseIcon } from "@/components/atoms/BottomSheetCloseIcon";
 import styles from "./BankLoanDetailBottomSheet.module.scss";
 
 /** Enter/exit slide duration — parity with the rest of the payment sheet family. */
@@ -143,14 +144,14 @@ export function BankLoanDetailBottomSheet({
                   <Image
                     src={renderedBank.logoSrc}
                     alt=""
-                    fill
+                    width={32}
+                    height={32}
                     className={styles.logo}
                     unoptimized
-                    sizes="48px"
                   />
                 </div>
                 <div className={styles.brandCopy}>
-                  {renderedBank.preApproved ? (
+                  {SHOW_PRE_APPROVED_LOAN_UI && renderedBank.preApproved ? (
                     <span className={styles.preApprovedChip}>Pre-approved loan available for you</span>
                   ) : null}
                   <h2 id="bank-detail-sheet-title" className={styles.bankName}>
@@ -208,6 +209,10 @@ export function BankLoanDetailBottomSheet({
                     showDivider={index > 0}
                   />
                 ))}
+              <p className={styles.bankDecisionNote}>
+                <span className={styles.bankDecisionNoteLead}>Note:</span> The
+                bank holds the final decision on your loan.
+              </p>
             </div>
           </div>
 

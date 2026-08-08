@@ -7,15 +7,15 @@ import {
   DOCUMENT_UPLOAD_TIPS_TO_SECTIONS_CLASS,
   DOCUMENT_UPLOAD_TITLE_TO_TIPS_CLASS,
   DocumentUploadInfoTipsCard,
-} from "@/components/kyc/DocumentUploadInfoTipsCard";
-import { DocumentUploadDocumentCards } from "@/components/kyc/DocumentUploadDocumentCards";
-import { KycUploadSourceBottomSheet } from "@/components/kyc/KycUploadSourceBottomSheet";
+} from "@/components/molecules/DocumentUploadInfoTipsCard";
+import { DocumentUploadDocumentCards } from "@/components/organisms/DocumentUploadDocumentCards";
+import { UploadSourceBottomSheet } from "@/components/organisms/UploadSourceBottomSheet";
 import {
   KYC_UPLOAD_CARD_DEFINITIONS,
   KYC_UPLOAD_INFO_TIPS,
   type KycDocumentKind,
   type KycUploadSource,
-} from "@/components/kyc/kyc-upload-content";
+} from "@/lib/kyc-upload-content";
 import {
   appendKycDigilockerPanAadhaarUploads,
   appendKycMockUpload,
@@ -105,7 +105,7 @@ export function KycPanAadhaarDocumentUploadSections({
         />
       </div>
 
-      <KycUploadSourceBottomSheet
+      <UploadSourceBottomSheet
         open={sourceSheetOpen}
         onClose={() => setSourceSheetOpen(false)}
         onSelect={handleMockUpload}

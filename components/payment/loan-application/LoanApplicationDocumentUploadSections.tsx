@@ -5,11 +5,11 @@ import { useCallback, useRef, useState } from "react";
 import {
   DOCUMENT_UPLOAD_TIPS_TO_SECTIONS_CLASS,
   DOCUMENT_UPLOAD_TITLE_TO_TIPS_CLASS,
-} from "@/components/kyc/DocumentUploadInfoTipsCard";
-import { DocumentUploadDocumentCards } from "@/components/kyc/DocumentUploadDocumentCards";
-import { DocumentUploadVerifiedBanner } from "@/components/kyc/DocumentUploadVerifiedBanner";
-import { KycUploadSourceBottomSheet } from "@/components/kyc/KycUploadSourceBottomSheet";
-import { KYC_MOCK_UPLOAD_NAMES, type KycUploadSource } from "@/components/kyc/kyc-upload-content";
+} from "@/components/molecules/DocumentUploadInfoTipsCard";
+import { DocumentUploadDocumentCards } from "@/components/organisms/DocumentUploadDocumentCards";
+import { DocumentUploadVerifiedBanner } from "@/components/molecules/DocumentUploadVerifiedBanner";
+import { UploadSourceBottomSheet } from "@/components/organisms/UploadSourceBottomSheet";
+import { KYC_MOCK_UPLOAD_NAMES, type KycUploadSource } from "@/lib/kyc-upload-content";
 import { LoanApplicationPageStagger } from "@/components/payment/loan-application/LoanApplicationPageStagger";
 import { LOAN_APPLICATION_STAGGER_MS } from "@/components/payment/loan-application/loan-application-layout";
 import {
@@ -124,7 +124,7 @@ export function LoanApplicationDocumentUploadSections({
         />
       </div>
 
-      <KycUploadSourceBottomSheet
+      <UploadSourceBottomSheet
         open={sourceSheetOpen}
         onClose={() => setSourceSheetOpen(false)}
         onSelect={handleMockUpload}

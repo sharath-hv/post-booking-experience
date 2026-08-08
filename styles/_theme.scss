@@ -12,8 +12,8 @@
     --container-sm: 24rem;
     --container-2xl: 42rem;
     --container-3xl: 48rem;
-    --text-4xl: 2.25rem;
-    --text-4xl--line-height: calc(2.5 / 2.25);
+    --text-4xl: 2rem; /* heading-xl 32px — was 2.25rem/36px off-scale */
+    --text-4xl--line-height: 1.25; /* 40/32 */
     --text-7xl: 4.5rem;
     --text-7xl--line-height: 1;
     --font-weight-extralight: 200;

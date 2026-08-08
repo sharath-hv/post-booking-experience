@@ -3,8 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 
-import { ModifySelectionPageHeading } from "@/components/kyc/ModifySelectionPageHeading";
-import { ModifySelectionScreenHeader } from "@/components/kyc/ModifySelectionScreenHeader";
+import { PageLeadHeading } from "@/components/organisms/PageLeadHeading";
+import { StandaloneScreenHeader } from "@/components/organisms/StandaloneScreenHeader";
 import { ModifySelectionCarBrandCard } from "@/components/kyc/ModifySelectionCarBrandCard";
 import {
   MODIFY_SELECTION_CAR_BRAND_OPTIONS,
@@ -36,10 +36,10 @@ export function ModifySelectionCarBrandScreen() {
 
   return (
     <div className={MODIFY_SELECTION_PAGE_SHELL_CLASS}>
-      <ModifySelectionScreenHeader />
+      <StandaloneScreenHeader />
 
       <main className={styles.mx_auto_0}>
-        <ModifySelectionPageHeading
+        <PageLeadHeading
           title={MODIFY_SELECTION_CAR_BRAND_SCREEN_TITLE}
           titleDelayMs={STAGGER_TITLE_MS}
         />

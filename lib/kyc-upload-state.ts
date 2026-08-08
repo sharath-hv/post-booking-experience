@@ -1,4 +1,4 @@
-import type { KycDocumentKind, KycUploadSource } from "@/components/kyc/kyc-upload-content";
+import type { KycDocumentKind, KycUploadSource } from "@/lib/kyc-upload-content";
 
 export type KycUploadedFile = {
   id: string;

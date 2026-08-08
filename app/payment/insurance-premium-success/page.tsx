@@ -5,8 +5,8 @@ import styles from "./page.module.scss";
 import { useSearchParams } from "next/navigation";
 
 import { DownPaymentInstalmentSuccess } from "@/components/payment/DownPaymentInstalmentSuccess";
-import { FULL_PAYMENT_INSURANCE_INR } from "@/components/payment/loan-amount-demo-constants";
-import { CelebrationPageTransition } from "@/components/ui/page-transition";
+import { FULL_PAYMENT_INSURANCE_INR } from "@/lib/loan-amount-demo-constants";
+import { CelebrationPageTransition } from "@/components/molecules/page-transition";
 import { buildCarDeliveryInsurancePrepHref } from "@/lib/paymentUrls";
 
 function formatInr(amount: number) {

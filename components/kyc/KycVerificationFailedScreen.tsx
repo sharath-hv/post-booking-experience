@@ -14,20 +14,20 @@ import {
   KYC_VERIFICATION_FAILED_UPLOAD_HREF,
   resolveKycVerificationFailureReason,
   type KycVerificationFailureReason,
-} from "@/components/kyc/kyc-verification-failed-content";
-import { GetHelpPillButton } from "@/components/kyc/GetHelpPillButton";
-import { KycTopNavHeader } from "@/components/kyc/KycTopNavHeader";
-import { ManageBookingBottomSheet } from "@/components/kyc/ManageBookingBottomSheet";
-import { VerificationFailureReasonSwitcher } from "@/components/kyc/VerificationFailureReasonSwitcher";
-import { WordByWordLine } from "@/components/payment/WordByWordLine";
-import { AuroraLightLayer } from "@/components/ui/aurora-light-layer";
-import { ShimmerInfoCard } from "@/components/ui/ShimmerInfoCard";
+} from "@/lib/kyc-verification-failed-content";
+import { GetHelpPillButton } from "@/components/molecules/GetHelpPillButton";
+import { TopNavHeader } from "@/components/organisms/TopNavHeader";
+import { ManageBookingBottomSheet } from "@/components/organisms/ManageBookingBottomSheet";
+import { VerificationFailureReasonSwitcher } from "@/components/organisms/VerificationFailureReasonSwitcher";
+import { WordByWordLine } from "@/components/molecules/WordByWordLine";
+import { ExperienceBackdrop } from "@/components/atoms/experience-backdrop";
+import { ShimmerInfoCard } from "@/components/molecules/ShimmerInfoCard";
 import styles from "./KycVerificationFailedScreen.module.scss";
 
 import {
   HERO_ACTION_HEADLINE_SUBLINE_GAP_CLASS,
   HERO_ILLUSTRATION_TO_COPY_MT,
-} from "@/components/ui/success-screen-layout";
+} from "@/lib/layout/success-screen-layout";
 
 const HEADLINE_WORD_DELAY_MS = 135;
 const HERO_FADE_DURATION_CLASS = styles.heroFadeDuration;
@@ -126,7 +126,7 @@ export function KycVerificationFailedScreen() {
         <div
           className={cn(styles.kyc_pending_hero_card_0, "kyc-pending-hero-card", HERO_MIN_HEIGHT)}
         >
-          <KycTopNavHeader
+          <TopNavHeader
             transparent
             endSlot={
               <div className={styles.flex_5}>
@@ -138,7 +138,7 @@ export function KycVerificationFailedScreen() {
           <div className={styles.relative_6}>
             <VerificationFailureReasonSwitcher value={reason} onChange={onReasonChange} />
           </div>
-          <AuroraLightLayer />
+          <ExperienceBackdrop />
           <div className={styles.relative_7}>
             <div className={styles.relative_8}>
               <Image

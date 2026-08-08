@@ -24,6 +24,17 @@ export function writeConciergeEcho(text: string): void {
   }
 }
 
+/** Drop any pending handoff chip (e.g. celebration interstitial before a news turn). */
+export function clearConciergeEcho(): void {
+  if (typeof window === "undefined") return;
+  try {
+    sessionStorage.removeItem(ECHO_STORAGE_KEY);
+  } catch {
+    /* ignore */
+  }
+  lastConsumed = null;
+}
+
 /**
  * React StrictMode double-invokes mount effects; the second consume within this
  * window returns the same value instead of finding cleared storage.

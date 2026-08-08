@@ -6,18 +6,18 @@ import { useCallback, useEffect, useState } from "react";
 
 import lockIcon from "@/assets/lock.svg";
 import menuIcon from "@/assets/menu.svg";
-import { GetHelpPillButton } from "@/components/kyc/GetHelpPillButton";
-import { KYC_ASSETS } from "@/components/kyc/kyc-assets";
-import { KycTopNavHeader } from "@/components/kyc/KycTopNavHeader";
-import { ManageBookingBottomSheet } from "@/components/kyc/ManageBookingBottomSheet";
+import { GetHelpPillButton } from "@/components/molecules/GetHelpPillButton";
+import { KYC_ASSETS } from "@/lib/kyc-assets";
+import { TopNavHeader } from "@/components/organisms/TopNavHeader";
+import { ManageBookingBottomSheet } from "@/components/organisms/ManageBookingBottomSheet";
 import { ShiviIntroBottomSheet } from "@/components/kyc/ShiviIntroBottomSheet";
-import { WordByWordLine } from "@/components/payment/WordByWordLine";
-import { AuroraLightLayer } from "@/components/ui/aurora-light-layer";
+import { WordByWordLine } from "@/components/molecules/WordByWordLine";
+import { ExperienceBackdrop } from "@/components/atoms/experience-backdrop";
 import {
   HERO_ACTION_HEADLINE_SUBLINE_GAP_CLASS,
   HERO_ICON_TOP_PT,
   HERO_ILLUSTRATION_TO_COPY_MT,
-} from "@/components/ui/success-screen-layout";
+} from "@/lib/layout/success-screen-layout";
 import { isModifyNoChargesFlow } from "@/lib/experience-flow";
 import { cn } from "@/lib/utils";
 import styles from "./KycPendingScreen.module.scss";
@@ -143,7 +143,7 @@ export function KycPendingScreen() {
         <div
           className={cn(styles.kyc_pending_hero_card_0, "kyc-pending-hero-card", HERO_MIN_HEIGHT)}
         >
-          <KycTopNavHeader
+          <TopNavHeader
             transparent
             endSlot={
               <div className={styles.flex_5}>
@@ -154,7 +154,7 @@ export function KycPendingScreen() {
               </div>
             }
           />
-          <AuroraLightLayer />
+          <ExperienceBackdrop />
           <div className={cn(styles.relative_1_0, HERO_ICON_TOP_PT)}>
             <div className={styles.relative_6}>
               <Image

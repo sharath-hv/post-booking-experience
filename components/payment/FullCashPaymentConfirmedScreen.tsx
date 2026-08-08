@@ -3,19 +3,19 @@
 import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 
-import { AmountReceivedCard } from "@/components/concierge/artifacts";
-import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
-import { ShimmerInfoCard } from "@/components/ui/ShimmerInfoCard";
+import { AmountReceivedCard } from "@/components/organisms/artifacts";
+import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
+import { ShimmerInfoCard } from "@/components/molecules/ShimmerInfoCard";
 import {
   FULL_PAYMENT_CAR_AMOUNT_INR,
   FULL_PAYMENT_INSURANCE_INR,
-} from "@/components/payment/loan-amount-demo-constants";
+} from "@/lib/loan-amount-demo-constants";
 import { buildPayInsurancePremiumHref, FULL_PAYMENT_BANK_ID } from "@/lib/paymentUrls";
 import styles from "./FullCashPaymentConfirmedScreen.module.scss";
 
 import {
-  PARTNER_DEALER_LABEL,
-  PARTNER_DEALER_LABEL_CAPITALIZED,
+  NAMED_DEALER_LABEL,
+  NAMED_DEALER_LABEL_CAPITALIZED,
 } from "@/lib/dealer-attribution-content";
 
 function formatInr(amount: number) {
@@ -46,7 +46,7 @@ export function FullCashPaymentConfirmedScreen() {
   const says = useMemo(
     () => [
       "Payment confirmed, Sharath.",
-      `${PARTNER_DEALER_LABEL_CAPITALIZED} has confirmed receipt. Delivery prep starts now, and nothing more is needed from you until just before the car arrives.`,
+      `${NAMED_DEALER_LABEL_CAPITALIZED} has confirmed receipt. Delivery prep starts now, and nothing more is needed from you until just before the car arrives.`,
     ],
     [],
   );
@@ -62,10 +62,11 @@ export function FullCashPaymentConfirmedScreen() {
       artifact={
         <div className={styles.flex_0}>
           <AmountReceivedCard
+            variant="glass"
             amountInr={carAmountInr}
-            title={`Received by ${PARTNER_DEALER_LABEL}`}
+            title={`Received by ${NAMED_DEALER_LABEL}`}
             status="received"
-            rows={[{ label: "Paid to", value: PARTNER_DEALER_LABEL_CAPITALIZED }]}
+            rows={[{ label: "Paid to", value: NAMED_DEALER_LABEL_CAPITALIZED }]}
           />
           <ShimmerInfoCard lead="One thing still ahead">
             {`Your ${formatInr(FULL_PAYMENT_INSURANCE_INR)} insurance. The RTO won't register your car without a live policy, and I'll ask you at exactly the right moment.`}

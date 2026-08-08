@@ -2,7 +2,7 @@ import {
   KYC_MOCK_UPLOAD_NAMES,
   type KycDocumentKind,
   type KycUploadSource,
-} from "@/components/kyc/kyc-upload-content";
+} from "@/lib/kyc-upload-content";
 import type { KycUploadedFile, KycUploadsState } from "@/lib/kyc-upload-state";
 
 function nextMockFilename(uploadIndex: number): string {

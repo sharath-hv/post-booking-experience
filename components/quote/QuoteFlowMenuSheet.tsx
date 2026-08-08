@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
-import { BottomSheetCloseIcon } from "@/components/ui/BottomSheetCloseIcon";
+import { BottomSheetCloseIcon } from "@/components/atoms/BottomSheetCloseIcon";
 import styles from "./QuoteFlowMenuSheet.module.scss";
 
 import {
@@ -11,7 +11,7 @@ import {
   BOTTOM_SHEET_OVERLAY_Z_CLASS,
   BOTTOM_SHEET_SCROLL_BODY_CLASS,
   BOTTOM_SHEET_SCROLL_PANEL_CLASS,
-} from "@/components/ui/bottom-sheet-layout";
+} from "@/lib/layout/bottom-sheet-layout";
 import {
   EXPERIENCE_FLOWS,
   type ExperienceFlow,

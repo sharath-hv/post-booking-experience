@@ -3,17 +3,18 @@
 import { useCallback, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { AmountReceivedCard } from "@/components/concierge/artifacts";
-import { ConciergeTurnShell } from "@/components/concierge/ConciergeTurnShell";
+import { AmountReceivedCard } from "@/components/organisms/artifacts";
+import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
 import { bankForQueryParam } from "@/components/payment/acko-drive-finance-bank";
 
 import {
   BANK_DISBURSEMENT_INR,
   cashDownPaymentDueInr,
-} from "@/components/payment/loan-amount-demo-constants";
+} from "@/lib/loan-amount-demo-constants";
 import {
-  PARTNER_DEALER_LABEL,
-  PARTNER_DEALER_LABEL_CAPITALIZED,
+  NAMED_DEALER_LABEL,
+  NAMED_DEALER_LABEL_CAPITALIZED,
+  NAMED_DEALER_NAME,
 } from "@/lib/dealer-attribution-content";
 
 function formatInr(amount: number) {
@@ -61,8 +62,8 @@ export function LoanDealerDownPaymentConfirmedScreen() {
 
   const waitingSays = useMemo(
     () => [
-      "I'm checking your down payment with the dealer, Sharath.",
-      `Confirming the details with ${PARTNER_DEALER_LABEL} usually takes 2-3 hours. Once they confirm, I'll ask ${bank.name} to release the loan.`,
+      `I'm checking your down payment with ${NAMED_DEALER_LABEL}, Sharath.`,
+      `It usually takes 2-3 hours. Once they confirm, I'll ask ${bank.name} to release the loan.`,
     ],
     [bank.name],
   );
@@ -70,10 +71,9 @@ export function LoanDealerDownPaymentConfirmedScreen() {
   const confirmedSays = useMemo(
     () => [
       "Down payment confirmed.",
-      `${PARTNER_DEALER_LABEL_CAPITALIZED} confirmed your ${formatInr(downPaymentInr)}. All good on my end.`,
-      `I've asked ${bank.name} to release the funds to the dealer. Nothing more needed from you. I'll let you know the moment it lands.`,
+      `I've asked ${bank.name} to release the funds to ${NAMED_DEALER_LABEL}. Nothing more needed from you. I'll let you know the moment it lands.`,
     ],
-    [bank.name, downPaymentInr],
+    [bank.name],
   );
 
   const disbursementReceivedHref = useMemo(() => {
@@ -94,7 +94,7 @@ export function LoanDealerDownPaymentConfirmedScreen() {
           : {
               mode: "ongoing",
               lines: [
-                "Reaching out to our dealer partner",
+                `Reaching out to ${NAMED_DEALER_NAME}`,
                 "Verifying they've received your payment",
               ],
               etaLabel: "Usually 2-3 hours. I'll message you when it's confirmed.",
@@ -109,7 +109,7 @@ export function LoanDealerDownPaymentConfirmedScreen() {
             variant="glass"
             rows={[
               { label: "Down payment confirmed", value: formatInr(downPaymentInr) },
-              { label: "Releasing to", value: PARTNER_DEALER_LABEL_CAPITALIZED },
+              { label: "Releasing to", value: NAMED_DEALER_LABEL_CAPITALIZED },
             ]}
             note="Typically completes within 1-2 business days."
           />

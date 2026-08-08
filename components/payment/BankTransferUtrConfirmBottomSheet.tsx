@@ -9,9 +9,10 @@ import {
   BOTTOM_SHEET_CTA_STRIP_TOP_CLASS,
   BOTTOM_SHEET_MAX_HEIGHT_CLASS,
   BOTTOM_SHEET_OVERLAY_Z_CLASS,
-} from "@/components/ui/bottom-sheet-layout";
-import { bottomSheetTitleWidthWithIllustration } from "@/components/ui/bottom-sheet-title-layout";
-import { BottomSheetCloseIcon } from "@/components/ui/BottomSheetCloseIcon";
+} from "@/lib/layout/bottom-sheet-layout";
+import { bottomSheetTitleWidthWithIllustration } from "@/lib/layout/bottom-sheet-title-layout";
+import { BottomSheetCloseIcon } from "@/components/atoms/BottomSheetCloseIcon";
+import { NAMED_DEALER_LABEL } from "@/lib/dealer-attribution-content";
 import styles from "./BankTransferUtrConfirmBottomSheet.module.scss";
 
 
@@ -126,7 +127,7 @@ export function BankTransferUtrConfirmBottomSheet({
               id="bank-transfer-confirm-body"
               className={styles.mt_3_5}
             >
-              I will check with the dealer and confirm the transfer on your behalf.
+              I will check with {NAMED_DEALER_LABEL} and confirm the transfer on your behalf.
             </p>
           </div>
 

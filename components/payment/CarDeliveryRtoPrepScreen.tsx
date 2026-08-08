@@ -1,21 +1,19 @@
 "use client";
 
-import { CarSummaryCardLite } from "@/components/concierge/artifacts";
+import { CarSummaryCardLite } from "@/components/organisms/artifacts";
 import {
   BOOKING_CAR_COLOR,
   BOOKING_CAR_TITLE,
   BOOKING_CAR_VARIANT,
-} from "@/components/kyc/booking-car-card-content";
+} from "@/lib/booking-car-card-content";
 import {
   DEMO_VEHICLE_CHASSIS_NO,
   DEMO_VEHICLE_ENGINE_NO,
-} from "@/components/kyc/demo-vehicle-identification";
-import { KycBookingProcessingScreen } from "@/components/kyc/KycBookingProcessingScreen";
-import { KYC_ASSETS } from "@/components/kyc/kyc-assets";
+} from "@/lib/demo-vehicle-identification";
+import { BookingProcessingScreen } from "@/components/organisms/BookingProcessingScreen";
+import { KYC_ASSETS } from "@/lib/kyc-assets";
 import { useFullPaymentJourney } from "@/components/payment/use-full-payment-journey";
-import { RtoRegistrationStatusCard } from "@/components/payment/RtoRegistrationStatusCard";
 import { CAR_SOURCE_DETAIL, CAR_SOURCE_NAME } from "@/lib/dealer-attribution-content";
-import styles from "./CarDeliveryRtoPrepScreen.module.scss";
 
 const HEADLINE = "Your file is at the RTO, Sharath.";
 const SUBLINE =
@@ -28,7 +26,7 @@ export function CarDeliveryRtoPrepScreen() {
   const { withBank } = useFullPaymentJourney();
 
   return (
-    <KycBookingProcessingScreen
+    <BookingProcessingScreen
       headline={HEADLINE}
       subline={SUBLINE}
       callLabel="Want an update? I can call you"
@@ -36,19 +34,20 @@ export function CarDeliveryRtoPrepScreen() {
       nextHref={withBank("/payment/car-delivery-schedule")}
       prefetchHref={withBank("/payment/car-delivery-schedule")}
       nextCtaLabel="Next"
+      altTimeSkip={{
+        label: "More docs needed",
+        href: withBank("/payment/car-delivery-rto-additional-documents"),
+      }}
       heroSummaryCard={
-        <div className={styles.flex_0}>
-          <RtoRegistrationStatusCard />
-          <CarSummaryCardLite
-            title={BOOKING_CAR_TITLE}
-            variant={BOOKING_CAR_VARIANT}
-            colour={BOOKING_CAR_COLOR}
-            dealerName={CAR_SOURCE_NAME}
-            dealerDetail={CAR_SOURCE_DETAIL}
-            engineNo={DEMO_VEHICLE_ENGINE_NO}
-            chassisNo={DEMO_VEHICLE_CHASSIS_NO}
-          />
-        </div>
+        <CarSummaryCardLite
+          title={BOOKING_CAR_TITLE}
+          variant={BOOKING_CAR_VARIANT}
+          colour={BOOKING_CAR_COLOR}
+          dealerName={CAR_SOURCE_NAME}
+          dealerDetail={CAR_SOURCE_DETAIL}
+          engineNo={DEMO_VEHICLE_ENGINE_NO}
+          chassisNo={DEMO_VEHICLE_CHASSIS_NO}
+        />
       }
       manageBookingShowVehicleIdentification
     />
