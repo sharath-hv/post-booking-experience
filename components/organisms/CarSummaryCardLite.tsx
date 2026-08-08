@@ -47,6 +47,8 @@ export type CarSummaryCardLiteProps = {
   /** Post-allocation identity — the exact unit. */
   engineNo?: string;
   chassisNo?: string;
+  /** Post-RTO registration number. */
+  registrationNo?: string;
 };
 
 function statusChipLabel(chip: string) {
@@ -76,6 +78,7 @@ export function CarSummaryCardLite({
   statusChipVariant = "green",
   engineNo,
   chassisNo,
+  registrationNo,
 }: CarSummaryCardLiteProps) {
   const showHeroLayout = dealerName != null;
 
@@ -186,6 +189,7 @@ export function CarSummaryCardLite({
       deliveryIconSrc={deliveryIconPath(deliveryIconSrc)}
       engineNo={engineNo}
       chassisNo={chassisNo}
+      registrationNo={registrationNo}
     />
   );
 

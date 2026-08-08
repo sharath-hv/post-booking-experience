@@ -109,7 +109,7 @@ export function MarginMoneySlipActionScreen() {
                 etaLabel: "Usually 2-3 hours. I'll message you when it's confirmed.",
               }
         }
-        artifact={dealerConfirmed ? <MarginMoneySlipCard /> : null}
+        artifact={dealerConfirmed ? <MarginMoneySlipCard variant="glass" /> : null}
         replies={
           dealerConfirmed
             ? [

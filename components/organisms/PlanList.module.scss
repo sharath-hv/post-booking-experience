@@ -27,15 +27,15 @@
   align-items: center;
   align-self: stretch;
   flex-shrink: 0;
-  width: 36px;
+  width: 44px;
 }
 
 .planNode {
   position: relative;
   z-index: 1;
   display: flex;
-  height: 36px;
-  width: 36px;
+  height: 44px;
+  width: 44px;
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
@@ -49,7 +49,11 @@
 }
 
 .planNodeDone {
-  background-color: #e7f6ee;
+  overflow: hidden;
+  border: 0.5px solid #bfe8d2;
+  background-color: transparent;
+  background-image: linear-gradient(180deg, #dff1e8 0%, #ffffff 100%);
+  box-shadow: inset 0 0 0 2px #ffffff;
   color: #0c7a42;
 }
 

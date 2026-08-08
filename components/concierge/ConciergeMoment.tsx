@@ -265,6 +265,7 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
           aadhaar_not_clear:  ["Got your Aadhaar, Sharath. Running it through now.", "This won't take long."],
           address_mismatch:   ["Got your Aadhaar, Sharath. Checking the address details now.", "This won't take long."],
           name_mismatch:      ["Got both documents, Sharath. Checking the names match now.", "This won't take long."],
+          name_and_address_mismatch: ["Got both documents, Sharath. Checking the names and address now.", "This won't take long."],
           image_not_clear:    ["Got your documents, Sharath. I'm verifying them now.", "This won't take long."],
         };
         const reuploadWorkingLines: Record<typeof reuploadReason, readonly string[]> = {
@@ -272,6 +273,7 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
           aadhaar_not_clear:  ["Reading your Aadhaar", "Checking your name and address"],
           address_mismatch:   ["Reading your Aadhaar", "Checking your address details"],
           name_mismatch:      ["Reading your PAN", "Matching your Aadhaar details", "Checking your name and address"],
+          name_and_address_mismatch: ["Reading your PAN", "Matching your Aadhaar details", "Checking your name and address"],
           image_not_clear:    ["Reading your PAN", "Matching your Aadhaar details", "Checking your name and address"],
         };
         // If ?reason= is present it's a re-upload — always treat as success (the fix worked).

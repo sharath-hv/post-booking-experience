@@ -62,6 +62,7 @@ export function FullCashPaymentConfirmedScreen() {
       artifact={
         <div className={styles.flex_0}>
           <AmountReceivedCard
+            variant="glass"
             amountInr={carAmountInr}
             title={`Received by ${NAMED_DEALER_LABEL}`}
             status="received"

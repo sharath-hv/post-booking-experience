@@ -96,7 +96,11 @@ export function EnterDisbursementAmountScreen() {
 
   return (
     <div className={styles.min_h_dvh_0}>
-      <TopNavHeader solid endSlot={<GetHelpPillButton onClick={() => setShiviSheetOpen(true)} />} />
+      <TopNavHeader
+        solid
+        surface="white"
+        endSlot={<GetHelpPillButton onClick={() => setShiviSheetOpen(true)} />}
+      />
 
       <main className={styles.mx_auto_1}>
         <h1

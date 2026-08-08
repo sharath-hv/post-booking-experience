@@ -43,6 +43,15 @@ export function isVehicleIdentificationAvailable(pathname: string): boolean {
   return resolveJourneyStageIndex(pathname) >= 2;
 }
 
+/**
+ * Registration (car) number appears only after RTO completes —
+ * delivery-schedule turn and later.
+ */
+export function isVehicleRegistrationAvailable(pathname: string): boolean {
+  const path = normalizeAppPathname(pathname);
+  return path.includes("car-delivery-schedule");
+}
+
 /** 0 paperwork · 1 exact car · 2 money · 3 delivery. */
 export function resolveJourneyStageIndex(pathname: string): number {
   const path = normalizeAppPathname(pathname);

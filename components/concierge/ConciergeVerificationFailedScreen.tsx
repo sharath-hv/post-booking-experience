@@ -59,6 +59,14 @@ const COPY: Record<Exclude<KycVerificationFailureReason, "image_not_clear">, Fai
     requiredDocs: ["aadhaar"],
     replyEcho: "I've re-uploaded my Aadhaar",
   },
+  name_and_address_mismatch: {
+    says: [
+      "Your PAN and Aadhaar names don't match, and your Aadhaar address is outside Bengaluru.",
+      "Both need fixing: the names should be spelled identically, and the Aadhaar address needs to show Bengaluru, since that's where your car gets registered. Upload fresh copies of both.",
+    ],
+    requiredDocs: ["pan", "aadhaar"],
+    replyEcho: "I've re-uploaded them",
+  },
 };
 
 /**
@@ -144,7 +152,10 @@ export function ConciergeVerificationFailedScreen() {
       }
       footnote={<ReuploadDeadlineFootnote />}
       replies={replies}
-      altTimeSkip={{ label: "If retries are exhausted", href: "/kyc/verification-cancelled" }}
+      altTimeSkip={[
+        { label: "Retries exhausted", href: "/kyc/verification-cancelled" },
+        { label: "SLA timed out", href: "/kyc/verification-cancelled?cause=timeout" },
+      ]}
       callLabel="Questions? I can call you"
     />
   );

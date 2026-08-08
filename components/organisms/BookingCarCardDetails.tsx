@@ -23,6 +23,8 @@ export type BookingCarCardDetailsProps = {
   /** When set with `chassisNo`, shows engine/chassis below the delivery line. */
   engineNo?: string;
   chassisNo?: string;
+  /** Registration number — only after RTO (shown above engine). */
+  registrationNo?: string;
   /** Override paint name (e.g. modify-selection colour confirm). */
   carColor?: string;
   /** Override variant label (e.g. modify-selection variant confirm). */
@@ -41,6 +43,7 @@ export type BookingCarCardDetailsProps = {
 export function BookingCarCardDetails({
   engineNo,
   chassisNo,
+  registrationNo,
   carColor,
   carVariant,
   carTitle,
@@ -109,6 +112,7 @@ export function BookingCarCardDetails({
         <VehicleIdentificationRows
           engineNo={engineNo}
           chassisNo={chassisNo}
+          registrationNo={registrationNo}
         />
       ) : null}
     </>

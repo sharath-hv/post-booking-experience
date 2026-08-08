@@ -3,7 +3,6 @@
 import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 
-import loanIcon from "@/assets/loan.svg";
 import { AmountReceivedCard } from "@/components/organisms/artifacts";
 import { bankForQueryParam } from "@/components/payment/acko-drive-finance-bank";
 import { BookingProcessingScreen } from "@/components/organisms/BookingProcessingScreen";
@@ -39,8 +38,10 @@ export function LoanUnderReviewScreen() {
         <AmountReceivedCard
           amountInr={BANK_DISBURSEMENT_INR}
           title="Requested loan amount"
+          status="processing"
           variant="glass"
-          iconSrc={loanIcon}
+          rows={[{ label: "Bank", value: bank.name }]}
+          note="Typically takes 2–3 working days."
         />
       }
       nextHref={nextHref}

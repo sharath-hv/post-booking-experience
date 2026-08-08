@@ -19,6 +19,7 @@ import {
   getJourneyReceipts,
   getJourneyStageSteps,
   isVehicleIdentificationAvailable,
+  isVehicleRegistrationAvailable,
   type JourneyReceipt,
 } from "@/lib/journey-stage";
 import { cn } from "@/lib/utils";
@@ -83,6 +84,8 @@ export function ManageBookingZoomOverlay({
   const deliveryDate = getDeliveryDateFull(flow);
   /** VIN from booking-confirmed onward — prop can force earlier for specific turns. */
   const showVin = showVehicleIdentification || isVehicleIdentificationAvailable(pathname);
+  /** Car number only after RTO registration completes. */
+  const showReg = isVehicleRegistrationAvailable(pathname);
   const onReceiptDownload = useCallback((receipt: JourneyReceipt) => {
     downloadJourneyReceipt(receipt);
   }, []);
@@ -171,7 +174,10 @@ export function ManageBookingZoomOverlay({
                 </span>
               </div>
 
-              <ManageBookingCarCard showVehicleIdentification={showVin} />
+              <ManageBookingCarCard
+                showVehicleIdentification={showVin}
+                showVehicleRegistration={showReg}
+              />
             </div>
 
             <section aria-labelledby="purchase-state-timeline-heading" className={styles.mt_8_10}>
@@ -189,6 +195,7 @@ export function ManageBookingZoomOverlay({
                 <ManageBookingSections
                   onClose={onClose}
                   showVehicleIdentification={showVin}
+                  showVehicleRegistration={showReg}
                   surface="overlay"
                   hideCarCard
                   beforeChange={

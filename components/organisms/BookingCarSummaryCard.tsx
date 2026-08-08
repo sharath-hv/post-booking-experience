@@ -9,6 +9,7 @@ import {
 import {
   DEMO_VEHICLE_CHASSIS_NO,
   DEMO_VEHICLE_ENGINE_NO,
+  DEMO_VEHICLE_REGISTRATION_NO,
 } from "@/lib/demo-vehicle-identification";
 import { BOOKING_CONFIRMED_ASSETS } from "@/lib/kyc-booking-confirmed-assets";
 import { cn } from "@/lib/utils";
@@ -92,6 +93,8 @@ export function BookingCarSummaryCardVisualStage({
 type BookingCarSummaryCardProps = {
   /** When true, shows engine/chassis rows (post–car-allocation manage booking). */
   showVehicleIdentification?: boolean;
+  /** When true with VIN rows, shows car registration number above engine (post-RTO). */
+  showVehicleRegistration?: boolean;
   /** `hero` — backdrop + cutout; `detailsOnly` — copy panel only (modify-selection). */
   variant?: "hero" | "detailsOnly";
   /** Overrides for the details panel (e.g. selected colour on modify confirm). */
@@ -113,6 +116,7 @@ type BookingCarSummaryCardProps = {
  */
 export function BookingCarSummaryCard({
   showVehicleIdentification = false,
+  showVehicleRegistration = false,
   variant = "hero",
   cardDetails,
   carCutoutSrc,
@@ -121,6 +125,11 @@ export function BookingCarSummaryCard({
     <BookingCarCardDetails
       engineNo={showVehicleIdentification ? DEMO_VEHICLE_ENGINE_NO : undefined}
       chassisNo={showVehicleIdentification ? DEMO_VEHICLE_CHASSIS_NO : undefined}
+      registrationNo={
+        showVehicleIdentification && showVehicleRegistration
+          ? DEMO_VEHICLE_REGISTRATION_NO
+          : undefined
+      }
       {...cardDetails}
     />
   );

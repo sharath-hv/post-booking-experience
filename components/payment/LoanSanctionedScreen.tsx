@@ -58,14 +58,16 @@ export function LoanSanctionedScreen() {
       says={says}
       artifact={
         <div className={styles.flex_0}>
+          <AmountReceivedCard
+            amountInr={BANK_DISBURSEMENT_INR}
+            title="Approved loan amount"
+            status="received"
+            variant="glass"
+            rows={[{ label: "Bank", value: bank.name }]}
+          />
           <NextStepCard
             title={`Watch for ${PARTNER_DEALER_LABEL}'s call`}
             body="Pick up their call. They'll share the payment details so you can pay them directly."
-          />
-          <AmountReceivedCard
-            amountInr={BANK_DISBURSEMENT_INR}
-            title={`Approved by ${bank.name}`}
-            variant="glass"
           />
         </div>
       }

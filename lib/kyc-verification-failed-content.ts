@@ -5,7 +5,9 @@ export type KycVerificationFailureReason =
   | "aadhaar_not_clear"
   | "image_not_clear" // legacy — resolves to pan_not_clear
   | "name_mismatch"
-  | "address_mismatch";
+  | "address_mismatch"
+  /** Both name_mismatch and address_mismatch at once. */
+  | "name_and_address_mismatch";
 
 export const KYC_VERIFICATION_FAILED_CTA_WARNING =
   "1 attempt left — fix this now and your booking amount and delivery date stay safe";
@@ -31,6 +33,7 @@ export const KYC_VERIFICATION_FAILURE_REASONS: readonly KycVerificationFailureRe
   "aadhaar_not_clear",
   "name_mismatch",
   "address_mismatch",
+  "name_and_address_mismatch",
 ] as const;
 
 export const DEFAULT_KYC_VERIFICATION_FAILURE_REASON: KycVerificationFailureReason =
@@ -79,6 +82,16 @@ export const KYC_VERIFICATION_FAILED_VARIANTS: Record<
       "Your Aadhaar needs an address in Bengaluru — where your car gets registered — for verification to pass.",
     ctaLabel: "Re-upload my Aadhaar",
   },
+  name_and_address_mismatch: {
+    label: "Name & address",
+    headline: "Your documents have a name and address mismatch",
+    subline:
+      "The names on your PAN and Aadhaar don't match, and your Aadhaar address isn't in Bengaluru.",
+    infoBoxBoldPrefix: "Before you retry:",
+    infoBox:
+      "make sure the name is spelled the same way on both documents, and that your Aadhaar shows a Bengaluru address.",
+    ctaLabel: "Re-upload documents",
+  },
 };
 
 export function isKycVerificationFailureReason(
@@ -89,7 +102,8 @@ export function isKycVerificationFailureReason(
     value === "aadhaar_not_clear" ||
     value === "image_not_clear" ||
     value === "name_mismatch" ||
-    value === "address_mismatch"
+    value === "address_mismatch" ||
+    value === "name_and_address_mismatch"
   );
 }
 

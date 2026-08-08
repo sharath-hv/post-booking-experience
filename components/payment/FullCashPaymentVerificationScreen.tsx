@@ -55,6 +55,7 @@ export function FullCashPaymentVerificationScreen() {
       artifact={
         <div className={styles.flex_0}>
           <AmountReceivedCard
+            variant="glass"
             amountInr={carAmountInr}
             title="Payment · verifying with dealer"
             status="processing"

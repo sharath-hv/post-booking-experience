@@ -52,10 +52,10 @@ export function BankLoanCard({ bank, onOpen }: BankLoanCardProps) {
             <Image
               src={bank.logoSrc}
               alt=""
-              fill
+              width={24}
+              height={24}
               className={styles.object_contain_4}
               unoptimized
-              sizes="40px"
             />
           </div>
           <div className={styles.min_w_0_5}>

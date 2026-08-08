@@ -59,6 +59,7 @@ export function SelfFinanceLoanConfirmedScreen() {
             body="Once they share the payment details, transfer the down payment directly to the dealer."
           />
           <AmountReceivedCard
+            variant="glass"
             amountInr={loanAmountInr}
             title="Loan amount confirmed"
             rows={[

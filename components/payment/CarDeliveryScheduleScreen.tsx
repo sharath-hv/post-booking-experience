@@ -14,6 +14,7 @@ import {
 import {
   DEMO_VEHICLE_CHASSIS_NO,
   DEMO_VEHICLE_ENGINE_NO,
+  DEMO_VEHICLE_REGISTRATION_NO,
 } from "@/lib/demo-vehicle-identification";
 import { PartnerGarageCard } from "@/components/payment/PartnerGarageCard";
 import { fireBasicCannon } from "@/lib/confetti-basic-cannon";
@@ -171,6 +172,7 @@ export function CarDeliveryScheduleScreen() {
               dealerDetail={CAR_SOURCE_DETAIL}
               engineNo={DEMO_VEHICLE_ENGINE_NO}
               chassisNo={DEMO_VEHICLE_CHASSIS_NO}
+              registrationNo={DEMO_VEHICLE_REGISTRATION_NO}
             />
           </div>
         }

@@ -7,6 +7,7 @@ import { AmountReceivedCard } from "@/components/organisms/artifacts";
 import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
 import { ShimmerInfoCard } from "@/components/molecules/ShimmerInfoCard";
 import {
+  DEMO_LOAN_DISBURSEMENT_TRANSACTION_ID,
   FULL_PAYMENT_INSURANCE_INR,
   SELF_FINANCE_LOAN_DEFAULT_INR,
 } from "@/lib/loan-amount-demo-constants";
@@ -34,7 +35,7 @@ function parseLoanAmount(raw: string | null): number {
 
 /**
  * Self finance — dealer has confirmed the bank transfer.
- * Mirrors {@link LoanDisbursementReceivedScreen} for the self-finance journey.
+ * Card layout mirrors ACKO Drive {@link LoanDisbursementReceivedScreen}.
  */
 export function SelfFinanceTransferConfirmedScreen() {
   const searchParams = useSearchParams();
@@ -42,6 +43,13 @@ export function SelfFinanceTransferConfirmedScreen() {
     () => parseLoanAmount(searchParams.get("loan_amount")),
     [searchParams],
   );
+
+  const transactionId = useMemo(() => {
+    const fromUrl = searchParams.get("transaction_id")?.trim();
+    return fromUrl && fromUrl.length > 0
+      ? fromUrl
+      : DEMO_LOAN_DISBURSEMENT_TRANSACTION_ID;
+  }, [searchParams]);
 
   const says = useMemo(
     () => [
@@ -69,8 +77,10 @@ export function SelfFinanceTransferConfirmedScreen() {
             amountInr={loanAmountInr}
             title={`Received by ${NAMED_DEALER_LABEL}`}
             status="received"
+            variant="glass"
             rows={[
               { label: "Transferred to", value: NAMED_DEALER_LABEL_CAPITALIZED },
+              { label: "Transaction ID", value: transactionId },
             ]}
             note={`Funds are with ${NAMED_DEALER_LABEL}. Delivery prep is now underway.`}
           />

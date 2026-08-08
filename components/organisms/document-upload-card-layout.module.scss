@@ -77,8 +77,11 @@
 }
 
 .min_w_0_8 {
+  display: flex;
   min-width: 0px;
   flex: 1;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .flex_9 {
@@ -98,7 +101,7 @@
 }
 
 .mt_0_5_11 {
-  margin-top: calc(var(--spacing) * 0.5);
+  margin-top: 0;
   font-size: 12px;
   line-height: var(--tw-leading, 16px);
   --tw-leading: 16px;

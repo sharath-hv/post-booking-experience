@@ -144,10 +144,10 @@ export function BankLoanDetailBottomSheet({
                   <Image
                     src={renderedBank.logoSrc}
                     alt=""
-                    fill
+                    width={32}
+                    height={32}
                     className={styles.logo}
                     unoptimized
-                    sizes="48px"
                   />
                 </div>
                 <div className={styles.brandCopy}>

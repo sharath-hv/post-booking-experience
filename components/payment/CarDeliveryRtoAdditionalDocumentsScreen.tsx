@@ -71,7 +71,7 @@ export function CarDeliveryRtoAdditionalDocumentsScreen() {
               <div className={docStyles.flex_7}>
                 <div className={docStyles.min_w_0_8}>
                   <div className={docStyles.flex_9}>
-                    <p className={docStyles.text_sm_10}>Address proof — current residence</p>
+                    <p className={docStyles.text_sm_10}>Current address proof</p>
                   </div>
                   <p className={docStyles.mt_0_5_11}>
                     Clear scan or photo of a recent utility bill or Aadhaar

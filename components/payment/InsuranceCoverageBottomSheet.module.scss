@@ -296,7 +296,10 @@
 }
 
 .addonRow {
+  display: flex;
   margin: 0;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .addonTitle {
@@ -308,7 +311,7 @@
 }
 
 .addonDetail {
-  margin: 2px 0 0;
+  margin: 0;
   font-size: 12px;
   line-height: 16px;
   color: var(--quote-text-tertiary);

@@ -51,7 +51,7 @@ The business policy (5 stages; Booking Confirmation = lock point; 50%-of-total-p
 
 **What's-left sheet:** the old “See your delivery timeline” link is now the user asking “What's left, Shivi?”, and the sheet opens with her framing (“Here's the road to your driveway — I'll nudge you at every step.”) above the timeline rail.
 
-**Delivery schedule (journey finale):** `/payment/car-delivery-schedule` is a bespoke two-phase turn — day + window chips inline (flow-aware dates; “Lock this slot” disabled until both picked), then her confirmation with confetti (`fireBasicCannon`), the car card with the arrival line, and a “Start over” demo skip to `/quote`. The old screen's stale `nextHref="/kyc"` dead-end is gone.
+**Delivery schedule (journey finale):** `/payment/car-delivery-schedule` is a bespoke two-phase turn — day + window chips inline (flow-aware dates; “Lock this slot” disabled until both picked), then her confirmation with confetti (`fireBasicCannon`), the car card with the arrival line, and a “Start over” demo skip to `/quote`. Location name + detail use **4px** gap. The old screen's stale `nextHref="/kyc"` dead-end is gone.
 
 **Honest time rule (both directions):** real-world third-party work (dealers, yard allocations, RTO) must never fake-complete on screen — and ACKO's own work must never fake-slow. ACKO **is** the insurer: the policy issues the instant the premium lands (“Issued the moment your payment landed — insurance is us, after all”), a brand moment, not a wait. The only honest waits in the delivery chapter are the dealer's prep and the RTO. `WorkingNarration` has two modes — `live` for quick system actions that tick off while you watch (e.g. document submission), and `ongoing` for real-world waits: the first task spins, the rest queue with dashed circles, a clock row sets the expectation (“Expect news from me by tomorrow morning”), and the **result is reported in Shivi's dialogue on the next turn** (“I heard back overnight — three dealers…”). Set via `workingMode` / `workingEtaLabel` in the script. The word **“booking” never appears in user-facing copy** — the language is: payment received → verify identity → find your car → reserve it → **the exact unit is yours at OTP** (engine/chassis on the card) → sort the money → delivery.
 
@@ -63,10 +63,11 @@ The business policy (5 stages; Booking Confirmation = lock point; 50%-of-total-p
 | `ConciergeMoment` | Binds a script moment to routes + artifacts (flow-aware via `readExperienceFlow()`) |
 | `ConciergeAllocationFailedScreen` | Express-only remediation — `express_miss` at `/car-allocation/failed` (wait for standard / change / refund); `discontinued` at `/car-allocation/variant-unavailable` (change / refund only) |
 | `ConciergeVerifyIdentityScreen` | Bespoke `/kyc` turn — PAN/Aadhaar upload cards inline as the conversation; reply disabled until both docs are in (words: `VERIFY_IDENTITY_WORDS`) |
-| `ShiviCallSheet` | Call-offer confirmation sheet — contextual call affordances per turn (`callLabel` in the script; `callLabel` prop on the shell adapter for finance screens) instead of ambient presence chrome. **Always her voice:** “Stuck? I can call you” — never third person. **Every waiting/watching turn has one** — waiting is when anxiety peaks (“Can't sleep on it? I can call you”, “Anxious about the loan? I can call you”) |
-| `NextStepCard` | The user's single pending action — green pulse node + white card (e.g. dealer OTP: “Confirm with a one-time code” + partner-call copy) |
+| `ShiviCallSheet` | Call-offer confirmation sheet — contextual call affordances per turn (`callLabel` in the script; `callLabel` prop on the shell adapter for finance screens) instead of ambient presence chrome. **Always her voice:** “Stuck? I can call you” — never third person. **Every waiting/watching turn has one** — waiting is when anxiety peaks (“Can't sleep on it? I can call you”, “Anxious about the loan? I can call you”). **Online indicator** on her avatar: green when within business hours, grey when away — see `lib/shivi-business-hours.ts` (9 AM–9 PM IST); copy adapts (“within 10 minutes” vs “once I'm back online”) |
+| `NextStepCard` | The user's single pending action — glass artifact + **grey circular icon well** with **20px** `OTP_Call` icon (e.g. partner-dealer call / bank OTP). Title + body stack at **4px** gap |
 | `lib/concierge/script.ts` | All of Shivi's lines per moment (`EXPRESS_SCRIPT`); **express and standard share the same dialogue** — only `moneyIntro` footnote injects the flow-specific delivery date via `getDeliveryDateShort()` |
 | `lib/dealer-attribution-content.ts` | Car source labels — `CAR_SOURCE_NAME` / `CAR_SOURCE_DETAIL` (“ACKO Drive · Sourced & reserved for you”); `PARTNER_DEALER_LABEL` for post-payment dealer references |
+| `lib/shivi-business-hours.ts` | Callback availability — `isShiviWithinBusinessHours()` (Asia/Kolkata, 09:00–21:00); drives `ShiviCallSheet` status dot + copy |
 | `lib/concierge/echo.ts` | sessionStorage handoff: reply label → sent chip on the next turn (StrictMode-safe consume) |
 | `lib/concierge/instant.ts` | `sessionStorage.pbe-concierge-instant = "1"` renders turns fully revealed (demos/automation) |
 | `artifacts.tsx` | `AmountReceivedCard`, `PlanList`, `NoteCallout`, `CarSummaryCardLite` (flow-aware `deliveryStripClassName` / `deliveryIconSrc` from `ConciergeMoment`) |
@@ -179,7 +180,7 @@ Switch on **`/quote`** via the top-left menu (`QuoteFlowMenuSheet`). Active flow
 | `/payment/full-payment-confirmed` | Full payment action — `KycBookingProcessingScreen` + amount breakdown; **Continue** → `/payment/pay-full-payment` |
 | `/payment/loan-application` | Wizard entry (redirects to first step) |
 | `/payment/loan-application/loan-details` … `references`, `submitted` | ACKO loan application wizard (`lib/loan-application-state.ts`) |
-| `/kyc/verification-failed` | KYC verification failed — **`ConciergeVerificationFailedScreen`**: Shivi explains the specific failure (`?reason=image_not_clear\|name_mismatch\|address_mismatch`); tab switcher (`VerificationFailureReasonSwitcher` in `afterBody`) for QA/demo; CTA **"I'll re-upload them"** → `/kyc/upload?reason=`; 2nd failure → `KycVerificationCancelledScreen` (demo: `sessionStorage` attempt count) |
+| `/kyc/verification-failed` | KYC verification failed — **`ConciergeVerificationFailedScreen`**: Shivi explains the specific failure (`?reason=image_not_clear\|name_mismatch\|address_mismatch`); tab switcher (`VerificationFailureReasonSwitcher` in `afterBody`) for QA/demo; CTA **"I'll re-upload them"** → `/kyc/upload?reason=`; 2nd failure → `/kyc/verification-cancelled` (`ConciergeVerificationCancelledScreen`: refund initiated → demo **After refund is processed** → refund successful) |
 | `/payment/self-finance-confirmed` | Self finance — post-confirm celebration; **Continue** → `/payment/self-finance-action` |
 | `/payment/self-finance-action` | Self finance — proforma hero + **`LoanProcessingWhatsNext variant="self_finance_action"`**; primary CTA → `/payment/pay-down-payment` (current wire) |
 | `/payment` | Payment flow / hub (e.g. full payment path from choose) |
@@ -233,7 +234,7 @@ Entry: **`/payment/choose`** (`ChoosePaymentOptionsScreen`).
 | Loan application wizard | Four milestones: **Loan details** → **Personal details** (+ address substep) → **Documents** → **References** → **submitted** (white success, auto-advance ~3s). Shell: dark header ([Figma 2841:8477](https://www.figma.com/design/nW5SWmJdxxsCEDlqBN7C0L/Post-booking-experience?node-id=2841-8477)), white body, **Get help** opens `ShiviCallSheet`. Final CTA → **`LoanSubmitConfirmBottomSheet`** → **`/payment/loan-processing?bank={id}`**. Legacy **`/payment/loan-documents-upload`** redirects to documents step. |
 | Bank OTP | **`LoanBookingProcessingScreen`** (`/payment/loan-processing`) — confirm OTP with the bank (`NextStepCard`); demo **After the call** → under-review. |
 | Under review | **`LoanUnderReviewScreen`** (`/payment/loan-under-review`) — 2–3 working days processing; demo **More docs needed** / **If the bank declines**; skip → sanctioned. |
-| Loan sanctioned | **`LoanSanctionedScreen`** — `SanctionedAmountSummaryCard`; CTA → choose loan amount |
+| Loan sanctioned | **`LoanSanctionedScreen`** — `AmountReceivedCard` (sanctioned amount) + `NextStepCard` (partner-dealer call); CTA → choose loan amount / dealer-confirmed path |
 | Choose loan | **`ChooseLoanAmountScreen`** — slider min **₹1L** (`MIN_LOAN_INR`), max on-road price; down-payment split card (car DP + insurance); **`ChooseLoanPaymentSummaryCard`** |
 | Before pay DP | **`LoanSubmitConfirmBottomSheet`** on confirm — bullets + **Agree and continue** → pay-down-payment |
 | Pay DP | **`PayDownPaymentScreen`** — car DP summary card; partial remaining uses **`DownPaymentSummaryCard`** (car amounts) |
@@ -247,6 +248,8 @@ Entry: **`/payment/choose`** (`ChoosePaymentOptionsScreen`).
 
 - `components/payment/ChoosePaymentOptionsScreen.tsx` — ACKO branch + bank sheet open
 - `components/payment/BankSelectionBottomSheet.tsx`
+- `components/payment/BankSelectionScreen.tsx`, `BankLoanCard.tsx`, `BankLoanDetailBottomSheet.tsx` — full-page `/payment/choose-bank`
+- `lib/payment/bank-selection-urls.ts` — shared bank-picker deep links
 - `components/payment/AckoDriveFinanceConfirmedScreen.tsx`
 - `components/payment/AckoDriveFinanceActionScreen.tsx`
 - `components/payment/FinanceWhatsNextPaymentProcess.tsx`
@@ -368,7 +371,7 @@ Sticky/fixed footers may still use **`footer-elevated`**; bottom sheets use **`s
 
 **Shivi concierge pages unchanged** — turns on **`#F1F5FD` / `#F7FAFF`** keep **`card-elevated`** (and glass variants where specified) per `.cursor/rules/concierge-spacing.mdc`. Do not remove shadows from concierge artifacts to match modify-selection.
 
-**Get help:** every modify-selection screen uses `GetHelpCallButton` → **`ShiviCallSheet`** (callback confirmation).
+**Get help:** every modify-selection screen uses `GetHelpCallButton` → **`ShiviCallSheet`** (callback confirmation with online/offline indicator per business hours).
 
 **Booking amount:** `bookingAmountToPayInr` = max(0, new booking lock − paid lock) + change fee (₹5,000 when post-lock / modify-with-charges). When paid lock exceeds new lock, surplus is **not refunded** on this screen — shown as “will be adjusted in your final car amount” (`bookingAmountSurplusInr` on `ModifySelectionReviewBookingAmountCard`).
 
@@ -552,9 +555,62 @@ Shared **info callout** (icon + `text-xs` body, `rounded-2xl`, `border-[#E8E8E8]
 
 **Bottom sheets** (280ms slide + `bg-black/90` backdrop, `BottomSheetPortal`, `max-w-[640px]`, `rounded-t-[24px]`):
 
-- `BankSelectionBottomSheet`, `LoanSubmitConfirmBottomSheet`, `ManageBookingBottomSheet`, `InsuranceCoverageBottomSheet` ([2585:68086](https://www.figma.com/design/nW5SWmJdxxsCEDlqBN7C0L/Post-booking-experience?node-id=2585-68086)), `WhatsNextTimelineBottomSheet`, …
+- `BankSelectionBottomSheet`, `LoanSubmitConfirmBottomSheet`, `ManageBookingBottomSheet`, `InsuranceCoverageBottomSheet` ([2585:68086](https://www.figma.com/design/nW5SWmJdxxsCEDlqBN7C0L/Post-booking-experience?node-id=2585-68086)), `WhatsNextTimelineBottomSheet`, `ShiviCallSheet`, `BankLoanDetailBottomSheet`, …
 
 **Insurance coverage sheet:** ZD + TP rows (`assets/ZD cover.svg`, `assets/TP cover.svg`), 20px gap between rows; opened from **View coverage details** on `ZeroDepInsuranceCoverageCard` (button unless `coverageDetailsHref` set).
+
+---
+
+## UI patterns — circular icon wells, title/detail gaps, bank logos
+
+Shared visual language for leading circular containers and stacked copy. Prefer the global classes in `styles/_components.scss` when adding new wells.
+
+### Circular icon wells
+
+| Variant | Classes / recipe | Use |
+|---------|------------------|-----|
+| **Grey (default)** | `.icon-well-surface` — `0.5px #e8e8e8` border · `linear-gradient(to bottom, #e7e7e7, #fff)` · inset white ring | Document rows, manage-menu icons, `NextStepCard`, bank logos (list), partner/location wells |
+| **Green (success)** | `.icon-well-surface-green` — `0.5px #bfe8d2` border · `linear-gradient(180deg, #dff1e8 0%, #fff 100%)` · inset white ring | `AmountReceivedCard` received tick, `PlanList` done nodes, `MoneyPlanCard` active node |
+| **Amber (processing)** | `.icon-well-surface-amber` — `0.5px #f0ddb0` border · `linear-gradient(180deg, #ffefd0 0%, #fff 100%)` · inset white ring | `AmountReceivedCard` processing, `MoneyPlanCard` pending node |
+
+**Default well size:** **44px** (`spacing * 11`). **Default glyph size inside wells:** **20px** (AmountReceived tick, NextStep OTP/call, PlanList glyphs, document icons).
+
+**Exceptions**
+
+| Surface | Well | Logo / glyph |
+|---------|------|--------------|
+| Bank list cards (`BankLoanCard`) + loan-rejected alt | 44px grey well | **24px** bank logo |
+| Bank detail sheet (`BankLoanDetailBottomSheet`) | **52px** grey well | **32px** bank logo |
+
+`PlanList` timeline nodes are **44px** (rail column width matches). Done nodes use the green well; now/todo keep solid purple / flat grey fills.
+
+Pills, chips, and banner strips (pre-approved chip, status tags on receipt rows, delivery badges) stay **flat fills** — not icon wells.
+
+### Title + detail / amount + label gap
+
+Primary line + secondary line stacks use **4px** vertical gap (flex column `gap: 4px`, or `margin-top: 4px` where the parent is not a column). Applied across:
+
+- `AmountReceivedCard` amount + title
+- `NextStepCard` title + body
+- `CarDeliveryScheduleScreen` location name + detail
+- Document upload rows (`document-upload-card-layout` / `DocumentUploadSection`)
+- `LoanDocumentsChecklistCard`, `ShieldPolicyCard` highlights, insurance tenure stats, coverage addon rows
+- Document/location card title blocks (`MarginMoneySlipCard`, `ProformaInvoiceCard`, `PartnerGarageCard`)
+- `BankLoanCard` / `CarSummaryCardLite` / `MoneyPlanCard` primary + caption lines
+- Payment-option stat captions, `CancelBookingCarCard` title → variant
+
+### Bank selection UI
+
+Full-page picker: **`/payment/choose-bank`** (`BankSelectionScreen` + `BankLoanCard` list → `BankLoanDetailBottomSheet`). Shared route for initial choice, mid-flow change, and post-rejection switch (`lib/payment/bank-selection-urls.ts`). Logo wells follow the circular style above (list 44/24, detail sheet 52/32).
+
+### Shivi callback availability
+
+`ShiviCallSheet` avatar shows a **14px** status dot (white ring):
+
+- **Green `#0fa457`** — within business hours → “I'll call you within 10 minutes”
+- **Grey `#b7b7b8`** — outside hours → “I'll call you once I'm back online” + hours callout
+
+Hours: **9 AM–9 PM IST**, every day (`lib/shivi-business-hours.ts`). Re-evaluated each time the sheet opens.
 
 ---
 
@@ -582,6 +638,12 @@ Shared **info callout** (icon + `text-xs` body, `rounded-2xl`, `border-[#E8E8E8]
 - **Bank rows:** HDFC, Bank of Baroda, ICICI, Bank of India, Canara Bank — logo, name, “Interest rate from …”, selected border/background, shared radio artwork from assets.
 - **Radio:** Absolutely positioned **12px from top and right** of each card (`top-3 right-3`); `pointer-events-none` so the whole row remains the hit target; content uses extra right padding (`pr-10`) to avoid overlap.
 - **Footer:** **Confirm banking partner** uses `primary-cta`; **no top border** above the CTA.
+
+### Full-page bank selection (also implemented)
+
+- Route **`/payment/choose-bank`** (`BankSelectionScreen`) — shared entry for initial pick, change-bank, and loan-rejection switch (`bank-selection-urls.ts`).
+- Cards: **`BankLoanCard`** with **44px** circular grey icon well + **24px** logo; opens **`BankLoanDetailBottomSheet`** (**52px** well + **32px** logo).
+- Same circular well treatment on the loan-rejected alternate-bank card.
 
 ### Assets added / referenced
 
@@ -641,6 +703,9 @@ These paths are **gitignored** (see root `.gitignore`). They are optional helper
 - [x] Cancel no charges — manage booking: cancel enabled; change selection visible but not clickable
 - [x] Cancel confirmation full page (Figma 2709:17395) + reason bottom sheet (Figma 2711:21013) + celebration success page; route guards; full booking amount refund (₹10,000, no fee)
 - [x] Standard **Car ready early** demo — offer → confirm (same dealer / needs verification) or keep original date → wait; early delivery line override (`lib/concierge/early-delivery.ts`)
+- [x] Circular icon-well system (grey / green / amber) + 4px title/detail gaps across receipt, plan, upload, and document cards
+- [x] Bank list/detail logo wells (44/24 list · 52/32 sheet) + `PlanList` nodes at 44px
+- [x] `NextStepCard` OTP/call glyph at 20px; `ShiviCallSheet` online/offline indicator via business hours
 - [ ] Pass selected `bankId` / self-finance step state into payment/checkout and APIs
 - [ ] Full a11y pass on sheets
 - [ ] End-to-end journey documented in README (optional)

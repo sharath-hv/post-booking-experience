@@ -34,6 +34,7 @@ import {
   JOURNEY_PATHS,
   resolveJourneyPhase,
 } from "@/lib/journey-routes";
+import { isVehicleRegistrationAvailable } from "@/lib/journey-stage";
 import {
   readPostLockChangesUsed,
   writeChangeEntryStage,
@@ -52,10 +53,8 @@ import {
   FULL_PAYMENT_BANK_ID,
   INSURANCE_PAYMENT_KIND,
 } from "@/lib/paymentUrls";
-import { useBackdropMode } from "@/lib/concierge/use-backdrop-mode";
 import { cn } from "@/lib/utils";
 import { OVERLAY_GLASS_CARD_CLASS } from "@/lib/overlay-glass-card";
-import { Sparkles } from "lucide-react";
 import styles from "./ManageBookingBottomSheet.module.scss";
 
 
@@ -107,37 +106,6 @@ function ModifyBookingActionRow({
         />
       </span>
     </button>
-  );
-}
-
-function VideoBackgroundSwitchRow() {
-  const [mode, setMode] = useBackdropMode();
-  const checked = mode === "video";
-
-  return (
-    <div className={styles.flex_14}>
-      <span className={styles.flex_0} aria-hidden>
-        <Sparkles size={20} strokeWidth={1.75} className={styles.shrink_0_1} />
-      </span>
-      <span className={styles.min_w_0_2}>
-        <span className={styles.block_3} id="video-background-label">
-          Video background
-        </span>
-        <span className={styles.mt_1_4}>
-          Replace aurora lights with the animation video
-        </span>
-      </span>
-      <button
-        type="button"
-        role="switch"
-        aria-checked={checked}
-        aria-labelledby="video-background-label"
-        className={cn(styles.switchTrack, checked && styles.switchTrackOn)}
-        onClick={() => setMode(checked ? "aurora" : "video")}
-      >
-        <span className={cn(styles.switchThumb, checked && styles.switchThumbOn)} />
-      </button>
-    </div>
   );
 }
 
@@ -266,6 +234,8 @@ function parseFullPaymentPlan(searchParams: URLSearchParams) {
 export type ManageBookingSectionsProps = {
   onClose: () => void;
   showVehicleIdentification?: boolean;
+  /** Post-RTO — car registration number on the vehicle ID block. */
+  showVehicleRegistration?: boolean;
   /** `overlay` — cards sit on the page surface (elevation); `sheet` — hairline borders on white. */
   surface?: "sheet" | "overlay";
   /** Extra section rendered between the payment summary and “Make a change” (e.g. receipts). */
@@ -279,8 +249,10 @@ export type ManageBookingSectionsProps = {
  */
 export function ManageBookingCarCard({
   showVehicleIdentification = false,
+  showVehicleRegistration = false,
 }: {
   showVehicleIdentification?: boolean;
+  showVehicleRegistration?: boolean;
 }) {
   const [activeBooking, setActiveBooking] = useState<ReturnType<
     typeof readActiveBookingSnapshot
@@ -293,6 +265,7 @@ export function ManageBookingCarCard({
   return (
     <BookingCarSummaryCard
       showVehicleIdentification={showVehicleIdentification}
+      showVehicleRegistration={showVehicleRegistration}
       cardDetails={
         activeBooking != null ? activeBookingCardDetails(activeBooking) : undefined
       }
@@ -311,12 +284,15 @@ export function ManageBookingCarCard({
 export function ManageBookingSections({
   onClose,
   showVehicleIdentification = false,
+  showVehicleRegistration = false,
   surface = "sheet",
   beforeChange,
   hideCarCard = false,
 }: ManageBookingSectionsProps) {
   const router = useRouter();
   const pathname = usePathname();
+  const showReg =
+    showVehicleRegistration || isVehicleRegistrationAvailable(pathname);
   const searchParams = useSearchParams();
   const confirmedLoanPlan = useMemo(
     () => parseConfirmedLoanPlan(searchParams),
@@ -412,7 +388,10 @@ export function ManageBookingSections({
   return (
     <div className={styles.flex_7}>
       {hideCarCard ? null : (
-        <ManageBookingCarCard showVehicleIdentification={showVehicleIdentification} />
+        <ManageBookingCarCard
+          showVehicleIdentification={showVehicleIdentification}
+          showVehicleRegistration={showReg}
+        />
       )}
 
       <section aria-labelledby="manage-booking-payment-heading">
@@ -478,24 +457,6 @@ export function ManageBookingSections({
           </div>
         </section>
       ) : null}
-
-      <section aria-labelledby="manage-booking-background-heading">
-        <h3
-          id="manage-booking-background-heading"
-          className={styles.mb_4_8}
-        >
-          Appearance
-        </h3>
-        <div
-          className={cn(
-            surface === "overlay"
-              ? OVERLAY_GLASS_CARD_CLASS
-              : styles.overflow_hidden_18,
-          )}
-        >
-          <VideoBackgroundSwitchRow />
-        </div>
-      </section>
     </div>
   );
 }

@@ -4,8 +4,9 @@ import Image from "next/image";
 import { useCallback, type MouseEvent } from "react";
 
 import marginMoneySlipIcon from "@/assets/margin money slip.svg";
+import { OVERLAY_GLASS_CARD_CLASS } from "@/lib/overlay-glass-card";
+import { cn } from "@/lib/utils";
 import styles from "./MarginMoneySlipCard.module.scss";
-
 
 /**
  * Stub download — replace with a real PDF URL when available.
@@ -25,18 +26,28 @@ function triggerDemoMarginSlipDownload() {
   URL.revokeObjectURL(url);
 }
 
+export type MarginMoneySlipCardProps = {
+  /** `glass` — frosted gradient surface used on confirmation / overlay stacks. */
+  variant?: "default" | "glass";
+};
+
 /**
  * Margin money slip callout — same card pattern as {@link ProformaInvoiceCard}.
  */
-export function MarginMoneySlipCard() {
+export function MarginMoneySlipCard({ variant = "default" }: MarginMoneySlipCardProps) {
   const onDownload = useCallback((e: MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     triggerDemoMarginSlipDownload();
   }, []);
 
+  const isGlass = variant === "glass";
+
   return (
     <section
-      className={[styles.w_full_0, "card-elevated"].filter(Boolean).join(" ")}
+      className={cn(
+        styles.w_full_0,
+        isGlass ? OVERLAY_GLASS_CARD_CLASS : [styles.cardSolid, "card-elevated"],
+      )}
       aria-label="Margin money slip"
     >
       <div className={styles.flex_1}>

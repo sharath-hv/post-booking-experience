@@ -3,7 +3,6 @@
 import { useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 
-import moneyRoundIcon from "@/assets/Money round.svg";
 import { AmountReceivedCard, NextStepCard } from "@/components/organisms/artifacts";
 import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
 import styles from "./FullPaymentConfirmedScreen.module.scss";
@@ -30,9 +29,8 @@ function formatInr(amount: number) {
 const VERIFICATION_HREF = `/payment/full-cash-payment-verification?car_amount=${FULL_PAYMENT_CAR_AMOUNT_INR}`;
 
 /**
- * Full cash payment — Shivi shows the price breakdown and explains that the
- * dealer will call to arrange the offline transfer. Consistent with the
- * self-finance loan-confirmed pattern.
+ * Full cash payment — Shivi shows the locked-price breakdown and explains that
+ * the dealer will call to arrange the offline transfer.
  */
 export function FullPaymentConfirmedScreen() {
   const router = useRouter();
@@ -54,27 +52,25 @@ export function FullPaymentConfirmedScreen() {
       says={says}
       artifact={
         <div className={styles.flex_0}>
-          <NextStepCard
-            title={`Watch for ${PARTNER_DEALER_LABEL}'s call`}
-            body="They'll share the payment details. Transfer the car amount directly to the dealer. Insurance will be collected separately, just before car registration."
-          />
           <AmountReceivedCard
+            variant="glass"
             amountInr={ON_ROAD_PRICE_INR}
             title="Your locked price"
-            iconSrc={moneyRoundIcon}
-            iconBgClassName={styles.bgGray}
+            status="received"
             rows={[
               {
-                label: "Booking amount",
+                label: "Booking amount paid",
                 value: `− ${formatInr(BOOKING_AMOUNT_PAID_INR)}`,
-                tag: { text: "Paid ✓", variant: "green" },
               },
               {
-                label: "Insurance",
+                label: "Insurance amount to be paid",
                 value: `− ${formatInr(FULL_PAYMENT_INSURANCE_INR)}`,
-                tag: { text: "Later · before delivery", variant: "amber" },
               },
             ]}
+          />
+          <NextStepCard
+            title={`Watch for ${PARTNER_DEALER_LABEL}'s call`}
+            body="They'll share the payment details. Transfer the car amount directly to the dealer."
           />
         </div>
       }

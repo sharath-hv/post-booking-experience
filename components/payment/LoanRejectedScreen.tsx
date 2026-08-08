@@ -87,10 +87,10 @@ export function LoanRejectedScreen() {
               <Image
                 src={alt.logoSrc}
                 alt=""
-                fill
+                width={24}
+                height={24}
                 className={styles.object_contain_2}
                 unoptimized
-                sizes="36px"
               />
             </span>
             <div className={styles.min_w_0_3}>
