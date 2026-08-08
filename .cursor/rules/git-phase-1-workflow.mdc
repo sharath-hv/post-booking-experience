@@ -1,0 +1,15 @@
+---
+description: Push/merge workflow — always use existing phase-1 branch
+alwaysApply: true
+---
+
+# Git push / merge workflow
+
+When the user asks to **push to git branch** (or push + merge):
+
+1. **Do not create a new branch.** Use the existing **`phase-1`** branch.
+2. Commit current work onto **`phase-1`** (checkout/merge as needed).
+3. **Push `phase-1`** to `origin`.
+4. **Merge `phase-1` into `main`**, then push **`main`**.
+
+Do not invent feature-branch names for routine push/merge requests unless the user explicitly asks for a new branch.
