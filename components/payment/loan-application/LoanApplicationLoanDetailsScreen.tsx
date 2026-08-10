@@ -22,6 +22,7 @@ import { LoanApplicationSegmentChip } from "@/components/payment/loan-applicatio
 import { useLoanApplicationBank } from "@/components/payment/loan-application/use-loan-application-bank";
 import { useLoanApplicationState } from "@/components/payment/loan-application/use-loan-application-state";
 import {
+  LOAN_APPLICATION_EMPLOYMENT_OPTIONS,
   LOAN_APPLICATION_TENURE_OPTIONS,
   type LoanApplicationEmploymentType,
 } from "@/lib/loan-application-content";
@@ -39,11 +40,6 @@ import styles from "./LoanApplicationLoanDetailsScreen.module.scss";
 
 const MIN_LOAN_INR = 1_00_000;
 const MAX_LOAN_INR = 50_00_000;
-
-const EMPLOYMENT_OPTIONS: { id: LoanApplicationEmploymentType; label: string }[] = [
-  { id: "salaried", label: "Salaried" },
-  { id: "self_employed", label: "Self employed" },
-];
 
 export function LoanApplicationLoanDetailsScreen() {
   const router = useRouter();
@@ -128,7 +124,7 @@ export function LoanApplicationLoanDetailsScreen() {
             Select your employment type
           </p>
           <div className={cn(LOAN_APPLICATION_FIELD_GAP_CLASS, styles.grid_1)}>
-            {EMPLOYMENT_OPTIONS.map((option) => (
+            {LOAN_APPLICATION_EMPLOYMENT_OPTIONS.map((option) => (
               <LoanApplicationSegmentChip
                 key={option.id}
                 label={option.label}

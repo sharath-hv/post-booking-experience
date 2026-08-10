@@ -4,12 +4,12 @@ import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useCallback, useEffect, useState } from "react";
 
+import { LoanApplicationApplicantEyebrow } from "@/components/payment/loan-application/LoanApplicationApplicantEyebrow";
 import { LoanApplicationFixedCta } from "@/components/payment/loan-application/LoanApplicationFixedCta";
 import { LoanApplicationFormField } from "@/components/payment/loan-application/LoanApplicationFormField";
 import {
   LOAN_APPLICATION_FIELD_STACK_GAP_CLASS,
   LOAN_APPLICATION_MAIN_CLASS,
-  LOAN_APPLICATION_PAGE_TITLE_CLASS,
   LOAN_APPLICATION_SECTION_DIVIDER_CLASS,
   LOAN_APPLICATION_SECTION_GAP_CLASS,
   LOAN_APPLICATION_SECTION_LABEL_CLASS,
@@ -18,10 +18,11 @@ import {
   loanApplicationStaggerAfterCard,
 } from "@/components/payment/loan-application/loan-application-layout";
 import { LoanApplicationPageStagger } from "@/components/payment/loan-application/LoanApplicationPageStagger";
+import { useLoanApplicationApplicant } from "@/components/payment/loan-application/use-loan-application-applicant";
 import { useLoanApplicationBank } from "@/components/payment/loan-application/use-loan-application-bank";
 import { useLoanApplicationState } from "@/components/payment/loan-application/use-loan-application-state";
 import { emptyReference, type LoanApplicationReference } from "@/lib/loan-application-state";
-import { loanApplicationSubmittedPath } from "@/lib/loan-application-urls";
+import { loanApplicationNextPath } from "@/lib/loan-application-urls";
 
 function isReferenceComplete(ref: LoanApplicationReference) {
   return (
@@ -93,17 +94,21 @@ function ReferenceFields({
 export function LoanApplicationReferencesScreen() {
   const router = useRouter();
   const { bankId } = useLoanApplicationBank();
-  const { state, hydrated, update } = useLoanApplicationState();
-  const [ref1, setRef1] = useState(state.references[0]);
-  const [ref2, setRef2] = useState(state.references[1]);
+  const { state, hydrated, updateApplicant } = useLoanApplicationState();
+  const { applicant, profile, showApplicantEyebrow, isCoApplicantPass } =
+    useLoanApplicationApplicant(state);
+  const [ref1, setRef1] = useState(profile.references[0]);
+  const [ref2, setRef2] = useState(profile.references[1]);
 
   useEffect(() => {
     if (!hydrated) return;
-    setRef1(state.references[0]);
-    setRef2(state.references[1]);
-  }, [hydrated, state.references]);
+    setRef1(profile.references[0]);
+    setRef2(profile.references[1]);
+  }, [hydrated, profile.references]);
 
   const canSubmit = isReferenceComplete(ref1) && isReferenceComplete(ref2);
+  const isFinalPass =
+    applicant === "co" || state.includeCoApplicant !== true;
 
   const onSubmitClick = useCallback(() => {
     if (!canSubmit) return;
@@ -119,17 +124,37 @@ export function LoanApplicationReferencesScreen() {
         address: ref2.address.trim(),
       },
     ];
-    update({ references: normalized });
-    router.push(loanApplicationSubmittedPath(bankId));
-  }, [bankId, canSubmit, ref1, ref2, router, update]);
+    updateApplicant(applicant, { references: normalized });
+    router.push(
+      loanApplicationNextPath(bankId, "references", {
+        applicant,
+        includeCoApplicant: state.includeCoApplicant,
+      }),
+    );
+  }, [
+    applicant,
+    bankId,
+    canSubmit,
+    ref1,
+    ref2,
+    router,
+    state.includeCoApplicant,
+    updateApplicant,
+  ]);
+
+  const title = isCoApplicantPass
+    ? "Two people who can vouch for your co-applicant."
+    : "Two people who can vouch for you. The bank's standard ask.";
 
   return (
     <>
       <main className={LOAN_APPLICATION_MAIN_CLASS}>
         <LoanApplicationPageStagger delayMs={LOAN_APPLICATION_STAGGER_MS.title}>
-          <h1 className={LOAN_APPLICATION_PAGE_TITLE_CLASS}>
-            Two people who can vouch for you. The bank&apos;s standard ask.
-          </h1>
+          <LoanApplicationApplicantEyebrow
+            applicant={applicant}
+            show={showApplicantEyebrow}
+            title={title}
+          />
         </LoanApplicationPageStagger>
 
         <LoanApplicationPageStagger
@@ -161,7 +186,7 @@ export function LoanApplicationReferencesScreen() {
       </main>
 
       <LoanApplicationFixedCta
-        label="Submit loan application"
+        label={isFinalPass ? "Submit loan application" : "Continue to co-applicant"}
         onClick={onSubmitClick}
         disabled={!canSubmit}
         staggerDelayMs={loanApplicationStaggerAfterCard(2)}

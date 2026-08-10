@@ -1,17 +1,23 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
 import { AckoDriveBankPartnerRow } from "@/components/payment/AckoDriveBankPartnerRow";
+import { LoanApplicationCoApplicantBottomSheet } from "@/components/payment/loan-application/LoanApplicationCoApplicantBottomSheet";
 import { LoanDocumentsChecklistCard } from "@/components/payment/LoanDocumentsChecklistCard";
 import {
   ackoDriveFinanceActionPath,
   bankForQueryParam,
 } from "@/components/payment/acko-drive-finance-bank";
 import { OVERLAY_GLASS_CARD_CLASS } from "@/lib/overlay-glass-card";
-import { loanApplicationEntryPath } from "@/lib/loan-application-urls";
+import {
+  createDefaultCoApplicantProfile,
+  createDefaultLoanApplicationState,
+  writeLoanApplicationState,
+} from "@/lib/loan-application-state";
+import { loanApplicationPath } from "@/lib/loan-application-urls";
 import { bankIdToken, bankSelectionPath } from "@/lib/payment/bank-selection-urls";
 import { cn } from "@/lib/utils";
 import styles from "./AckoDriveFinanceActionScreen.module.scss";
@@ -32,8 +38,7 @@ export function AckoDriveFinanceActionScreen() {
   const searchParams = useSearchParams();
   const bankId = searchParams.get("bank");
   const bank = useMemo(() => bankForQueryParam(bankId), [bankId]);
-
-  const uploadHref = useMemo(() => loanApplicationEntryPath(bank.id, { fresh: true }), [bank.id]);
+  const [coApplicantSheetOpen, setCoApplicantSheetOpen] = useState(false);
 
   const changeBankHref = useMemo(
     () => bankSelectionPath({ next: ackoDriveFinanceActionPath(bankIdToken()) }),
@@ -51,19 +56,43 @@ export function AckoDriveFinanceActionScreen() {
     [bank, onBankChange],
   );
 
+  const onStartApplication = useCallback(() => {
+    setCoApplicantSheetOpen(true);
+  }, []);
+
+  const onCoApplicantConfirm = useCallback(
+    (includeCoApplicant: boolean) => {
+      const next = createDefaultLoanApplicationState();
+      next.includeCoApplicant = includeCoApplicant;
+      next.coApplicant = includeCoApplicant ? createDefaultCoApplicantProfile() : null;
+      writeLoanApplicationState(next);
+      setCoApplicantSheetOpen(false);
+      router.push(loanApplicationPath(bank.id, "loan-details"));
+    },
+    [bank.id, router],
+  );
+
   const replies = useMemo(
-    () => [{ label: "Start my loan application", href: uploadHref, echo: null }],
-    [uploadHref],
+    () => [{ label: "Start my loan application", onClick: onStartApplication, echo: null }],
+    [onStartApplication],
   );
 
   return (
-    <ConciergeTurnShell
-      says={SAYS}
-      afterLead={afterLead}
-      headingLastLine
-      artifact={<LoanDocumentsChecklistCard />}
-      replies={replies}
-      manageShowVehicleIdentification
-    />
+    <>
+      <ConciergeTurnShell
+        says={SAYS}
+        afterLead={afterLead}
+        headingLastLine
+        artifact={<LoanDocumentsChecklistCard />}
+        replies={replies}
+        manageShowVehicleIdentification
+      />
+
+      <LoanApplicationCoApplicantBottomSheet
+        open={coApplicantSheetOpen}
+        onClose={() => setCoApplicantSheetOpen(false)}
+        onConfirm={onCoApplicantConfirm}
+      />
+    </>
   );
 }

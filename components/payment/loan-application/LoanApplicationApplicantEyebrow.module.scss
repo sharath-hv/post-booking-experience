@@ -1,0 +1,23 @@
+.headingBlock {
+  margin-top: calc(var(--spacing) * 6);
+}
+
+/* label-sm / overline — applicant pass callout above page title */
+.eyebrow {
+  margin: 0;
+  font-size: 11px;
+  line-height: 16px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  --tw-font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-medium);
+  color: #757575;
+}
+
+.headingBlock .title {
+  margin-top: 0;
+}
+
+.headingBlock .titleAfterEyebrow {
+  margin-top: calc(var(--spacing) * 2);
+}

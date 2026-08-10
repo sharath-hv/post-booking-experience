@@ -7,12 +7,12 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
+import { LoanApplicationApplicantEyebrow } from "@/components/payment/loan-application/LoanApplicationApplicantEyebrow";
 import { LoanApplicationFixedCta } from "@/components/payment/loan-application/LoanApplicationFixedCta";
 import { LoanApplicationFormField } from "@/components/payment/loan-application/LoanApplicationFormField";
 import {
   LOAN_APPLICATION_FIELD_STACK_GAP_CLASS,
   LOAN_APPLICATION_MAIN_CLASS,
-  LOAN_APPLICATION_PAGE_TITLE_CLASS,
   LOAN_APPLICATION_SECTION_DIVIDER_CLASS,
   LOAN_APPLICATION_SECTION_GAP_CLASS,
   LOAN_APPLICATION_SECTION_LABEL_CLASS,
@@ -21,6 +21,7 @@ import {
   loanApplicationStaggerAfterCard,
 } from "@/components/payment/loan-application/loan-application-layout";
 import { LoanApplicationPageStagger } from "@/components/payment/loan-application/LoanApplicationPageStagger";
+import { useLoanApplicationApplicant } from "@/components/payment/loan-application/use-loan-application-applicant";
 import { useLoanApplicationBank } from "@/components/payment/loan-application/use-loan-application-bank";
 import { useLoanApplicationState } from "@/components/payment/loan-application/use-loan-application-state";
 import type { LoanApplicationAddressFields } from "@/lib/loan-application-state";
@@ -107,17 +108,21 @@ function AddressFieldsBlock({
 export function LoanApplicationAddressScreen() {
   const router = useRouter();
   const { bankId } = useLoanApplicationBank();
-  const { state, hydrated, update } = useLoanApplicationState();
-  const [permanent, setPermanent] = useState(state.address.permanent);
-  const [current, setCurrent] = useState(state.address.current);
-  const [sameAsPermanent, setSameAsPermanent] = useState(state.address.currentSameAsPermanent);
+  const { state, hydrated, updateApplicant } = useLoanApplicationState();
+  const { applicant, profile, showApplicantEyebrow, isCoApplicantPass } =
+    useLoanApplicationApplicant(state);
+  const [permanent, setPermanent] = useState(profile.address.permanent);
+  const [current, setCurrent] = useState(profile.address.current);
+  const [sameAsPermanent, setSameAsPermanent] = useState(
+    profile.address.currentSameAsPermanent,
+  );
 
   useEffect(() => {
     if (!hydrated) return;
-    setPermanent(state.address.permanent);
-    setCurrent(state.address.current);
-    setSameAsPermanent(state.address.currentSameAsPermanent);
-  }, [hydrated, state.address]);
+    setPermanent(profile.address.permanent);
+    setCurrent(profile.address.current);
+    setSameAsPermanent(profile.address.currentSameAsPermanent);
+  }, [hydrated, profile.address]);
 
   useEffect(() => {
     if (sameAsPermanent) setCurrent(permanent);
@@ -128,21 +133,44 @@ export function LoanApplicationAddressScreen() {
 
   const onContinue = useCallback(() => {
     if (!canContinue) return;
-    update({
+    updateApplicant(applicant, {
       address: {
         permanent,
         current: effectiveCurrent,
         currentSameAsPermanent: sameAsPermanent,
       },
     });
-    router.push(loanApplicationNextPath(bankId, "address"));
-  }, [bankId, canContinue, effectiveCurrent, permanent, router, sameAsPermanent, update]);
+    router.push(
+      loanApplicationNextPath(bankId, "address", {
+        applicant,
+        includeCoApplicant: state.includeCoApplicant,
+      }),
+    );
+  }, [
+    applicant,
+    bankId,
+    canContinue,
+    effectiveCurrent,
+    permanent,
+    router,
+    sameAsPermanent,
+    state.includeCoApplicant,
+    updateApplicant,
+  ]);
+
+  const title = isCoApplicantPass
+    ? "Where does your co-applicant live?"
+    : "Where do you live? The bank wants it on file.";
 
   return (
     <>
       <main className={LOAN_APPLICATION_MAIN_CLASS}>
         <LoanApplicationPageStagger delayMs={LOAN_APPLICATION_STAGGER_MS.title}>
-          <h1 className={LOAN_APPLICATION_PAGE_TITLE_CLASS}>Where do you live? The bank wants it on file.</h1>
+          <LoanApplicationApplicantEyebrow
+            applicant={applicant}
+            show={showApplicantEyebrow}
+            title={title}
+          />
         </LoanApplicationPageStagger>
 
         <LoanApplicationPageStagger

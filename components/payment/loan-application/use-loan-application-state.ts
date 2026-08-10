@@ -4,10 +4,14 @@ import { useCallback, useEffect, useState } from "react";
 
 import {
   createDefaultLoanApplicationState,
+  patchApplicantProfile,
+  patchLoanApplicationState,
   readLoanApplicationState,
   writeLoanApplicationState,
+  type LoanApplicationApplicantProfile,
   type LoanApplicationState,
 } from "@/lib/loan-application-state";
+import type { LoanApplicationApplicant } from "@/lib/loan-application-content";
 
 export function useLoanApplicationState() {
   const [state, setState] = useState<LoanApplicationState>(createDefaultLoanApplicationState);
@@ -25,40 +29,21 @@ export function useLoanApplicationState() {
 
   const update = useCallback(
     (patch: Partial<LoanApplicationState>) => {
-      const current = readLoanApplicationState();
-      const next: LoanApplicationState = {
-        ...current,
-        ...patch,
-        loanDetails: {
-          ...current.loanDetails,
-          ...patch.loanDetails,
-        },
-        personal: {
-          ...current.personal,
-          ...patch.personal,
-          work: {
-            ...current.personal.work,
-            ...patch.personal?.work,
-            officialAddress: {
-              ...current.personal.work.officialAddress,
-              ...patch.personal?.work?.officialAddress,
-            },
-          },
-        },
-        address: {
-          ...current.address,
-          ...patch.address,
-          permanent: { ...current.address.permanent, ...patch.address?.permanent },
-          current: { ...current.address.current, ...patch.address?.current },
-        },
-        references: patch.references ?? current.references,
-        documents: patch.documents ?? current.documents,
-      };
-      persist(next);
+      const next = patchLoanApplicationState(patch);
+      setState(next);
       return next;
     },
-    [persist],
+    [],
   );
 
-  return { state, hydrated, persist, update };
+  const updateApplicant = useCallback(
+    (applicant: LoanApplicationApplicant, patch: Partial<LoanApplicationApplicantProfile>) => {
+      const next = patchApplicantProfile(applicant, patch);
+      setState(next);
+      return next;
+    },
+    [],
+  );
+
+  return { state, hydrated, persist, update, updateApplicant };
 }

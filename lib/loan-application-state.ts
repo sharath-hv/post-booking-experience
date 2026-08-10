@@ -1,4 +1,9 @@
-import type { LoanApplicationEmploymentType } from "@/lib/loan-application-content";
+import type {
+  LoanApplicationApplicant,
+  LoanApplicationCoApplicantRelation,
+  LoanApplicationEmploymentType,
+} from "@/lib/loan-application-content";
+import { isLoanApplicationCoApplicantRelation } from "@/lib/loan-application-content";
 import {
   createEmptyLoanApplicationDocuments,
   isLoanApplicationDocumentsState,
@@ -36,13 +41,15 @@ export type LoanApplicationReference = {
   address: string;
 };
 
-export type LoanApplicationState = {
-  loanDetails: {
-    loanAmountInr: number;
-    tenureMonths: number;
-    employmentType: LoanApplicationEmploymentType | null;
-  };
+/** Person-shaped wizard data — used for primary and co-applicant passes. */
+export type LoanApplicationApplicantProfile = {
   personal: {
+    /** Co-applicant only — shown on personal details during the co pass. */
+    fullName: string;
+    /** Co-applicant only — relation to the primary applicant. */
+    relationToPrimary: LoanApplicationCoApplicantRelation | null;
+    /** Co-applicant only — primary employment lives on loanDetails. */
+    employmentType: LoanApplicationEmploymentType | null;
     email: string;
     motherName: string;
     spouseName: string;
@@ -57,7 +64,24 @@ export type LoanApplicationState = {
   references: [LoanApplicationReference, LoanApplicationReference];
 };
 
-const STORAGE_KEY = "pbe_loan_application_state_v1";
+export type LoanApplicationState = {
+  loanDetails: {
+    loanAmountInr: number;
+    tenureMonths: number;
+    employmentType: LoanApplicationEmploymentType | null;
+  };
+  /** null until answered in the start-application bottom sheet. */
+  includeCoApplicant: boolean | null;
+  /** Primary applicant — kept at top level for the existing screens. */
+  personal: LoanApplicationApplicantProfile["personal"];
+  address: LoanApplicationApplicantProfile["address"];
+  documents: LoanApplicationDocumentsState;
+  references: [LoanApplicationReference, LoanApplicationReference];
+  /** Populated when the user opts into a co-applicant. */
+  coApplicant: LoanApplicationApplicantProfile | null;
+};
+
+const STORAGE_KEY = "pbe_loan_application_state_v2";
 
 export function emptyAddress(): LoanApplicationAddressFields {
   return { line1: "", line2: "", city: "", state: "", pincode: "" };
@@ -65,6 +89,82 @@ export function emptyAddress(): LoanApplicationAddressFields {
 
 export function emptyReference(): LoanApplicationReference {
   return { fullName: "", phone: "", address: "" };
+}
+
+export function emptyApplicantProfile(): LoanApplicationApplicantProfile {
+  return {
+    personal: {
+      fullName: "",
+      relationToPrimary: null,
+      employmentType: null,
+      email: "",
+      motherName: "",
+      spouseName: "",
+      work: {
+        officialEmail: "",
+        employerName: "",
+        officialAddress: emptyOfficialAddress(),
+      },
+    },
+    address: {
+      permanent: emptyAddress(),
+      current: emptyAddress(),
+      currentSameAsPermanent: true,
+    },
+    documents: createEmptyLoanApplicationDocuments(),
+    references: [emptyReference(), emptyReference()],
+  };
+}
+
+/** Demo co-applicant prefill — distinct from the primary so dual-pass is obvious. */
+export function createDefaultCoApplicantProfile(): LoanApplicationApplicantProfile {
+  return {
+    personal: {
+      fullName: "Ananya R",
+      relationToPrimary: "spouse",
+      employmentType: "salaried",
+      email: "ananya.r@gmail.com",
+      motherName: "Meena R",
+      spouseName: "",
+      work: {
+        officialEmail: "ananya.r@northstar.in",
+        employerName: "Northstar Analytics",
+        officialAddress: {
+          pincode: "560034",
+          city: "Bengaluru",
+          state: "Karnataka",
+          address: "2nd Floor, Koramangala 5th Block",
+        },
+      },
+    },
+    address: {
+      permanent: {
+        line1: "18, 4th Cross",
+        line2: "Indiranagar",
+        city: "Bengaluru",
+        state: "Karnataka",
+        pincode: "560038",
+      },
+      current: {
+        line1: "18, 4th Cross",
+        line2: "Indiranagar",
+        city: "Bengaluru",
+        state: "Karnataka",
+        pincode: "560038",
+      },
+      currentSameAsPermanent: true,
+    },
+    documents: {
+      salarySlip: [{ id: "demo-co-salary-1", name: "Co_Salary_slip_Mar.pdf", source: "file" }],
+      bankStatement: [{ id: "demo-co-bank-1", name: "Co_Bank_statement_6mo.pdf", source: "file" }],
+      addressProof: [{ id: "demo-co-addr-1", name: "Co_Address_proof.pdf", source: "file" }],
+      form16: [{ id: "demo-co-form16-1", name: "Co_Form16_FY25.pdf", source: "file" }],
+    },
+    references: [
+      { fullName: "Vikram Shah", phone: "9876512340", address: "Jayanagar, Bengaluru" },
+      { fullName: "Sneha Iyer", phone: "9876512341", address: "Whitefield, Bengaluru" },
+    ],
+  };
 }
 
 /**
@@ -78,7 +178,11 @@ export function createDefaultLoanApplicationState(): LoanApplicationState {
       tenureMonths: 60,
       employmentType: "salaried",
     },
+    includeCoApplicant: null,
     personal: {
+      fullName: "",
+      relationToPrimary: null,
+      employmentType: null,
       email: "sharath.hv@gmail.com",
       motherName: "Lakshmi H V",
       spouseName: "",
@@ -120,6 +224,7 @@ export function createDefaultLoanApplicationState(): LoanApplicationState {
       { fullName: "Rohan Kumar", phone: "9876543210", address: "HSR Layout, Bengaluru" },
       { fullName: "Priya Nair", phone: "9876501234", address: "Indiranagar, Bengaluru" },
     ],
+    coApplicant: null,
   };
 }
 
@@ -161,6 +266,79 @@ function normalizeReference(value: unknown): LoanApplicationReference {
   };
 }
 
+function parseEmploymentType(value: unknown): LoanApplicationEmploymentType | null {
+  return value === "salaried" || value === "self_employed" ? value : null;
+}
+
+function parsePersonal(personal: Record<string, unknown>) {
+  const work = isRecord(personal.work) ? personal.work : {};
+  const officialAddr = isRecord(work.officialAddress) ? work.officialAddress : {};
+  const legacyWorkAddress = typeof work.workAddress === "string" ? work.workAddress : "";
+  const relation =
+    typeof personal.relationToPrimary === "string" &&
+    isLoanApplicationCoApplicantRelation(personal.relationToPrimary)
+      ? personal.relationToPrimary
+      : null;
+  return {
+    fullName: typeof personal.fullName === "string" ? personal.fullName : "",
+    relationToPrimary: relation,
+    employmentType: parseEmploymentType(personal.employmentType),
+    email: typeof personal.email === "string" ? personal.email : "",
+    motherName: typeof personal.motherName === "string" ? personal.motherName : "",
+    spouseName: typeof personal.spouseName === "string" ? personal.spouseName : "",
+    work: {
+      officialEmail: typeof work.officialEmail === "string" ? work.officialEmail : "",
+      employerName: typeof work.employerName === "string" ? work.employerName : "",
+      officialAddress: {
+        pincode: typeof officialAddr.pincode === "string" ? officialAddr.pincode : "",
+        city: typeof officialAddr.city === "string" ? officialAddr.city : "",
+        state: typeof officialAddr.state === "string" ? officialAddr.state : "",
+        address:
+          typeof officialAddr.address === "string"
+            ? officialAddr.address
+            : legacyWorkAddress,
+      },
+    },
+  };
+}
+
+function parseAddressBlock(address: Record<string, unknown>) {
+  return {
+    permanent: isAddress(address.permanent) ? address.permanent : emptyAddress(),
+    current: isAddress(address.current) ? address.current : emptyAddress(),
+    currentSameAsPermanent:
+      typeof address.currentSameAsPermanent === "boolean"
+        ? address.currentSameAsPermanent
+        : false,
+  };
+}
+
+function parseApplicantProfile(value: unknown): LoanApplicationApplicantProfile | null {
+  if (!isRecord(value)) return null;
+  const personal = isRecord(value.personal) ? value.personal : {};
+  const address = isRecord(value.address) ? value.address : {};
+  const refs = Array.isArray(value.references) ? value.references : [];
+  const parsedPersonal = parsePersonal(personal);
+  const demoPersonal = createDefaultCoApplicantProfile().personal;
+  return {
+    personal: {
+      ...parsedPersonal,
+      // Demo prefill — older sessions may predate co-applicant identity fields.
+      fullName: parsedPersonal.fullName.trim() || demoPersonal.fullName,
+      relationToPrimary: parsedPersonal.relationToPrimary ?? demoPersonal.relationToPrimary,
+      employmentType: parsedPersonal.employmentType ?? demoPersonal.employmentType,
+    },
+    address: parseAddressBlock(address),
+    documents: isLoanApplicationDocumentsState(value.documents)
+      ? value.documents
+      : createEmptyLoanApplicationDocuments(),
+    references: [
+      isReference(refs[0]) ? normalizeReference(refs[0]) : emptyReference(),
+      isReference(refs[1]) ? normalizeReference(refs[1]) : emptyReference(),
+    ],
+  };
+}
+
 function parseState(raw: string): LoanApplicationState | null {
   try {
     const parsed = JSON.parse(raw) as unknown;
@@ -168,7 +346,6 @@ function parseState(raw: string): LoanApplicationState | null {
     const defaults = createDefaultLoanApplicationState();
     const loanDetails = isRecord(parsed.loanDetails) ? parsed.loanDetails : {};
     const personal = isRecord(parsed.personal) ? parsed.personal : {};
-    const work = isRecord(personal.work) ? personal.work : {};
     const address = isRecord(parsed.address) ? parsed.address : {};
     const refs = Array.isArray(parsed.references) ? parsed.references : [];
 
@@ -188,40 +365,10 @@ function parseState(raw: string): LoanApplicationState | null {
             ? loanDetails.employmentType
             : defaults.loanDetails.employmentType,
       },
-      personal: {
-        email: typeof personal.email === "string" ? personal.email : "",
-        motherName: typeof personal.motherName === "string" ? personal.motherName : "",
-        spouseName: typeof personal.spouseName === "string" ? personal.spouseName : "",
-        work: (() => {
-          const officialAddr = isRecord(work.officialAddress) ? work.officialAddress : {};
-          const legacyWorkAddress =
-            typeof work.workAddress === "string" ? work.workAddress : "";
-          return {
-            officialEmail:
-              typeof work.officialEmail === "string" ? work.officialEmail : "",
-            employerName:
-              typeof work.employerName === "string" ? work.employerName : "",
-            officialAddress: {
-              pincode:
-                typeof officialAddr.pincode === "string" ? officialAddr.pincode : "",
-              city: typeof officialAddr.city === "string" ? officialAddr.city : "",
-              state: typeof officialAddr.state === "string" ? officialAddr.state : "",
-              address:
-                typeof officialAddr.address === "string"
-                  ? officialAddr.address
-                  : legacyWorkAddress,
-            },
-          };
-        })(),
-      },
-      address: {
-        permanent: isAddress(address.permanent) ? address.permanent : emptyAddress(),
-        current: isAddress(address.current) ? address.current : emptyAddress(),
-        currentSameAsPermanent:
-          typeof address.currentSameAsPermanent === "boolean"
-            ? address.currentSameAsPermanent
-            : false,
-      },
+      includeCoApplicant:
+        typeof parsed.includeCoApplicant === "boolean" ? parsed.includeCoApplicant : null,
+      personal: parsePersonal(personal),
+      address: parseAddressBlock(address),
       documents: isLoanApplicationDocumentsState(parsed.documents)
         ? parsed.documents
         : createEmptyLoanApplicationDocuments(),
@@ -229,6 +376,7 @@ function parseState(raw: string): LoanApplicationState | null {
         isReference(refs[0]) ? normalizeReference(refs[0]) : emptyReference(),
         isReference(refs[1]) ? normalizeReference(refs[1]) : emptyReference(),
       ],
+      coApplicant: parseApplicantProfile(parsed.coApplicant),
     };
   } catch {
     return null;
@@ -262,6 +410,50 @@ export function resetLoanApplicationState(): LoanApplicationState {
   return next;
 }
 
+export function getApplicantProfile(
+  state: LoanApplicationState,
+  applicant: LoanApplicationApplicant,
+): LoanApplicationApplicantProfile {
+  if (applicant === "co") {
+    return state.coApplicant ?? emptyApplicantProfile();
+  }
+  return {
+    personal: state.personal,
+    address: state.address,
+    documents: state.documents,
+    references: state.references,
+  };
+}
+
+function mergeApplicantProfile(
+  current: LoanApplicationApplicantProfile,
+  patch: Partial<LoanApplicationApplicantProfile> | undefined,
+): LoanApplicationApplicantProfile {
+  if (!patch) return current;
+  return {
+    personal: {
+      ...current.personal,
+      ...patch.personal,
+      work: {
+        ...current.personal.work,
+        ...patch.personal?.work,
+        officialAddress: {
+          ...current.personal.work.officialAddress,
+          ...patch.personal?.work?.officialAddress,
+        },
+      },
+    },
+    address: {
+      ...current.address,
+      ...patch.address,
+      permanent: { ...current.address.permanent, ...patch.address?.permanent },
+      current: { ...current.address.current, ...patch.address?.current },
+    },
+    documents: patch.documents ?? current.documents,
+    references: patch.references ?? current.references,
+  };
+}
+
 export function patchLoanApplicationState(
   patch: Partial<LoanApplicationState>,
 ): LoanApplicationState {
@@ -270,6 +462,10 @@ export function patchLoanApplicationState(
     ...current,
     ...patch,
     loanDetails: { ...current.loanDetails, ...patch.loanDetails },
+    includeCoApplicant:
+      patch.includeCoApplicant !== undefined
+        ? patch.includeCoApplicant
+        : current.includeCoApplicant,
     personal: {
       ...current.personal,
       ...patch.personal,
@@ -290,7 +486,37 @@ export function patchLoanApplicationState(
     },
     references: patch.references ?? current.references,
     documents: patch.documents ?? current.documents,
+    coApplicant:
+      patch.coApplicant === null
+        ? null
+        : patch.coApplicant
+          ? mergeApplicantProfile(
+              current.coApplicant ?? emptyApplicantProfile(),
+              patch.coApplicant,
+            )
+          : current.coApplicant,
   };
   writeLoanApplicationState(next);
   return next;
+}
+
+/** Patch primary top-level fields or the co-applicant nested profile. */
+export function patchApplicantProfile(
+  applicant: LoanApplicationApplicant,
+  patch: Partial<LoanApplicationApplicantProfile>,
+): LoanApplicationState {
+  if (applicant === "co") {
+    return patchLoanApplicationState({
+      coApplicant: mergeApplicantProfile(
+        readLoanApplicationState().coApplicant ?? emptyApplicantProfile(),
+        patch,
+      ),
+    });
+  }
+  return patchLoanApplicationState({
+    personal: patch.personal,
+    address: patch.address,
+    documents: patch.documents,
+    references: patch.references,
+  });
 }
