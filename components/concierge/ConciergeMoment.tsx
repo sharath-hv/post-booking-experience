@@ -244,7 +244,7 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
             />
           ),
           headingLastLine: true,
-          artifact: <PlanList items={planItems} variant="glass" />,
+          artifact: <PlanList items={planItems} variant="glass" showNowLabel />,
           footnote: <PaperworkDeadlineFootnote />,
           replies: primaryReply(JOURNEY_PATHS.kyc.hub),
         };

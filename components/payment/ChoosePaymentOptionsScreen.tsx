@@ -10,6 +10,7 @@ import { JOURNEY_PATHS } from "@/lib/journey-routes";
 import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
 import { ackoDriveFinanceActionPath } from "@/components/payment/acko-drive-finance-bank";
 import { writeConciergeEcho } from "@/lib/concierge/echo";
+import { AckoDriveFinanceEligibilityBottomSheet } from "@/components/payment/AckoDriveFinanceEligibilityBottomSheet";
 import { FullPaymentConfirmBottomSheet } from "@/components/payment/FullPaymentConfirmBottomSheet";
 import { SelfFinanceConfirmBottomSheet } from "@/components/payment/SelfFinanceConfirmBottomSheet";
 import {
@@ -256,17 +257,13 @@ export function ChoosePaymentOptionsScreen() {
   const bookingOptInCopy = searchParams.get("preselect") !== "0";
 
   const [choice, setChoice] = useState<PaymentOptionId>("acko_drive");
+  const [ackoDriveEligibilityOpen, setAckoDriveEligibilityOpen] = useState(false);
   const [selfFinanceConfirmOpen, setSelfFinanceConfirmOpen] = useState(false);
   const [fullPaymentConfirmOpen, setFullPaymentConfirmOpen] = useState(false);
 
   const onContinue = useCallback(() => {
     if (choice === "acko_drive") {
-      router.push(
-        bankSelectionPath({
-          next: ackoDriveFinanceActionPath(bankIdToken()),
-          echo: `Let's finance via ${bankNameToken()}`,
-        }),
-      );
+      setAckoDriveEligibilityOpen(true);
       return;
     }
     if (choice === "self_finance") {
@@ -274,7 +271,17 @@ export function ChoosePaymentOptionsScreen() {
       return;
     }
     setFullPaymentConfirmOpen(true);
-  }, [choice, router]);
+  }, [choice]);
+
+  const onAckoDriveEligibilityConfirm = useCallback(() => {
+    setAckoDriveEligibilityOpen(false);
+    router.push(
+      bankSelectionPath({
+        next: ackoDriveFinanceActionPath(bankIdToken()),
+        echo: `Let's finance via ${bankNameToken()}`,
+      }),
+    );
+  }, [router]);
 
   // Straight into Shivi's action turns — no “Payment option confirmed” interstitials.
   const onFullPaymentConfirm = useCallback(() => {
@@ -408,6 +415,12 @@ export function ChoosePaymentOptionsScreen() {
         footnote="Your delivery date locks in once the money plan is set. Best done now."
         callLabel="Not sure? I can call you"
         manageShowVehicleIdentification
+      />
+
+      <AckoDriveFinanceEligibilityBottomSheet
+        open={ackoDriveEligibilityOpen}
+        onClose={() => setAckoDriveEligibilityOpen(false)}
+        onConfirm={onAckoDriveEligibilityConfirm}
       />
 
       <SelfFinanceConfirmBottomSheet

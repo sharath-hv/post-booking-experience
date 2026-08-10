@@ -12,7 +12,7 @@ import { BottomSheetCloseIcon } from "@/components/atoms/BottomSheetCloseIcon";
 import { BottomSheetPortal } from "@/components/molecules/BottomSheetPortal";
 import { BOTTOM_SHEET_MAX_HEIGHT_CLASS, BOTTOM_SHEET_OVERLAY_Z_CLASS } from "@/lib/layout/bottom-sheet-layout";
 
-import chevronRightIcon from "@/assets/Chevron_right.svg";
+import arrowRightIcon from "@/assets/Arrow_right.svg";
 import styles from "./UploadSourceBottomSheet.module.scss";
 
 
@@ -43,7 +43,7 @@ function UploadSourceRow({ label, iconSrc, onClick }: UploadSourceRowProps) {
       <span className={styles.min_w_0_4}>{label}</span>
       <span className={styles.relative_5}>
         <Image
-          src={chevronRightIcon}
+          src={arrowRightIcon}
           alt=""
           fill
           className={styles.object_contain_3}

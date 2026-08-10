@@ -24,6 +24,8 @@
 
 .shrink_0_2 {
   flex-shrink: 0;
+  /* tick01.svg stroke `#121212` → white on the dark echo chip */
+  filter: brightness(0) invert(1);
 }
 
 .flex_3 {

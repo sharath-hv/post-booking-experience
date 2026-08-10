@@ -48,13 +48,22 @@ export type PlanListProps = {
   items: readonly PlanItem[];
   /** `glass` — frosted gradient surface used on the manage-booking overlay. */
   variant?: "default" | "glass";
+  /**
+   * Show the “Now” eyebrow on the live step.
+   * Only the arrival “next few days” timeline opts in; progress overlays omit it.
+   */
+  showNowLabel?: boolean;
 };
 
 /**
  * “Here's how I'll get you your car” — her commitments as a timeline:
- * icon nodes on a dashed rail, the live step filled in brand purple as “Now”.
+ * icon nodes on a solid rail; live step uses the purple icon well as “Now”.
  */
-export function PlanList({ items, variant = "default" }: PlanListProps) {
+export function PlanList({
+  items,
+  variant = "default",
+  showNowLabel = false,
+}: PlanListProps) {
   return (
     <ol
       className={cn(
@@ -72,13 +81,14 @@ export function PlanList({ items, variant = "default" }: PlanListProps) {
           idx > 0
             ? (items[idx - 1]!.status ?? (idx - 1 === 0 ? "now" : "todo"))
             : null;
-        // Offset keeps the node aligned with the title under the “Now” label.
-        // Paint the green rail only when a done step sits above; otherwise spacer only.
+        // Only when the “Now” eyebrow is shown: offset the node under that label.
+        // Without the label, keep the node top-aligned with title/detail like done/todo.
         const intoNowFromDone = isNow && prevStatus === "done";
+        const showIntoNowRail = isNow && showNowLabel;
         return (
           <li key={item.title} className={styles.planStep}>
             <span className={styles.planRail}>
-              {isNow ? (
+              {showIntoNowRail ? (
                 <span
                   className={cn(
                     styles.planConnector,
@@ -92,7 +102,11 @@ export function PlanList({ items, variant = "default" }: PlanListProps) {
               <span
                 className={cn(
                   styles.planNode,
-                  isNow ? styles.planNodeNow : isDone ? styles.planNodeDone : styles.planNodeTodo
+                  isNow
+                    ? ["icon-well-surface-purple", styles.planNodeNow]
+                    : isDone
+                      ? ["icon-well-surface-green", styles.planNodeDone]
+                      : ["icon-well-surface", styles.planNodeTodo]
                 )}
               >
                 {isDone ? (
@@ -116,11 +130,7 @@ export function PlanList({ items, variant = "default" }: PlanListProps) {
                 <span
                   className={cn(
                     styles.planConnector,
-                    isNow
-                      ? styles.planConnectorFromNow
-                      : isDone
-                        ? styles.planConnectorFromDone
-                        : styles.planConnectorFromTodo
+                    isDone && styles.planConnectorFromDone,
                   )}
                   aria-hidden
                 />
@@ -129,11 +139,11 @@ export function PlanList({ items, variant = "default" }: PlanListProps) {
             <div
               className={cn(
                 styles.planStepCopy,
-                isNow && styles.planStepCopyNow,
+                isNow && showNowLabel && styles.planStepCopyNow,
                 !isLast && styles.planStepCopySpaced
               )}
             >
-              {isNow ? <p className={styles.planNowLabel}>Now</p> : null}
+              {isNow && showNowLabel ? <p className={styles.planNowLabel}>Now</p> : null}
               <div className={styles.planTitleRow}>
                 <p className={styles.planTitle}>{item.title}</p>
               </div>
