@@ -22,7 +22,7 @@
   border-width: 1px;
   --tw-border-style: dashed;
   border-style: dashed;
-  border-color: #e8e8e8;
+  border-color: var(--card-separator-color, #e8e8e8);
   background-color: #f5f5f5;
   padding-inline: calc(var(--spacing) * 3);
 }
@@ -154,7 +154,7 @@
   border-top-width: 1px;
   --tw-border-style: dashed;
   border-style: dashed;
-  border-color: #e8e8e8;
+  border-color: var(--card-separator-color, #e8e8e8);
 }
 
 .mt_3_16 {

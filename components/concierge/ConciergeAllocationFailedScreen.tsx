@@ -4,6 +4,7 @@ import Image, { type StaticImageData } from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useState, type ReactNode } from "react";
 
+import { AllocationDecisionDeadlineFootnote } from "@/components/concierge/DeadlineCountdownFootnote";
 import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
 import { writeChangeEntryStage } from "@/lib/change-policy";
 import { writeConciergeEcho } from "@/lib/concierge/echo";
@@ -226,7 +227,12 @@ export function ConciergeAllocationFailedScreen({
           />
         </div>
       }
+      footnote={<AllocationDecisionDeadlineFootnote />}
       replies={[{ label: ctaLabel, onClick: onContinue, echo: null }]}
+      altTimeSkip={{
+        label: "SLA timed out",
+        href: JOURNEY_PATHS.carAllocation.decisionCancelled,
+      }}
       callLabel="Want to talk it through? I can call you"
     />
   );

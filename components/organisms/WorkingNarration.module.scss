@@ -36,7 +36,7 @@
   border-top-width: 1px;
   --tw-border-style: dashed;
   border-style: dashed;
-  border-color: #e8e8e8;
+  border-color: var(--card-separator-color, #e8e8e8);
   padding-top: calc(var(--spacing) * 3);
 }
 

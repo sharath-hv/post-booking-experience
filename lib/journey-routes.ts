@@ -32,6 +32,8 @@ export const JOURNEY_PATHS = {
     failed: "/car-allocation/failed",
     /** Express demo — selected variant discontinued; no standard-delivery out. */
     variantUnavailable: "/car-allocation/variant-unavailable",
+    /** Decision SLA timed out on allocation remediation. */
+    decisionCancelled: "/car-allocation/decision-cancelled",
   },
   payment: {
     /** Arrival after price-lock — before KYC / dealer (not the money chapter). */

@@ -225,6 +225,9 @@ function exactCarNowDetail(pathname: string, flow?: ExperienceFlow): string {
   ) {
     return "Pick a path forward so we can keep your delivery moving";
   }
+  if (path === "/car-allocation/decision-cancelled") {
+    return "Your booking is cancelled. Refund is on its way";
+  }
   if (path.startsWith("/car-allocation")) {
     return "Hyundai's manufacturing your exact car now";
   }

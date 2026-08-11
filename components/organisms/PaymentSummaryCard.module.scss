@@ -86,7 +86,7 @@
   border-top-width: 1px;
   --tw-border-style: dashed;
   border-style: dashed;
-  border-color: #e8e8e8;
+  border-color: var(--card-separator-color, #e8e8e8);
 }
 
 .text_sm_10 {
@@ -146,7 +146,7 @@
   gap: calc(var(--spacing) * 2);
   border-top-style: var(--tw-border-style);
   border-top-width: 1px;
-  border-color: #e8e8e8;
+  border-color: var(--card-separator-color, #e8e8e8);
   padding-inline: calc(var(--spacing) * 4);
   padding-block: calc(var(--spacing) * 4);
 }

@@ -96,3 +96,14 @@ export function ReuploadDeadlineFootnote() {
     />
   );
 }
+
+/** Allocation failed — 24h to pick a remediation path. */
+export function AllocationDecisionDeadlineFootnote() {
+  return (
+    <DeadlineCountdownFootnote
+      durationMs={24 * 60 * 60 * 1000}
+      storageKey="concierge.allocationDecisionDeadlineAt"
+      copy="Choose one of the options above before time runs out, or this booking will be cancelled."
+    />
+  );
+}

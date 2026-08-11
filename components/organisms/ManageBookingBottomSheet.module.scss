@@ -8,9 +8,9 @@
   align-items: center;
   justify-content: center;
   border-radius: 44px;
-  border: 1px solid #e8e8e8;
-  background: linear-gradient(180deg, #e7e7e7 0%, #fff 100%);
-  box-shadow: inset 0 0 0 2px #fff;
+  border: 0.5px solid #d6dce7;
+  background: linear-gradient(180deg, #e1e6f0 0%, #fff 100%);
+  box-shadow: 0 0 0 2px #fff inset;
 }
 
 .shrink_0_1 {
@@ -78,7 +78,7 @@
   border-top-width: 1px;
   --tw-border-style: dashed;
   border-style: dashed;
-  border-color: #e8e8e8;
+  border-color: var(--card-separator-color, #e8e8e8);
 }
 
 .flex_10 {
