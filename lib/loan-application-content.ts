@@ -97,3 +97,16 @@ export function loanApplicationApplicantEyebrowLabel(
 ): string {
   return applicant === "co" ? "Co\u2011applicant" : "You · Primary applicant";
 }
+
+/** Final submit — terms bottom sheet before application is sent to the bank. */
+export const LOAN_APPLICATION_TERMS_TITLE = "Agree to these terms before you submit";
+
+export const LOAN_APPLICATION_TERMS_CTA = "Agree and submit";
+
+export const LOAN_APPLICATION_TERMS_POINTS = [
+  "All details you’ve shared are true and complete to the best of your knowledge.",
+  "The bank may verify your information with employers, references, and credit bureaus.",
+  "Submitting this application does not guarantee loan approval or a specific rate.",
+  "ACKO Drive will share your application with the bank you selected for processing.",
+  "You’re authorizing a credit check as part of this loan application.",
+] as const;

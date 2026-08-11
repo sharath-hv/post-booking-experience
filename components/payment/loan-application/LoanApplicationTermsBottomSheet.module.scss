@@ -1,0 +1,137 @@
+/* Component styles — shell aligned with AckoDriveFinanceEligibilityBottomSheet */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background-color: color-mix(in oklab, var(--color-black) 90%, transparent);
+  transition-property: opacity;
+  transition-duration: 280ms;
+  transition-timing-function: var(--ease-out);
+}
+
+.backdrop_visible {
+  opacity: 1;
+}
+
+.backdrop_hidden {
+  opacity: 0;
+}
+
+.sheet {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  z-index: 10;
+  display: flex;
+  width: 100%;
+  max-width: 640px;
+  --tw-translate-x: -50%;
+  translate: var(--tw-translate-x) var(--tw-translate-y);
+  flex-direction: column;
+  overflow: hidden;
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  background-color: var(--color-white);
+  transition-property: transform, translate;
+  transition-duration: 280ms;
+  transition-timing-function: var(--ease-out);
+}
+
+.sheet_in {
+  --tw-translate-y: 0;
+  translate: var(--tw-translate-x) var(--tw-translate-y);
+}
+
+.sheet_out {
+  --tw-translate-y: 100%;
+  translate: var(--tw-translate-x) var(--tw-translate-y);
+}
+
+.sheet_inner {
+  position: relative;
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+}
+
+.close {
+  position: absolute;
+  right: calc(var(--spacing) * 5);
+  top: calc(var(--spacing) * 6);
+  z-index: 10;
+  display: flex;
+  height: calc(var(--spacing) * 10);
+  width: calc(var(--spacing) * 10);
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-lg);
+  color: #121212;
+}
+
+.body {
+  min-height: 0;
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-inline: calc(var(--spacing) * 5);
+  padding-top: calc(var(--spacing) * 6);
+}
+
+.icon_well {
+  position: relative;
+  height: 72px;
+  width: 72px;
+  flex-shrink: 0;
+  overflow: hidden;
+  background-color: var(--color-white);
+}
+
+.icon {
+  height: 72px;
+  width: 72px;
+  object-fit: contain;
+}
+
+.title {
+  margin-top: calc(var(--spacing) * 6);
+  text-align: left;
+  /* heading-md */
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.1px;
+  color: #121212;
+}
+
+.terms_list {
+  margin-top: calc(var(--spacing) * 5);
+}
+
+.cta_strip {
+  flex-shrink: 0;
+  background-color: var(--color-white);
+  padding-inline: calc(var(--spacing) * 5);
+  padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
+}
+
+.primary_cta {
+  width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backdrop,
+  .sheet {
+    transition-property: none;
+  }
+
+  .sheet_out {
+    --tw-translate-y: 0;
+    translate: var(--tw-translate-x) var(--tw-translate-y);
+  }
+}

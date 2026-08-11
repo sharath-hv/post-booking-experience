@@ -56,8 +56,8 @@ export function LoanUnderReviewScreen() {
         {
           label: "If the bank declines",
           href: bankId
-            ? `/payment/loan-rejected?bank=${encodeURIComponent(bankId)}`
-            : "/payment/loan-rejected",
+            ? `/payment/loan-rejected?bank=${encodeURIComponent(bankId)}&outcome=alt_bank`
+            : "/payment/loan-rejected?outcome=alt_bank",
         },
       ]}
       dateHolder="shivi"

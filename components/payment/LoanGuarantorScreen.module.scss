@@ -1,0 +1,30 @@
+.shell {
+  position: relative;
+  min-height: 100dvh;
+  background-color: #f7faff;
+}
+
+.inner {
+  position: relative;
+  min-height: 100dvh;
+  padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
+}
+
+.main {
+  padding-inline: calc(var(--spacing) * 5);
+  padding-top: calc(var(--spacing) * 2);
+}
+
+.subtitle {
+  /* body-sm */
+  font-size: 14px;
+  line-height: 20px;
+  color: #4b4b4b;
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing) * 8);
+  margin-top: calc(var(--spacing) * 6);
+}

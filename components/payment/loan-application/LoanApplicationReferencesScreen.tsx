@@ -18,6 +18,7 @@ import {
   loanApplicationStaggerAfterCard,
 } from "@/components/payment/loan-application/loan-application-layout";
 import { LoanApplicationPageStagger } from "@/components/payment/loan-application/LoanApplicationPageStagger";
+import { LoanApplicationTermsBottomSheet } from "@/components/payment/loan-application/LoanApplicationTermsBottomSheet";
 import { useLoanApplicationApplicant } from "@/components/payment/loan-application/use-loan-application-applicant";
 import { useLoanApplicationBank } from "@/components/payment/loan-application/use-loan-application-bank";
 import { useLoanApplicationState } from "@/components/payment/loan-application/use-loan-application-state";
@@ -99,6 +100,7 @@ export function LoanApplicationReferencesScreen() {
     useLoanApplicationApplicant(state);
   const [ref1, setRef1] = useState(profile.references[0]);
   const [ref2, setRef2] = useState(profile.references[1]);
+  const [termsSheetOpen, setTermsSheetOpen] = useState(false);
 
   useEffect(() => {
     if (!hydrated) return;
@@ -110,8 +112,7 @@ export function LoanApplicationReferencesScreen() {
   const isFinalPass =
     applicant === "co" || state.includeCoApplicant !== true;
 
-  const onSubmitClick = useCallback(() => {
-    if (!canSubmit) return;
+  const persistReferences = useCallback(() => {
     const normalized: [LoanApplicationReference, LoanApplicationReference] = [
       {
         fullName: ref1.fullName.trim(),
@@ -125,22 +126,31 @@ export function LoanApplicationReferencesScreen() {
       },
     ];
     updateApplicant(applicant, { references: normalized });
+  }, [applicant, ref1, ref2, updateApplicant]);
+
+  const navigateAfterReferences = useCallback(() => {
     router.push(
       loanApplicationNextPath(bankId, "references", {
         applicant,
         includeCoApplicant: state.includeCoApplicant,
       }),
     );
-  }, [
-    applicant,
-    bankId,
-    canSubmit,
-    ref1,
-    ref2,
-    router,
-    state.includeCoApplicant,
-    updateApplicant,
-  ]);
+  }, [applicant, bankId, router, state.includeCoApplicant]);
+
+  const onCtaClick = useCallback(() => {
+    if (!canSubmit) return;
+    persistReferences();
+    if (!isFinalPass) {
+      navigateAfterReferences();
+      return;
+    }
+    setTermsSheetOpen(true);
+  }, [canSubmit, isFinalPass, navigateAfterReferences, persistReferences]);
+
+  const onAgreeAndSubmit = useCallback(() => {
+    setTermsSheetOpen(false);
+    navigateAfterReferences();
+  }, [navigateAfterReferences]);
 
   const title = isCoApplicantPass
     ? "Two people who can vouch for your co-applicant."
@@ -187,9 +197,15 @@ export function LoanApplicationReferencesScreen() {
 
       <LoanApplicationFixedCta
         label={isFinalPass ? "Submit loan application" : "Continue to co-applicant"}
-        onClick={onSubmitClick}
+        onClick={onCtaClick}
         disabled={!canSubmit}
         staggerDelayMs={loanApplicationStaggerAfterCard(2)}
+      />
+
+      <LoanApplicationTermsBottomSheet
+        open={termsSheetOpen}
+        onClose={() => setTermsSheetOpen(false)}
+        onConfirm={onAgreeAndSubmit}
       />
     </>
   );

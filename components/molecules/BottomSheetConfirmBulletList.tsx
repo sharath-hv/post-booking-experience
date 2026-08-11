@@ -2,11 +2,10 @@ import Image from "next/image";
 import type { StaticImageData } from "next/image";
 import type { ReactNode } from "react";
 
-import { publicAssetPath } from "@/lib/public-asset-path";
+import tickIcon from "@/assets/tick.svg";
 import styles from "./BottomSheetConfirmBulletList.module.scss";
 
-
-const BULLET_ICON = publicAssetPath("tick.svg");
+const BULLET_ICON = tickIcon;
 
 /** Tick bullets — shared by payment / modify confirm bottom sheets. */
 export const BOTTOM_SHEET_CONFIRM_BULLET_LIST_CLASS = styles.bottomSheetConfirmBulletList;

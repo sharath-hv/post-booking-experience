@@ -8,6 +8,7 @@ import {
   getBookingDeliveryLine,
   isStandardDeliveryFlow,
 } from "@/lib/experience-flow-content";
+import { MODIFY_BOOKING_CANCEL_FEE_INR } from "@/lib/manage-booking-modify";
 import { BOOKING_LOCK_AMOUNT_INR } from "@/lib/paymentUrls";
 
 function formatInr(amount: number) {
@@ -111,11 +112,11 @@ export function cancelBookingRefundBookingAmountInr(): number {
 }
 
 export function cancelBookingRefundCancellationFeeDisplay(): string {
-  return "0";
+  return formatInr(MODIFY_BOOKING_CANCEL_FEE_INR);
 }
 
 export function cancelBookingRefundAmountInr(): number {
-  return BOOKING_LOCK_AMOUNT_INR;
+  return Math.max(0, BOOKING_LOCK_AMOUNT_INR - MODIFY_BOOKING_CANCEL_FEE_INR);
 }
 
 export function formatCancelBookingInr(amount: number): string {

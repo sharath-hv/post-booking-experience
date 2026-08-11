@@ -22,7 +22,7 @@ import styles from "./LoanSubmitConfirmBottomSheet.module.scss";
 /** Enter/exit slide duration — keep in sync with `BankLoanDetailBottomSheet` */
 const SHEET_TRANSITION_MS = 280;
 
-/** Illustration + list marker from `public/assets` (`doc search.svg` + `tick.svg`). */
+/** Illustration from `public/assets` (`doc search.svg`); list ticks use `@/assets/tick.svg`. */
 const SHEET_ASSETS = {
   hero: publicAssetPath("doc search.svg"),
 } as const;

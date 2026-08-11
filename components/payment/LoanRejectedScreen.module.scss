@@ -1,123 +1,157 @@
 /* Component styles */
 
-.flex_0 {
-  display: flex;
-  align-items: flex-start;
-  gap: calc(var(--spacing) * 3);
-  padding-inline: calc(var(--spacing) * 4);
-  padding-block: calc(var(--spacing) * 4);
+.demoSwitcher {
+  margin-top: calc(var(--spacing) * 6);
 }
 
-.relative_1 {
+.optionStack {
   display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: calc(var(--spacing) * 4);
+}
+
+.optionCard {
+  width: 100%;
+  border-radius: var(--radius-2xl);
+  border-style: solid;
+  border-width: 1px;
+  padding: calc(var(--spacing) * 4);
+  text-align: left;
+  transition-property: color, background-color, border-color;
+  transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+  transition-duration: var(--tw-duration, var(--default-transition-duration));
+}
+
+.optionCardIdle {
+  border-color: transparent;
+  background-color: var(--color-white);
+}
+
+.optionCardSelected {
+  border-color: #bda6e8;
+  background-color: var(--color-white);
+  background-image: linear-gradient(to bottom, #f4eefe, rgba(244, 238, 254, 0));
+}
+
+.optionHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.illustration {
+  position: relative;
   height: calc(var(--spacing) * 11);
   width: calc(var(--spacing) * 11);
   flex-shrink: 0;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  border-radius: calc(infinity * 1px);
-  border: 1px solid #e8e8e8;
-  background-image: linear-gradient(to bottom, #e7e7e7, #ffffff);
-  box-shadow: inset 0 0 0 2px #ffffff;
 }
 
-.object_contain_2 {
-  width: 24px;
-  height: 24px;
+.illustrationImg {
   object-fit: contain;
 }
 
-.min_w_0_3 {
-  display: flex;
-  min-width: 0px;
-  flex: 1;
-  flex-direction: column;
-  gap: 4px;
+.bankMark {
+  position: relative;
+  height: calc(var(--spacing) * 11);
+  width: calc(var(--spacing) * 11);
+  flex-shrink: 0;
 }
 
-.text_base_4 {
+.optionRadio {
+  margin-top: calc(var(--spacing) * 0.5);
+  display: flex;
+  flex-shrink: 0;
+}
+
+.radio {
+  position: relative;
+  height: calc(var(--spacing) * 4);
+  width: calc(var(--spacing) * 4);
+  flex-shrink: 0;
+}
+
+.radioImg {
+  object-fit: contain;
+}
+
+.optionTitle {
+  margin-top: calc(var(--spacing) * 3);
   font-size: 16px;
-  line-height: var(--tw-leading, 24px);
-  --tw-font-weight: var(--font-weight-semibold);
-  font-weight: var(--font-weight-semibold);
-  --tw-leading: calc(var(--spacing) * 6);
+  font-weight: var(--font-weight-medium);
   line-height: calc(var(--spacing) * 6);
   color: #121212;
 }
 
-.text_xs_5 {
+.optionSubtitle {
+  margin-top: var(--spacing);
   font-size: 12px;
-  line-height: var(--tw-leading, 16px);
-  --tw-leading: 16px;
-  line-height: 16px;
-  color: #757575;
-}
-
-.shrink_0_6 {
-  flex-shrink: 0;
-  border-radius: calc(infinity * 1px);
-  background-color: #e7f6ee;
-  padding-inline: calc(var(--spacing) * 2.5);
-  padding-block: var(--spacing);
-  font-size: 11px;
-  --tw-font-weight: var(--font-weight-medium);
-  font-weight: var(--font-weight-medium);
-  --tw-leading: calc(var(--spacing) * 4);
   line-height: calc(var(--spacing) * 4);
-  color: #0c7a42;
+  color: #4b4b4b;
 }
 
-.border_t_7 {
-  border-top-style: var(--tw-border-style);
+.optionFooter {
+  margin-top: calc(var(--spacing) * 3);
+  border-top-style: dashed;
   border-top-width: 1px;
-  --tw-border-style: dashed;
-  border-style: dashed;
-  border-color: #e8e8e8;
-  padding-inline: calc(var(--spacing) * 4);
-  padding-block: calc(var(--spacing) * 4);
+  border-color: #dcdbe1;
+  padding-top: calc(var(--spacing) * 3);
 }
 
-.flex_8 {
+.detailRow {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--spacing) * 2);
+}
+
+.detailIcon {
+  position: relative;
+  height: calc(var(--spacing) * 4);
+  width: calc(var(--spacing) * 4);
+  flex-shrink: 0;
+}
+
+.detailIconImg {
+  object-fit: contain;
+}
+
+.detailText {
+  min-width: 0px;
+  font-size: 12px;
+  line-height: calc(var(--spacing) * 5);
+  color: #4b4b4b;
+}
+
+.bankStats {
   display: flex;
   flex-direction: column;
   gap: calc(var(--spacing) * 3);
 }
 
-.flex_9 {
+.bankStatRow {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: calc(var(--spacing) * 3);
 }
 
-.text_sm_10 {
-  font-size: 14px;
-  line-height: var(--tw-leading, 20px);
-  --tw-leading: calc(var(--spacing) * 5);
+.bankStatLabel {
+  font-size: 12px;
   line-height: calc(var(--spacing) * 5);
   color: #4b4b4b;
 }
 
-.text_sm_11 {
-  font-size: 14px;
-  line-height: var(--tw-leading, 20px);
-  --tw-font-weight: var(--font-weight-medium);
+.bankStatValue {
+  font-size: 12px;
   font-weight: var(--font-weight-medium);
-  --tw-leading: calc(var(--spacing) * 5);
   line-height: calc(var(--spacing) * 5);
   color: #121212;
 }
 
-.text_sm_12 {
-  font-size: 14px;
-  line-height: var(--tw-leading, 20px);
-  --tw-font-weight: var(--font-weight-medium);
+.bankStatValueStrong {
+  font-size: 12px;
   font-weight: var(--font-weight-medium);
-  --tw-leading: calc(var(--spacing) * 5);
   line-height: calc(var(--spacing) * 5);
   color: #121212;
-  --tw-numeric-spacing: tabular-nums;
-  font-variant-numeric: var(--tw-ordinal,) var(--tw-slashed-zero,) var(--tw-numeric-figure,) var(--tw-numeric-spacing,) var(--tw-numeric-fraction,);
+  font-variant-numeric: tabular-nums;
 }
-

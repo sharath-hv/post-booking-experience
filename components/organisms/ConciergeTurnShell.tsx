@@ -389,10 +389,12 @@ export function ConciergeTurnShell({
 
   const turnDateHolder = resolveTurnDateHolder(dateHolder, replies);
 
-  /** Room for the fixed footer — taller when footnote + CTA + call link stack. */
+  /** Room for the fixed footer — taller when footnote / stacked replies + call. */
+  const replyCount = replies?.length ?? 0;
   const mainBottomPad = !hasFooter
     ? styles.pb_16_7
-    : footnote && !footnoteInline && replies?.length && callLabel
+    : (footnote && !footnoteInline && replyCount > 0 && callLabel) ||
+        (replyCount >= 2 && Boolean(callLabel))
       ? styles.pbDeepFooter
       : styles.pb_calc_12rem_env_safe_a_8;
 
