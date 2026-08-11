@@ -6,6 +6,7 @@ import type { CSSProperties } from "react";
 import cretaCutout from "@/assets/Hyundai Creta.png";
 import ackoDriveWordmark from "@/assets/ACKO Drive wordmark.svg";
 import tickIcon from "@/assets/tick.svg";
+import { IconWell } from "@/components/molecules/IconWell";
 import { BookingCarCardDetails } from "@/components/organisms/BookingCarCardDetails";
 import {
   BOOKING_CAR_CARD_SHELL_CLASS,
@@ -204,9 +205,9 @@ export function CarSummaryCardLite({
 
       {SHOW_CAR_SOURCE_HEADER ? (
         <div className={styles.relative_50}>
-          <span className={styles.flex_51}>
+          <IconWell aria-hidden>
             <Image src={ackoDriveWordmark} alt="" width={20} height={15} className={styles.h_15px__52} unoptimized />
-          </span>
+          </IconWell>
           <div className={styles.min_w_0_42}>
             <p className={styles.text_sm_15}>{dealerName}</p>
             {dealerDetail ? (

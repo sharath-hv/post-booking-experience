@@ -1,0 +1,37 @@
+/* Circular leading icon well — Figma 3303:12317 (no outer drop shadow). */
+
+.well {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  width: var(--icon-well-size, 44px);
+  height: var(--icon-well-size, 44px);
+  border-radius: 44px;
+  box-sizing: border-box;
+}
+
+.grey {
+  border: 1px solid var(--Border-Default-grey100, #e8e8e8);
+  background: linear-gradient(180deg, #e4e6ea 0%, #fff 100%);
+  box-shadow: 0 0 0 2px #fff inset;
+}
+
+.green {
+  border: 1px solid #bfe8d2;
+  background: linear-gradient(180deg, #dff1e8 0%, #fff 100%);
+  box-shadow: 0 0 0 2px #fff inset;
+}
+
+.amber {
+  border: 1px solid #f0ddb0;
+  background: linear-gradient(180deg, #ffefd0 0%, #fff 100%);
+  box-shadow: 0 0 0 2px #fff inset;
+}
+
+.purple {
+  border: 1px solid #5920c5;
+  background: linear-gradient(180deg, #e5dafb 0%, #fff 100%);
+  box-shadow: 0 0 0 2px #fff inset;
+}

@@ -11,6 +11,7 @@ import { PlanList } from "@/components/organisms/artifacts";
 import { DEMO_BOOKING_ID } from "@/lib/booking-car-card-content";
 import { ManageBookingCarCard, ManageBookingSections } from "@/components/organisms/ManageBookingBottomSheet";
 import { BottomSheetPortal } from "@/components/molecules/BottomSheetPortal";
+import { IconWell } from "@/components/molecules/IconWell";
 import { readExperienceFlow, type ExperienceFlow } from "@/lib/experience-flow";
 import {
   downloadJourneyReceipt,
@@ -187,7 +188,7 @@ export function ManageBookingZoomOverlay({
               >
                 Where we are
               </h3>
-              <PlanList items={steps} variant="glass" />
+              <PlanList items={steps} variant="glass" appearance="progress" />
             </section>
 
             <div className={styles.mt_8_10}>
@@ -218,9 +219,9 @@ export function ManageBookingZoomOverlay({
                               idx > 0 && styles.border_t_27
                             )}
                           >
-                            <span className={styles.flex_12}>
+                            <IconWell aria-hidden className={styles.receiptWell}>
                               <ReceiptGlyph />
-                            </span>
+                            </IconWell>
                             <span className={styles.min_w_0_13}>
                               <span className={styles.block_14}>
                                 {receipt.title}

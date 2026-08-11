@@ -3,6 +3,7 @@
 import Image from "next/image";
 
 import otpCallIcon from "@/assets/OTP_Call.svg";
+import { IconWell } from "@/components/molecules/IconWell";
 import { OVERLAY_GLASS_CARD_CLASS } from "@/lib/overlay-glass-card";
 import { cn } from "@/lib/utils";
 import styles from "./NextStepCard.module.scss";
@@ -21,18 +22,16 @@ export function NextStepCard({ title, body }: NextStepCardProps) {
   return (
     <div className={cn(styles.card, OVERLAY_GLASS_CARD_CLASS)}>
       <div className={styles.flex_32}>
-        <span className={styles.relative_33} aria-hidden>
-          <span className={styles.relative_35}>
-            <Image
-              src={otpCallIcon}
-              alt=""
-              width={20}
-              height={20}
-              className={styles.shrink_0_36}
-              unoptimized
-            />
-          </span>
-        </span>
+        <IconWell aria-hidden className={styles.iconTone}>
+          <Image
+            src={otpCallIcon}
+            alt=""
+            width={20}
+            height={20}
+            className={styles.shrink_0_36}
+            unoptimized
+          />
+        </IconWell>
         <div className={styles.min_w_0_3}>
           <p className={styles.text_base_37}>{title}</p>
           <p className={styles.mt_1_38}>{body}</p>

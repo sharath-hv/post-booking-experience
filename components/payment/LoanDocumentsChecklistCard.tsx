@@ -3,6 +3,7 @@
 import Image, { type StaticImageData } from "next/image";
 import { useState } from "react";
 
+import { IconWell } from "@/components/molecules/IconWell";
 import bankIcon from "@/assets/bank.svg";
 import cameraIcon from "@/assets/Camera.svg";
 import documentIcon from "@/assets/Document_black.svg";
@@ -44,7 +45,7 @@ const SELF_EMPLOYED_DOCUMENTS: readonly DocItem[] = [
 function DocRow({ icon, label, reason }: DocItem) {
   return (
     <li className={styles.docRow}>
-      <span className={styles.docIcon} aria-hidden>
+      <IconWell aria-hidden className={styles.docIcon}>
         <Image
           src={icon}
           alt=""
@@ -53,7 +54,7 @@ function DocRow({ icon, label, reason }: DocItem) {
           className={styles.docIconAsset}
           unoptimized
         />
-      </span>
+      </IconWell>
       <div className={styles.docCopy}>
         <p className={styles.docLabel}>{label}</p>
         <p className={styles.docReason}>{reason}</p>

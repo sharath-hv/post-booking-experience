@@ -141,19 +141,6 @@
   padding-block: calc(var(--spacing) * 3);
 }
 
-.flex_51 {
-  display: flex;
-  height: calc(var(--spacing) * 11);
-  width: calc(var(--spacing) * 11);
-  flex-shrink: 0;
-  align-items: center;
-  justify-content: center;
-  border-radius: calc(infinity * 1px);
-  border: 0.5px solid #d6dce7;
-  background-image: linear-gradient(180deg, #e1e6f0 0%, #fff 100%);
-  box-shadow: 0 0 0 2px #fff inset;
-}
-
 .h_15px__52 {
   height: 15px;
   width: calc(var(--spacing) * 5);

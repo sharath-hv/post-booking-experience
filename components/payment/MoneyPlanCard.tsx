@@ -1,5 +1,6 @@
 "use client";
 
+import { IconWell } from "@/components/molecules/IconWell";
 import { cn } from "@/lib/utils";
 import styles from "./MoneyPlanCard.module.scss";
 
@@ -18,7 +19,7 @@ export type MoneyPlanStep = {
 function StepNode({ state }: { state: MoneyPlanStepState }) {
   if (state === "done") {
     return (
-      <span className={styles.relative_0}>
+      <IconWell tone="green" size={24} className={styles.stepNode}>
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden>
           <path
             d="M6.5 12.5l3.5 3.5 7.5-8"
@@ -28,22 +29,22 @@ function StepNode({ state }: { state: MoneyPlanStepState }) {
             strokeLinejoin="round"
           />
         </svg>
-      </span>
+      </IconWell>
     );
   }
   if (state === "moving") {
     return (
-      <span className={styles.relative_0}>
+      <IconWell tone="green" size={24} className={styles.stepNode}>
         <span
           aria-hidden
           className={styles.absolute_1}
         />
         <span className={styles.relative_2} />
-      </span>
+      </IconWell>
     );
   }
   return (
-    <span className={styles.relative_3}>
+    <IconWell tone="amber" size={24} className={styles.stepNode}>
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden className={styles.text_a76406__4}>
         <circle cx="12" cy="12" r="8.5" stroke="currentColor" strokeWidth="2.2" />
         <path
@@ -54,7 +55,7 @@ function StepNode({ state }: { state: MoneyPlanStepState }) {
           strokeLinejoin="round"
         />
       </svg>
-    </span>
+    </IconWell>
   );
 }
 

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useCallback, type MouseEvent } from "react";
 
 import marginMoneySlipIcon from "@/assets/margin money slip.svg";
+import { IconWell } from "@/components/molecules/IconWell";
 import { OVERLAY_GLASS_CARD_CLASS } from "@/lib/overlay-glass-card";
 import { cn } from "@/lib/utils";
 import styles from "./MarginMoneySlipCard.module.scss";
@@ -51,10 +52,7 @@ export function MarginMoneySlipCard({ variant = "default" }: MarginMoneySlipCard
       aria-label="Margin money slip"
     >
       <div className={styles.flex_1}>
-        <div
-          className={styles.flex_2}
-          aria-hidden
-        >
+        <IconWell as="div" aria-hidden>
           <Image
             src={marginMoneySlipIcon}
             alt=""
@@ -63,7 +61,7 @@ export function MarginMoneySlipCard({ variant = "default" }: MarginMoneySlipCard
             className={styles.size_5_3}
             unoptimized
           />
-        </div>
+        </IconWell>
         <div className={styles.flex_4}>
           <div className={styles.flex_5}>
             <p className={styles.text_sm_6}>Margin money slip</p>

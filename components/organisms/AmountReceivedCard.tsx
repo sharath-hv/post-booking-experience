@@ -2,6 +2,7 @@
 
 import Image, { type StaticImageData } from "next/image";
 
+import { IconWell, type IconWellTone } from "@/components/molecules/IconWell";
 import { cn } from "@/lib/utils";
 import { OVERLAY_GLASS_CARD_CLASS } from "@/lib/overlay-glass-card";
 import styles from "./AmountReceivedCard.module.scss";
@@ -23,7 +24,7 @@ type RowTag = {
 const ROW_TAG_CLASS: Record<RowTag["variant"], string> = {
   green: styles.bg_e7f6ee__1,
   amber: styles.bg_fff7e5__2,
-  grey:  styles.bg_f5f5f5__1,
+  grey: styles.tagGrey,
 };
 
 export type AmountReceivedCardProps = {
@@ -36,8 +37,8 @@ export type AmountReceivedCardProps = {
   status?: "received" | "processing";
   /** Custom icon image to replace the default tick / spinner. */
   iconSrc?: string | StaticImageData;
-  /** Background class for the icon container (overrides the green / yellow default). */
-  iconBgClassName?: string;
+  /** Icon well tone (overrides the green / amber default). */
+  iconTone?: IconWellTone;
   /** `glass` — frosted gradient surface used on the manage-booking overlay. */
   variant?: "default" | "glass";
 };
@@ -50,17 +51,14 @@ export function AmountReceivedCard({
   note,
   status = "received",
   iconSrc,
-  iconBgClassName,
+  iconTone,
   variant = "default",
 }: AmountReceivedCardProps) {
   const processing = status === "processing";
   const isGlass = variant === "glass";
   // Custom icons use the neutral grey well (same as manage-menu document rows).
-  const defaultBg = iconSrc
-    ? styles.bg_f5f5f5__1
-    : processing
-      ? styles.bg_fff7e5__3
-      : styles.bg_e7f6ee__4;
+  const tone: IconWellTone =
+    iconTone ?? (iconSrc ? "grey" : processing ? "amber" : "green");
   return (
     <div
       className={cn(
@@ -68,12 +66,7 @@ export function AmountReceivedCard({
       )}
     >
       <div className={styles.flex_0}>
-        <span
-          className={cn(
-            styles.flex_53,
-            iconBgClassName ?? defaultBg,
-          )}
-        >
+        <IconWell tone={tone} className={styles.iconWell}>
           {iconSrc ? (
             <Image src={iconSrc} alt="" width={20} height={20} className={styles.object_contain_1} unoptimized />
           ) : processing ? (
@@ -92,7 +85,7 @@ export function AmountReceivedCard({
               />
             </svg>
           )}
-        </span>
+        </IconWell>
         <div className={styles.min_w_0_3}>
           <p className={styles.text_xl_4}>
             {formatInr(amountInr)}

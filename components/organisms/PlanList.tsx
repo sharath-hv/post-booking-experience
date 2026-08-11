@@ -7,6 +7,8 @@ import identityIcon from "@/assets/Identity.svg";
 import moneyRoundIcon from "@/assets/Money round.svg";
 import newCarIcon from "@/assets/New car.svg";
 import tickIcon from "@/assets/tick01.svg";
+import { KYC_ASSETS } from "@/lib/kyc-assets";
+import { IconWell } from "@/components/molecules/IconWell";
 import { cn } from "@/lib/utils";
 import { OVERLAY_GLASS_SURFACE_CLASS } from "@/lib/overlay-glass-card";
 import styles from "./PlanList.module.scss";
@@ -53,21 +55,32 @@ export type PlanListProps = {
    * Only the arrival “next few days” timeline opts in; progress overlays omit it.
    */
   showNowLabel?: boolean;
+  /**
+   * `plan` — day-one commitments (icon wells, optional “Now”).
+   * `progress` — purchase-state menu timeline ([Figma 3342:18746](https://www.figma.com/design/nW5SWmJdxxsCEDlqBN7C0L/Post-booking-experience?node-id=3342-18746)):
+   * 32px status nodes, “In progress”, 20px stage gaps.
+   */
+  appearance?: "plan" | "progress";
 };
 
 /**
  * “Here's how I'll get you your car” — her commitments as a timeline:
  * icon nodes on a solid rail; live step uses the purple icon well as “Now”.
+ * Purchase-state menu uses `appearance="progress"` for the Figma status rail.
  */
 export function PlanList({
   items,
   variant = "default",
   showNowLabel = false,
+  appearance = "plan",
 }: PlanListProps) {
+  const isProgress = appearance === "progress";
+
   return (
     <ol
       className={cn(
         styles.planList,
+        isProgress && styles.planListProgress,
         "card-elevated",
         variant === "glass" ? OVERLAY_GLASS_SURFACE_CLASS : styles.planListSolid
       )}
@@ -84,10 +97,25 @@ export function PlanList({
         // Only when the “Now” eyebrow is shown: offset the node under that label.
         // Without the label, keep the node top-aligned with title/detail like done/todo.
         const intoNowFromDone = isNow && prevStatus === "done";
-        const showIntoNowRail = isNow && showNowLabel;
+        const showIntoNowRail = isNow && showNowLabel && !isProgress;
+        const showInProgressLabel = isProgress && isNow;
+        const progressStatusIcon = isDone
+          ? KYC_ASSETS.timelineDone
+          : isNow
+            ? KYC_ASSETS.timelineInProgress
+            : KYC_ASSETS.timelineNext;
+        const progressStatusLabel = isDone
+          ? "Done"
+          : isNow
+            ? "In progress"
+            : "Up next";
+
         return (
-          <li key={item.title} className={styles.planStep}>
-            <span className={styles.planRail}>
+          <li
+            key={item.title}
+            className={cn(styles.planStep, isProgress && styles.planStepProgress)}
+          >
+            <span className={cn(styles.planRail, isProgress && styles.planRailProgress)}>
               {showIntoNowRail ? (
                 <span
                   className={cn(
@@ -99,38 +127,65 @@ export function PlanList({
                   aria-hidden
                 />
               ) : null}
-              <span
-                className={cn(
-                  styles.planNode,
-                  isNow
-                    ? ["icon-well-surface-purple", styles.planNodeNow]
-                    : isDone
-                      ? ["icon-well-surface-green", styles.planNodeDone]
-                      : ["icon-well-surface", styles.planNodeTodo]
-                )}
-              >
-                {isDone ? (
+              {showInProgressLabel ? (
+                <span
+                  className={cn(
+                    styles.planConnectorIntoProgressSpacer,
+                    intoNowFromDone && styles.planConnectorIntoProgressFromDone,
+                  )}
+                  aria-hidden
+                />
+              ) : null}
+              {isProgress ? (
+                <span className={cn(styles.planNode, styles.planNodeProgress)}>
                   <Image
-                    src={tickIcon}
-                    alt=""
-                    width={20}
-                    height={20}
-                    className={styles.planNodeTick}
+                    src={progressStatusIcon}
+                    alt={progressStatusLabel}
+                    width={28}
+                    height={28}
+                    className={styles.planProgressStatusIcon}
                     unoptimized
-                    aria-hidden
                   />
-                ) : (
-                  <PlanTimelineGlyph
-                    name={item.icon}
-                    className={isNow ? styles.planGlyphOnNow : undefined}
-                  />
-                )}
-              </span>
+                </span>
+              ) : (
+                <IconWell
+                  tone={isNow ? "purple" : isDone ? "green" : "grey"}
+                  className={cn(
+                    styles.planNode,
+                    isNow
+                      ? styles.planNodeNow
+                      : isDone
+                        ? styles.planNodeDone
+                        : styles.planNodeTodo,
+                  )}
+                >
+                  {isDone ? (
+                    <Image
+                      src={tickIcon}
+                      alt=""
+                      width={20}
+                      height={20}
+                      className={styles.planNodeTick}
+                      unoptimized
+                      aria-hidden
+                    />
+                  ) : (
+                    <PlanTimelineGlyph
+                      name={item.icon}
+                      className={isNow ? styles.planGlyphOnNow : undefined}
+                    />
+                  )}
+                </IconWell>
+              )}
               {!isLast ? (
                 <span
                   className={cn(
                     styles.planConnector,
-                    isDone && styles.planConnectorFromDone,
+                    isProgress && styles.planConnectorProgress,
+                    isDone &&
+                      (isProgress
+                        ? styles.planConnectorFromDoneProgress
+                        : styles.planConnectorFromDone),
                   )}
                   aria-hidden
                 />
@@ -139,15 +194,34 @@ export function PlanList({
             <div
               className={cn(
                 styles.planStepCopy,
-                isNow && showNowLabel && styles.planStepCopyNow,
-                !isLast && styles.planStepCopySpaced
+                isNow && showNowLabel && !isProgress && styles.planStepCopyNow,
+                !isLast && !isProgress && styles.planStepCopySpaced,
+                !isLast && isProgress && styles.planStepCopySpacedProgress,
               )}
             >
-              {isNow && showNowLabel ? <p className={styles.planNowLabel}>Now</p> : null}
+              {isNow && showNowLabel && !isProgress ? (
+                <p className={styles.planNowLabel}>Now</p>
+              ) : null}
+              {showInProgressLabel ? (
+                <p className={styles.planInProgressLabel}>In progress</p>
+              ) : null}
               <div className={styles.planTitleRow}>
-                <p className={styles.planTitle}>{item.title}</p>
+                <p
+                  className={cn(
+                    styles.planTitle,
+                    isProgress && !isNow && styles.planTitleMutedWeight,
+                  )}
+                >
+                  {item.title}
+                </p>
               </div>
-              <p className={cn(styles.planDetail, isDone ? styles.planDetailDone : styles.planDetailTodo)}>
+              <p
+                className={cn(
+                  styles.planDetail,
+                  isProgress && styles.planDetailProgress,
+                  isDone ? styles.planDetailDone : styles.planDetailTodo,
+                )}
+              >
                 {item.detail}
               </p>
             </div>

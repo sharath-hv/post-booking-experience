@@ -3,6 +3,7 @@
 import Image from "next/image";
 
 import arrowRightIcon from "@/assets/Arrow_right.svg";
+import { IconWell } from "@/components/molecules/IconWell";
 import styles from "./BankLoanCard.module.scss";
 
 import {
@@ -48,7 +49,7 @@ export function BankLoanCard({ bank, onOpen }: BankLoanCardProps) {
 
       <div className={styles.content}>
         <div className={styles.flex_2}>
-          <div className={styles.relative_3}>
+          <IconWell as="div" aria-hidden>
             <Image
               src={bank.logoSrc}
               alt=""
@@ -57,7 +58,7 @@ export function BankLoanCard({ bank, onOpen }: BankLoanCardProps) {
               className={styles.object_contain_4}
               unoptimized
             />
-          </div>
+          </IconWell>
           <div className={styles.min_w_0_5}>
             <div className={styles.flex_6}>
               <p className={styles.text_base_7}>{bank.name}</p>

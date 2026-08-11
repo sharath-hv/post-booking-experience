@@ -8,7 +8,7 @@ import {
 } from "@/lib/kyc-upload-content";
 
 import deleteIcon from "@/assets/Delete.svg";
-import done01Icon from "@/assets/done 01.png";
+import done01Icon from "@/assets/Done.svg";
 import uploadIcon from "@/assets/upload.svg";
 import styles from "./DocumentUploadSection.module.scss";
 

@@ -168,7 +168,7 @@ const STEP_COPY: readonly StepCopy[] = [
   {
     icon: "documents",
     title: "Paperwork",
-    done: "Filed. Nothing more needed from you.",
+    done: "Filed. Nothing more needed from you",
     now: "Two minutes from you, Shivi files the rest",
     todo: "PAN and Aadhaar open the purchase in your name",
   },

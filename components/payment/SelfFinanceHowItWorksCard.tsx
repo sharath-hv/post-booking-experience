@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+import { IconWell } from "@/components/molecules/IconWell";
 import {
   SELF_FINANCE_HOW_IT_WORKS_STEPS,
   type SelfFinanceHowItWorksStep,
@@ -33,18 +34,29 @@ export function SelfFinanceHowItWorksCard({
       <div className={isEmbedded ? styles.space_y_5 : styles.space_y_4}>
         {steps.map((step, index) => (
           <div key={index} className={styles.flex_1}>
-            <div
-              className={isEmbedded ? styles.step_icon_embedded : styles.relative_2}
-            >
-              <Image
-                src={step.icon}
-                alt=""
-                width={20}
-                height={20}
-                className={styles.object_contain_3}
-                unoptimized
-              />
-            </div>
+            {isEmbedded ? (
+              <div className={styles.step_icon_embedded}>
+                <Image
+                  src={step.icon}
+                  alt=""
+                  width={20}
+                  height={20}
+                  className={styles.object_contain_3}
+                  unoptimized
+                />
+              </div>
+            ) : (
+              <IconWell as="div" className={styles.stepIconWell} aria-hidden>
+                <Image
+                  src={step.icon}
+                  alt=""
+                  width={20}
+                  height={20}
+                  className={styles.object_contain_3}
+                  unoptimized
+                />
+              </IconWell>
+            )}
             <p
               className={isEmbedded ? styles.step_body_sm : styles.step_body_xs}
             >

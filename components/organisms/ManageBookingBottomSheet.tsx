@@ -16,6 +16,7 @@ import {
 } from "@/lib/active-booking-snapshot";
 import { BottomSheetCloseIcon } from "@/components/atoms/BottomSheetCloseIcon";
 import { BottomSheetPortal } from "@/components/molecules/BottomSheetPortal";
+import { IconWell } from "@/components/molecules/IconWell";
 import {
   BOTTOM_SHEET_MAX_HEIGHT_CLASS,
   BOTTOM_SHEET_OVERLAY_Z_CLASS,
@@ -88,9 +89,9 @@ function ModifyBookingActionRow({
           : styles.hover_bg_fafafa__16,
       )}
     >
-      <span className={styles.flex_0}>
+      <IconWell aria-hidden>
         <Image src={iconSrc} alt="" width={20} height={20} className={styles.shrink_0_1} unoptimized aria-hidden />
-      </span>
+      </IconWell>
       <span className={styles.min_w_0_2}>
         <span className={styles.block_3}>{title}</span>
         <span className={styles.mt_1_4}>{description}</span>

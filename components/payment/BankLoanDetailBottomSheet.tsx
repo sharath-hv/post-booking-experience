@@ -16,6 +16,7 @@ import {
   BOTTOM_SHEET_OVERLAY_Z_CLASS,
 } from "@/lib/layout/bottom-sheet-layout";
 import { BottomSheetCloseIcon } from "@/components/atoms/BottomSheetCloseIcon";
+import { IconWell } from "@/components/molecules/IconWell";
 import styles from "./BankLoanDetailBottomSheet.module.scss";
 
 /** Enter/exit slide duration — parity with the rest of the payment sheet family. */
@@ -140,7 +141,7 @@ export function BankLoanDetailBottomSheet({
           <div className={cn(styles.body, BOTTOM_SHEET_BODY_BEFORE_CTA_CLASS)}>
             <div className={styles.header}>
               <div className={styles.brand}>
-                <div className={styles.logoFrame}>
+                <IconWell as="div" size={52}>
                   <Image
                     src={renderedBank.logoSrc}
                     alt=""
@@ -149,7 +150,7 @@ export function BankLoanDetailBottomSheet({
                     className={styles.logo}
                     unoptimized
                   />
-                </div>
+                </IconWell>
                 <div className={styles.brandCopy}>
                   {SHOW_PRE_APPROVED_LOAN_UI && renderedBank.preApproved ? (
                     <span className={styles.preApprovedChip}>Pre-approved loan available for you</span>

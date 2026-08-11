@@ -3,6 +3,7 @@ import type { StaticImageData } from "next/image";
 import type { ReactNode } from "react";
 
 import tickIcon from "@/assets/tick.svg";
+import { IconWell } from "@/components/molecules/IconWell";
 import styles from "./BottomSheetConfirmBulletList.module.scss";
 
 const BULLET_ICON = tickIcon;
@@ -37,10 +38,7 @@ export function BottomSheetConfirmBulletList({ id, points }: BottomSheetConfirmB
         const { content, icon } = resolveBulletPoint(point);
         return (
           <li key={index} className={styles.flex_0}>
-            <div
-              className={styles.relative_1}
-              aria-hidden
-            >
+            <IconWell as="div" aria-hidden>
               <Image
                 src={icon}
                 alt=""
@@ -50,7 +48,7 @@ export function BottomSheetConfirmBulletList({ id, points }: BottomSheetConfirmB
                 unoptimized
                 sizes="20px"
               />
-            </div>
+            </IconWell>
             <p className={styles.min_w_0_3}>
               {content}
             </p>

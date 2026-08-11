@@ -18,26 +18,7 @@
   gap: calc(var(--spacing) * 3.5);
 }
 
-.relative_33 {
-  display: flex;
-  height: calc(var(--spacing) * 11);
-  width: calc(var(--spacing) * 11);
-  flex-shrink: 0;
-  align-items: center;
-  justify-content: center;
-}
-
-.relative_35 {
-  display: flex;
-  height: calc(var(--spacing) * 11);
-  width: calc(var(--spacing) * 11);
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  border-radius: 44px;
-  border: 0.5px solid #d6dce7;
-  background: linear-gradient(180deg, #e1e6f0 0%, #fff 100%);
-  box-shadow: 0 0 0 2px #fff inset;
+.iconTone {
   color: #75747a;
 }
 

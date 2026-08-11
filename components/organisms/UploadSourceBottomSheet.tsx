@@ -1,6 +1,8 @@
 "use client";
 
 import Image from "next/image";
+
+import { IconWell } from "@/components/molecules/IconWell";
 import { cn } from "@/lib/utils";
 import { useCallback, useEffect, useRef, useState } from "react";
 
@@ -35,11 +37,11 @@ function UploadSourceRow({ label, iconSrc, onClick }: UploadSourceRowProps) {
       onClick={onClick}
       className={styles.flex_0}
     >
-      <span className={styles.flex_1}>
+      <IconWell aria-hidden>
         <span className={styles.relative_2}>
           <Image src={iconSrc} alt="" fill className={styles.object_contain_3} unoptimized sizes="20px" />
         </span>
-      </span>
+      </IconWell>
       <span className={styles.min_w_0_4}>{label}</span>
       <span className={styles.relative_5}>
         <Image

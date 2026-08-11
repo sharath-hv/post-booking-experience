@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import locationIcon from "@/assets/Location.svg";
+import { IconWell } from "@/components/molecules/IconWell";
 import { CarSummaryCardLite } from "@/components/organisms/artifacts";
 import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
 import {
@@ -194,7 +195,7 @@ export function CarDeliveryScheduleScreen() {
     >
       <div className={cn(styles.card, "card-elevated")}>
         <div className={styles.locationPanel}>
-          <span className={styles.locationIconWell} aria-hidden>
+          <IconWell aria-hidden>
             <Image
               src={locationIcon}
               alt=""
@@ -203,7 +204,7 @@ export function CarDeliveryScheduleScreen() {
               className={styles.locationIcon}
               unoptimized
             />
-          </span>
+          </IconWell>
           <div className={styles.locationCopy}>
             <p className={styles.locationName}>{NAMED_DEALER_NAME}</p>
             <p className={styles.locationDetail}>{NAMED_DEALER_DETAIL}</p>

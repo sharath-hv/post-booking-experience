@@ -17,19 +17,8 @@
   gap: calc(var(--spacing) * 3);
 }
 
-.relative_2 {
-  position: relative;
+.stepIconWell {
   margin-top: calc(var(--spacing) * 0.5);
-  display: flex;
-  height: calc(var(--spacing) * 11);
-  width: calc(var(--spacing) * 11);
-  flex-shrink: 0;
-  align-items: center;
-  justify-content: center;
-  border-radius: calc(infinity * 1px);
-  border: 0.5px solid #d6dce7;
-  background-image: linear-gradient(180deg, #e1e6f0 0%, #ffffff 100%);
-  box-shadow: 0 0 0 2px #ffffff inset;
 }
 
 /* Confirmation bottom sheet — keep the previous flat circle treatment. */

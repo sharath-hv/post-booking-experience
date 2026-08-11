@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useCallback, type MouseEvent } from "react";
 
+import { IconWell } from "@/components/molecules/IconWell";
 import { PAYMENT_CHOOSE_ASSETS } from "@/components/payment/payment-choose-assets";
 import styles from "./ProformaInvoiceCard.module.scss";
 
@@ -37,10 +38,7 @@ export function ProformaInvoiceCard({
       aria-label={title}
     >
       <div className={styles.flex_1}>
-        <div
-          className={styles.flex_2}
-          aria-hidden
-        >
+        <IconWell as="div" aria-hidden>
           <Image
             src={PAYMENT_CHOOSE_ASSETS.proformaInvoice}
             alt=""
@@ -49,7 +47,7 @@ export function ProformaInvoiceCard({
             className={styles.size_5_3}
             unoptimized
           />
-        </div>
+        </IconWell>
         <div className={styles.flex_4}>
           <div className={styles.flex_5}>
             <p className={styles.text_sm_6}>{title}</p>

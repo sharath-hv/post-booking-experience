@@ -17,7 +17,7 @@ import { OVERLAY_GLASS_CARD_CLASS } from "@/lib/overlay-glass-card";
 import { cn } from "@/lib/utils";
 
 import deleteIcon from "@/assets/Delete.svg";
-import done01Icon from "@/assets/done 01.png";
+import done01Icon from "@/assets/Done.svg";
 import styles from "./document-upload-card-layout.module.scss";
 
 

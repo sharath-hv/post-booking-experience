@@ -5,7 +5,7 @@ import { useCallback, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 import deleteIcon from "@/assets/Delete.svg";
-import done01Icon from "@/assets/done 01.png";
+import done01Icon from "@/assets/Done.svg";
 
 import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
 import docStyles from "@/components/organisms/document-upload-card-layout.module.scss";

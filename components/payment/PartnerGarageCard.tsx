@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useCallback, type MouseEvent } from "react";
 
 import locationIcon from "@/assets/Location.svg";
+import { IconWell } from "@/components/molecules/IconWell";
 import { OVERLAY_GLASS_CARD_CLASS } from "@/lib/overlay-glass-card";
 import { cn } from "@/lib/utils";
 import styles from "./PartnerGarageCard.module.scss";
@@ -46,7 +47,7 @@ export function PartnerGarageCard({
       aria-label="Partner garage"
     >
       <div className={styles.row}>
-        <div className={styles.iconWell} aria-hidden>
+        <IconWell as="div" aria-hidden>
           <Image
             src={locationIcon}
             alt=""
@@ -55,7 +56,7 @@ export function PartnerGarageCard({
             className={styles.icon}
             unoptimized
           />
-        </div>
+        </IconWell>
         <div className={styles.copy}>
           <div className={styles.titleBlock}>
             <p className={styles.title}>{name}</p>
