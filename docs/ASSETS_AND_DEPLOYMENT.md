@@ -35,7 +35,7 @@ Files in `public/assets/` are copied to `out/assets/` on build. **Do not** use r
 Use the helper:
 
 ```ts
-import { publicAssetPath, publicAssetPathIn } from "@/lib/public-asset-path";
+import { publicAssetPath, publicAssetPathIn } from "@/utils/public-asset-path";
 
 const icon = publicAssetPath("Info.svg");
 const nested = publicAssetPathIn("kyc-booking-confirmed", "car-cutout.png");

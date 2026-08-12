@@ -1,0 +1,62 @@
+"use client";
+
+import { Suspense, useMemo } from "react";
+import styles from "./page.module.scss";
+import { useSearchParams } from "next/navigation";
+
+import { DownPaymentInstalmentSuccess } from "@/components/organisms/payment/DownPaymentInstalmentSuccess";
+import { FULL_PAYMENT_INSURANCE_INR } from "@/constants/loan-amount-demo-constants";
+import { CelebrationPageTransition } from "@/components/molecules/page-transition";
+import { buildCarDeliveryInsurancePrepHref } from "@/helpers/paymentUrls";
+
+function formatInr(amount: number) {
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 0,
+  }).format(Math.max(0, Math.round(amount)));
+}
+
+function parsePositiveInt(raw: string | null): number | null {
+  if (raw == null || raw === "") return null;
+  const n = Number(raw);
+  if (!Number.isFinite(n) || n < 0) return null;
+  return Math.round(n);
+}
+
+function InsurancePremiumSuccessInner() {
+  const searchParams = useSearchParams();
+
+  const { subline, nextHref } = useMemo(() => {
+    const paid =
+      parsePositiveInt(searchParams.get("paid")) ?? FULL_PAYMENT_INSURANCE_INR;
+    return {
+      subline: `We've received ${formatInr(paid)} for your car insurance.`,
+      nextHref: buildCarDeliveryInsurancePrepHref({
+        bank: searchParams.get("bank"),
+        loanAmount: searchParams.get("loan_amount"),
+        tenure: searchParams.get("tenure"),
+        addons: searchParams.get("addons"),
+      }),
+    };
+  }, [searchParams]);
+
+  return (
+    <CelebrationPageTransition>
+      <DownPaymentInstalmentSuccess
+        subline={subline}
+        nextHref={nextHref}
+        backgroundClassName={styles.bgWhite}
+      />
+    </CelebrationPageTransition>
+  );
+}
+
+/** Insurance premium ack; auto-advances to car insurance prep. */
+export default function InsurancePremiumSuccessPage() {
+  return (
+    <Suspense fallback={null}>
+      <InsurancePremiumSuccessInner />
+    </Suspense>
+  );
+}

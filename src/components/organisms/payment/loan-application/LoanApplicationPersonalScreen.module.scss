@@ -1,0 +1,69 @@
+/* Component styles */
+
+.pincode_field {
+  max-width: 154px;
+}
+
+.city_row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: calc(var(--spacing) * 3);
+}
+
+.chip_grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: calc(var(--spacing) * 2);
+}
+
+.select_header {
+  display: block;
+}
+
+.select_field {
+  width: 100%;
+}
+
+.select_wrap {
+  position: relative;
+  display: flex;
+  height: calc(var(--spacing) * 12);
+  width: 100%;
+  align-items: center;
+  border-radius: var(--radius-lg);
+  border-style: var(--tw-border-style);
+  border-width: 1px;
+  background-color: var(--color-white);
+  padding-inline: calc(var(--spacing) * 4);
+  text-align: left;
+  cursor: pointer;
+}
+
+.select_wrap_idle {
+  border-color: #e8e8e8;
+}
+
+.select_value {
+  flex: 1;
+  min-width: 0;
+  padding-right: calc(var(--spacing) * 7);
+  /* body-md — matches prefilled form fields */
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: var(--font-weight-normal);
+  color: #121212;
+}
+
+.select_value_placeholder {
+  color: #9e9e9e;
+}
+
+.select_chevron {
+  pointer-events: none;
+  position: absolute;
+  right: calc(var(--spacing) * 3);
+  top: 50%;
+  display: flex;
+  color: #121212;
+  transform: translateY(-50%);
+}

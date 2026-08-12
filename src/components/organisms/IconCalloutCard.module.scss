@@ -1,0 +1,88 @@
+/* IconWell + title + body (+ optional text-link CTA) */
+
+.card {
+  width: 100%;
+  border-radius: var(--radius-2xl);
+  padding: calc(var(--spacing) * 4);
+  text-align: left;
+}
+
+.cardSolid {
+  background-color: var(--color-white);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--spacing) * 3); /* 12px */
+}
+
+.icon {
+  flex-shrink: 0;
+  width: calc(var(--spacing) * 5); /* 20px — default IconWell glyph */
+  height: calc(var(--spacing) * 5);
+  object-fit: contain;
+}
+
+.copy {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: calc(var(--spacing) * 2); /* 8px — title block ↔ CTA */
+}
+
+.titleBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* body-md */
+.title {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: var(--font-weight-medium);
+  color: #121212;
+}
+
+/* body-sm */
+.body {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: var(--font-weight-normal);
+  color: #4b4b4b;
+}
+
+/* body-sm link */
+.cta {
+  align-self: flex-start;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: var(--font-weight-medium);
+  color: #1b73e8;
+  text-underline-offset: 2px;
+}
+
+.cta:focus-visible {
+  outline-style: var(--tw-outline-style);
+  outline-width: 1px;
+  --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(2px + var(--tw-ring-offset-width))
+    var(--tw-ring-color, currentcolor);
+  box-shadow:
+    var(--tw-inset-shadow),
+    var(--tw-inset-ring-shadow),
+    var(--tw-ring-offset-shadow),
+    var(--tw-ring-shadow),
+    var(--tw-shadow);
+  --tw-ring-color: color-mix(in oklab, #1b73e8 30%, transparent);
+  --tw-ring-offset-width: 2px;
+  --tw-ring-offset-shadow: var(--tw-ring-inset,) 0 0 0 var(--tw-ring-offset-width)
+    var(--tw-ring-offset-color);
+}
+
+@media (hover: hover) {
+  .cta:hover {
+    text-decoration-line: underline;
+  }
+}

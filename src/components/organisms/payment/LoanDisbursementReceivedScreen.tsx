@@ -1,0 +1,103 @@
+"use client";
+
+import { useMemo } from "react";
+import { useSearchParams } from "next/navigation";
+
+import { AmountReceivedCard } from "@/components/organisms/artifacts";
+import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
+import { ShimmerInfoCard } from "@/components/molecules/ShimmerInfoCard";
+import { bankForQueryParam } from "@/components/organisms/payment/acko-drive-finance-bank";
+import {
+  DEMO_DEFAULT_LOAN_DISBURSEMENT_INR,
+  DEMO_LOAN_DISBURSEMENT_TRANSACTION_ID,
+  FULL_PAYMENT_INSURANCE_INR,
+} from "@/constants/loan-amount-demo-constants";
+import { buildPayInsurancePremiumHref } from "@/helpers/paymentUrls";
+import { NAMED_DEALER_LABEL, NAMED_DEALER_LABEL_CAPITALIZED } from "@/constants/dealer-attribution-content";
+import styles from "./LoanDisbursementReceivedScreen.module.scss";
+
+
+function formatInr(amount: number) {
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 0,
+  }).format(Math.max(0, Math.round(amount)));
+}
+
+function parseLoanAmountInr(raw: string | null): number {
+  if (raw == null || raw === "") return DEMO_DEFAULT_LOAN_DISBURSEMENT_INR;
+  const n = Number(raw);
+  if (!Number.isFinite(n) || n <= 0) return DEMO_DEFAULT_LOAN_DISBURSEMENT_INR;
+  return Math.round(n);
+}
+
+type LoanDisbursementReceivedScreenProps = {
+  /** Primary CTA destination (defaults to pay insurance premium). */
+  okayHref?: string;
+};
+
+export function LoanDisbursementReceivedScreen({
+  okayHref: okayHrefProp,
+}: LoanDisbursementReceivedScreenProps) {
+  const searchParams = useSearchParams();
+  const bankId = searchParams.get("bank");
+  const bank = useMemo(() => bankForQueryParam(bankId), [bankId]);
+
+  const disbursedAmountInr = useMemo(
+    () => parseLoanAmountInr(searchParams.get("loan_amount")),
+    [searchParams],
+  );
+
+  const transactionId = useMemo(() => {
+    const fromUrl = searchParams.get("transaction_id")?.trim();
+    return fromUrl && fromUrl.length > 0
+      ? fromUrl
+      : DEMO_LOAN_DISBURSEMENT_TRANSACTION_ID;
+  }, [searchParams]);
+
+  const okayHref = useMemo(
+    () =>
+      okayHrefProp ??
+      buildPayInsurancePremiumHref({
+        bank: bankId,
+        loanAmount: searchParams.get("loan_amount"),
+      }),
+    [okayHrefProp, bankId, searchParams],
+  );
+
+  const says = useMemo(
+    () => [
+      "Loan disbursed, Sharath.",
+      `I've confirmed the transfer to ${NAMED_DEALER_LABEL}. Delivery prep starts now, and nothing more is needed from you until just before the car arrives.`,
+    ],
+    [],
+  );
+
+  return (
+    <ConciergeTurnShell
+      says={says}
+      artifact={
+        <div className={styles.flex_0}>
+          <AmountReceivedCard
+            amountInr={disbursedAmountInr}
+            title={`Disbursed by ${bank.name}`}
+            status="received"
+            variant="glass"
+            rows={[
+              { label: "Transferred to", value: NAMED_DEALER_LABEL_CAPITALIZED },
+              { label: "Transaction ID", value: transactionId },
+            ]}
+            note={`Funds are with ${NAMED_DEALER_LABEL}. Delivery prep is now underway.`}
+          />
+          <ShimmerInfoCard lead="One thing still ahead">
+            {`Your ${formatInr(FULL_PAYMENT_INSURANCE_INR)} insurance. The RTO won't register your car without a live policy, and I'll ask you at exactly the right moment.`}
+          </ShimmerInfoCard>
+        </div>
+      }
+      timeSkip={{ label: "When your car's nearly ready", href: okayHref }}
+      callLabel="Questions? I can call you"
+      showMenu
+    />
+  );
+}

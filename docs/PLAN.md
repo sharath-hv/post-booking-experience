@@ -12,15 +12,15 @@ The journey is being redesigned as a conversation with **Shivi** (first-person v
 
 The business policy (5 stages; Booking Confirmation = lock point; 50%-of-total-paid cancellation; one ₹5,000 model/colour change; CYP deadlines; 100% refund on ACKO failure) governs all flows. **Stage mapping:** Booking Request = arrival · KYC = identity chapter · Booking Confirmation = dealer lock (booking-accepted/confirmed) · CYP = the money chapter · Delivery Processing = post-payment delivery chapter.
 
-**Cancellation (built, policy-correct):** “Cancel my purchase” is on the manage sheet until **car payment starts** (DP / instalment beyond the ₹10k lock) — then the Cancel row (and the whole “Make a change” section when Change is already gone) is hidden. Free through dealer search (`/kyc/processing`); from `/kyc/booking-accepted` (partner locked) onward retains **50% of the booking lock (₹5,000)**. OTP is manufacturer-portal confirmation, not the fee boundary. Sheet passes `?paid=&stage=` to `/kyc/cancel-booking` (`ConciergeCancelScreen`). Cancel turn phases: **confirm** → **refund initiated** (`status=processing`) → demo **After refund is processed** → **refund successful** (terminal; `status=received`; **Back to the start** → `/quote`).
+**Cancellation (built, policy-correct):** “Cancel my purchase” is on the manage sheet until **car payment starts** (DP / instalment beyond the ₹10k lock) — then the Cancel row (and the whole “Make a change” section when Change is already gone) is hidden. Free through dealer search (`/booking/processing`); from `/booking/accepted` (partner locked) onward retains **50% of the booking lock (₹5,000)**. OTP is manufacturer-portal confirmation, not the fee boundary. Sheet passes `?paid=&stage=` to `/booking/cancel` (`ConciergeCancelScreen`). Cancel turn phases: **confirm** → **refund initiated** (`status=processing`) → demo **After refund is processed** → **refund successful** (terminal; `status=received`; **Back to the start** → `/quote`).
 
-**One-time change rule (built, policy §1.9 / §2.3):** Change is offered through allocation-pending. Free through dealer search (`/kyc/processing`). From partner locked (`/kyc/booking-accepted`, before VIN): ₹5,000 once. After vehicle ID (engine/chassis on `/kyc/booking-confirmed`+): **Change row hidden**. `lib/change-policy.ts` tracks post–fee-boundary changes; manage sheet writes entry stage `pre`/`post`. Second paid change → cancel & rebook (`reason=second-change`). Dealer-search heads-up warns that fees start on the **next** step. Loan one-time rules (§6.2/6.3) are surfaced on loan **rejection** paths (“your one free switch covers this”); the loan-processing wait subline no longer repeats the switch offer.
+**One-time change rule (built, policy §1.9 / §2.3):** Change is offered through allocation-pending. Free through dealer search (`/booking/processing`). From partner locked (`/booking/accepted`, before VIN): ₹5,000 once. After vehicle ID (engine/chassis on `/booking/confirmed`+): **Change row hidden**. `lib/change-policy.ts` tracks post–fee-boundary changes; manage sheet writes entry stage `pre`/`post`. Second paid change → cancel & rebook (`reason=second-change`). Dealer-search heads-up warns that fees start on the **next** step. Loan one-time rules (§6.2/6.3) are surfaced on loan **rejection** paths (“your one free switch covers this”); the loan-processing wait subline no longer repeats the switch offer.
 
-**Inability to deliver (built, policy §1.14 / §2.4):** **edge-case demo only** — **express delivery only** (hidden when `readExperienceFlow() === "standard"`). Demo entry points: `/kyc/processing` (dealer search) and `/car-allocation/pending` each carry express-only alt pills → remediation screens (`ConciergeAllocationFailedScreen`). **Express miss** — “No car found” → `/car-allocation/failed` (`mode=express_miss`). Shivi apologises (“I'm sorry, Sharath. I couldn't find your car.” + express-timeline body); three **card-based** outs: **Wait for standard delivery** (`writeExperienceFlow("standard")`, echo “I'll wait for standard delivery”, → `/kyc/booking-accepted`), **Change your selection** (free change, `entry stage pre`, → modify-selection; after pay → auto-advance **Payment received** then **`/kyc/processing`**), **Cancel with a full refund** (→ cancel `reason=our-failure`). **Variant discontinued** — “Variant discontinued” → `/car-allocation/variant-unavailable` (`mode=discontinued`). Same apology shell + outs **without** wait-for-standard (variant is gone on every timeline); default card is change selection. Express alt pills render **side by side** on one row. Call affordance: “Want to talk it through? I can call you”.
+**Inability to deliver (built, policy §1.14 / §2.4):** **edge-case demo only** — **express delivery only** (hidden when `readExperienceFlow() === "standard"`). Demo entry points: `/booking/processing` (dealer search) and `/car-allocation/pending` each carry express-only alt pills → remediation screens (`ConciergeAllocationFailedScreen`). **Express miss** — “No car found” → `/car-allocation/failed` (`mode=express_miss`). Shivi apologises (“I'm sorry, Sharath. I couldn't find your car.” + express-timeline body); three **card-based** outs: **Wait for standard delivery** (`writeExperienceFlow("standard")`, echo “I'll wait for standard delivery”, → `/booking/accepted`), **Change your selection** (free change, `entry stage pre`, → modify-selection; after pay → auto-advance **Payment received** then **`/booking/processing`**), **Cancel with a full refund** (→ cancel `reason=our-failure`). **Variant discontinued** — “Variant discontinued” → `/car-allocation/variant-unavailable` (`mode=discontinued`). Same apology shell + outs **without** wait-for-standard (variant is gone on every timeline); default card is change selection. Express alt pills render **side by side** on one row. Call affordance: “Want to talk it through? I can call you”. **Decision SLA timeout (built):** remediation screens carry `AllocationDecisionDeadlineFootnote` + demo alt **SLA timed out** → `/car-allocation/decision-cancelled` (`ConciergeAllocationDecisionCancelledScreen`) — no remediation choices left; refund initiated → demo **After refund is processed** → refund successful (same grammar as KYC retries-exhausted).
 
-**Car ready early (built — standard demo):** On `/car-allocation/pending`, alt skip **Car ready early** → `/car-allocation/early-offer` (choice turn). **Yes, deliver early** → `/car-allocation/early-confirming` (ongoing wait; no user CTA). Demo skips: **Confirmed · same dealer** → `/car-allocation/confirmed?early=1` (writes earlier delivery line via `lib/concierge/early-delivery.ts` — default **Standard delivery by 4 Oct '26**; pill/cards/`getBookingDeliveryLine` pick it up); **Needs verification · different dealer** → `/kyc/booking-accepted?earlyDealer=1` (OTP again — product copy frames **verify for faster delivery**, does not name a dealer change; demo **After the call** → confirmed with early date). **Keep my original date** → `/car-allocation/keeping-date` (pending-shaped manufacturing wait on original **25 Oct '26**) → **A few months later** → `/car-allocation/confirmed` (no early override). Moments: `earlyDeliveryOffer` · `earlyDeliveryConfirming` · `earlyDeliveryKept` · `allocationDone` (`?early=1`).
+**Car ready early (built — standard demo):** On `/car-allocation/pending`, alt skip **Car ready early** → `/car-allocation/early-offer` (choice turn). **Yes, deliver early** → `/car-allocation/early-confirming` (ongoing wait; no user CTA). Demo skips: **Confirmed · same dealer** → `/car-allocation/confirmed?early=1` (writes earlier delivery line via `lib/concierge/early-delivery.ts` — default **Standard delivery by 4 Oct '26**; pill/cards/`getBookingDeliveryLine` pick it up); **Needs verification · different dealer** → `/booking/accepted?earlyDealer=1` (OTP again — product copy frames **verify for faster delivery**, does not name a dealer change; demo **After the call** → confirmed with early date). **Keep my original date** → `/car-allocation/keeping-date` (pending-shaped manufacturing wait on original **25 Oct '26**) → **A few months later** → `/car-allocation/confirmed` (no early override). Moments: `earlyDeliveryOffer` · `earlyDeliveryConfirming` · `earlyDeliveryKept` · `allocationDone` (`?early=1`).
 
-**Known policy deviations (reported, not yet built):** insurance *selection* belongs in CYP (we select+pay at the RTO gate — proposal: confirm Shield at ₹0 during CYP, pay at the gate); no unified CYP deadline/auto-cancel state; loan agreement/e-mandate signing step missing from the wizard; §6 loan scenarios beyond the surfaced copy (rejection paths, the actual provider-switch/amount-change flows, same-day self-finance switch in Delivery Processing); booking-lock amounts are still demo constants (not yet per car/variant from catalogue) — cheaper-change adjustment copy is demo-previewable on review-and-pay via `?demo_booking=`;  Pre-Launch booking type absent; inability-to-deliver during *other* stages (e.g. post-payment) has no entry point yet; 50 km delivery-zone promise unsurfaced; `/car-allocation/*` kept as edge-case demo only — needs policy-doc blessing or comms-language alignment.
+**Known policy deviations (reported, not yet built):** insurance *selection* belongs in CYP (we select+pay at the RTO gate — proposal: confirm Shield at ₹0 during CYP, pay at the gate); no unified CYP deadline/auto-cancel state; loan agreement/e-mandate signing step missing from the wizard (terms sheet at submit is consent-only, not e-mandate); §6 loan **amount-change** flows and same-day self-finance switch in Delivery Processing still open (rejection recovery paths — alt bank / co-applicant / guarantor / self-finance / full pay / cancel — are built; see loan-rejected); booking-lock amounts are still demo constants (not yet per car/variant from catalogue) — cheaper-change adjustment copy is demo-previewable on review-and-pay via `?demo_booking=`; Pre-Launch booking type absent; inability-to-deliver during *other* stages (e.g. post-payment) has no entry point yet; 50 km delivery-zone promise unsurfaced; `/car-allocation/*` kept as edge-case demo only — needs policy-doc blessing or comms-language alignment.
 
 **Cold-open rule:** every turn is a re-entry point days apart, not a step in one sitting — copy must read correctly to someone who just reopened the app. Lead lines are standalone news (“Your Creta is reserved in your name.”), never reactions (“Done —”) unless the user acted seconds ago on the previous screen; day stamps carry event anchors (“Wed 23 Apr · after the dealer's call”). The only legitimately reactive turn is documents-received (the user just tapped submit).
 
@@ -30,7 +30,7 @@ The business policy (5 stages; Booking Confirmation = lock point; 50%-of-total-p
 
 **Demo prefill:** the loan application wizard starts fully prefilled (`createDefaultLoanApplicationState()` returns complete demo data; `fresh=1` re-seeds it) so Continue is enabled on every step — fields stay editable.
 
-**Policy transparency:** Shivi's arrival promise (“fully refundable right now — I'll flag it before that ever changes”) is kept: on dealer-search (`/kyc/processing`) the heads-up warns fees start from the **next** step (₹5,000 change / 50% cancel); dealer-found (`/kyc/booking-accepted`) is the fee boundary and points to the ⋮ menu. Manage sheet: free through dealer search; charged from booking-accepted onward.
+**Policy transparency:** Shivi's arrival promise (“fully refundable right now — I'll flag it before that ever changes”) is kept: on dealer-search (`/booking/processing`) the heads-up warns fees start from the **next** step (₹5,000 change / 50% cancel); dealer-found (`/booking/accepted`) is the fee boundary and points to the ⋮ menu. Manage sheet: free through dealer search; charged from booking-accepted onward.
 
 **Insurance plan details & the acko.com price gap:** users comparison-shop mid-flow; discovering a cheaper number on acko.com themselves is what triggers support calls. The experience preempts it instead of defending after the fact. Flow: **`/payment/pay-insurance-premium`** shows default **ACKO Drive Shield** (base ₹28,000) → **`/payment/insurance-addons`** (optional covers: engine, NCB, RTI, consumables, electrical/non-electrical accessories, passenger, paid driver — Add/Added, live premium) → **`/payment/choose-insurance-tenure`** prices 1+3 / 3+3 from that selection → checkout. Coverage sheet (`InsuranceCoverageBottomSheet`, content in `insurance-coverage-content.ts`): IDV block → base covers → **selected optional add-ons** when any are picked.
 
@@ -51,7 +51,7 @@ The business policy (5 stages; Booking Confirmation = lock point; 50%-of-total-p
 
 **What's-left sheet:** the old “See your delivery timeline” link is now the user asking “What's left, Shivi?”, and the sheet opens with her framing (“Here's the road to your driveway — I'll nudge you at every step.”) above the timeline rail.
 
-**Delivery schedule (journey finale):** `/payment/car-delivery-schedule` is a bespoke two-phase turn — day + window chips inline (flow-aware dates; “Lock this slot” disabled until both picked), then her confirmation with confetti (`fireBasicCannon`), the car card with the arrival line, and a “Start over” demo skip to `/quote`. Location name + detail use **4px** gap. The old screen's stale `nextHref="/kyc"` dead-end is gone.
+**Delivery schedule (journey finale):** `/delivery/schedule` is a bespoke two-phase turn — day + window chips inline (flow-aware dates; “Lock this slot” disabled until both picked), then her confirmation with confetti (`fireBasicCannon`), the car card with the arrival line, and a “Start over” demo skip to `/quote`. Location name + detail use **4px** gap. The old screen's stale `nextHref="/kyc"` dead-end is gone.
 
 **Honest time rule (both directions):** real-world third-party work (dealers, yard allocations, RTO) must never fake-complete on screen — and ACKO's own work must never fake-slow. ACKO **is** the insurer: the policy issues the instant the premium lands (“Issued the moment your payment landed — insurance is us, after all”), a brand moment, not a wait. The only honest waits in the delivery chapter are the dealer's prep and the RTO. `WorkingNarration` has two modes — `live` for quick system actions that tick off while you watch (e.g. document submission), and `ongoing` for real-world waits: the first task spins, the rest queue with dashed circles, a clock row sets the expectation (“Expect news from me by tomorrow morning”), and the **result is reported in Shivi's dialogue on the next turn** (“I heard back overnight — three dealers…”). Set via `workingMode` / `workingEtaLabel` in the script. The word **“booking” never appears in user-facing copy** — the language is: payment received → verify identity → find your car → reserve it → **the exact unit is yours at OTP** (engine/chassis on the card) → sort the money → delivery.
 
@@ -61,34 +61,38 @@ The business policy (5 stages; Booking Confirmation = lock point; 50%-of-total-p
 |---|---|
 | `ConciergeTurnShell` | Page grammar: day-stamp divider, echo chip, `ShiviDialogue` (+ optional `afterBody` continuation), artifact slot (`mt-8` below dialogue), `WorkingNarration`, fixed footer (footnote + replies + optional call affordance + time-skip); nav has back + manage-sheet menu only — no persistent Shivi pill |
 | `ConciergeMoment` | Binds a script moment to routes + artifacts (flow-aware via `readExperienceFlow()`) |
-| `ConciergeAllocationFailedScreen` | Express-only remediation — `express_miss` at `/car-allocation/failed` (wait for standard / change / refund); `discontinued` at `/car-allocation/variant-unavailable` (change / refund only) |
+| `ConciergeAllocationFailedScreen` | Express-only remediation — `express_miss` at `/car-allocation/failed` (wait for standard / change / refund); `discontinued` at `/car-allocation/variant-unavailable` (change / refund only); both carry decision-deadline footnote + **SLA timed out** → decision-cancelled |
 | `ConciergeVerifyIdentityScreen` | Bespoke `/kyc` turn — PAN/Aadhaar upload cards inline as the conversation; reply disabled until both docs are in (words: `VERIFY_IDENTITY_WORDS`) |
 | `ShiviCallSheet` | Call-offer confirmation sheet — contextual call affordances per turn (`callLabel` in the script; `callLabel` prop on the shell adapter for finance screens) instead of ambient presence chrome. **Always her voice:** “Stuck? I can call you” — never third person. **Every waiting/watching turn has one** — waiting is when anxiety peaks (“Can't sleep on it? I can call you”, “Anxious about the loan? I can call you”). **Online indicator** on her avatar: green when within business hours, grey when away — see `lib/shivi-business-hours.ts` (9 AM–9 PM IST); copy adapts (“within 10 minutes” vs “once I'm back online”) |
-| `NextStepCard` | The user's single pending action — glass artifact + **grey circular icon well** with **20px** `OTP_Call` icon (e.g. partner-dealer call / bank OTP). Title + body stack at **4px** gap |
+| `IconCalloutCard` | Shared organism — `IconWell` + title (**16px**) + body (**14px** `#4b4b4b`) + optional blue text/link CTA; `default` / `glass` surfaces |
+| `NextStepCard` | Thin wrapper on `IconCalloutCard` — glass + **20px** `OTP_Call` icon, no CTA (partner-dealer call / bank OTP). Title + body stack at **4px** gap |
+| `ConciergeAllocationDecisionCancelledScreen` | Allocation decision SLA timed out — `/car-allocation/decision-cancelled`; refund initiated → demo skip → refund successful (no remediation cards) |
 | `lib/concierge/script.ts` | All of Shivi's lines per moment (`EXPRESS_SCRIPT`); **express and standard share the same dialogue** — only `moneyIntro` footnote injects the flow-specific delivery date via `getDeliveryDateShort()` |
 | `lib/dealer-attribution-content.ts` | Car source labels — `CAR_SOURCE_NAME` / `CAR_SOURCE_DETAIL` (“ACKO Drive · Sourced & reserved for you”); `PARTNER_DEALER_LABEL` for post-payment dealer references |
 | `lib/shivi-business-hours.ts` | Callback availability — `isShiviWithinBusinessHours()` (Asia/Kolkata, 09:00–21:00); drives `ShiviCallSheet` status dot + copy |
 | `lib/concierge/echo.ts` | sessionStorage handoff: reply label → sent chip on the next turn (StrictMode-safe consume) |
 | `lib/concierge/instant.ts` | `sessionStorage.pbe-concierge-instant = "1"` renders turns fully revealed (demos/automation) |
 | `artifacts.tsx` | `AmountReceivedCard`, `PlanList`, `NoteCallout`, `CarSummaryCardLite` (flow-aware `deliveryStripClassName` / `deliveryIconSrc` from `ConciergeMoment`) |
+| `IconWell` (`components/molecules/`) | Shared circular icon container — tones **grey / green / amber / purple**; default **44px**; **1px** borders; used across plan, receipts, banks, uploads, self-finance steps |
+| `PlanList` | Arrival plan (`appearance="plan"`) and purchase-state menu timeline (`appearance="progress"` — 32px status nodes, “In progress” / “Done” labels, 20px stage gaps; [Figma 3342:18746](https://www.figma.com/design/nW5SWmJdxxsCEDlqBN7C0L/Post-booking-experience?node-id=3342-18746)) |
 
 ### Converted moments (express + standard)
 
-`/payment/booking-success` (arrival — Shivi intro + plan; initial price-lock checkout now lands here via `buildBookingLockSuccessHref`) → `/kyc` (identity ask **with upload inline**; Shivi intro sheet removed; `/kyc/upload` 302s here — verification-failed re-upload links included) → `/kyc/documents-received` (working) → `/kyc/verification-in-progress` (kyc_failed fork + cancel_no_charges skip-hide preserved) → `/kyc/processing` (dealer search, working; express-only alt skip **If no car is found** → `/car-allocation/failed`) → `/kyc/booking-accepted` (found it + `NextStepCard` OTP note) → `/kyc/booking-confirmed` (**car reserved** — engine/chassis on card) → `/payment/default` (money intro) → `/payment/choose` (header converted to a Shivi ask; CTAs in user voice). Modify-selection pay returns land on `/kyc/booking-confirmed?source=payment&return_source=modify-selection` (auto-advance Payment received); post-verification returns (express/standard, including allocation-failed → change car) continue to `/kyc/processing` — not `/kyc`. After a completed selection change, `dealerSearch` / `dealerFound` use **“Change locked in…”** copy (not “paperwork done”), with the new car/colour/variant interpolated from `readActiveBookingSnapshot()`.
+`/booking/received` (arrival — Shivi intro + plan; initial price-lock checkout now lands here via `buildBookingLockSuccessHref`) → `/kyc` (identity ask **with upload inline**; Shivi intro sheet removed; `/kyc/upload` 302s here — verification-failed re-upload links included) → `/kyc/documents-received` (working) → `/kyc/verification-in-progress` (kyc_failed fork + cancel_no_charges skip-hide preserved) → `/booking/processing` (dealer search, working; express-only alt skip **If no car is found** → `/car-allocation/failed`) → `/booking/accepted` (found it + `NextStepCard` OTP note) → `/booking/confirmed` (**car reserved** — engine/chassis on card) → `/payment/default` (money intro) → `/payment/choose` (header converted to a Shivi ask; CTAs in user voice). Modify-selection pay returns land on `/booking/confirmed?source=payment&return_source=modify-selection` (auto-advance Payment received); post-verification returns (express/standard, including allocation-failed → change car) continue to `/booking/processing` — not `/kyc`. After a completed selection change, `dealerSearch` / `dealerFound` use **“Change locked in…”** copy (not “paperwork done”), with the new car/colour/variant interpolated from `readActiveBookingSnapshot()`.
 
 **Express main spine skips `/car-allocation/*` after OTP** — unit assigned at booking-confirmed; CTA into payment. **Standard** still uses `/car-allocation/pending` after OTP (manufacturing wait), including the **Car ready early** demo branch (`/car-allocation/early-*`, `/car-allocation/keeping-date`). `/car-allocation/failed` and `/car-allocation/variant-unavailable` remain express-only demos.
 
-**Purchase-state timeline (`lib/journey-stage.ts`):** 0 paperwork · 1 exact car (`/kyc/processing`, `/kyc/booking-accepted`, allocation-pending) · 2 money (`/kyc/booking-confirmed` onward — car is reserved, VIN on card) · 3 delivery (insurance / RTO / schedule). Booking-confirmed must not stay on “exact car / waiting on partner”.
+**Purchase-state timeline (`lib/journey-stage.ts`):** 0 paperwork · 1 exact car (`/booking/processing`, `/booking/accepted`, allocation-pending) · 2 money (`/booking/confirmed` onward — car is reserved, VIN on card) · 3 delivery (insurance / RTO / schedule). Booking-confirmed must not stay on “exact car / waiting on partner”.
 
-**`dealerFound` turn (`/kyc/booking-accepted`):** shortlisted car on `CarSummaryCardLite` + `NextStepCard` OTP; demo **After the call** → standard `/car-allocation/pending` · express `/kyc/booking-confirmed`. **`?earlyDealer=1`:** verify-for-faster-delivery copy (no name in lead; no “different dealer” wording) → confirmed `?early=1`. **`carReserved` / `allocationDone`:** engine/chassis + payment handoff → `/payment/choose`. **`moneyIntro` (`/payment/default`):** legacy redirect into choose; footnote stakes delivery date via `getDeliveryDateShort()` (honours early override). **`/payment/choose`:** option cards — chip above title, 16px gap, centred stat divider; ACKO Drive EMI **₹21,833** (no `/mo`); selected radio inline `#5920C5`. ACKO Drive always default-selected; demo alt **No ACKO Drive finance preselect** → `?preselect=0` (neutral body copy only).
+**`dealerFound` turn (`/booking/accepted`):** shortlisted car on `CarSummaryCardLite` + `NextStepCard` OTP; demo **After the call** → standard `/car-allocation/pending` · express `/booking/confirmed`. **`?earlyDealer=1`:** verify-for-faster-delivery copy (no name in lead; no “different dealer” wording) → confirmed `?early=1`. **`carReserved` / `allocationDone`:** engine/chassis + payment handoff → `/payment/choose`. **`moneyIntro` (`/payment/default`):** legacy redirect into choose; footnote stakes delivery date via `getDeliveryDateShort()` (honours early override). **`/payment/choose`:** option cards — chip above title, 16px gap, centred stat divider; ACKO Drive EMI **₹21,833** (no `/mo`); selected radio inline `#5920C5`. ACKO Drive always default-selected; demo alt **No ACKO Drive finance preselect** → `?preselect=0` (neutral body copy only).
 
-Buying-guide routes are bypassed on the spine (the arrival plan replaces them). No-"booking" sweep applied to converted surfaces + manage sheet ("Your car", "Make a change", "Cancel my purchase", "Paid so far", "Price lock amount").
+Buying-guide routes are bypassed on the spine (the arrival plan replaces them). No-"booking" sweep applied to converted surfaces + manage sheet ("Your car", "Make a change", "Cancel my purchase", "Booking amount paid", "Price lock amount").
 
 ### Finance & delivery — converted via the shell adapter
 
 `KycBookingProcessingScreen` is now a **concierge adapter** (renders `ConciergeTurnShell`; same props API): headline/subline → Shivi's lines, `belowHeadline` → `afterBody` (e.g. banking partner row on finance action), infoBox/summary card → artifacts, demo “Next” → “Skip ahead” time-skip pill, real CTAs → user replies, ctaWarningLine → footnote, delivery-timeline sheet behind a footer link. This converts in one move: finance action, loan processing (+ bank-call `NextStepCard` with ETA + stake), loan sanctioned, pay down payment, insurance setup/disbursement waits, disbursement received, pay insurance premium, insurance prep, RTO, delivery schedule, self-finance action, margin money slip, full payment. Voice pass applied to all their copy (first person, honest time, stakes tied to the delivery date).
 
-**Loan application wizard** (`LoanApplicationShell`, [Figma 2841:8477](https://www.figma.com/design/nW5SWmJdxxsCEDlqBN7C0L/Post-booking-experience?node-id=2841-8477)): **white** page background; dark-green header gradient (`#044328` → `#022717`) with inverted nav + **Get help** → `ShiviCallSheet`; horizontal milestone rail (white connectors/icons on dark; opaque milestone fills). Steps: loan-details → personal (+ address substep) → documents (`LoanDocumentsChecklistCard` — circular doc icons) → references → submitted success (white bg, auto-advance). Step logic unchanged in `lib/loan-application-state.ts`.
+**Loan application wizard** (`LoanApplicationShell`, [Figma 2841:8477](https://www.figma.com/design/nW5SWmJdxxsCEDlqBN7C0L/Post-booking-experience?node-id=2841-8477)): **white** page background; dark-green header gradient (`#044328` → `#022717`) with inverted nav + **Get help** → `ShiviCallSheet`; horizontal milestone rail (white connectors/icons on dark; opaque milestone fills). Shared loan-details once, then **person-shaped dual-pass**: personal (+ address) → documents → references for **primary**, then the same four steps again for **co-applicant** when enabled (`?applicant=co`). Co-applicant gate: **`LoanApplicationCoApplicantBottomSheet`** on finance-action (“Start my loan application”) — chips **No, just me** / **Yes, add co-applicant** (default order: no first). Person steps show **`LoanApplicationApplicantEyebrow`** (“You · Primary applicant” / “Co‑applicant”) when dual-pass is on; co-applicant personal collects relation via **`LoanApplicationRelationBottomSheet`**. Documents: primary sees KYC **verified banner** + financial uploads only; co-applicant collects **Aadhaar + PAN** identity uploads plus financial docs (`collectIdentityDocuments`, `lib/loan-application-documents-*`). Final references CTA opens **`LoanApplicationTermsBottomSheet`** → submitted success (white bg, auto-advance). State: `lib/loan-application-state.ts` (`includeCoApplicant`, `coApplicant` profile); URLs: `lib/loan-application-urls.ts`.
 
 **Day stamps are real dates** with event anchors (“Wed 23 Apr · after the dealer's call”), never “Day 1” journey bookkeeping; omitted when no time has passed. **Customer-dependency stakes** are explicit wherever the user's action gates the timeline (footnotes + `stakeLabel` on next-step cards).
 
@@ -107,6 +111,52 @@ Buying-guide routes are bypassed on the spine (the arrival plan replaces them). 
 
 ---
 
+## Component architecture (Atomic Design lite)
+
+Hybrid model: thin shared atomic layers + domain feature folders. **No** `templates/` layer — `app/` routes import feature screens directly.
+
+```
+app/page  →  feature screen (payment | kyc | concierge | quote)
+                 ↓
+             organisms (ConciergeTurnShell, BottomSheetShell, shared cards)
+                 ↓
+             molecules (IconWell, BottomSheetPortal, chips, bullet lists)
+                 ↓
+             atoms (BottomSheetCloseIcon, experience backdrop layers)
+```
+
+### Placement rules
+
+| What | Where |
+|------|--------|
+| Route screen / flow adapter | Feature folder (`payment/`, `kyc/`, `concierge/`, `quote/`) |
+| Used across **2+ domains** | `molecules/` (small) or `organisms/` (section / shell / shared card) |
+| Circular icon container (menu / receipts / cards) | Always `IconWell` |
+| Plain grey confirm-sheet icon pad | Always `SoftIconPad` — never a one-off `#f5f5f5` circle |
+| Bottom sheet | Feature folder if single-flow; **must** use `BottomSheetShell` (or `useBottomSheetPresence` for rare special cases) |
+| Concierge page grammar | `ConciergeTurnShell` — screens supply `says` / `artifact` / `replies` |
+| Cross-flow manage / upload / cancel reason sheets | `organisms/` |
+
+**Dependency rule:** feature folders import atomic layers; organisms/molecules/atoms must **not** import from `payment/` / `kyc/` / `concierge/`.
+
+**SCSS:** co-located `*.module.scss` per component; shared surfaces in `styles/_components.scss` (`card-elevated`, `sheet-elevated`, CTA classes) and `lib/layout/*` (bottom-sheet layout tokens).
+
+### Key shared pieces
+
+| Piece | Layer | Role |
+|-------|-------|------|
+| `BottomSheetShell` | organism | Portal + scrim + slide panel + optional absolute close + body scroll lock |
+| `useBottomSheetPresence` | organism hook | Mount / animate-in / exit (280ms) — for sheets that cannot use the shell (e.g. Shivi intro coachmark sibling) |
+| `BottomSheetPortal` | molecule | `document.body` portal only |
+| `IconWell` | molecule | Gradient / bordered wells — menu, receipts, cards, bank logos |
+| `SoftIconPad` | molecule | Plain `#f5f5f5` circular pad — confirm / how-it-works bottom-sheet rows |
+| `BottomSheetConfirmBulletList` | molecule | SoftIconPad + tick/copy rows on confirm sheets |
+| `ConciergeTurnShell` | organism | Concierge turn grammar |
+| `IconCalloutCard` | organism | IconWell + title + body; optional text/link CTA — base for NextStep / document / location callouts |
+| `artifacts.tsx` | organism barrel | `AmountReceivedCard`, `PlanList`, `IconCalloutCard`, `NextStepCard`, `CarSummaryCardLite`, `NoteCallout` |
+
+---
+
 ## Experience flows (Express / Standard / Verification failed / Modify no charges / Modify with charges / Cancel no charges / Cancel with charges)
 
 Switch on **`/quote`** via the top-left menu (`QuoteFlowMenuSheet`). Active flow is stored in **`sessionStorage`** (`post-booking-experience-flow`) via `readExperienceFlow()` in `lib/experience-flow.ts`.
@@ -117,9 +167,9 @@ Switch on **`/quote`** via the top-left menu (`QuoteFlowMenuSheet`). Active flow
 | **Standard delivery** | Yes | Same KYC/dealer spine as express until OTP; then **manufacturing wait** at `/car-allocation/pending` (not booking-confirmed). Delivery date/visuals from `lib/experience-flow-content.ts`. **Car ready early** demo branch from pending (see policy section). |
 | **Verification failed** | Yes | Same as express until KYC verification in progress → `lib/kyc-verification-outcome.ts` |
 | **Change selection without any charges** | Yes | Express path through **`/kyc` (KYC pending)** only; post–KYC-pending routes redirect to `/kyc`; manage booking fees always free (`lib/manage-booking-modify.ts`); modify-selection routes unchanged |
-| **Change selection with ₹5,000 fee** | Yes | **Same routes as express** through **`/kyc/booking-accepted`**; change selection from booking accepted (`isModifyWithChargesFlow()` + `isChangeSelectionAvailablePhase`); ₹5,000 change fee in review-and-pay (`lib/modify-selection-review-pay-content.ts`) |
+| **Change selection with ₹5,000 fee** | Yes | **Same routes as express** through **`/booking/accepted`**; change selection from booking accepted (`isModifyWithChargesFlow()` + `isChangeSelectionAvailablePhase`); ₹5,000 change fee in review-and-pay (`lib/modify-selection-review-pay-content.ts`) |
 | **Cancellation with no charges** | Yes | Express path through **`/kyc/verification-in-progress`** (inclusive); post–verification-in-progress routes redirect to `/kyc/verification-in-progress`; manage booking fees always free; **Cancel booking** → concierge cancel turn (`ConciergeCancelScreen`) with ₹0 charge; **Change selection** shown but not clickable |
-| **Cancellation with 50% charges** | Yes | Express path through **`/kyc/booking-accepted`** (partner locked); later routes redirect to booking-accepted; cancel fee **standard** (₹5,000 retained); **Cancel booking** → concierge cancel turn with `stage=post`; **Change selection** shown but not clickable |
+| **Cancellation with 50% charges** | Yes | Express path through **`/booking/accepted`** (partner locked); later routes redirect to booking-accepted; cancel fee **standard** (₹5,000 retained); **Cancel booking** → concierge cancel turn with `stage=post`; **Change selection** shown but not clickable |
 
 ### Common vs flow-specific changes
 
@@ -137,7 +187,7 @@ Switch on **`/quote`** via the top-left menu (`QuoteFlowMenuSheet`). Active flow
 
 - **`JOURNEY_PATHS`** — canonical path strings for milestones (KYC hub → processing → booking accepted → car allocation → payment).
 - **`resolveJourneyPhase(pathname)`** — coarse phase for fees and future branching (not payment instalment state).
-- **`isIdentityFunnelPhase`** — identity + dealer-search phases (`/kyc` through `/kyc/processing`).
+- **`isIdentityFunnelPhase`** — identity + dealer-search phases (`/kyc` through `/booking/processing`).
 - Prefer importing paths from here when touching navigation; migrate `router.push` strings incrementally.
 
 ### Demo vs product CTAs (GitHub Pages)
@@ -153,12 +203,15 @@ Switch on **`/quote`** via the top-left menu (`QuoteFlowMenuSheet`). Active flow
 |------|---------|
 | `/` | Redirects to `/quote` |
 | `/quote` | Entry / quote screen |
-| `/payment/choose` | Choose payment method (ACKO Drive / self finance / full payment). ACKO Drive always default-selected. Demo **No ACKO Drive finance preselect** → `?preselect=0` (neutral body copy); reverse **ACKO Drive finance preselect** → default |
+| `/payment/choose` | Choose payment method (ACKO Drive / self finance / full payment). ACKO Drive always default-selected. Demo **No ACKO Drive finance preselect** → `?preselect=0` (neutral body copy); reverse **ACKO Drive finance preselect** → default. ACKO CTA opens **eligibility sheet** before bank options |
+| `/payment/choose-bank` | Full-page bank picker (`BankSelectionScreen`) — initial pick, mid-flow change, post-rejection switch (`lib/payment/bank-selection-urls.ts`) |
 | `/payment/acko-drive-finance-confirmed` | After bank sheet **Confirm banking partner** — celebration + docs card; **Continue** → `/payment/acko-drive-finance-action?bank=` |
-| `/payment/acko-drive-finance-action` | ACKO Drive loan application action — `AckoDriveFinanceActionScreen` (banking partner `afterBody`, `LoanDocumentsChecklistCard`); **Start my loan application** → `/payment/loan-application/loan-details?bank=` |
+| `/payment/acko-drive-finance-action` | ACKO Drive loan application action — `AckoDriveFinanceActionScreen` (banking partner `afterBody`, `LoanDocumentsChecklistCard`); **Start my loan application** → co-applicant sheet → `/payment/loan-application/loan-details?bank=` |
 | `/payment/loan-documents-upload` | **Legacy** — redirects to loan-application documents step; accepts optional `?bank=` |
 | `/payment/loan-processing` | Bank OTP confirm — `LoanBookingProcessingScreen` (`NextStepCard`); demo **After the call** → `/payment/loan-under-review` |
-| `/payment/loan-under-review` | Bank processing loan (2–3 working days) — `LoanUnderReviewScreen`; alts **More docs needed** / **If the bank declines**; skip → `/payment/loan-sanctioned` |
+| `/payment/loan-under-review` | Bank processing loan (2–3 working days) — `LoanUnderReviewScreen`; alts **More docs needed** / **If the bank declines** → `/payment/loan-rejected?bank=`; skip → `/payment/loan-sanctioned` |
+| `/payment/loan-rejected` | Bank declined — analysis outcomes (`?outcome=` demo switcher); radio option cards + contextual CTA (`LoanRejectedScreen`, `lib/loan-rejected-content.ts`) |
+| `/payment/loan-guarantor` | Guarantor details after conditional bank path (`LoanGuarantorScreen`); submit → under-review |
 | `/payment/loan-sanctioned` | Loan sanctioned — same shell family as loan-processing |
 | `/payment/choose-loan-amount` | Choose loan amount slider (`?bank=`); **Confirm loan amount** → `LoanSubmitConfirmBottomSheet` → `/payment/pay-down-payment?bank=&loan_amount=&down_payment=` |
 | `/payment/pay-down-payment` | Pay down payment hero (`KycBookingProcessingScreen`); CTA → `/payment?down_payment=` (instalments demo) |
@@ -169,44 +222,45 @@ Switch on **`/quote`** via the top-left menu (`QuoteFlowMenuSheet`). Active flow
 | `/payment/insurance-addons` | Optional add-ons (modify-selection static page) → choose tenure |
 | `/payment/choose-insurance-tenure` | Tenure 1+3 / 3+3 (modify-selection static page) → pay |
 | `/payment/insurance-premium-success` | After insurance payment |
-| `/payment/car-delivery-insurance-prep` | Car insurance prep in progress |
-| `/payment/car-delivery-rto` | RTO registration in progress; demo **More docs needed** → `/payment/car-delivery-rto-additional-documents` |
-| `/payment/car-delivery-rto-additional-documents` | RTO mid-registration document request (demo); submit → back to RTO wait |
-| `/payment/car-delivery-schedule` | Pick delivery slot |
+| `/delivery/insurance-prep` | Car insurance prep in progress |
+| `/delivery/rto` | RTO registration in progress; demo **More docs needed** → `/delivery/rto/additional-documents` |
+| `/delivery/rto/additional-documents` | RTO mid-registration document request (demo); submit → back to RTO wait |
+| `/delivery/schedule` | Pick delivery slot |
 | `/payment/enter-sanctioned-loan-amount` | Self finance — declare sanctioned / disbursement amount |
 | `/payment/margin-money-slip` | Self finance — margin money slip after full DP |
 | `/payment/pay-full-payment` | Full payment action screen |
 | `/payment/full-payment-option-confirmed` | Full payment celebration — “Payment option confirmed”; auto-advance (~3s) → action |
 | `/payment/full-payment-confirmed` | Full payment action — `KycBookingProcessingScreen` + amount breakdown; **Continue** → `/payment/pay-full-payment` |
 | `/payment/loan-application` | Wizard entry (redirects to first step) |
-| `/payment/loan-application/loan-details` … `references`, `submitted` | ACKO loan application wizard (`lib/loan-application-state.ts`) |
+| `/payment/loan-application/loan-details` … `references`, `submitted` | ACKO loan application wizard — optional `?applicant=co` for co-applicant pass (`lib/loan-application-state.ts`, `lib/loan-application-urls.ts`) |
 | `/kyc/verification-failed` | KYC verification failed — **`ConciergeVerificationFailedScreen`**: Shivi explains the specific failure (`?reason=image_not_clear\|name_mismatch\|address_mismatch`); tab switcher (`VerificationFailureReasonSwitcher` in `afterBody`) for QA/demo; CTA **"I'll re-upload them"** → `/kyc/upload?reason=`; 2nd failure → `/kyc/verification-cancelled` (`ConciergeVerificationCancelledScreen`: refund initiated → demo **After refund is processed** → refund successful) |
 | `/payment/self-finance-confirmed` | Self finance — post-confirm celebration; **Continue** → `/payment/self-finance-action` |
 | `/payment/self-finance-action` | Self finance — proforma hero + **`LoanProcessingWhatsNext variant="self_finance_action"`**; primary CTA → `/payment/pay-down-payment` (current wire) |
 | `/payment` | Payment flow / hub (e.g. full payment path from choose) |
 | `/payment/default` | Default payment prompt — CTA to **`/payment/choose`** |
-| `/payment/booking-success` | Legacy redirect → `/kyc/booking-confirmed?source=payment` |
-| `/payment/booking-success/next` | Legacy redirect → `/kyc/buying-guide/1` |
-| `/kyc/buying-guide/[1-3]` | Buying process onboarding (Figma 2460:7661); step 3 **Let's get started** → `/kyc` (payment + delivery combined) |
+| `/booking/received` | Legacy redirect → `/booking/confirmed?source=payment` |
+| `/booking/received/next` | Legacy redirect → `/onboarding/1` |
+| `/onboarding/[1-3]` | Buying process onboarding (Figma 2460:7661); step 3 **Let's get started** → `/kyc` (payment + delivery combined) |
 | `/kyc` | KYC pending — Shivi intro bottom sheet on load ([Figma 2479:7600](https://www.figma.com/design/nW5SWmJdxxsCEDlqBN7C0L/Post-booking-experience?node-id=2479-7600)); **Got it** → hero + **Complete KYC Now** |
 | `/kyc/upload` | PAN/Aadhaar upload via `KycPanAadhaarDocumentUploadSections` + shared `DocumentUploadInfoTipsCard`, `DigilockerFetchButton`, `DocumentUploadDocumentCards` ([Figma 2501:8136](https://www.figma.com/design/nW5SWmJdxxsCEDlqBN7C0L/Post-booking-experience?node-id=2501-8136)); `mt-6` title→tips→cards; DigiLocker fetch above Aadhaar only; no headline subtext; re-upload from verification-failed uses same screen; **Submit documents** → `/kyc/documents-received` |
 | `/kyc/documents-received` | Documents received |
 | `/kyc/verification-in-progress` | KYC verification in progress (between documents received and processing); demo **Next** hidden in **cancel_no_charges** flow |
-| `/kyc/cancel-booking` | **Cancel-no-charges demo flow only** — Figma 2709:17395 (`CancelBookingConfirmScreen`); staggered page load; car card + refund breakdown + outline CTAs; **Yes, cancel my booking** → reason bottom sheet (Figma 2711:21013) |
-| `/kyc/cancel-booking/success` | **Cancel-no-charges demo flow only** — celebration success layout + fixed bottom **Done** CTA; full booking amount refund copy; **Done** → `/quote` |
-| `/kyc/processing` | Dealer search (`ConciergeMoment` `dealerSearch`) — demo **Next morning** → `/kyc/booking-accepted`; express-only side-by-side alts **No car found** → `/car-allocation/failed`; **Variant discontinued** → `/car-allocation/variant-unavailable` |
-| `/kyc/booking-accepted` | Dealer found + OTP `NextStepCard` — demo **After the call** → standard: `/car-allocation/pending` · express: `/kyc/booking-confirmed`. **`?earlyDealer=1`** (from early-confirming): faster-delivery verify copy (no dealer-change wording); **After the call** → `/car-allocation/confirmed?early=1` |
-| `/kyc/modify-selection` | **Modify-selection demo flows** (`modify_no_charges`, `modify_with_charges`) — chooser; bottom CTA varies by option (See available colours / variants / Browse cars) |
-| `/kyc/modify-selection/colour` \| `variant` \| `different-car` | Selection steps; each path has `…/confirm` → shared review-and-pay (`ModifySelectionReviewPayScreen`) |
-| `/kyc/modify-selection/*/confirm` | Review selection + pay; edit icons gated by flow (see **Modify selection**) |
-| `/kyc/booking-confirmed` | Booking confirmed — default spine: **`ConciergeMoment` `carReserved`** — payment handoff → `/payment/choose`; modify-selection pay returns (`?source=payment&return_source=modify-selection`): auto-advance **Payment received** (`DownPaymentInstalmentSuccess`) — next route journey-aware (see **Pay → booking received**) |
+| `/booking/cancel` | **Cancel-no-charges demo flow only** — Figma 2709:17395 (`CancelBookingConfirmScreen`); staggered page load; car card + refund breakdown + outline CTAs; **Yes, cancel my booking** → reason bottom sheet (Figma 2711:21013) |
+| `/booking/cancel/success` | **Cancel-no-charges demo flow only** — celebration success layout + fixed bottom **Done** CTA; full booking amount refund copy; **Done** → `/quote` |
+| `/booking/processing` | Dealer search (`ConciergeMoment` `dealerSearch`) — demo **Next morning** → `/booking/accepted`; express-only side-by-side alts **No car found** → `/car-allocation/failed`; **Variant discontinued** → `/car-allocation/variant-unavailable` |
+| `/booking/accepted` | Dealer found + OTP `NextStepCard` — demo **After the call** → standard: `/car-allocation/pending` · express: `/booking/confirmed`. **`?earlyDealer=1`** (from early-confirming): faster-delivery verify copy (no dealer-change wording); **After the call** → `/car-allocation/confirmed?early=1` |
+| `/booking/modify` | **Modify-selection demo flows** (`modify_no_charges`, `modify_with_charges`) — chooser; bottom CTA varies by option (See available colours / variants / Browse cars) |
+| `/booking/modify/colour` \| `variant` \| `different-car` | Selection steps; each path has `…/confirm` → shared review-and-pay (`ModifySelectionReviewPayScreen`) |
+| `/booking/modify/*/confirm` | Review selection + pay; edit icons gated by flow (see **Modify selection**) |
+| `/booking/confirmed` | Booking confirmed — default spine: **`ConciergeMoment` `carReserved`** — payment handoff → `/payment/choose`; modify-selection pay returns (`?source=payment&return_source=modify-selection`): auto-advance **Payment received** (`DownPaymentInstalmentSuccess`) — next route journey-aware (see **Pay → booking received**) |
 | `/car-allocation/pending` | Manufacturing wait (`allocationPending`); primary skip **A few months later** → `/car-allocation/confirmed`; **standard** alt **Car ready early** → `/car-allocation/early-offer`; **express** side-by-side alts **No car found** → `/car-allocation/failed`; **Variant discontinued** → `/car-allocation/variant-unavailable` |
 | `/car-allocation/early-offer` | **Standard demo** (`earlyDeliveryOffer`) — car ready early; replies **Yes, deliver early** → `/car-allocation/early-confirming` or **Keep my original date** → `/car-allocation/keeping-date` |
-| `/car-allocation/early-confirming` | **Standard demo** (`earlyDeliveryConfirming`) — ongoing wait (no product CTA). Demo: **Confirmed · same dealer** → `/car-allocation/confirmed?early=1` (writes early date); **Needs verification · different dealer** → `/kyc/booking-accepted?earlyDealer=1` |
+| `/car-allocation/early-confirming` | **Standard demo** (`earlyDeliveryConfirming`) — ongoing wait (no product CTA). Demo: **Confirmed · same dealer** → `/car-allocation/confirmed?early=1` (writes early date); **Needs verification · different dealer** → `/booking/accepted?earlyDealer=1` |
 | `/car-allocation/keeping-date` | **Standard demo** (`earlyDeliveryKept`) — user kept original date; manufacturing wait (pending-shaped) → **A few months later** → `/car-allocation/confirmed` |
 | `/car-allocation/confirmed` | Unit ready with engine/chassis (`allocationDone`); payment handoff → `/payment/choose`. **`?early=1`**: early-accept copy + delivery date already updated (4 Oct '26) |
-| `/car-allocation/failed` | **Edge-case demo (express only)** — express-miss remediation (`ConciergeAllocationFailedScreen` `mode=express_miss`); includes wait-for-standard |
-| `/car-allocation/variant-unavailable` | **Edge-case demo (express only)** — discontinued-variant remediation (`ConciergeAllocationFailedScreen` `mode=discontinued`); **no** wait-for-standard option |
+| `/car-allocation/failed` | **Edge-case demo (express only)** — express-miss remediation (`ConciergeAllocationFailedScreen` `mode=express_miss`); includes wait-for-standard; demo **SLA timed out** → decision-cancelled |
+| `/car-allocation/variant-unavailable` | **Edge-case demo (express only)** — discontinued-variant remediation (`ConciergeAllocationFailedScreen` `mode=discontinued`); **no** wait-for-standard option; same SLA timeout alt |
+| `/car-allocation/decision-cancelled` | **Edge-case demo** — allocation decision SLA timed out (`ConciergeAllocationDecisionCancelledScreen`); full booking-lock refund; no remediation cards |
 
 **Legacy URLs** (308 redirect): `/kyc/car-allocation-pending` → `/car-allocation/pending`, `/kyc/car-allocation-confirmed` → `/car-allocation/confirmed` (`next.config.ts`).
 
@@ -220,20 +274,22 @@ Entry: **`/payment/choose`** (`ChoosePaymentOptionsScreen`).
 
 ### Shared
 
-- All three options use the same screen; CTA adapts to selection (**Show me the bank options** / **I'll use my own bank loan** / **I'll pay in full**). Option cards: chip above title, 16px gap between cards, centred stat divider.
+- All three options use the same screen; CTA adapts to selection (**Show me the bank options** / **I'll use my own bank loan** / **I'll pay in full**). Option cards: chip above title, 16px gap between cards, centred stat divider. ACKO Drive path gates bank options behind **`AckoDriveFinanceEligibilityBottomSheet`**.
 - **“What’s next?”** on `KycBookingProcessingScreen` renders `whatsNextCard` inside **`WhatsNextTimelineBottomSheet`** (`components/kyc/WhatsNextTimelineBottomSheet.tsx`).
 
 ### ACKO Drive finance (assisted loan via partner banks)
 
 | Step | Behaviour |
 |------|-----------|
-| Choose | CTA **“See bank options”** opens **`BankSelectionBottomSheet`**. |
+| Choose | CTA **“See bank options”** opens **`AckoDriveFinanceEligibilityBottomSheet`** (salaried/self-employed · personal-name only; no company registration / lease). **Agree and continue** → **`BankSelectionBottomSheet`**. |
 | Bank partner | **Confirm banking partner** → **`/payment/acko-drive-finance-confirmed?bank={id}`**. |
 | Confirmed | **`AckoDriveFinanceConfirmedScreen`**: brief success (Lottie + headline + banking partner); auto-advances (~3s) → **`/payment/acko-drive-finance-action?bank={id}`**. |
-| Action | **`AckoDriveFinanceActionScreen`**: `KycBookingProcessingScreen` (two-line headline, banking partner as `afterBody`, `LoanDocumentsChecklistCard` artifact); **Start my loan application** → **`/payment/loan-application/loan-details?bank={id}`**. |
-| Loan application wizard | Four milestones: **Loan details** → **Personal details** (+ address substep) → **Documents** → **References** → **submitted** (white success, auto-advance ~3s). Shell: dark header ([Figma 2841:8477](https://www.figma.com/design/nW5SWmJdxxsCEDlqBN7C0L/Post-booking-experience?node-id=2841-8477)), white body, **Get help** opens `ShiviCallSheet`. Final CTA → **`LoanSubmitConfirmBottomSheet`** → **`/payment/loan-processing?bank={id}`**. Legacy **`/payment/loan-documents-upload`** redirects to documents step. |
+| Action | **`AckoDriveFinanceActionScreen`**: `KycBookingProcessingScreen` (two-line headline, banking partner as `afterBody`, `LoanDocumentsChecklistCard` artifact); **Start my loan application** → **`LoanApplicationCoApplicantBottomSheet`** → **`/payment/loan-application/loan-details?bank={id}`**. |
+| Loan application wizard | Shared **Loan details**, then person dual-pass: **Personal** (+ address) → **Documents** → **References** for primary; when co-applicant enabled, the same person steps again with `?applicant=co` (eyebrow + shortened titles). Co-applicant documents collect Aadhaar/PAN + financials; primary shows verified banner + financials only. Shell: dark header ([Figma 2841:8477](https://www.figma.com/design/nW5SWmJdxxsCEDlqBN7C0L/Post-booking-experience?node-id=2841-8477)), white body, **Get help** opens `ShiviCallSheet`. Final CTA → **`LoanApplicationTermsBottomSheet`** → submitted → **`/payment/loan-processing?bank={id}`**. Legacy **`/payment/loan-documents-upload`** redirects to documents step. |
 | Bank OTP | **`LoanBookingProcessingScreen`** (`/payment/loan-processing`) — confirm OTP with the bank (`NextStepCard`); demo **After the call** → under-review. |
-| Under review | **`LoanUnderReviewScreen`** (`/payment/loan-under-review`) — 2–3 working days processing; demo **More docs needed** / **If the bank declines**; skip → sanctioned. |
+| Under review | **`LoanUnderReviewScreen`** (`/payment/loan-under-review`) — 2–3 working days processing; demo **More docs needed** / **If the bank declines** → loan-rejected; skip → sanctioned. |
+| Loan rejected | **`LoanRejectedScreen`** (`/payment/loan-rejected?bank=&outcome=`) — backend-style analysis outcomes with demo switcher (`LoanRejectedOutcomeSwitcher`). Radio option cards + one contextual CTA (same grammar as allocation-failed). Outcomes: **`non_doable`** (self-finance / full pay / cancel) · **`same_bank_co_applicant`** · **`same_bank_guarantor`** → `/payment/loan-guarantor` · **`alt_bank`** (best-rate other partner; carry-over → loan-processing) · **`alt_bank_co_applicant`**. Default demo outcome: **`alt_bank`**. Copy: `lib/loan-rejected-content.ts`. |
+| Guarantor | **`LoanGuarantorScreen`** — name / phone / email / PAN / Aadhaar (demo-prefilled); submit → under-review. |
 | Loan sanctioned | **`LoanSanctionedScreen`** — `AmountReceivedCard` (sanctioned amount) + `NextStepCard` (partner-dealer call); CTA → choose loan amount / dealer-confirmed path |
 | Choose loan | **`ChooseLoanAmountScreen`** — slider min **₹1L** (`MIN_LOAN_INR`), max on-road price; down-payment split card (car DP + insurance); **`ChooseLoanPaymentSummaryCard`** |
 | Before pay DP | **`LoanSubmitConfirmBottomSheet`** on confirm — bullets + **Agree and continue** → pay-down-payment |
@@ -246,17 +302,20 @@ Entry: **`/payment/choose`** (`ChoosePaymentOptionsScreen`).
 
 **Key files**
 
-- `components/payment/ChoosePaymentOptionsScreen.tsx` — ACKO branch + bank sheet open
+- `components/payment/ChoosePaymentOptionsScreen.tsx` — ACKO branch + eligibility sheet + bank sheet open
+- `components/payment/AckoDriveFinanceEligibilityBottomSheet.tsx` — eligibility gate before bank options
 - `components/payment/BankSelectionBottomSheet.tsx`
 - `components/payment/BankSelectionScreen.tsx`, `BankLoanCard.tsx`, `BankLoanDetailBottomSheet.tsx` — full-page `/payment/choose-bank`
 - `lib/payment/bank-selection-urls.ts` — shared bank-picker deep links
 - `components/payment/AckoDriveFinanceConfirmedScreen.tsx`
-- `components/payment/AckoDriveFinanceActionScreen.tsx`
+- `components/payment/AckoDriveFinanceActionScreen.tsx` — co-applicant sheet before wizard entry
 - `components/payment/FinanceWhatsNextPaymentProcess.tsx`
-- `components/payment/loan-application/*` — wizard shell, milestone rail, step screens
-- `lib/loan-application-urls.ts`, `lib/loan-application-state.ts`
+- `components/payment/loan-application/*` — wizard shell, dual-pass person steps, terms / relation / co-applicant sheets
+- `lib/loan-application-urls.ts`, `lib/loan-application-state.ts`, `lib/loan-application-content.ts`, `lib/loan-application-documents-*`
 - `components/payment/LoanBookingProcessingScreen.tsx`
 - `components/payment/LoanUnderReviewScreen.tsx`
+- `components/payment/LoanRejectedScreen.tsx`, `LoanRejectedOutcomeSwitcher.tsx`, `lib/loan-rejected-content.ts`
+- `components/payment/LoanGuarantorScreen.tsx`
 - `components/payment/LoanProcessingWhatsNext.tsx`
 - `components/payment/ChooseLoanAmountScreen.tsx`, `ChooseLoanPaymentSummaryCard.tsx`
 - `components/payment/LoanSubmitConfirmBottomSheet.tsx`, `LoanSanctionedScreen.tsx`, `SanctionedAmountSummaryCard.tsx`
@@ -291,7 +350,8 @@ Initial UI statuses in code: first substep **`in_progress`**, others **`next`** 
 - `components/payment/SelfFinanceConfirmBottomSheet.tsx`
 - `components/payment/SelfFinanceConfirmedScreen.tsx`
 - `components/payment/SelfFinanceActionScreen.tsx`
-- `components/payment/ProformaInvoiceCard.tsx`
+- `components/payment/ProformaInvoiceCard.tsx` — thin `IconCalloutCard` wrapper (Download CTA)
+- `components/organisms/IconCalloutCard.tsx` — shared callout organism
 - `components/payment/LoanProcessingWhatsNext.tsx` — **`self_finance_action`**, **`SELF_FINANCE_ACTION_PAYMENT_SUBSTEPS`**, **`paymentSectionSubtitle()`**
 - `app/payment/self-finance-confirmed/page.tsx`, `app/payment/self-finance-action/page.tsx`
 
@@ -317,21 +377,23 @@ Initial UI statuses in code: first substep **`in_progress`**, others **`next`** 
 
 | URL context | Card shown |
 |-------------|------------|
-| No `loan_amount` | **`PaymentSummaryCard`** — ACKO price, booking paid, amount to pay |
+| No loan context | **`PaymentSummaryCard`** — ACKO price, booking paid, amount to pay |
+| Post–loan-application submit (`loan-processing` / under-review / sanctioned / …) with `?bank=` even without `loan_amount` | **`ChooseLoanPaymentSummaryCard`** — demo loan + DP due (complete breakup) |
 | `loan_amount` + `down_payment` (pending / partial) | **`ChooseLoanPaymentSummaryCard`** — loan amount; optional **Down payment paid** row when `original_down_payment` > remaining; footer **Remaining down payment** or **Down payment amount** |
-| `loan_amount` + full DP (`down_payment` absent, `0`, or post–insurance-setup params) | Same card — **Down payment paid** (full); **no** grey footer row |
+| `loan_amount` + full DP (`down_payment=0` + `original_down_payment`, insurance checkout, or post–car-payment path with bare `loan_amount`) | Same card — **Down payment paid** = car DP via `cashDownPaymentDueInr()` (not on-road − loan); **no** grey footer row |
+| `loan_amount` only on pre–DP routes | Same card — **Down payment amount** footer (due); no “paid” row |
 
-Parser: `parseConfirmedLoanPlan()` in manage sheet; derives full DP from `ON_ROAD_PRICE_INR − loan_amount` when only `loan_amount` is present (e.g. after `buildInsuranceSetupHref`).
+Parser: `parseConfirmedLoanPlan(searchParams, pathname)` in manage sheet; car DP from `cashDownPaymentDueInr(loan)`; post-submit paths default loan to `BANK_DISBURSEMENT_INR` when URL omits it; bare `loan_amount` shows **paid** on `isDownPaymentSettledForSummaryPath`, or await routes with confirm flags (`dp_confirmed=1` on dealer-confirmed, `slip_ready=1` on margin-money).
 
 ### Modify booking (Change + Cancel)
 
-OTP confirms the booking on the manufacturer portal — it is **not** the fee boundary. Dealer search = `/kyc/processing` (still free). Partner locked = `/kyc/booking-accepted` (fee boundary). Vehicle ID (engine/chassis) = `/kyc/booking-confirmed` onward.
+OTP confirms the booking on the manufacturer portal — it is **not** the fee boundary. Dealer search = `/booking/processing` (still free). Partner locked = `/booking/accepted` (fee boundary). Vehicle ID (engine/chassis) = `/booking/confirmed` onward.
 
 | Stage | Change selection | Cancel my purchase | “Make a change” section |
 |-------|------------------|--------------------|-------------------------|
-| Before partner locked (through dealer search `/kyc/processing`) | **Show** · free | **Show** · free | Both |
-| Partner locked (`/kyc/booking-accepted` → `/car-allocation/pending`) | **Show** · ₹5,000 | **Show** · 50% of booking lock | Both |
-| After vehicle ID (engine/chassis — `/kyc/booking-confirmed`, `/car-allocation/confirmed`+) | **Hide** | **Show** · 50% of booking lock | Cancel only |
+| Before partner locked (through dealer search `/booking/processing`) | **Show** · free | **Show** · free | Both |
+| Partner locked (`/booking/accepted` → `/car-allocation/pending`) | **Show** · ₹5,000 | **Show** · 50% of booking lock | Both |
+| After vehicle ID (engine/chassis — `/booking/confirmed`, `/car-allocation/confirmed`+) | **Hide** | **Show** · 50% of booking lock | Cancel only |
 | After car payment (DP / instalment beyond ₹10k lock) | **Hide** | **Hide** | **Hide entire section** |
 
 Helpers: `isChangeSelectionMenuVisible` / `isCancelBookingMenuVisible` / fee tiers in `lib/manage-booking-modify.ts`; phases in `lib/journey-routes.ts`.
@@ -354,13 +416,13 @@ Post-allocation car card is enabled when `manageBookingShowVehicleIdentification
 
 ## Modify selection (modify-no-charges / modify-with-charges flows)
 
-**Entry:** manage booking → **Change selection** when `isModifyNoChargesFlow()` (from `/kyc`) or `isModifyWithChargesFlow()` + `isChangeSelectionAvailablePhase` (from booking accepted) → `/kyc/modify-selection` (`ChooseModifyBookingScreen`).
+**Entry:** manage booking → **Change selection** when `isModifyNoChargesFlow()` (from `/kyc`) or `isModifyWithChargesFlow()` + `isChangeSelectionAvailablePhase` (from booking accepted) → `/booking/modify` (`ChooseModifyBookingScreen`).
 
 ### White page surface & card shadows
 
-All `/kyc/modify-selection/*` screens use **`MODIFY_SELECTION_PAGE_SHELL_CLASS`** (`min-h-dvh bg-white font-sans`). Sticky nav uses `StandaloneScreenHeader` → `TopNavHeader` with **`surface="white"`** (white scroll fade — not the blue `#F7FAFF` gradient used elsewhere).
+All `/booking/modify/*` screens use **`MODIFY_SELECTION_PAGE_SHELL_CLASS`** (`min-h-dvh bg-white font-sans`). Sticky nav uses `StandaloneScreenHeader` → `TopNavHeader` with **`surface="white"`** (white scroll fade — not the blue `#F7FAFF` gradient used elsewhere).
 
-**No card shadows on modify-selection pages.** Cards on the white background are **flat bordered** shells — **`border border-[#e8e8e8]`**, **never** `card-elevated`. Shared tokens in `components/kyc/modify-selection-option-card-ui.tsx`:
+**No card shadows on modify-selection pages.** Cards on the white background are **flat bordered** shells — **`border border-[#e8e8e8]`**, **never** `card-elevated`. Shared tokens in `components/booking/modify-option-card-ui.tsx`:
 
 | Token | Use |
 |-------|-----|
@@ -397,9 +459,9 @@ Tap opens `ModifySelectionConfirmBottomSheet` — content-hug height, `BottomShe
 
 | User choice | Confirm / review route | `ModifySelectionReviewPayScreen` `flow` |
 |-------------|------------------------|----------------------------------------|
-| **Change colour** | `/kyc/modify-selection/colour/confirm` | `colour` |
-| **Change variant** | `/kyc/modify-selection/variant/confirm` | `variant` |
-| **Choose a different car** | `/kyc/modify-selection/different-car/[brand]/[model]/confirm` | `different-car` (+ `brandId`, `modelId`) |
+| **Change colour** | `/booking/modify/colour/confirm` | `colour` |
+| **Change variant** | `/booking/modify/variant/confirm` | `variant` |
+| **Choose a different car** | `/booking/modify/different-car/[brand]/[model]/confirm` | `different-car` (+ `brandId`, `modelId`) |
 
 **Shared review UI:** `ModifySelectionReviewPayScreen` + `ModifySelectionReviewSelectionCard` (review-and-pay).
 
@@ -421,9 +483,9 @@ Edit icons appear only for fields the user may change on that entry path. **Deli
 
 | Entry choice | Make & model (title) | Variant | Colour | Delivery (express only) |
 |--------------|----------------------|---------|--------|-------------------------|
-| **Change colour** | Read-only (default booked car) | Read-only | **Edit** → `/kyc/modify-selection/colour` | **Edit** (bottom sheet) if express |
-| **Change variant** | Read-only | **Edit** → `/kyc/modify-selection/variant` | **Edit** → `/kyc/modify-selection/variant/colour` | **Edit** if express |
-| **Choose a different car** | **Edit** → `/kyc/modify-selection/different-car` | **Edit** → model/variant step for brand+model | **Edit** → colour step for brand+model | **Edit** if express |
+| **Change colour** | Read-only (default booked car) | Read-only | **Edit** → `/booking/modify/colour` | **Edit** (bottom sheet) if express |
+| **Change variant** | Read-only | **Edit** → `/booking/modify/variant` | **Edit** → `/booking/modify/variant/colour` | **Edit** if express |
+| **Choose a different car** | **Edit** → `/booking/modify/different-car` | **Edit** → model/variant step for brand+model | **Edit** → colour step for brand+model | **Edit** if express |
 
 **Implementation:** gate callbacks in `ModifySelectionReviewPayScreen` when passing props to `ModifySelectionReviewSelectionCard`:
 
@@ -438,30 +500,30 @@ The card renders an edit control only when the matching callback is non-null (or
 
 - On **Pay**, write pending snapshot: `writeModifySelectionPendingFromSummary` (`lib/active-booking-snapshot.ts`, key `pbe_modify_selection_pending_payment_v1`).
 - Mock checkout: `buildBookingLockCheckoutHref` with `return_source=modify-selection`.
-- Success: `/kyc/booking-confirmed?source=payment&paid=…&return_source=modify-selection` — `syncModifySelectionBookingSnapshot` commits **pending** checkout before reading completed (avoids stale car on repeat changes). **Same for all three paths** (colour / variant / different-car): auto-advance **Payment received** via `DownPaymentInstalmentSuccess` (no car card, no CTA; ~3s) — not the celebration layout.
+- Success: `/booking/confirmed?source=payment&paid=…&return_source=modify-selection` — `syncModifySelectionBookingSnapshot` commits **pending** checkout before reading completed (avoids stale car on repeat changes). **Same for all three paths** (colour / variant / different-car): auto-advance **Payment received** via `DownPaymentInstalmentSuccess` (no car card, no CTA; ~3s) — not the celebration layout.
 - On success (`KycBookingConfirmedPageClient`): when the active flow is **express** or **standard**, `writeExperienceFlow` from the snapshot’s `deliveryChoice` so post-change dealer search / delivery copy follows the new selection. Demo modify flows keep their flow id (journey guards / fee demos).
-- **Connected voice:** when `selectionChangeCompleted` is set, `/kyc/processing` (`dealerSearch`) and `/kyc/booking-accepted` (`dealerFound`) lead with **“Change locked in…”** / **“Found a match for your new pick…”** — never first-time “paperwork done”. Car title / variant / colour are interpolated from the snapshot (`lib/concierge/script.ts` + `ConciergeMoment`).
+- **Connected voice:** when `selectionChangeCompleted` is set, `/booking/processing` (`dealerSearch`) and `/booking/accepted` (`dealerFound`) lead with **“Change locked in…”** / **“Found a match for your new pick…”** — never first-time “paperwork done”. Car title / variant / colour are interpolated from the snapshot (`lib/concierge/script.ts` + `ConciergeMoment`).
 
 | After pay (all three change-selection paths) | Screen | Auto-advance next |
 |---------------------------------------------|--------|-------------------|
 | **modify_no_charges** (pre-verification demo) | Payment received | `/kyc` |
-| **modify_with_charges** | Payment received | `/kyc/processing` (dealer search) |
-| **express / standard** (e.g. allocation-failed → pick a different car, or manage-booking change after KYC) | Payment received | `/kyc/processing` — resume express or standard spine from delivery choice; **do not** re-ask for verification |
+| **modify_with_charges** | Payment received | `/booking/processing` (dealer search) |
+| **express / standard** (e.g. allocation-failed → pick a different car, or manage-booking change after KYC) | Payment received | `/booking/processing` — resume express or standard spine from delivery choice; **do not** re-ask for verification |
 
-**Key files:** `components/kyc/modify-selection-option-card-ui.tsx`, `StandaloneScreenHeader.tsx`, `ModifySelectionReviewPayScreen.tsx`, `ModifySelectionReviewPayDemoSwitcher.tsx`, `ModifySelectionReviewSelectionCard.tsx`, `ModifySelectionReviewBookingAmountCard.tsx`, `KycBookingConfirmedScreen.tsx`, `KycBookingConfirmedPageClient.tsx`, `DownPaymentInstalmentSuccess.tsx`, `lib/modify-selection-review-pay-content.ts`, `lib/modify-selection-review-pay-demo.ts`, `lib/modify-selection-*-pending.ts`, `lib/active-booking-snapshot.ts`, `lib/paymentUrls.ts`.
+**Key files:** `components/booking/modify-option-card-ui.tsx`, `StandaloneScreenHeader.tsx`, `ModifySelectionReviewPayScreen.tsx`, `ModifySelectionReviewPayDemoSwitcher.tsx`, `ModifySelectionReviewSelectionCard.tsx`, `ModifySelectionReviewBookingAmountCard.tsx`, `KycBookingConfirmedScreen.tsx`, `KycBookingConfirmedPageClient.tsx`, `DownPaymentInstalmentSuccess.tsx`, `lib/modify-selection-review-pay-content.ts`, `lib/modify-selection-review-pay-demo.ts`, `lib/modify-selection-*-pending.ts`, `lib/active-booking-snapshot.ts`, `lib/paymentUrls.ts`.
 
 ---
 
 ## Cancel booking (cancel demo flows)
 
-Product cancel is available in **every** flow via `/kyc/cancel-booking` (`ConciergeCancelScreen`): free before a dealer is identified (`stage=pre`), ₹5,000 retained from booking accepted onward — including before OTP (`stage=post` = 50% of the ₹10,000 booking lock — not 50% of total paid).
+Product cancel is available in **every** flow via `/booking/cancel` (`ConciergeCancelScreen`): free before a dealer is identified (`stage=pre`), ₹5,000 retained from booking accepted onward — including before OTP (`stage=post` = 50% of the ₹10,000 booking lock — not 50% of total paid).
 
 Two selectable demos on **`/quote`**:
 
 | Flow id | Park point | Cancel charge |
 |---------|------------|---------------|
 | `cancel_no_charges` | `/kyc/verification-in-progress` | ₹0 (`stage=pre`) |
-| `cancel_with_charges` | `/kyc/booking-accepted` (partner locked) | ₹5,000 (`stage=post`) |
+| `cancel_with_charges` | `/booking/accepted` (partner locked) | ₹5,000 (`stage=post`) |
 
 ### Journey caps
 
@@ -469,23 +531,23 @@ Two selectable demos on **`/quote`**:
 
 | Allowed | Blocked (redirect → `/kyc/verification-in-progress`) |
 |---------|------------------------------------------------------|
-| `/quote`, payment routes, `/kyc`, `/kyc/upload`, `/kyc/documents-received`, `/kyc/verification-in-progress` | `/kyc/processing`, `/kyc/booking-accepted`, `/kyc/booking-confirmed`, car-allocation, etc. |
-| `/kyc/cancel-booking` | `/kyc/modify-selection/*` |
+| `/quote`, payment routes, `/kyc`, `/kyc/upload`, `/kyc/documents-received`, `/kyc/verification-in-progress` | `/booking/processing`, `/booking/accepted`, `/booking/confirmed`, car-allocation, etc. |
+| `/booking/cancel` | `/booking/modify/*` |
 
 **cancel_with_charges** — express path through dealer found (partner locked):
 
-| Allowed | Blocked (redirect → `/kyc/booking-accepted`) |
+| Allowed | Blocked (redirect → `/booking/accepted`) |
 |---------|----------------------------------------------|
-| Paths above plus `/kyc/processing`, `/kyc/booking-accepted` | `/kyc/booking-confirmed`, car-allocation, verification-failed / manual-verification |
-| `/kyc/cancel-booking` | `/kyc/modify-selection/*` |
+| Paths above plus `/booking/processing`, `/booking/accepted` | `/booking/confirmed`, car-allocation, verification-failed / manual-verification |
+| `/booking/cancel` | `/booking/modify/*` |
 
 Guards: `getCancelNoChargesRedirectTarget()` / `getCancelWithChargesRedirectTarget()` in `lib/experience-flow-journey.ts`; KYC post-hub pages use unified `getExperienceFlowJourneyRedirectTarget()` via `ModifyNoChargesGatedPage`.
 
-On **`/kyc/verification-in-progress`**, demo **Next** is hidden when `isCancelNoChargesFlow()`. On **`/kyc/booking-accepted`**, the time-skip is hidden when `isCancelWithChargesFlow()` so the demo stays on the charged cancel park point.
+On **`/kyc/verification-in-progress`**, demo **Next** is hidden when `isCancelNoChargesFlow()`. On **`/booking/accepted`**, the time-skip is hidden when `isCancelWithChargesFlow()` so the demo stays on the charged cancel park point.
 
 ### Entry
 
-**Manage booking** → **Cancel booking** when `isCancelNoChargesFlow()` → **`/kyc/cancel-booking`**.
+**Manage booking** → **Cancel booking** when `isCancelNoChargesFlow()` → **`/booking/cancel`**.
 
 ### Cancel confirmation (full page — Figma 2709:17395)
 
@@ -520,7 +582,7 @@ Opened from **Yes, cancel my booking** on the confirm page.
 | Title | Before you go, tell us what went wrong? |
 | Options | Checkbox-style rows (toggle select/deselect); **no default selection** |
 | Reasons | Found a better deal elsewhere · Changed my mind about the car · Financial reasons · Delivery timeline is too long · Unhappy with the process · Other |
-| Primary CTA | **Cancel my booking** — `primary-cta`; disabled until a reason is selected → `/kyc/cancel-booking/success` |
+| Primary CTA | **Cancel my booking** — `primary-cta`; disabled until a reason is selected → `/booking/cancel/success` |
 
 ### Cancel success (celebration layout — not action hero)
 
@@ -541,7 +603,7 @@ Opened from **Yes, cancel my booking** on the confirm page.
 - Cancel-booking is open in every flow (policy §7). `CancelBookingFlowGuard` / `getCancelBookingFlowRedirectTarget` are no-ops if remounted.
 - Demo journey caps above apply only to `cancel_no_charges` / `cancel_with_charges`.
 
-**Key files:** `lib/experience-flow.ts`, `lib/experience-flow-journey.ts`, `lib/manage-booking-modify.ts`, `components/concierge/ConciergeCancelScreen.tsx`, `components/kyc/CancelBookingReasonBottomSheet.tsx`, `components/kyc/ManageBookingBottomSheet.tsx`, `app/kyc/cancel-booking/page.tsx`.
+**Key files:** `lib/experience-flow.ts`, `lib/experience-flow-journey.ts`, `lib/manage-booking-modify.ts`, `components/concierge/ConciergeCancelScreen.tsx`, `components/organisms/CancelBookingReasonBottomSheet.tsx`, `components/organisms/ManageBookingBottomSheet.tsx`, `app/booking/cancel/page.tsx`.
 
 ---
 
@@ -551,38 +613,60 @@ Shared **info callout** (icon + `text-xs` body, `rounded-2xl`, `border-[#E8E8E8]
 
 - `KycBookingProcessingScreen` — `infoBox` / `sublineLine2` below subline
 - `DownPaymentInsuranceSetupScreen` — insurance payable after disbursement
-- `RtoRegistrationStatusCard` — RTO registration message on `/payment/car-delivery-rto`
+- `RtoRegistrationStatusCard` — RTO registration message on `/delivery/rto`
 
-**Bottom sheets** (280ms slide + `bg-black/90` backdrop, `BottomSheetPortal`, `max-w-[640px]`, `rounded-t-[24px]`):
+**Bottom sheets** — **always** build on `BottomSheetShell` (`components/organisms/BottomSheetShell.tsx`):
 
-- `BankSelectionBottomSheet`, `LoanSubmitConfirmBottomSheet`, `ManageBookingBottomSheet`, `InsuranceCoverageBottomSheet` ([2585:68086](https://www.figma.com/design/nW5SWmJdxxsCEDlqBN7C0L/Post-booking-experience?node-id=2585-68086)), `WhatsNextTimelineBottomSheet`, `ShiviCallSheet`, `BankLoanDetailBottomSheet`, …
+- Portal to `document.body`, `bg-black/90` scrim, 280ms slide, `max-w-[640px]`, `rounded-t-[24px]`, `sheet-elevated`
+- Props: `open` / `onClose` / `showCloseButton` (absolute top-right; set `false` when the sheet owns a header close) / `constrainHeight` (90dvh; default true) / `panelClassName`
+- Layout tokens stay in `lib/layout/bottom-sheet-layout.ts` (`BODY_BEFORE_CTA`, `CTA_STRIP_TOP`, scroll panel/body)
+- **Exception:** `ShiviIntroBottomSheet` uses `useBottomSheetPresence` + `BottomSheetPortal` directly (coachmark sibling + non-dismissible scrim)
+- Confirm / eligibility sheets: `AckoDriveFinanceEligibilityBottomSheet`, `SelfFinanceConfirmBottomSheet`, `FullPaymentConfirmBottomSheet`, `LoanApplicationCoApplicantBottomSheet`, `LoanApplicationTermsBottomSheet`, `LoanSubmitConfirmBottomSheet`, …
+- Cross-flow: `ManageBookingBottomSheet`, `UploadSourceBottomSheet`, `CancelBookingReasonBottomSheet`, `ShiviCallSheet`, `BankLoanDetailBottomSheet`, `InsuranceCoverageBottomSheet` ([2585:68086](https://www.figma.com/design/nW5SWmJdxxsCEDlqBN7C0L/Post-booking-experience?node-id=2585-68086)), …
+
+**Do not** re-implement mount/animate/exit or inline fixed overlays — that duplicates the shell and breaks z-index above sticky nav.
 
 **Insurance coverage sheet:** ZD + TP rows (`assets/ZD cover.svg`, `assets/TP cover.svg`), 20px gap between rows; opened from **View coverage details** on `ZeroDepInsuranceCoverageCard` (button unless `coverageDetailsHref` set).
+
+**Overlay glass** (`lib/overlay-glass-card.module.scss`): softer fill `linear-gradient(100deg, rgba(255,255,255,0.7) → rgba(255,255,255,0.3))`, white 1px border, blur 32px; nested separators inherit **`--card-separator-color: #d6dce7`**.
 
 ---
 
 ## UI patterns — circular icon wells, title/detail gaps, bank logos
 
-Shared visual language for leading circular containers and stacked copy. Prefer the global classes in `styles/_components.scss` when adding new wells.
+Two circular icon treatments — pick by surface, do not mix:
 
-### Circular icon wells
+| Molecule | Look | Use |
+|----------|------|-----|
+| **`IconWell`** | 1px border · gradient fill · inset white ring | Menu rows, receipts, cards, bank logos, plan nodes |
+| **`SoftIconPad`** | Flat `#f5f5f5`, default **36px** | Confirm / eligibility / how-it-works bottom-sheet step rows |
 
-| Variant | Classes / recipe | Use |
-|---------|------------------|-----|
-| **Grey (default)** | `.icon-well-surface` — `0.5px #e8e8e8` border · `linear-gradient(to bottom, #e7e7e7, #fff)` · inset white ring | Document rows, manage-menu icons, `NextStepCard`, bank logos (list), partner/location wells |
-| **Green (success)** | `.icon-well-surface-green` — `0.5px #bfe8d2` border · `linear-gradient(180deg, #dff1e8 0%, #fff 100%)` · inset white ring | `AmountReceivedCard` received tick, `PlanList` done nodes, `MoneyPlanCard` active node |
-| **Amber (processing)** | `.icon-well-surface-amber` — `0.5px #f0ddb0` border · `linear-gradient(180deg, #ffefd0 0%, #fff 100%)` · inset white ring | `AmountReceivedCard` processing, `MoneyPlanCard` pending node |
+Global `.icon-well-surface*` classes in `styles/_components.scss` are deprecated in favour of `IconWell`.
 
-**Default well size:** **44px** (`spacing * 11`). **Default glyph size inside wells:** **20px** (AmountReceived tick, NextStep OTP/call, PlanList glyphs, document icons).
+### Circular icon wells (`IconWell`)
 
-**Exceptions**
+| Tone | Border / fill | Use |
+|------|---------------|-----|
+| **Grey (default)** | `1px #e8e8e8` · `linear-gradient(180deg, #e4e6ea → #fff)` · inset white ring | Document rows, manage-menu icons, `NextStepCard`, bank logos (list), partner/location wells, self-finance how-it-works **card** variant |
+| **Green (success)** | `1px #bfe8d2` · `linear-gradient(180deg, #dff1e8 → #fff)` · inset white ring | `AmountReceivedCard` received tick, `PlanList` done nodes, `MoneyPlanCard` active node |
+| **Amber (processing)** | `1px #f0ddb0` · `linear-gradient(180deg, #ffefd0 → #fff)` · inset white ring | `AmountReceivedCard` processing, `MoneyPlanCard` pending node |
+| **Purple (current)** | `1px #5920c5` · `linear-gradient(180deg, #e5dafb → #fff)` · inset white ring | `PlanList` / progress “now” nodes |
+
+**Default well size:** **44px**. **Default glyph size inside wells:** **20px**. Progress appearance uses **32px** status nodes.
+
+### Soft icon pads (`SoftIconPad`)
+
+Confirm-sheet step rows (`BottomSheetConfirmBulletList`, `SelfFinanceHowItWorksCard` `variant="embedded"`, eligibility sheet). Default **36px** / `#f5f5f5` / **20px** glyph. Do not substitute `IconWell` here.
+
+**Exceptions (IconWell sizing)**
 
 | Surface | Well | Logo / glyph |
 |---------|------|--------------|
-| Bank list cards (`BankLoanCard`) + loan-rejected alt | 44px grey well | **24px** bank logo |
+| Bank list cards (`BankLoanCard`) | 44px grey well | **24px** bank logo |
 | Bank detail sheet (`BankLoanDetailBottomSheet`) | **52px** grey well | **32px** bank logo |
+| Loan-rejected option cards | Illustration / bank mark at **44px** (not always an `IconWell`) | Bank mark or colour illustration |
 
-`PlanList` timeline nodes are **44px** (rail column width matches). Done nodes use the green well; now/todo keep solid purple / flat grey fills.
+`PlanList` timeline nodes are **44px** in plan mode (rail column width matches); **progress** mode uses 32px status icons + “In progress” / “Done” labels. Done nodes use the green well; now uses purple; todo keeps grey.
 
 Pills, chips, and banner strips (pre-approved chip, status tags on receipt rows, delivery badges) stay **flat fills** — not icon wells.
 
@@ -591,11 +675,10 @@ Pills, chips, and banner strips (pre-approved chip, status tags on receipt rows,
 Primary line + secondary line stacks use **4px** vertical gap (flex column `gap: 4px`, or `margin-top: 4px` where the parent is not a column). Applied across:
 
 - `AmountReceivedCard` amount + title
-- `NextStepCard` title + body
+- `IconCalloutCard` family — title **16px** / body **14px** (`NextStepCard`, `MarginMoneySlipCard`, `ProformaInvoiceCard`, `PartnerGarageCard` wrappers); title↔body gap **4px**; optional CTA at **14px**
 - `CarDeliveryScheduleScreen` location name + detail
 - Document upload rows (`document-upload-card-layout` / `DocumentUploadSection`)
 - `LoanDocumentsChecklistCard`, `ShieldPolicyCard` highlights, insurance tenure stats, coverage addon rows
-- Document/location card title blocks (`MarginMoneySlipCard`, `ProformaInvoiceCard`, `PartnerGarageCard`)
 - `BankLoanCard` / `CarSummaryCardLite` / `MoneyPlanCard` primary + caption lines
 - Payment-option stat captions, `CancelBookingCarCard` title → variant
 
@@ -619,13 +702,14 @@ Hours: **9 AM–9 PM IST**, every day (`lib/shivi-business-hours.ts`). Re-evalua
 ### Behaviour
 
 - On **Finance with ACKO Drive**, primary CTA label is **“See bank options”** (not direct checkout).
-- Tap opens **`BankSelectionBottomSheet`** (modal over dimmed backdrop).
-- **Confirm banking partner** closes the sheet and navigates to **`/payment/acko-drive-finance-confirmed`**; user continues to **`/payment/acko-drive-finance-action`**, then **loan document upload** (see **Payment journeys** above). Chosen bank id is carried in **`?bank=`** on downstream routes where wired — persistence to checkout/API remains backlog.
+- Tap opens **`AckoDriveFinanceEligibilityBottomSheet`** first; **Agree and continue** opens **`BankSelectionBottomSheet`** (modal over dimmed backdrop).
+- **Confirm banking partner** closes the sheet and navigates to **`/payment/acko-drive-finance-confirmed`**; user continues to **`/payment/acko-drive-finance-action`**, then co-applicant gate → **loan application wizard** (see **Payment journeys** above). Chosen bank id is carried in **`?bank=`** on downstream routes where wired — persistence to checkout/API remains backlog.
 
 ### Files
 
+- `components/payment/AckoDriveFinanceEligibilityBottomSheet.tsx` — eligibility gate
 - `components/payment/BankSelectionBottomSheet.tsx` — sheet UI + open/close animation
-- `components/payment/ChoosePaymentOptionsScreen.tsx` — `bankSheetOpen`, self-finance sheet, CTA routing
+- `components/payment/ChoosePaymentOptionsScreen.tsx` — eligibility + bank sheet, self-finance sheet, CTA routing
 - `components/payment/payment-choose-assets.ts` — `BANK_SHEET_OPTIONS`, `PAYMENT_CHOOSE_ASSETS`, `asset()` helper for `/public/assets/`
 
 ### Bank sheet UX (implemented)
@@ -642,12 +726,14 @@ Hours: **9 AM–9 PM IST**, every day (`lib/shivi-business-hours.ts`). Re-evalua
 ### Full-page bank selection (also implemented)
 
 - Route **`/payment/choose-bank`** (`BankSelectionScreen`) — shared entry for initial pick, change-bank, and loan-rejection switch (`bank-selection-urls.ts`).
-- Cards: **`BankLoanCard`** with **44px** circular grey icon well + **24px** logo; opens **`BankLoanDetailBottomSheet`** (**52px** well + **32px** logo).
-- Same circular well treatment on the loan-rejected alternate-bank card.
+- Cards: **`BankLoanCard`** with **44px** circular grey `IconWell` + **24px** logo; opens **`BankLoanDetailBottomSheet`** (**52px** well + **32px** logo).
+- Loan-rejected alt-bank options use a bank mark illustration (not the list-card well) with rate + EMI footer.
 
 ### Assets added / referenced
 
 - `public/assets/ACKO Drive logo.svg` (wordmark; synced from `assets/ACKO Drive logo.svg`)
+- `assets/co-applicant.svg` — co-applicant sheet + loan-rejected / guarantor illustrations
+- `assets/Close 01.svg` — eligibility “not financed” row icons
 
 ---
 
@@ -678,15 +764,19 @@ These paths are **gitignored** (see root `.gitignore`). They are optional helper
 5. **Accessibility:** focus trap in sheets, return focus to trigger on close, optional `aria-describedby` for subtitle.
 6. **Z-index / stacking:** confirm no clash with other fixed layers (e.g. choose-screen footer).
 7. **KYC + payment sequencing:** align route guards and deep links with final product copy in the DOCX.
-8. **Static export / prerender:** wrap `useSearchParams()` consumers (e.g. `/kyc/processing`, manage booking) in `Suspense` where build fails.
+8. **Static export / prerender:** wrap `useSearchParams()` consumers (e.g. `/booking/processing`, manage booking) in `Suspense` where build fails.
 
 ---
 
 ## Checklist (high level)
 
 - [x] Payment choose screen with three options + partner strip
-- [x] ACKO Drive → bank selection bottom sheet (Figma-aligned iterations)
-- [x] ACKO Drive confirmed → finance action → loan document upload
+- [x] ACKO Drive → eligibility sheet → bank selection bottom sheet (Figma-aligned iterations)
+- [x] ACKO Drive confirmed → finance action → co-applicant gate → loan application wizard (dual-pass)
+- [x] Loan application terms sheet at final submit; co-applicant identity (Aadhaar/PAN) + financial docs
+- [x] Loan rejected analysis outcomes (`?outcome=`) — self-finance / full pay / co-applicant / guarantor / alt bank / cancel
+- [x] Guarantor capture screen → under-review
+- [x] Allocation decision SLA timeout → `/car-allocation/decision-cancelled` refund turn
 - [x] Self finance → confirm bottom sheet → celebration → action screen + proforma card
 - [x] Self finance “What’s next” uses **`LoanProcessingWhatsNext`** (`self_finance_action`) for parity with loan-processing timeline UX
 - [x] Sheet motion, strong backdrop, layout and radio placement refinements
@@ -703,9 +793,13 @@ These paths are **gitignored** (see root `.gitignore`). They are optional helper
 - [x] Cancel no charges — manage booking: cancel enabled; change selection visible but not clickable
 - [x] Cancel confirmation full page (Figma 2709:17395) + reason bottom sheet (Figma 2711:21013) + celebration success page; route guards; full booking amount refund (₹10,000, no fee)
 - [x] Standard **Car ready early** demo — offer → confirm (same dealer / needs verification) or keep original date → wait; early delivery line override (`lib/concierge/early-delivery.ts`)
-- [x] Circular icon-well system (grey / green / amber) + 4px title/detail gaps across receipt, plan, upload, and document cards
-- [x] Bank list/detail logo wells (44/24 list · 52/32 sheet) + `PlanList` nodes at 44px
+- [x] **`IconWell` molecule** (grey / green / amber / purple, 1px borders) + softer overlay glass (`#d6dce7` separators)
+- [x] `PlanList` progress appearance (32px nodes, In progress / Done) + 4px title/detail gaps across receipt, plan, upload, and document cards
+- [x] Bank list/detail logo wells (44/24 list · 52/32 sheet) via `IconWell`
 - [x] `NextStepCard` OTP/call glyph at 20px; `ShiviCallSheet` online/offline indicator via business hours
+- [x] **`BottomSheetShell`** — shared portal/scrim/slide/close; all product sheets migrated (Shivi intro uses presence hook exception)
+- [x] **`SoftIconPad`** — plain grey confirm-sheet pads (vs `IconWell` for menu/receipts)
+- [x] Atomic placement rules documented in PLAN (feature folders + shared layers)
 - [ ] Pass selected `bankId` / self-finance step state into payment/checkout and APIs
 - [ ] Full a11y pass on sheets
 - [ ] End-to-end journey documented in README (optional)

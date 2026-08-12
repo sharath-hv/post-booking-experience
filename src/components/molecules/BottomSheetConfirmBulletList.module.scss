@@ -1,0 +1,32 @@
+/* Confirm-sheet bullets — SoftIconPad + body; spacing matches how-it-works embedded. */
+
+.bottomSheetConfirmBulletList {
+  margin-top: calc(var(--spacing) * 5);
+  width: 100%;
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem; /* space-y-5 */
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--spacing) * 3);
+}
+
+.icon {
+  height: calc(var(--spacing) * 5);
+  width: calc(var(--spacing) * 5);
+  object-fit: contain;
+}
+
+.body {
+  min-width: 0;
+  flex: 1;
+  text-align: left;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: var(--font-weight-normal);
+  color: #121212;
+}

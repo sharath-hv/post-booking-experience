@@ -1,0 +1,7 @@
+/* Stacked artifact cards — 16px between cards */
+
+.artifactStack {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing) * 4);
+}

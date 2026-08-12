@@ -1,0 +1,13 @@
+/* Plain grey circular pad — confirm-sheet rows (not IconWell / menu-receipt wells). */
+
+.pad {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--soft-icon-pad-size, 36px);
+  height: var(--soft-icon-pad-size, 36px);
+  border-radius: 9999px;
+  background-color: #f5f5f5;
+  box-sizing: border-box;
+}

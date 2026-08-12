@@ -1,0 +1,46 @@
+/* Content layout — chrome lives in BottomSheetShell. */
+
+.body {
+  min-height: 0;
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-inline: calc(var(--spacing) * 5);
+  padding-top: calc(var(--spacing) * 6);
+}
+
+.illustration {
+  position: relative;
+  height: 72px;
+  width: 72px;
+  flex-shrink: 0;
+  overflow: hidden;
+  background-color: var(--color-white);
+}
+
+.illustrationImg {
+  height: 72px;
+  width: 72px;
+  object-fit: contain;
+}
+
+.title {
+  margin-top: calc(var(--spacing) * 6);
+  text-align: left;
+  font-size: 20px;
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.35;
+  letter-spacing: -0.1px;
+  color: #121212;
+}
+
+.footer {
+  flex-shrink: 0;
+  background-color: var(--color-white);
+  padding-inline: calc(var(--spacing) * 5);
+  padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
+}
+
+.cta {
+  width: 100%;
+}

@@ -1,0 +1,264 @@
+/* ChooseInsuranceTenureScreen — modify-selection static page layout */
+
+.main {
+  margin-inline: auto;
+  display: flex;
+  width: 100%;
+  max-width: 640px;
+  flex: 1;
+  flex-direction: column;
+  padding-inline: calc(var(--spacing) * 5);
+  padding-bottom: calc(7rem + env(safe-area-inset-bottom));
+  padding-top: calc(var(--spacing) * 2);
+}
+
+.lead {
+  display: flex;
+  flex-direction: column;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.tenureSection {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing) * 5);
+  margin-top: calc(var(--spacing) * 6);
+}
+
+.optionList {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing) * 4);
+}
+
+.optionListItem {
+  width: 100%;
+}
+
+/* Shell mirrors ChoosePaymentOptionsScreen OptionCard */
+.card {
+  width: 100%;
+  border-radius: var(--radius-2xl);
+  border-style: solid;
+  border-width: 1px;
+  padding: calc(var(--spacing) * 4);
+  text-align: left;
+  transition-property: color, background-color, border-color, outline-color,
+    text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via,
+    --tw-gradient-to;
+  transition-timing-function: var(--default-transition-timing-function);
+  transition-duration: var(--default-transition-duration);
+}
+
+.cardSelected {
+  border-color: #bda6e8;
+  background-color: var(--color-white);
+  background-image: linear-gradient(to bottom, #f4eefe, rgba(244, 238, 254, 0));
+}
+
+.cardIdle {
+  border-color: #e8e8e8;
+  background-color: var(--color-white);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: flex-start;
+}
+
+.cardHeaderCenter {
+  align-items: center;
+}
+
+.illustration {
+  position: relative;
+  margin-right: calc(var(--spacing) * 3);
+  height: calc(var(--spacing) * 10);
+  width: calc(var(--spacing) * 10);
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.objectContain {
+  object-fit: contain;
+}
+
+.cardCopy {
+  min-width: 0;
+  flex: 1;
+}
+
+.cardBadge {
+  display: inline-flex;
+  border-radius: calc(infinity * 1px);
+  background-color: #efe9fb;
+  padding-inline: calc(var(--spacing) * 2);
+  padding-block: calc(var(--spacing) * 0.5);
+  /* label-sm / overline */
+  font-size: 11px;
+  font-weight: var(--font-weight-semibold);
+  line-height: 16px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #5920c5;
+}
+
+.cardLabel {
+  margin: 0;
+  /* body-md */
+  font-size: 16px;
+  font-weight: var(--font-weight-medium);
+  line-height: calc(var(--spacing) * 6);
+  color: #121212;
+}
+
+.cardLabelAfterChip {
+  margin-top: var(--spacing);
+}
+
+.radio {
+  margin-left: calc(var(--spacing) * 3);
+  display: flex;
+  flex-shrink: 0;
+}
+
+.radioOffset {
+  margin-top: var(--spacing);
+}
+
+.radioGlyph {
+  position: relative;
+  height: calc(var(--spacing) * 4);
+  width: calc(var(--spacing) * 4);
+  flex-shrink: 0;
+}
+
+.blurb {
+  margin: calc(var(--spacing) * 3) 0 0;
+  /* label-md / caption — matches payment/choose */
+  font-size: 12px;
+  line-height: calc(var(--spacing) * 4);
+  color: #4b4b4b;
+}
+
+.statsRow {
+  margin-top: calc(var(--spacing) * 4);
+  display: flex;
+  width: 100%;
+}
+
+.statCol {
+  min-width: 0;
+  flex: 1;
+  padding-right: calc(var(--spacing) * 4);
+}
+
+.statColDivider {
+  min-width: 0;
+  flex: 1;
+  border-left: 1px solid #ececec;
+  padding-left: calc(var(--spacing) * 4);
+}
+
+.statValue {
+  margin: 0;
+  /* body-sm */
+  font-size: 14px;
+  font-weight: var(--font-weight-semibold);
+  line-height: calc(var(--spacing) * 5);
+  font-variant-numeric: tabular-nums;
+  color: #121212;
+}
+
+.statCaption {
+  margin: 4px 0 0;
+  /* label-sm */
+  font-size: 11px;
+  line-height: calc(var(--spacing) * 4);
+  color: #757575;
+}
+
+.priceBlock {
+  margin-top: calc(var(--spacing) * 4);
+  border-top: 1px dashed #dcdbe1;
+  padding-top: calc(var(--spacing) * 4);
+}
+
+.upgradeBlurb {
+  margin: 0 0 calc(var(--spacing) * 3);
+  /* label-md */
+  font-size: 12px;
+  line-height: calc(var(--spacing) * 4);
+  color: #5920c5;
+}
+
+.priceRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: calc(var(--spacing) * 2);
+  margin: 0;
+}
+
+.price {
+  /* body-md */
+  font-size: 16px;
+  font-weight: var(--font-weight-semibold);
+  line-height: calc(var(--spacing) * 6);
+  font-variant-numeric: tabular-nums;
+  color: #121212;
+}
+
+.compareAt {
+  /* body-sm */
+  font-size: 14px;
+  line-height: calc(var(--spacing) * 5);
+  font-variant-numeric: tabular-nums;
+  color: #757575;
+  text-decoration: line-through;
+}
+
+.savings {
+  /* label-md */
+  font-size: 12px;
+  font-weight: var(--font-weight-medium);
+  line-height: calc(var(--spacing) * 4);
+  color: #0c8a4d;
+}
+
+.compareLink {
+  align-self: flex-start;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.footerInner {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 640px;
+  background-color: var(--color-white);
+  padding-inline: calc(var(--spacing) * 5);
+  padding-block: calc(var(--spacing) * 4);
+}
+
+.cta {
+  width: 100%;
+}

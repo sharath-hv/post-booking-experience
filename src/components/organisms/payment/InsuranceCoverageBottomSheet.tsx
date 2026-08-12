@@ -1,0 +1,186 @@
+"use client";
+
+import Image from "next/image";
+
+import {
+  INSURANCE_ADDONS_SECTION_HEADING,
+  INSURANCE_COVERAGE_ITEMS,
+  INSURANCE_COVERAGE_SHEET_TITLE,
+  INSURANCE_COVER_HERO,
+  INSURANCE_OPTIONAL_ADDONS,
+  INSURANCE_OWNED_SHEET_TITLE,
+  INSURANCE_POLICY_FACTS,
+  INSURANCE_TENURE_OPTIONS,
+  type InsuranceAddonId,
+  type InsuranceCoverageItem,
+  type InsuranceTenureId,
+} from "@/components/organisms/payment/insurance-coverage-content";
+import { BottomSheetCloseIcon } from "@/components/atoms/BottomSheetCloseIcon";
+import { BottomSheetShell } from "@/components/organisms/BottomSheetShell";
+import {
+  BOTTOM_SHEET_BODY_BEFORE_CTA_CLASS,
+  BOTTOM_SHEET_CTA_STRIP_TOP_CLASS,
+} from "@/lib/layout/bottom-sheet-layout";
+import { ShimmerInfoCard } from "@/components/molecules/ShimmerInfoCard";
+import { cn } from "@/utils/utils";
+
+import styles from "./InsuranceCoverageBottomSheet.module.scss";
+
+function CoverageDetailRow({ iconSrc, title, description }: InsuranceCoverageItem) {
+  return (
+    <li className={styles.coverageRow}>
+      <span className={styles.coverageIcon} aria-hidden>
+        <Image
+          src={iconSrc}
+          alt=""
+          width={48}
+          height={48}
+          className={styles.coverageIconAsset}
+          unoptimized
+        />
+      </span>
+      <div className={styles.coverageCopy}>
+        <p className={styles.coverageTitle}>{title}</p>
+        <p className={styles.coverageDetail}>{description}</p>
+      </div>
+    </li>
+  );
+}
+
+/** IDV fact panel — same hierarchy as ShieldPolicyCard. */
+function CoverHeroBand() {
+  return (
+    <div className={styles.idvPanel}>
+      <p className={styles.idvEyebrow}>{INSURANCE_COVER_HERO.eyebrow}</p>
+      <p className={styles.idvValue}>{INSURANCE_COVER_HERO.value}</p>
+      <p className={styles.idvCaption}>{INSURANCE_COVER_HERO.caption}</p>
+    </div>
+  );
+}
+
+export type InsuranceCoverageBottomSheetProps = {
+  open: boolean;
+  onClose: () => void;
+  /**
+   * `purchase` — pre-payment coverage explainer.
+   * `owned` — post-payment: policy facts and claims, no selling.
+   */
+  mode?: "purchase" | "owned";
+  /** Selected tenure — used in owned mode to show correct cover durations. Defaults to `"1+3"`. */
+  tenure?: InsuranceTenureId;
+  /** Optional add-ons on the current quote / owned policy. */
+  selectedAddonIds?: readonly InsuranceAddonId[];
+};
+
+/**
+ * ACKO Drive Shield coverage sheet — calmer header, IDV fact panel, and
+ * scannable cover rows. Same facts for purchase and owned modes.
+ */
+export function InsuranceCoverageBottomSheet({
+  open,
+  onClose,
+  mode = "purchase",
+  tenure = "1+3",
+  selectedAddonIds = [],
+}: InsuranceCoverageBottomSheetProps) {
+  const tenureOption = INSURANCE_TENURE_OPTIONS.find((o) => o.id === tenure) ?? INSURANCE_TENURE_OPTIONS[0];
+  const policyFacts = INSURANCE_POLICY_FACTS.map((fact) => {
+    if (fact.label === "Zero depreciation") {
+      return {
+        ...fact,
+        value: `${tenureOption.ownDamageYears} year${tenureOption.ownDamageYears > 1 ? "s" : ""}`,
+      };
+    }
+    if (fact.label === "Third-party cover") {
+      return { ...fact, value: `${tenureOption.thirdPartyYears} years` };
+    }
+    return fact;
+  });
+  const owned = mode === "owned";
+  const selectedAddonSet = new Set(selectedAddonIds);
+  const selectedAddons = INSURANCE_OPTIONAL_ADDONS.filter((a) => selectedAddonSet.has(a.id));
+
+  return (
+    <BottomSheetShell
+      open={open}
+      onClose={onClose}
+      showCloseButton={false}
+      aria-labelledby="insurance-coverage-sheet-title"
+    >
+      <header className={styles.header}>
+        <div className={styles.titleRow}>
+          <h2 id="insurance-coverage-sheet-title" className={styles.title}>
+            {owned ? INSURANCE_OWNED_SHEET_TITLE : INSURANCE_COVERAGE_SHEET_TITLE}
+          </h2>
+          <button
+            type="button"
+            onClick={onClose}
+            className={cn(styles.closeBtn, "cta-ghost")}
+            aria-label="Close"
+          >
+            <BottomSheetCloseIcon />
+          </button>
+        </div>
+        <div aria-hidden className={styles.headerFade} />
+      </header>
+
+      <div className={cn(styles.body, BOTTOM_SHEET_BODY_BEFORE_CTA_CLASS)}>
+        <div className={styles.content}>
+          {owned ? (
+            <div className={styles.factsCard}>
+              {policyFacts.map((fact, idx) => (
+                <div
+                  key={fact.label}
+                  className={cn(styles.factRow, idx > 0 && styles.factRowDivider)}
+                >
+                  <p className={styles.factLabel}>{fact.label}</p>
+                  <p className={styles.factValue}>{fact.value}</p>
+                </div>
+              ))}
+            </div>
+          ) : null}
+
+          <CoverHeroBand />
+
+          <ul className={styles.coverageList}>
+            {INSURANCE_COVERAGE_ITEMS.map((item) => (
+              <CoverageDetailRow key={item.title} {...item} />
+            ))}
+          </ul>
+
+          {selectedAddons.length > 0 ? (
+            <div className={styles.addonsBlock}>
+              <p className={styles.addonsHeading}>{INSURANCE_ADDONS_SECTION_HEADING}</p>
+              <ul className={styles.addonsList}>
+                {selectedAddons.map((addon) => (
+                  <li key={addon.id} className={styles.addonRow}>
+                    <p className={styles.addonTitle}>{addon.title}</p>
+                    <p className={styles.addonDetail}>{addon.detail}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+
+          {owned ? (
+            <ShimmerInfoCard lead="If anything ever happens">
+              Open the app, add photos, and I take the claim from there — garage, approvals,
+              updates, all tracked here.
+            </ShimmerInfoCard>
+          ) : null}
+        </div>
+      </div>
+
+      <div className={cn(styles.footer, BOTTOM_SHEET_CTA_STRIP_TOP_CLASS)}>
+        <div aria-hidden className={styles.footerFade} />
+        <button
+          type="button"
+          onClick={onClose}
+          className={cn(styles.confirmCta, "primary-cta")}
+        >
+          {owned ? "Got it" : "Okay"}
+        </button>
+      </div>
+    </BottomSheetShell>
+  );
+}

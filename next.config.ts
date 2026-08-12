@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 import path from "path";
-import { BASE_PATH } from "./lib/site-config";
+import { BASE_PATH } from "./src/lib/site-config";
 
 const nextConfig: NextConfig = {
   output: "export",
