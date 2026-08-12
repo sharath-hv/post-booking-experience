@@ -222,12 +222,12 @@ export function LoanRejectedScreen() {
 
   const cancelHref = useMemo(
     () =>
-      `${JOURNEY_PATHS.booking.cancel}?paid=${BOOKING_LOCK_AMOUNT_INR}&stage=post`,
+      `${JOURNEY_PATHS.booking.cancel}?paid=${BOOKING_LOCK_AMOUNT_INR}&stage=post&from=finance`,
     [],
   );
 
   const goToCancel = useCallback(() => {
-    writeConciergeEcho("I'd like to cancel my booking");
+    writeConciergeEcho("Cancel my booking");
     router.push(cancelHref);
   }, [cancelHref, router]);
 

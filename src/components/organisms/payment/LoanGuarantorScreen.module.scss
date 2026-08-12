@@ -1,30 +1,50 @@
-.shell {
-  position: relative;
-  min-height: 100dvh;
-  background-color: #f7faff;
-}
-
-.inner {
-  position: relative;
-  min-height: 100dvh;
-  padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
-}
+/* LoanGuarantorScreen — change-selection standalone page layout */
 
 .main {
+  margin-inline: auto;
+  display: flex;
+  width: 100%;
+  max-width: 640px;
+  flex: 1;
+  flex-direction: column;
   padding-inline: calc(var(--spacing) * 5);
+  padding-bottom: calc(7rem + env(safe-area-inset-bottom));
   padding-top: calc(var(--spacing) * 2);
 }
 
-.subtitle {
-  /* body-sm */
-  font-size: 14px;
-  line-height: 20px;
-  color: #4b4b4b;
-}
-
 .fields {
+  margin-top: calc(var(--spacing) * 8);
   display: flex;
   flex-direction: column;
   gap: calc(var(--spacing) * 8);
-  margin-top: calc(var(--spacing) * 6);
+}
+
+.uploads {
+  margin-top: calc(var(--spacing) * 8);
+}
+
+.fieldItem {
+  width: 100%;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.footerInner {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 640px;
+  background-color: var(--color-white);
+  padding-inline: calc(var(--spacing) * 5);
+  padding-block: calc(var(--spacing) * 4);
+}
+
+.cta {
+  width: 100%;
 }

@@ -149,6 +149,7 @@ export function ConciergeAllocationFailedScreen({
       router.push(JOURNEY_PATHS.booking.modify);
       return;
     }
+    writeConciergeEcho("Get my full refund");
     router.push(
       `${JOURNEY_PATHS.booking.cancel}?paid=${BOOKING_LOCK_AMOUNT_INR}&reason=our-failure`
     );

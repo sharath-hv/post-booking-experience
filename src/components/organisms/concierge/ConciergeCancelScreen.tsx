@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 import moneyIcon from "@/assets/money.svg";
 import { AmountReceivedCard } from "@/components/organisms/artifacts";
@@ -9,6 +9,7 @@ import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
 import { CancelBookingReasonBottomSheet } from "@/components/organisms/CancelBookingReasonBottomSheet";
 import { MODIFY_BOOKING_CANCEL_FEE_INR } from "@/helpers/manage-booking-modify";
 import { BOOKING_LOCK_AMOUNT_INR } from "@/helpers/paymentUrls";
+import { writeConciergeEcho } from "@/lib/concierge/echo";
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -30,7 +31,6 @@ type CancelPhase = "confirm" | "initiated" | "succeeded";
  * refund successful (terminal).
  */
 export function ConciergeCancelScreen() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const [reasonSheetOpen, setReasonSheetOpen] = useState(false);
   const [phase, setPhase] = useState<CancelPhase>("confirm");
@@ -45,6 +45,8 @@ export function ConciergeCancelScreen() {
   const secondChange = searchParams.get("reason") === "second-change";
   /** ACKO couldn't deliver — policy §1.14: 100% refund at any stage. */
   const ourFailure = searchParams.get("reason") === "our-failure";
+  /** Loan-rejected cancel — post-lock fee applies; skip reason sheet (cause already known). */
+  const fromFinance = searchParams.get("from") === "finance";
 
   const chargeInr =
     postConfirmation && !ourFailure ? MODIFY_BOOKING_CANCEL_FEE_INR : 0;
@@ -73,9 +75,15 @@ export function ConciergeCancelScreen() {
     />
   );
 
+  const cancelCtaLabel =
+    ourFailure || fromFinance
+      ? "Refund me " + formatInr(refundInr)
+      : "Yes, cancel";
+
   if (phase === "succeeded") {
     return (
       <ConciergeTurnShell
+        key="cancel-succeeded"
         says={[
           "It's in your account, Sharath.",
           `${formatInr(refundInr)} is back with you. Whenever you're ready for another car, you know where I am.`,
@@ -95,6 +103,7 @@ export function ConciergeCancelScreen() {
   if (phase === "initiated") {
     return (
       <ConciergeTurnShell
+        key="cancel-initiated"
         says={[
           "On its way, Sharath.",
           `${formatInr(refundInr)} is heading back to your account. 5 to 7 business days. I'll let you know when it lands.`,
@@ -117,6 +126,7 @@ export function ConciergeCancelScreen() {
   return (
     <>
       <ConciergeTurnShell
+        key="cancel-confirm"
         says={
           ourFailure
             ? [
@@ -128,15 +138,20 @@ export function ConciergeCancelScreen() {
                 "A second change means starting over, Sharath.",
                 "You've used your one change. That's the line in the policy I can't move. Changing again works as a cancel-and-rebook: 50% of your booking amount is held back, and you start fresh with the car you actually want. Your call entirely.",
               ]
-            : postConfirmation
+            : fromFinance
               ? [
                   "Before I cancel anything, Sharath…",
-                  "We're past the lock point, so cancelling holds back 50% of your booking amount. That's the one rule I can't bend. If it's the car that's wrong, a colour or model change costs just ₹5,000. If it's anything else, talk to me first. I can usually fix it.",
+                  "We're past the lock point, so cancelling holds back 50% of your booking amount.",
                 ]
-              : [
-                  "Want to stop here, Sharath?",
-                  "No charge at this stage. Every rupee comes straight back. But tell me what went wrong first; if it's the car or the timing, I can usually fix it before you go.",
-                ]
+              : postConfirmation
+                ? [
+                    "Before I cancel anything, Sharath…",
+                    "We're past the lock point, so cancelling holds back 50% of your booking amount. If it's the money plan, I can still help rework it. If it's the car, a colour or model change is ₹5,000. Talk to me first — I can usually fix it.",
+                  ]
+                : [
+                    "Want to stop here, Sharath?",
+                    "No charge at this stage. Every rupee comes straight back. But tell me what went wrong first — the car, the money, or the timing — I can usually fix it before you go.",
+                  ]
         }
         artifact={refundCard(
           "Comes back to you if you cancel now",
@@ -146,18 +161,14 @@ export function ConciergeCancelScreen() {
         )}
         replies={[
           {
-            label: ourFailure
-              ? "Refund me " + formatInr(refundInr)
-              : "Yes, cancel and refund " + formatInr(refundInr),
-            // When WE failed, asking "what went wrong" is tone-deaf — skip the reason sheet.
-            onClick: () => (ourFailure ? setPhase("initiated") : setReasonSheetOpen(true)),
-            echo: null,
-          },
-          {
-            label: "Let me think. Go back",
-            onClick: () => router.back(),
-            kind: "soft",
-            echo: null,
+            label: cancelCtaLabel,
+            // Our failure / loan-rejected: skip the reason sheet (tone-deaf or already known).
+            onClick: () =>
+              ourFailure || fromFinance
+                ? setPhase("initiated")
+                : setReasonSheetOpen(true),
+            // Echo onto the next phase so the turn remount animates (chip → dialogue → card).
+            echo: ourFailure || fromFinance ? cancelCtaLabel : null,
           },
         ]}
         showMenu={false}
@@ -167,6 +178,7 @@ export function ConciergeCancelScreen() {
         onClose={() => setReasonSheetOpen(false)}
         onConfirm={() => {
           setReasonSheetOpen(false);
+          writeConciergeEcho(cancelCtaLabel);
           setPhase("initiated");
         }}
       />

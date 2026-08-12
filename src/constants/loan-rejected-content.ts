@@ -88,7 +88,7 @@ export function loanRejectedTurnCopy(
       return {
         says: [
           `${rejectedBankName} can still do this if we add a guarantor.`,
-          "Or if you'd rather stop here, that works too.",
+          "That's usually enough to get the loan moving again — cancel only if you'd rather stop.",
         ],
       };
 

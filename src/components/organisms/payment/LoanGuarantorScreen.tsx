@@ -1,26 +1,45 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 
-import { GetHelpPillButton } from "@/components/molecules/GetHelpPillButton";
-import { ShiviCallSheet } from "@/components/organisms/ShiviCallSheet";
-import { TopNavHeader } from "@/components/organisms/TopNavHeader";
-import { LoanApplicationFixedCta } from "@/components/organisms/payment/loan-application/LoanApplicationFixedCta";
+import { DocumentUploadDocumentCards } from "@/components/organisms/DocumentUploadDocumentCards";
+import { PageLeadHeading } from "@/components/organisms/PageLeadHeading";
+import { StandaloneScreenHeader } from "@/components/organisms/StandaloneScreenHeader";
+import { UploadSourceBottomSheet } from "@/components/organisms/UploadSourceBottomSheet";
 import { LoanApplicationFormField } from "@/components/organisms/payment/loan-application/LoanApplicationFormField";
-import {
-  LOAN_APPLICATION_FIELD_STACK_GAP_CLASS,
-  LOAN_APPLICATION_MAIN_CLASS,
-  LOAN_APPLICATION_PAGE_TITLE_CLASS,
-  LOAN_APPLICATION_STAGGER_MS,
-  LOAN_APPLICATION_TITLE_TO_CARD_GAP_CLASS,
-} from "@/components/organisms/payment/loan-application/loan-application-layout";
-import { LoanApplicationPageStagger } from "@/components/organisms/payment/loan-application/LoanApplicationPageStagger";
 import { bankForQueryParam } from "@/components/organisms/payment/acko-drive-finance-bank";
+import { KYC_MOCK_UPLOAD_NAMES, type KycUploadSource } from "@/constants/kyc-upload-content";
+import { LOAN_APPLICATION_IDENTITY_DOCUMENTS } from "@/constants/loan-application-documents-content";
+import { MODIFY_SELECTION_PAGE_SHELL_CLASS } from "@/constants/modify-selection-content";
+import {
+  createEmptyLoanApplicationDocuments,
+  type LoanApplicationDocumentKind,
+  type LoanApplicationDocumentsState,
+  type LoanApplicationDocumentUploadSource,
+  type LoanApplicationUploadedFile,
+} from "@/helpers/loan-application-documents-state";
+import {
+  modifySelectionCardStaggerDelay,
+  MODIFY_SELECTION_STAGGER_MS,
+} from "@/helpers/modify-selection-stagger";
 import { writeConciergeEcho } from "@/lib/concierge/echo";
 import { loanUnderReviewPath } from "@/helpers/loan-application-urls";
 import { cn } from "@/utils/utils";
 import styles from "./LoanGuarantorScreen.module.scss";
+
+const {
+  title: STAGGER_TITLE_MS,
+  subtext: STAGGER_SUBTEXT_MS,
+  firstCard: STAGGER_FIRST_FIELD_MS,
+} = MODIFY_SELECTION_STAGGER_MS;
+
+const IDENTITY_CARD_DEFINITIONS = LOAN_APPLICATION_IDENTITY_DOCUMENTS.map((doc) => ({
+  kind: doc.kind,
+  title: doc.title,
+  description: doc.description,
+  allowMultiple: doc.allowMultiple ?? true,
+}));
 
 function digitsOnly(value: string) {
   return value.replace(/\D/g, "");
@@ -30,13 +49,14 @@ function isEmailLike(value: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
 }
 
-function isPanLike(value: string) {
-  return /^[A-Z]{5}[0-9]{4}[A-Z]$/i.test(value.trim());
+function nextMockFilename(uploadIndex: number): string {
+  return KYC_MOCK_UPLOAD_NAMES[uploadIndex % KYC_MOCK_UPLOAD_NAMES.length];
 }
 
 /**
  * Guarantor details after a conditional bank approval path.
  * Primary applicant data stays as-is; we only collect the guarantor here.
+ * Page chrome matches change-selection; identity uploads match loan application.
  */
 export function LoanGuarantorScreen() {
   const router = useRouter();
@@ -45,24 +65,27 @@ export function LoanGuarantorScreen() {
     () => bankForQueryParam(searchParams.get("bank")),
     [searchParams],
   );
-  const [callSheetOpen, setCallSheetOpen] = useState(false);
 
   const [fullName, setFullName] = useState("Rohan Mehta");
   const [phone, setPhone] = useState("9876543210");
   const [email, setEmail] = useState("rohan.mehta@gmail.com");
-  const [pan, setPan] = useState("ABCDE1234F");
-  const [aadhaar, setAadhaar] = useState("123412341234");
+  const [uploads, setUploads] = useState<LoanApplicationDocumentsState>(
+    createEmptyLoanApplicationDocuments,
+  );
+  const mockUploadCounterRef = useRef(0);
+  const [sourceSheetOpen, setSourceSheetOpen] = useState(false);
+  const [activeDocument, setActiveDocument] = useState<LoanApplicationDocumentKind | null>(
+    null,
+  );
+
+  const identityUploadsComplete =
+    uploads.aadhaar.length > 0 && uploads.pan.length > 0;
 
   const canSubmit =
     fullName.trim().length > 1 &&
     digitsOnly(phone).length === 10 &&
     isEmailLike(email) &&
-    isPanLike(pan) &&
-    digitsOnly(aadhaar).length === 12;
-
-  const onBack = useCallback(() => {
-    router.back();
-  }, [router]);
+    identityUploadsComplete;
 
   const onSubmit = useCallback(() => {
     if (!canSubmit) return;
@@ -70,95 +93,156 @@ export function LoanGuarantorScreen() {
     router.push(loanUnderReviewPath(bank.id));
   }, [bank.id, canSubmit, router]);
 
+  const openSourceSheet = useCallback((kind: LoanApplicationDocumentKind) => {
+    setActiveDocument(kind);
+    setSourceSheetOpen(true);
+  }, []);
+
+  const appendUpload = useCallback(
+    (kind: LoanApplicationDocumentKind, source: LoanApplicationDocumentUploadSource) => {
+      const uploadIndex = mockUploadCounterRef.current;
+      mockUploadCounterRef.current += 1;
+      const newFile: LoanApplicationUploadedFile = {
+        id: `${kind}-${source}-${uploadIndex}-${Date.now()}`,
+        name: nextMockFilename(uploadIndex),
+        source,
+      };
+      setUploads((current) => ({
+        ...current,
+        [kind]: kind === "pan" ? [newFile] : [...current[kind], newFile],
+      }));
+    },
+    [],
+  );
+
+  const handleMockUpload = useCallback(
+    (source: KycUploadSource) => {
+      if (activeDocument == null || source === "digilocker") return;
+      appendUpload(activeDocument, source);
+    },
+    [activeDocument, appendUpload],
+  );
+
+  const handleRemove = useCallback((kind: string, fileId: string) => {
+    if (kind !== "aadhaar" && kind !== "pan") return;
+    setUploads((current) => ({
+      ...current,
+      [kind]: current[kind].filter((file) => file.id !== fileId),
+    }));
+  }, []);
+
+  const subline = `Share someone who can stand guarantee for this loan. ${bank.name} will use these details to reassess your application.`;
+
+  const fields = [
+    {
+      id: "guarantor-full-name",
+      label: "Full name",
+      value: fullName,
+      onChange: setFullName,
+      autoComplete: "name" as const,
+    },
+    {
+      id: "guarantor-phone",
+      label: "Phone number",
+      type: "tel" as const,
+      value: phone,
+      onChange: (value: string) => setPhone(digitsOnly(value).slice(0, 10)),
+      autoComplete: "tel" as const,
+    },
+    {
+      id: "guarantor-email",
+      label: "Email",
+      type: "email" as const,
+      value: email,
+      onChange: setEmail,
+      autoComplete: "email" as const,
+    },
+  ];
+
+  const uploadStaggerBase = modifySelectionCardStaggerDelay(
+    fields.length,
+    STAGGER_FIRST_FIELD_MS,
+  );
+
   return (
-    <div className={styles.shell}>
-      <div className={styles.inner}>
-        <TopNavHeader
-          onBack={onBack}
-          endSlot={
-            <GetHelpPillButton onClick={() => setCallSheetOpen(true)} />
-          }
+    <div className={MODIFY_SELECTION_PAGE_SHELL_CLASS}>
+      <StandaloneScreenHeader />
+
+      <main className={styles.main}>
+        <PageLeadHeading
+          title={`Guarantor details for ${bank.name}`}
+          subline={subline}
+          titleDelayMs={STAGGER_TITLE_MS}
+          sublineDelayMs={STAGGER_SUBTEXT_MS}
         />
 
-        <main className={cn(LOAN_APPLICATION_MAIN_CLASS, styles.main)}>
-          <LoanApplicationPageStagger delayMs={LOAN_APPLICATION_STAGGER_MS.title}>
-            <h1 className={LOAN_APPLICATION_PAGE_TITLE_CLASS}>
-              Guarantor details for {bank.name}
-            </h1>
-          </LoanApplicationPageStagger>
+        <div className={styles.fields}>
+          {fields.map((field, index) => (
+            <div
+              key={field.id}
+              className={cn(styles.fieldItem, "payment-success-stagger")}
+              style={{
+                animationDelay: `${modifySelectionCardStaggerDelay(index, STAGGER_FIRST_FIELD_MS)}ms`,
+              }}
+            >
+              <LoanApplicationFormField
+                id={field.id}
+                label={field.label}
+                type={field.type}
+                value={field.value}
+                onChange={field.onChange}
+                autoComplete={field.autoComplete}
+              />
+            </div>
+          ))}
+        </div>
 
-          <LoanApplicationPageStagger
-            delayMs={LOAN_APPLICATION_STAGGER_MS.subtitle}
-            className={cn(
-              LOAN_APPLICATION_TITLE_TO_CARD_GAP_CLASS,
-              styles.subtitle,
-            )}
+        <section
+          className={styles.uploads}
+          aria-label="Guarantor identity documents"
+        >
+          <DocumentUploadDocumentCards
+            documents={IDENTITY_CARD_DEFINITIONS}
+            getFiles={(kind) => uploads[kind as LoanApplicationDocumentKind] ?? []}
+            onUploadClick={(kind) => openSourceSheet(kind as LoanApplicationDocumentKind)}
+            onRemove={handleRemove}
+            wrapCard={(kind, card) => {
+              const index = LOAN_APPLICATION_IDENTITY_DOCUMENTS.findIndex(
+                (doc) => doc.kind === kind,
+              );
+              return (
+                <div
+                  className={cn(styles.fieldItem, "payment-success-stagger")}
+                  style={{
+                    animationDelay: `${uploadStaggerBase + index * MODIFY_SELECTION_STAGGER_MS.cardStep}ms`,
+                  }}
+                >
+                  {card}
+                </div>
+              );
+            }}
+          />
+        </section>
+      </main>
+
+      <div className={cn(styles.footer, "footer-elevated")}>
+        <div className={styles.footerInner}>
+          <button
+            type="button"
+            onClick={onSubmit}
+            disabled={!canSubmit}
+            className={cn(styles.cta, "primary-cta")}
           >
-            <p>
-              Share someone who can stand guarantee for this loan. {bank.name}{" "}
-              will use these details to reassess your application.
-            </p>
-          </LoanApplicationPageStagger>
-
-          <LoanApplicationPageStagger
-            delayMs={LOAN_APPLICATION_STAGGER_MS.card}
-            className={cn(
-              LOAN_APPLICATION_FIELD_STACK_GAP_CLASS,
-              styles.fields,
-            )}
-          >
-            <LoanApplicationFormField
-              id="guarantor-full-name"
-              label="Full name"
-              value={fullName}
-              onChange={setFullName}
-              autoComplete="name"
-            />
-            <LoanApplicationFormField
-              id="guarantor-phone"
-              label="Phone number"
-              type="tel"
-              value={phone}
-              onChange={(value) => setPhone(digitsOnly(value).slice(0, 10))}
-              autoComplete="tel"
-            />
-            <LoanApplicationFormField
-              id="guarantor-email"
-              label="Email"
-              type="email"
-              value={email}
-              onChange={setEmail}
-              autoComplete="email"
-            />
-            <LoanApplicationFormField
-              id="guarantor-pan"
-              label="PAN"
-              value={pan}
-              onChange={(value) => setPan(value.toUpperCase().slice(0, 10))}
-              autoComplete="off"
-            />
-            <LoanApplicationFormField
-              id="guarantor-aadhaar"
-              label="Aadhaar"
-              type="tel"
-              value={aadhaar}
-              onChange={(value) => setAadhaar(digitsOnly(value).slice(0, 12))}
-              autoComplete="off"
-            />
-          </LoanApplicationPageStagger>
-        </main>
-
-        <LoanApplicationFixedCta
-          label="Submit guarantor details"
-          onClick={onSubmit}
-          disabled={!canSubmit}
-          staggerDelayMs={LOAN_APPLICATION_STAGGER_MS.cta}
-        />
+            Submit guarantor details
+          </button>
+        </div>
       </div>
 
-      <ShiviCallSheet
-        open={callSheetOpen}
-        onClose={() => setCallSheetOpen(false)}
+      <UploadSourceBottomSheet
+        open={sourceSheetOpen}
+        onClose={() => setSourceSheetOpen(false)}
+        onSelect={handleMockUpload}
+        includeDigilocker={false}
       />
     </div>
   );
