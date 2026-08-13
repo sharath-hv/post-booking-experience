@@ -8,6 +8,7 @@ import bookingCancelledIllustration from "@/assets/Booking cancelled.svg";
 import coApplicantIllustration from "@/assets/co-applicant.svg";
 import moneyIcon from "@/assets/money.svg";
 
+import { LoanDecisionDeadlineFootnote } from "@/components/organisms/concierge/DeadlineCountdownFootnote";
 import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
 import { bankForQueryParam } from "@/components/organisms/payment/acko-drive-finance-bank";
 import { LoanRejectedOutcomeSwitcher } from "@/components/organisms/payment/LoanRejectedOutcomeSwitcher";
@@ -177,6 +178,8 @@ function LoanRejectedOptionCard({
  * Every outcome is a set of radio-selectable option cards (self finance,
  * co-applicant, guarantor, alt bank, cancel) with one contextual CTA that
  * adapts to the selection — same grammar as {@link ConciergeAllocationFailedScreen}.
+ * 48h decision SLA — pick a path or the booking auto-cancels (demo
+ * **SLA timed out** → {@link LoanDecisionCancelledScreen}).
  * Demo switch previews all five outcomes via `?outcome=`.
  */
 export function LoanRejectedScreen() {
@@ -346,10 +349,10 @@ export function LoanRejectedScreen() {
           {
             id: "primary",
             illustration: <BankIllustration src={alt.logoSrc} />,
-            title: `Continue with ${alt.name}`,
+            title: `${alt.name} with a co‑applicant`,
             subtitle: "Your application carries over. We'll just add a co‑applicant to complete it.",
             footer: <BankRateDetail rate={alt.rate} emi={altEmi} />,
-            ctaLabel: `Continue with ${alt.name}`,
+            ctaLabel: "Continue with a co‑applicant",
             perform: () =>
               startCoApplicant(alt.id, `Continue with ${alt.name} and a co‑applicant`),
           },
@@ -390,6 +393,10 @@ export function LoanRejectedScreen() {
   return (
     <ConciergeTurnShell
       says={copy.says}
+      dateHolder="you"
+      beforeDialogue={
+        <LoanRejectedOutcomeSwitcher value={outcome} onChange={onOutcomeChange} />
+      }
       artifact={
         <div className={styles.optionStack}>
           {options.map((option) => (
@@ -405,12 +412,13 @@ export function LoanRejectedScreen() {
           ))}
         </div>
       }
+      footnote={<LoanDecisionDeadlineFootnote />}
       replies={replies}
+      altTimeSkip={{
+        label: "SLA timed out",
+        href: JOURNEY_PATHS.payment.loanDecisionCancelled,
+      }}
       callLabel="Rather talk it through? I can call you"
-    >
-      <div className={styles.demoSwitcher}>
-        <LoanRejectedOutcomeSwitcher value={outcome} onChange={onOutcomeChange} />
-      </div>
-    </ConciergeTurnShell>
+    />
   );
 }

@@ -265,6 +265,12 @@ function moneyNowDetail(pathname: string): string {
   if (path === "/payment/loan-additional-documents") {
     return "Upload the document the bank asked for";
   }
+  if (path === "/payment/loan-rejected") {
+    return "Pick a path forward so we can keep your delivery moving";
+  }
+  if (path === "/payment/loan-decision-cancelled") {
+    return "Your booking is cancelled. Refund is on its way";
+  }
   if (path === "/delivery/rto/additional-documents") {
     return "Upload the document the RTO asked for";
   }

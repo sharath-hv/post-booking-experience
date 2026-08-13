@@ -107,3 +107,14 @@ export function AllocationDecisionDeadlineFootnote() {
     />
   );
 }
+
+/** Loan rejected — 48h to pick a path forward. */
+export function LoanDecisionDeadlineFootnote() {
+  return (
+    <DeadlineCountdownFootnote
+      durationMs={48 * 60 * 60 * 1000}
+      storageKey="concierge.loanDecisionDeadlineAt"
+      copy="Choose one of the options above before time runs out, or this booking will be cancelled."
+    />
+  );
+}

@@ -69,6 +69,10 @@ export const JOURNEY_PATHS = {
     loanProcessing: "/payment/loan-processing",
     /** Post-OTP — bank processing the loan (2–3 working days). */
     loanUnderReview: "/payment/loan-under-review",
+    /** Bank declined — remediation outcomes. */
+    loanRejected: "/payment/loan-rejected",
+    /** Decision SLA timed out on loan-rejected remediation. */
+    loanDecisionCancelled: "/payment/loan-decision-cancelled",
   },
   delivery: {
     insurancePrep: "/delivery/insurance-prep",

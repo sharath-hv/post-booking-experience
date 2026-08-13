@@ -1,9 +1,5 @@
 /* Component styles */
 
-.demoSwitcher {
-  margin-top: calc(var(--spacing) * 6);
-}
-
 .optionStack {
   display: flex;
   width: 100%;
@@ -125,7 +121,7 @@
 .bankStats {
   display: flex;
   flex-direction: column;
-  gap: calc(var(--spacing) * 3);
+  gap: calc(var(--spacing) * 2);
 }
 
 .bankStatRow {
