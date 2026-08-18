@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
+import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
 import { PageLeadHeading } from "@/components/organisms/PageLeadHeading";
 import { StandaloneScreenHeader } from "@/components/organisms/StandaloneScreenHeader";
 import { ModifySelectionColourCard } from "@/components/organisms/kyc/ModifySelectionColourCard";
@@ -32,6 +33,7 @@ import {
   modifySelectionListStaggerDelay,
   MODIFY_SELECTION_STAGGER_MS,
 } from "@/helpers/modify-selection-stagger";
+import { useCtaNavigation } from "@/hooks/use-cta-navigation";
 
 const {
   title: STAGGER_TITLE_MS,
@@ -55,6 +57,7 @@ export function ModifySelectionVariantColourScreen() {
     return pending?.colourId ?? null;
   });
   const [deliverySheetOpen, setDeliverySheetOpen] = useState(false);
+  const { loading, start } = useCtaNavigation();
   const pendingDeliveryChoice = useMemo(
     () => readModifySelectionVariantPending()?.deliveryChoice,
     [],
@@ -89,7 +92,6 @@ export function ModifySelectionVariantColourScreen() {
         deliveryChoice,
       });
       clearModifySelectionVariantChoice();
-      setDeliverySheetOpen(false);
       router.push(MODIFY_SELECTION_VARIANT_CONFIRM_PATH);
     },
     [router, selectedColour, selectedVariant, variantId],
@@ -101,8 +103,8 @@ export function ModifySelectionVariantColourScreen() {
       setDeliverySheetOpen(true);
       return;
     }
-    goToConfirmation("standard");
-  }, [goToConfirmation, selectedColour]);
+    start(() => goToConfirmation("standard"));
+  }, [goToConfirmation, selectedColour, start]);
 
   const onDeliveryConfirm = useCallback(
     (deliveryChoice: ModifySelectionDeliveryChoice) => {
@@ -152,14 +154,14 @@ export function ModifySelectionVariantColourScreen() {
 
       <div className={[styles.fixed_3, "footer-elevated"].filter(Boolean).join(" ")}>
         <div className={styles.mx_auto_4}>
-          <button
-            type="button"
+          <PrimaryCta
             disabled={selectedColourId == null}
+            loading={loading}
             onClick={onContinue}
-            className={[styles.primary_cta_5, "primary-cta"].filter(Boolean).join(" ")}
+            className={styles.primary_cta_5}
           >
             Continue
-          </button>
+          </PrimaryCta>
         </div>
       </div>
 

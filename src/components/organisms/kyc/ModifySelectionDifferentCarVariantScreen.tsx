@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
+import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
 import { PageLeadHeading } from "@/components/organisms/PageLeadHeading";
 import { StandaloneScreenHeader } from "@/components/organisms/StandaloneScreenHeader";
 import { ModifySelectionVariantCard } from "@/components/organisms/kyc/ModifySelectionVariantCard";
@@ -18,6 +19,7 @@ import {
 import { modifySelectionDifferentCarVariantScreenTitle } from "@/constants/modify-selection-different-car-content";
 import { MODIFY_SELECTION_PAGE_SHELL_CLASS } from "@/constants/modify-selection-content";
 import { modifySelectionDifferentCarColourPath } from "@/helpers/modify-selection-different-car-paths";
+import { useCtaNavigation } from "@/hooks/use-cta-navigation";
 import { readModifySelectionDifferentCarPending } from "@/helpers/modify-selection-different-car-pending";
 import { writeModifySelectionDifferentCarVariantChoice } from "@/helpers/modify-selection-different-car-variant-choice";
 import styles from "./ModifySelectionDifferentCarVariantScreen.module.scss";
@@ -51,6 +53,7 @@ export function ModifySelectionDifferentCarVariantScreen({
   modelId,
 }: ModifySelectionDifferentCarVariantScreenProps) {
   const router = useRouter();
+  const { loading, start } = useCtaNavigation();
   const brand = useMemo(() => getModifySelectionCarBrandById(brandId), [brandId]);
   const model = useMemo(
     () => getModifySelectionCarModelById(brandId, modelId),
@@ -91,8 +94,8 @@ export function ModifySelectionDifferentCarVariantScreen({
   const onContinue = useCallback(() => {
     if (selectedVariantId == null) return;
     writeModifySelectionDifferentCarVariantChoice(selectedVariantId);
-    router.push(modifySelectionDifferentCarColourPath(brandId, modelId));
-  }, [brandId, modelId, router, selectedVariantId]);
+    start(() => router.push(modifySelectionDifferentCarColourPath(brandId, modelId)));
+  }, [brandId, modelId, router, selectedVariantId, start]);
 
   if (brand == null || model == null) {
     return null;
@@ -154,14 +157,14 @@ export function ModifySelectionDifferentCarVariantScreen({
 
       <div className={[styles.fixed_5, "footer-elevated"].filter(Boolean).join(" ")}>
         <div className={styles.mx_auto_6}>
-          <button
-            type="button"
+          <PrimaryCta
             disabled={selectedVariantId == null}
+            loading={loading}
             onClick={onContinue}
-            className={[styles.primary_cta_7, "primary-cta"].filter(Boolean).join(" ")}
+            className={styles.primary_cta_7}
           >
             Continue
-          </button>
+          </PrimaryCta>
         </div>
       </div>
     </div>

@@ -9,9 +9,6 @@
 .card {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  border-radius: var(--radius-2xl);
-  background-color: var(--color-white);
   text-align: left;
 }
 
@@ -27,7 +24,7 @@
 .locationSeparator {
   margin: 0;
   border: 0;
-  border-top: 1px solid #e8e8e8;
+  border-top: 1px solid var(--card-separator-color, #e8e8e8);
 }
 
 .locationIcon {

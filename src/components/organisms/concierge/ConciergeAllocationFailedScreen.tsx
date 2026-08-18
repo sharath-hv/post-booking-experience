@@ -14,6 +14,7 @@ import {
   splitBookingDeliveryLine,
 } from "@/constants/experience-flow-content";
 import { JOURNEY_PATHS } from "@/helpers/journey-routes";
+import { OVERLAY_GLASS_CARD_CLASS } from "@/helpers/overlay-glass-card";
 import { BOOKING_LOCK_AMOUNT_INR } from "@/helpers/paymentUrls";
 import { cn } from "@/utils/utils";
 
@@ -73,10 +74,9 @@ function AllocationFailedOptionCard({
       onClick={onSelect}
       aria-pressed={selected}
       className={cn(
-        styles.w_full_13, "card-elevated",
-        selected
-          ? styles.border_selected_1
-          : styles.border_transparent_1,
+        styles.w_full_13,
+        OVERLAY_GLASS_CARD_CLASS,
+        selected && styles.border_selected_1,
       )}
     >
       <div className={styles.flex_3}>
@@ -229,7 +229,7 @@ export function ConciergeAllocationFailedScreen({
         </div>
       }
       footnote={<AllocationDecisionDeadlineFootnote />}
-      replies={[{ label: ctaLabel, onClick: onContinue, echo: null }]}
+      replies={[{ label: ctaLabel, onClick: onContinue, navigates: true, echo: null }]}
       altTimeSkip={{
         label: "SLA timed out",
         href: JOURNEY_PATHS.carAllocation.decisionCancelled,

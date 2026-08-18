@@ -11,8 +11,7 @@ const SUBLINE =
   "Take this to your bank to get your loan sanctioned. This part runs on your clock. The sooner the bank confirms, the sooner your delivery locks. Come back with the sanctioned amount.";
 
 /**
- * Self finance — “action” step after confirmation (`/payment/self-finance-confirmed`). Same shell as
- * {@link PaymentDefaultScreen}: processing hero + What’s next + primary CTA.
+ * Self finance — action step after the user picks “I’ll arrange my own finance”.
  */
 export function SelfFinanceActionScreen() {
   return (
@@ -21,7 +20,7 @@ export function SelfFinanceActionScreen() {
       headlineLine2={HEADLINE_LINE_2}
       subline={SUBLINE}
       heroIllustrationSrc={PAYMENT_CHOOSE_ASSETS.documentsReceived}
-      heroSummaryCard={<ProformaInvoiceCard />}
+      heroSummaryCard={<ProformaInvoiceCard variant="glass" />}
       nextHref="/payment/enter-disbursement-amount"
       prefetchHref="/payment/enter-disbursement-amount"
       nextCtaLabel="I have my loan amount"

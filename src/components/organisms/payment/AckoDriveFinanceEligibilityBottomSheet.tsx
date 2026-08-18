@@ -1,11 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 
 import close01Icon from "@/assets/Close 01.svg";
 import identityIcon from "@/assets/Identity.svg";
+import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
 import { BottomSheetShell } from "@/components/organisms/BottomSheetShell";
+import { useCtaNavigation } from "@/hooks/use-cta-navigation";
 import { PAYMENT_CHOOSE_ASSETS } from "@/components/organisms/payment/payment-choose-assets";
 import { SelfFinanceHowItWorksCard } from "@/components/organisms/payment/SelfFinanceHowItWorksCard";
 import type { SelfFinanceHowItWorksStep } from "@/components/organisms/payment/self-finance-confirmed-content";
@@ -50,14 +52,20 @@ export function AckoDriveFinanceEligibilityBottomSheet({
   onClose,
   onConfirm,
 }: AckoDriveFinanceEligibilityBottomSheetProps) {
+  const { loading, start, reset } = useCtaNavigation();
+
+  useEffect(() => {
+    if (!open) reset();
+  }, [open, reset]);
+
   const handleConfirm = useCallback(() => {
-    onConfirm();
-  }, [onConfirm]);
+    start(onConfirm);
+  }, [onConfirm, start]);
 
   return (
     <BottomSheetShell
       open={open}
-      onClose={onClose}
+      onClose={loading ? () => {} : onClose}
       aria-labelledby="acko-drive-finance-eligibility-title"
       aria-describedby="acko-drive-finance-eligibility-list"
     >
@@ -91,13 +99,13 @@ export function AckoDriveFinanceEligibilityBottomSheet({
       </div>
 
       <div className={cn(styles.shrink_0_5, BOTTOM_SHEET_CTA_STRIP_TOP_CLASS)}>
-        <button
-          type="button"
+        <PrimaryCta
           onClick={handleConfirm}
-          className={cn(styles.primary_cta_5, "primary-cta")}
+          loading={loading}
+          className={styles.primary_cta_5}
         >
           Agree and continue
-        </button>
+        </PrimaryCta>
       </div>
     </BottomSheetShell>
   );

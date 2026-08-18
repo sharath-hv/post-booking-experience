@@ -3,7 +3,7 @@
 import Image, { type StaticImageData } from "next/image";
 import { useState } from "react";
 
-import { IconWell } from "@/components/molecules/IconWell";
+import { IconWell } from "@/components/atoms/icon/IconWell";
 import bankIcon from "@/assets/bank.svg";
 import cameraIcon from "@/assets/Camera.svg";
 import documentIcon from "@/assets/Document_black.svg";

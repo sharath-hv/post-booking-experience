@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useCallback, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
+import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
 import { PageLeadHeading } from "@/components/organisms/PageLeadHeading";
 import { StandaloneScreenHeader } from "@/components/organisms/StandaloneScreenHeader";
 import { InsuranceTenureCompareBottomSheet } from "@/components/organisms/payment/InsuranceTenureCompareBottomSheet";
@@ -27,6 +28,7 @@ import {
   MODIFY_SELECTION_STAGGER_MS,
 } from "@/helpers/modify-selection-stagger";
 import { buildInsurancePremiumCheckoutHref } from "@/helpers/paymentUrls";
+import { useCtaNavigation } from "@/hooks/use-cta-navigation";
 import { cn } from "@/utils/utils";
 import styles from "./ChooseInsuranceTenureScreen.module.scss";
 
@@ -153,6 +155,7 @@ function TenureCard({
  */
 export function ChooseInsuranceTenureScreen() {
   const router = useRouter();
+  const { loading, start } = useCtaNavigation();
   const searchParams = useSearchParams();
   const [tenureId, setTenureId] = useState<InsuranceTenureId>("3+3");
   const [compareSheetOpen, setCompareSheetOpen] = useState(false);
@@ -193,7 +196,7 @@ export function ChooseInsuranceTenureScreen() {
     [addonsQuery, searchParams, selected.pricedPremiumInr, tenureId],
   );
 
-  const onPay = useCallback(() => router.push(ctaHref), [router, ctaHref]);
+  const onPay = useCallback(() => start(() => router.push(ctaHref)), [router, ctaHref, start]);
 
   const subline = useMemo(
     () => insuranceTenureScreenSubline(addonIds.length),
@@ -266,9 +269,9 @@ export function ChooseInsuranceTenureScreen() {
 
       <div className={cn(styles.footer, "footer-elevated")}>
         <div className={styles.footerInner}>
-          <button type="button" onClick={onPay} className={cn(styles.cta, "primary-cta")}>
+          <PrimaryCta onClick={onPay} loading={loading} className={styles.cta}>
             Pay {formatInr(selected.pricedPremiumInr)}
-          </button>
+          </PrimaryCta>
         </div>
       </div>
 

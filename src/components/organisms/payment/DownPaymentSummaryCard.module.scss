@@ -9,6 +9,10 @@
   text-align: left;
 }
 
+.surfaceGlass {
+  background-color: transparent;
+}
+
 .m_0_1 {
   margin: 0px;
   display: flex;
@@ -51,7 +55,7 @@
   border-top-width: 1px;
   --tw-border-style: dashed;
   border-style: dashed;
-  border-color: #e8e8e8;
+  border-color: var(--card-separator-color, #e8e8e8);
 }
 
 .text_sm_6 {

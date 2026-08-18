@@ -13,7 +13,7 @@ import { GetHelpPillButton } from "@/components/molecules/GetHelpPillButton";
 import { TopNavHeader } from "@/components/organisms/TopNavHeader";
 import { ManageBookingBottomSheet } from "@/components/organisms/ManageBookingBottomSheet";
 import { WordByWordLine } from "@/components/molecules/WordByWordLine";
-import { ExperienceBackdrop } from "@/components/atoms/experience-backdrop";
+import { ExperienceBackdrop } from "@/components/atoms/backdrop/experience-backdrop";
 import styles from "./KycVerificationCancelledScreen.module.scss";
 
 import {

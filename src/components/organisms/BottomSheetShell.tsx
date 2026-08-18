@@ -2,8 +2,8 @@
 
 import type { ReactNode } from "react";
 
-import { BottomSheetCloseIcon } from "@/components/atoms/BottomSheetCloseIcon";
-import { BottomSheetPortal } from "@/components/molecules/BottomSheetPortal";
+import { BottomSheetCloseIcon } from "@/components/atoms/sheet/BottomSheetCloseIcon";
+import { BottomSheetPortal } from "@/components/atoms/sheet/BottomSheetPortal";
 import {
   BOTTOM_SHEET_MAX_HEIGHT_CLASS,
   BOTTOM_SHEET_OVERLAY_Z_CLASS,

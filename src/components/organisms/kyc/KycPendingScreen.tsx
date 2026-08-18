@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
+import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
 import lockIcon from "@/assets/lock.svg";
 import menuIcon from "@/assets/menu.svg";
 import { GetHelpPillButton } from "@/components/molecules/GetHelpPillButton";
@@ -12,7 +13,7 @@ import { TopNavHeader } from "@/components/organisms/TopNavHeader";
 import { ManageBookingBottomSheet } from "@/components/organisms/ManageBookingBottomSheet";
 import { ShiviIntroBottomSheet } from "@/components/organisms/kyc/ShiviIntroBottomSheet";
 import { WordByWordLine } from "@/components/molecules/WordByWordLine";
-import { ExperienceBackdrop } from "@/components/atoms/experience-backdrop";
+import { ExperienceBackdrop } from "@/components/atoms/backdrop/experience-backdrop";
 import {
   HERO_ACTION_HEADLINE_SUBLINE_GAP_CLASS,
   HERO_ICON_TOP_PT,

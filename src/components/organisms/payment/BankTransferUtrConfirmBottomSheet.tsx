@@ -1,9 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 
+import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
 import { BottomSheetShell } from "@/components/organisms/BottomSheetShell";
+import { useCtaNavigation } from "@/hooks/use-cta-navigation";
 import { PAYMENT_CHOOSE_ASSETS } from "@/components/organisms/payment/payment-choose-assets";
 import { BOTTOM_SHEET_CTA_STRIP_TOP_CLASS } from "@/lib/layout/bottom-sheet-layout";
 import { bottomSheetTitleWidthWithIllustration } from "@/lib/layout/bottom-sheet-title-layout";
@@ -26,14 +28,20 @@ export function BankTransferUtrConfirmBottomSheet({
   onClose,
   onConfirm,
 }: BankTransferUtrConfirmBottomSheetProps) {
+  const { loading, start, reset } = useCtaNavigation();
+
+  useEffect(() => {
+    if (!open) reset();
+  }, [open, reset]);
+
   const handleConfirm = useCallback(() => {
-    onConfirm();
-  }, [onConfirm]);
+    start(onConfirm);
+  }, [onConfirm, start]);
 
   return (
     <BottomSheetShell
       open={open}
-      onClose={onClose}
+      onClose={loading ? () => {} : onClose}
       aria-labelledby="bank-transfer-confirm-title"
       aria-describedby="bank-transfer-confirm-body"
     >
@@ -61,13 +69,13 @@ export function BankTransferUtrConfirmBottomSheet({
       </div>
 
       <div className={cn(styles.shrink_0_4, BOTTOM_SHEET_CTA_STRIP_TOP_CLASS)}>
-        <button
-          type="button"
+        <PrimaryCta
           onClick={handleConfirm}
-          className={[styles.primary_cta_6, "primary-cta"].filter(Boolean).join(" ")}
+          loading={loading}
+          className={styles.primary_cta_6}
         >
           Yes, bank has transferred
-        </button>
+        </PrimaryCta>
       </div>
     </BottomSheetShell>
   );

@@ -176,6 +176,7 @@ export function ConciergeCancelScreen() {
       <CancelBookingReasonBottomSheet
         open={reasonSheetOpen}
         onClose={() => setReasonSheetOpen(false)}
+        navigatesOnConfirm={false}
         onConfirm={() => {
           setReasonSheetOpen(false);
           writeConciergeEcho(cancelCtaLabel);

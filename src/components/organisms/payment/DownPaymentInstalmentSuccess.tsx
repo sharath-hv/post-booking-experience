@@ -15,7 +15,7 @@ import { SUCCESS_SCREEN_HEADLINE_SUBTEXT_GAP_CLASS } from "@/lib/layout/success-
 import styles from "./DownPaymentInstalmentSuccess.module.scss";
 
 
-/** Auto-advance: pay-down-payment (partial) or insurance setup (complete). */
+/** Auto-advance: remaining instalment, margin slip, or disbursement / insurance. */
 export const DOWN_PAYMENT_SUCCESS_AUTO_REDIRECT_MS = 3000;
 
 export type DownPaymentInstalmentSuccessProps = {

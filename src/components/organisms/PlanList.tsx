@@ -8,7 +8,7 @@ import moneyRoundIcon from "@/assets/Money round.svg";
 import newCarIcon from "@/assets/New car.svg";
 import tickIcon from "@/assets/tick01.svg";
 import { KYC_ASSETS } from "@/utils/kyc-assets";
-import { IconWell } from "@/components/molecules/IconWell";
+import { IconWell } from "@/components/atoms/icon/IconWell";
 import { cn } from "@/utils/utils";
 import { OVERLAY_GLASS_SURFACE_CLASS } from "@/helpers/overlay-glass-card";
 import styles from "./PlanList.module.scss";

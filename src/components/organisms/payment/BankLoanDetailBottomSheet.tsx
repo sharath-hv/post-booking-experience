@@ -1,16 +1,18 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import {
   formatBankRate,
   SHOW_PRE_APPROVED_LOAN_UI,
   type BankLoanTerms,
 } from "@/components/organisms/payment/bank-loan-terms";
-import { BottomSheetCloseIcon } from "@/components/atoms/BottomSheetCloseIcon";
+import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
+import { BottomSheetCloseIcon } from "@/components/atoms/sheet/BottomSheetCloseIcon";
 import { BottomSheetShell } from "@/components/organisms/BottomSheetShell";
-import { IconWell } from "@/components/molecules/IconWell";
+import { useCtaNavigation } from "@/hooks/use-cta-navigation";
+import { IconWell } from "@/components/atoms/icon/IconWell";
 import {
   BOTTOM_SHEET_BODY_BEFORE_CTA_CLASS,
   BOTTOM_SHEET_CTA_STRIP_TOP_CLASS,
@@ -67,9 +69,15 @@ export function BankLoanDetailBottomSheet({
     setRenderedBank(bank);
   }
 
+  const { loading, start, reset } = useCtaNavigation();
+
+  useEffect(() => {
+    if (bank == null) reset();
+  }, [bank, reset]);
+
   const handleConfirm = useCallback(() => {
-    if (renderedBank) onConfirm(renderedBank.id);
-  }, [onConfirm, renderedBank]);
+    if (renderedBank) start(() => onConfirm(renderedBank.id));
+  }, [onConfirm, renderedBank, start]);
 
   if (!renderedBank) return null;
 
@@ -81,7 +89,7 @@ export function BankLoanDetailBottomSheet({
   return (
     <BottomSheetShell
       open={open}
-      onClose={onClose}
+      onClose={loading ? () => {} : onClose}
       showCloseButton={false}
       aria-labelledby="bank-detail-sheet-title"
     >
@@ -110,7 +118,8 @@ export function BankLoanDetailBottomSheet({
           </div>
           <button
             type="button"
-            onClick={onClose}
+            onClick={loading ? undefined : onClose}
+            disabled={loading}
             className={cn(styles.closeBtn, "cta-ghost")}
             aria-label="Close"
           >
@@ -165,13 +174,13 @@ export function BankLoanDetailBottomSheet({
       </div>
 
       <div className={cn(styles.footer, BOTTOM_SHEET_CTA_STRIP_TOP_CLASS)}>
-        <button
-          type="button"
+        <PrimaryCta
           onClick={handleConfirm}
-          className={cn(styles.confirmCta, "primary-cta")}
+          loading={loading}
+          className={styles.confirmCta}
         >
           Continue with {renderedBank.name}
-        </button>
+        </PrimaryCta>
       </div>
     </BottomSheetShell>
   );

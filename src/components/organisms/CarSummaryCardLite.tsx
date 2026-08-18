@@ -6,7 +6,7 @@ import type { CSSProperties } from "react";
 import cretaCutout from "@/assets/Hyundai Creta.png";
 import ackoDriveWordmark from "@/assets/ACKO Drive wordmark.svg";
 import tickIcon from "@/assets/tick.svg";
-import { IconWell } from "@/components/molecules/IconWell";
+import { IconWell } from "@/components/atoms/icon/IconWell";
 import { BookingCarCardDetails } from "@/components/organisms/BookingCarCardDetails";
 import {
   BOOKING_CAR_CARD_SHELL_CLASS,

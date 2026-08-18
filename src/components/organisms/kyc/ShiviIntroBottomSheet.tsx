@@ -5,7 +5,7 @@ import { useCallback } from "react";
 
 import shiviAvatar from "@/assets/Shivi image.png";
 import { ShiviIntroCoachmark } from "@/components/organisms/kyc/ShiviIntroCoachmark";
-import { BottomSheetPortal } from "@/components/molecules/BottomSheetPortal";
+import { BottomSheetPortal } from "@/components/atoms/sheet/BottomSheetPortal";
 import {
   BOTTOM_SHEET_OVERLAY_Z_CLASS,
 } from "@/lib/layout/bottom-sheet-layout";

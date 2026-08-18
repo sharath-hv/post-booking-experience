@@ -3,6 +3,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useMemo, useRef, useState } from "react";
 
+import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
 import { DocumentUploadDocumentCards } from "@/components/organisms/DocumentUploadDocumentCards";
 import { PageLeadHeading } from "@/components/organisms/PageLeadHeading";
 import { StandaloneScreenHeader } from "@/components/organisms/StandaloneScreenHeader";
@@ -24,6 +25,7 @@ import {
   MODIFY_SELECTION_STAGGER_MS,
 } from "@/helpers/modify-selection-stagger";
 import { writeConciergeEcho } from "@/lib/concierge/echo";
+import { useCtaNavigation } from "@/hooks/use-cta-navigation";
 import { loanUnderReviewPath } from "@/helpers/loan-application-urls";
 import { cn } from "@/utils/utils";
 import styles from "./LoanGuarantorScreen.module.scss";
@@ -60,6 +62,7 @@ function nextMockFilename(uploadIndex: number): string {
  */
 export function LoanGuarantorScreen() {
   const router = useRouter();
+  const { loading, start } = useCtaNavigation();
   const searchParams = useSearchParams();
   const bank = useMemo(
     () => bankForQueryParam(searchParams.get("bank")),
@@ -90,8 +93,8 @@ export function LoanGuarantorScreen() {
   const onSubmit = useCallback(() => {
     if (!canSubmit) return;
     writeConciergeEcho("I've shared the guarantor details");
-    router.push(loanUnderReviewPath(bank.id));
-  }, [bank.id, canSubmit, router]);
+    start(() => router.push(loanUnderReviewPath(bank.id)));
+  }, [bank.id, canSubmit, router, start]);
 
   const openSourceSheet = useCallback((kind: LoanApplicationDocumentKind) => {
     setActiveDocument(kind);
@@ -227,14 +230,14 @@ export function LoanGuarantorScreen() {
 
       <div className={cn(styles.footer, "footer-elevated")}>
         <div className={styles.footerInner}>
-          <button
-            type="button"
+          <PrimaryCta
             onClick={onSubmit}
             disabled={!canSubmit}
-            className={cn(styles.cta, "primary-cta")}
+            loading={loading}
+            className={styles.cta}
           >
             Submit guarantor details
-          </button>
+          </PrimaryCta>
         </div>
       </div>
 

@@ -103,7 +103,6 @@ export function ChooseModifyBookingScreen() {
   }, []);
 
   const onConfirmAgree = useCallback(() => {
-    setConfirmOpen(false);
     router.push(selectedOption.continuePath);
   }, [router, selectedOption.continuePath]);
 

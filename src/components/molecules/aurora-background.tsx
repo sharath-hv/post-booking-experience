@@ -3,7 +3,7 @@
 import { cn } from "@/utils/utils";
 import type { ReactNode } from "react";
 
-import { AuroraLightLayer } from "@/components/atoms/aurora-light-layer";
+import { AuroraLightLayer } from "@/components/atoms/backdrop/aurora-light-layer";
 import styles from "./aurora-background.module.scss";
 
 

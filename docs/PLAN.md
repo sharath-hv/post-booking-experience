@@ -74,7 +74,7 @@ The business policy (5 stages; Booking Confirmation = lock point; 50%-of-total-p
 | `lib/concierge/echo.ts` | sessionStorage handoff: reply label → sent chip on the next turn (StrictMode-safe consume) |
 | `lib/concierge/instant.ts` | `sessionStorage.pbe-concierge-instant = "1"` renders turns fully revealed (demos/automation) |
 | `artifacts.tsx` | `AmountReceivedCard`, `PlanList`, `NoteCallout`, `CarSummaryCardLite` (flow-aware `deliveryStripClassName` / `deliveryIconSrc` from `ConciergeMoment`) |
-| `IconWell` (`components/molecules/`) | Shared circular icon container — tones **grey / green / amber / purple**; default **44px**; **1px** borders; used across plan, receipts, banks, uploads, self-finance steps |
+| `IconWell` (`src/components/atoms/icon/`) | Shared circular icon container — tones **grey / green / amber / purple**; default **44px**; **1px** borders; used across plan, receipts, banks, uploads, self-finance steps |
 | `PlanList` | Arrival plan (`appearance="plan"`) and purchase-state menu timeline (`appearance="progress"` — 32px status nodes, “In progress” / “Done” labels, 20px stage gaps; [Figma 3342:18746](https://www.figma.com/design/nW5SWmJdxxsCEDlqBN7C0L/Post-booking-experience?node-id=3342-18746)) |
 
 ### Converted moments (express + standard)
@@ -117,28 +117,43 @@ Buying-guide routes are bypassed on the spine (the arrival plan replaces them). 
 Hybrid model: thin shared atomic layers + domain feature folders. **No** `templates/` layer — `app/` routes import feature screens directly.
 
 ```
-app/page  →  feature screen (payment | kyc | concierge | quote)
+app/page  →  organisms/{payment|kyc|concierge|quote} screens
                  ↓
              organisms (ConciergeTurnShell, BottomSheetShell, shared cards)
                  ↓
-             molecules (IconWell, BottomSheetPortal, chips, bullet lists)
+             molecules (chips, confirm bullet lists, aurora wrapper)
                  ↓
-             atoms (BottomSheetCloseIcon, experience backdrop layers)
+             atoms grouped by the families they build:
+               cta/       PrimaryCta, CtaLottieLoader
+               backdrop/  aurora + video layers, ExperienceBackdrop
+               sheet/     BottomSheetCloseIcon, BottomSheetPortal
+               icon/      IconWell, SoftIconPad
 ```
+
+### Atom groups (what they build)
+
+| Group | Atoms | Molecules / organisms built from them |
+|-------|-------|----------------------------------------|
+| `atoms/cta/` | `PrimaryCta`, `CtaLottieLoader` | Screens and sheets with a navigate CTA; `ConciergeReplies` (loader on reply chips) |
+| `atoms/backdrop/` | `AuroraLightLayer`, `VideoBackgroundLayer`, `ExperienceBackdrop` | `aurora-background` molecule; `ConciergeTurnShell` and KYC pending/verification screens |
+| `atoms/sheet/` | `BottomSheetCloseIcon`, `BottomSheetPortal` | `BottomSheetShell`; custom sheets (`ShiviIntroBottomSheet`, `ManageBookingZoomOverlay`, bank/upload/quote sheets) |
+| `atoms/icon/` | `IconWell`, `SoftIconPad` | `IconCalloutCard`, `PlanList`, `AmountReceivedCard`, bank/plan cards; `BottomSheetConfirmBulletList`, self-finance how-it-works rows |
 
 ### Placement rules
 
 | What | Where |
 |------|--------|
-| Route screen / flow adapter | Feature folder (`payment/`, `kyc/`, `concierge/`, `quote/`) |
-| Used across **2+ domains** | `molecules/` (small) or `organisms/` (section / shell / shared card) |
-| Circular icon container (menu / receipts / cards) | Always `IconWell` |
-| Plain grey confirm-sheet icon pad | Always `SoftIconPad` — never a one-off `#f5f5f5` circle |
+| Route screen / flow adapter | Organism feature folder (`organisms/payment/`, `kyc/`, `concierge/`, `quote/`) |
+| Used across **2+ domains** | `molecules/` (small compound) or `organisms/` (section / shell / shared card) |
+| Single visual primitive that those compounds share | `atoms/{cta\|backdrop\|sheet\|icon}/` |
+| Circular icon container (menu / receipts / cards) | Always `IconWell` (`atoms/icon/`) |
+| Plain grey confirm-sheet icon pad | Always `SoftIconPad` (`atoms/icon/`) — never a one-off `#f5f5f5` circle |
+| Primary navigate button | Always `PrimaryCta` (`atoms/cta/`) |
 | Bottom sheet | Feature folder if single-flow; **must** use `BottomSheetShell` (or `useBottomSheetPresence` for rare special cases) |
 | Concierge page grammar | `ConciergeTurnShell` — screens supply `says` / `artifact` / `replies` |
 | Cross-flow manage / upload / cancel reason sheets | `organisms/` |
 
-**Dependency rule:** feature folders import atomic layers; organisms/molecules/atoms must **not** import from `payment/` / `kyc/` / `concierge/`.
+**Dependency rule:** organisms/molecules import atoms; atoms must **not** import molecules, organisms, or domain screens (`organisms/payment|kyc|concierge|quote`).
 
 **SCSS:** co-located `*.module.scss` per component; shared surfaces in `styles/_components.scss` (`card-elevated`, `sheet-elevated`, CTA classes) and `lib/layout/*` (bottom-sheet layout tokens).
 
@@ -147,10 +162,13 @@ app/page  →  feature screen (payment | kyc | concierge | quote)
 | Piece | Layer | Role |
 |-------|-------|------|
 | `BottomSheetShell` | organism | Portal + scrim + slide panel + optional absolute close + body scroll lock |
-| `useBottomSheetPresence` | organism hook | Mount / animate-in / exit (280ms) — for sheets that cannot use the shell (e.g. Shivi intro coachmark sibling) |
-| `BottomSheetPortal` | molecule | `document.body` portal only |
-| `IconWell` | molecule | Gradient / bordered wells — menu, receipts, cards, bank logos |
-| `SoftIconPad` | molecule | Plain `#f5f5f5` circular pad — confirm / how-it-works bottom-sheet rows |
+| `useBottomSheetPresence` | hook (`src/hooks/`) | Mount / animate-in / exit (280ms) — for sheets that cannot use the shell (e.g. Shivi intro coachmark sibling) |
+| `BottomSheetPortal` | atom (`sheet/`) | `document.body` portal only |
+| `BottomSheetCloseIcon` | atom (`sheet/`) | Standard 24px close glyph |
+| `IconWell` | atom (`icon/`) | Gradient / bordered wells — menu, receipts, cards, bank logos |
+| `SoftIconPad` | atom (`icon/`) | Plain `#f5f5f5` circular pad — confirm / how-it-works bottom-sheet rows |
+| `PrimaryCta` | atom (`cta/`) | Primary button; swaps label for `CtaLottieLoader` while navigating |
+| `ExperienceBackdrop` | atom (`backdrop/`) | Aurora mesh or video layer behind concierge / KYC screens |
 | `BottomSheetConfirmBulletList` | molecule | SoftIconPad + tick/copy rows on confirm sheets |
 | `ConciergeTurnShell` | organism | Concierge turn grammar |
 | `IconCalloutCard` | organism | IconWell + title + body; optional text/link CTA — base for NextStep / document / location callouts |
@@ -799,7 +817,7 @@ These paths are **gitignored** (see root `.gitignore`). They are optional helper
 - [x] Cancel no charges — manage booking: cancel enabled; change selection visible but not clickable
 - [x] Cancel confirmation full page (Figma 2709:17395) + reason bottom sheet (Figma 2711:21013) + celebration success page; route guards; full booking amount refund (₹10,000, no fee)
 - [x] Standard **Car ready early** demo — offer → confirm (same dealer / needs verification) or keep original date → wait; early delivery line override (`lib/concierge/early-delivery.ts`)
-- [x] **`IconWell` molecule** (grey / green / amber / purple, 1px borders) + softer overlay glass (`#d6dce7` separators)
+- [x] **`IconWell` atom** (`atoms/icon/`, grey / green / amber / purple, 1px borders) + softer overlay glass (`#d6dce7` separators)
 - [x] `PlanList` progress appearance (32px nodes, In progress / Done) + 4px title/detail gaps across receipt, plan, upload, and document cards
 - [x] Bank list/detail logo wells (44/24 list · 52/32 sheet) via `IconWell`
 - [x] `NextStepCard` OTP/call glyph at 20px; `ShiviCallSheet` online/offline indicator via business hours

@@ -57,7 +57,6 @@ export function BankSelectionScreen() {
 
   const onConfirm = useCallback(
     (bankId: string) => {
-      setOpenBankId(null);
       if (echoTemplate) {
         writeConciergeEcho(resolveBankNameToken(echoTemplate, bankLoanTermsForId(bankId).name));
       }

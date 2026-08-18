@@ -66,7 +66,6 @@ export function AckoDriveFinanceActionScreen() {
       next.includeCoApplicant = includeCoApplicant;
       next.coApplicant = includeCoApplicant ? createDefaultCoApplicantProfile() : null;
       writeLoanApplicationState(next);
-      setCoApplicantSheetOpen(false);
       router.push(loanApplicationPath(bank.id, "loan-details"));
     },
     [bank.id, router],
@@ -83,7 +82,7 @@ export function AckoDriveFinanceActionScreen() {
         says={SAYS}
         afterLead={afterLead}
         headingLastLine
-        artifact={<LoanDocumentsChecklistCard />}
+        artifact={<LoanDocumentsChecklistCard variant="glass" />}
         replies={replies}
         manageShowVehicleIdentification
       />

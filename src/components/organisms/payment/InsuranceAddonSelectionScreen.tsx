@@ -3,6 +3,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
+import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
 import { PageLeadHeading } from "@/components/organisms/PageLeadHeading";
 import { StandaloneScreenHeader } from "@/components/organisms/StandaloneScreenHeader";
 import { InsuranceAddonCard } from "@/components/organisms/payment/InsuranceAddonPicker";
@@ -24,6 +25,7 @@ import {
   MODIFY_SELECTION_STAGGER_MS,
 } from "@/helpers/modify-selection-stagger";
 import { buildChooseInsuranceTenureHref } from "@/helpers/paymentUrls";
+import { useCtaNavigation } from "@/hooks/use-cta-navigation";
 import { cn } from "@/utils/utils";
 import styles from "./InsuranceAddonSelectionScreen.module.scss";
 
@@ -48,6 +50,7 @@ function formatInr(amount: number) {
  */
 export function InsuranceAddonSelectionScreen() {
   const router = useRouter();
+  const { loading, start } = useCtaNavigation();
   const searchParams = useSearchParams();
   const [selectedAddonIds, setSelectedAddonIds] = useState<InsuranceAddonId[]>(() =>
     parseInsuranceAddonIds(searchParams.get("addons")),
@@ -75,7 +78,7 @@ export function InsuranceAddonSelectionScreen() {
     [premiumInr, searchParams, selectedAddonIds],
   );
 
-  const onContinue = useCallback(() => router.push(nextHref), [router, nextHref]);
+  const onContinue = useCallback(() => start(() => router.push(nextHref)), [router, nextHref, start]);
 
   return (
     <div className={MODIFY_SELECTION_PAGE_SHELL_CLASS}>
@@ -129,9 +132,9 @@ export function InsuranceAddonSelectionScreen() {
             <span className={styles.totalLabel}>{INSURANCE_ADDONS_TOTAL_LABEL}</span>
             <span className={styles.totalValue}>{formatInr(premiumInr)}</span>
           </div>
-          <button type="button" onClick={onContinue} className={cn(styles.cta, "primary-cta")}>
+          <PrimaryCta onClick={onContinue} loading={loading} className={styles.cta}>
             {INSURANCE_ADDONS_CONTINUE_CTA}
-          </button>
+          </PrimaryCta>
         </div>
       </div>
     </div>

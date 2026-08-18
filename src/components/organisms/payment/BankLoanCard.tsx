@@ -3,7 +3,7 @@
 import Image from "next/image";
 
 import arrowRightIcon from "@/assets/Arrow_right.svg";
-import { IconWell } from "@/components/molecules/IconWell";
+import { IconWell } from "@/components/atoms/icon/IconWell";
 import styles from "./BankLoanCard.module.scss";
 
 import {

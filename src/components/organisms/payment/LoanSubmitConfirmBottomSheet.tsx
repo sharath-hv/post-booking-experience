@@ -1,9 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, type ReactNode } from "react";
+import { useCallback, useEffect, type ReactNode } from "react";
 
+import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
 import { BottomSheetShell } from "@/components/organisms/BottomSheetShell";
+import { useCtaNavigation } from "@/hooks/use-cta-navigation";
 import { BottomSheetConfirmBulletList } from "@/components/molecules/BottomSheetConfirmBulletList";
 import {
   BOTTOM_SHEET_BODY_BEFORE_CTA_CLASS,
@@ -64,14 +66,20 @@ export function LoanSubmitConfirmBottomSheet({
   onClose,
   onConfirm,
 }: LoanSubmitConfirmBottomSheetProps) {
+  const { loading, start, reset } = useCtaNavigation();
+
+  useEffect(() => {
+    if (!open) reset();
+  }, [open, reset]);
+
   const handleConfirm = useCallback(() => {
-    onConfirm();
-  }, [onConfirm]);
+    start(onConfirm);
+  }, [onConfirm, start]);
 
   return (
     <BottomSheetShell
       open={open}
-      onClose={onClose}
+      onClose={loading ? () => {} : onClose}
       aria-labelledby="loan-before-proceed-title"
       aria-describedby="loan-before-proceed-list"
     >
@@ -102,9 +110,13 @@ export function LoanSubmitConfirmBottomSheet({
       </div>
 
       <div className={cn(styles.shrink_0_5, BOTTOM_SHEET_CTA_STRIP_TOP_CLASS)}>
-        <button type="button" onClick={handleConfirm} className={[styles.primary_cta_5, "primary-cta"].filter(Boolean).join(" ")}>
+        <PrimaryCta
+          onClick={handleConfirm}
+          loading={loading}
+          className={styles.primary_cta_5}
+        >
           Agree and continue
-        </button>
+        </PrimaryCta>
       </div>
     </BottomSheetShell>
   );

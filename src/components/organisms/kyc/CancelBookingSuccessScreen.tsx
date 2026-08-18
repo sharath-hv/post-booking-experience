@@ -8,6 +8,8 @@ import { useCallback, useEffect, useState } from "react";
 import infoIcon from "@/assets/Info.svg";
 import bookingCancelledHero from "@/assets/Booking cancelled.svg";
 import { CANCEL_BOOKING_SUCCESS_COPY } from "@/constants/cancel-booking-success-content";
+import { useCtaNavigation } from "@/hooks/use-cta-navigation";
+import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
 import { WordByWordLine } from "@/components/molecules/WordByWordLine";
 import styles from "./CancelBookingSuccessScreen.module.scss";
 
@@ -24,6 +26,7 @@ const SUBLINE_TO_CTA_DELAY_MS = 240;
  */
 export function CancelBookingSuccessScreen() {
   const router = useRouter();
+  const { loading, start } = useCtaNavigation();
   const [reduceMotion, setReduceMotion] = useState(false);
   const [heroArtReady, setHeroArtReady] = useState(false);
   const [showSubline, setShowSubline] = useState(false);
@@ -129,14 +132,14 @@ export function CancelBookingSuccessScreen() {
         aria-hidden={!showCta}
       >
         <div className={styles.mx_auto_10}>
-          <button
-            type="button"
-            className={[styles.primary_cta_11, "primary-cta"].filter(Boolean).join(" ")}
+          <PrimaryCta
+            className={styles.primary_cta_11}
             tabIndex={showCta ? 0 : -1}
-            onClick={() => router.push(CANCEL_BOOKING_SUCCESS_COPY.doneHref)}
+            loading={loading}
+            onClick={() => start(() => router.push(CANCEL_BOOKING_SUCCESS_COPY.doneHref))}
           >
             {CANCEL_BOOKING_SUCCESS_COPY.ctaLabel}
-          </button>
+          </PrimaryCta>
         </div>
       </div>
     </div>

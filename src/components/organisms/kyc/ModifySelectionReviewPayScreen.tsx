@@ -3,6 +3,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 
+import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
 import { PageLeadHeading } from "@/components/organisms/PageLeadHeading";
 import { StandaloneScreenHeader } from "@/components/organisms/StandaloneScreenHeader";
 import { ModifySelectionReviewBookingAmountCard } from "@/components/organisms/kyc/ModifySelectionReviewBookingAmountCard";
@@ -49,6 +50,7 @@ import {
   type ModifySelectionReviewPayDemoScenario,
 } from "@/helpers/modify-selection-review-pay-demo";
 import { MODIFY_SELECTION_STAGGER_MS } from "@/helpers/modify-selection-stagger";
+import { useCtaNavigation } from "@/hooks/use-cta-navigation";
 import { writeModifySelectionVariantChoice } from "@/helpers/modify-selection-variant-choice";
 import {
   clearModifySelectionVariantPending,
@@ -97,6 +99,7 @@ function ModifySelectionReviewPayScreenInner({
   modelId,
 }: ModifySelectionReviewPayScreenProps) {
   const router = useRouter();
+  const { loading, start } = useCtaNavigation();
   const searchParams = useSearchParams();
   const [deliverySheetOpen, setDeliverySheetOpen] = useState(false);
 
@@ -312,12 +315,14 @@ function ModifySelectionReviewPayScreenInner({
     if (flow === "colour") clearModifySelectionColourPending();
     if (flow === "variant") clearModifySelectionVariantPending();
     if (flow === "different-car") clearModifySelectionDifferentCarPending();
-    router.push(
-      buildBookingLockCheckoutHref(resolved.summary.bookingAmountToPayInr, {
-        returnSource: MODIFY_SELECTION_RETURN_SOURCE,
-      }),
+    start(() =>
+      router.push(
+        buildBookingLockCheckoutHref(resolved.summary.bookingAmountToPayInr, {
+          returnSource: MODIFY_SELECTION_RETURN_SOURCE,
+        }),
+      ),
     );
-  }, [flow, resolved, router]);
+  }, [flow, resolved, router, start]);
 
   if (resolved == null) {
     return null;
@@ -388,13 +393,13 @@ function ModifySelectionReviewPayScreenInner({
       {/* Amount lives in the pay-now card — footer is action-only to avoid repeating ₹. */}
       <div className={[styles.fixed_3, "footer-elevated"].filter(Boolean).join(" ")}>
         <div className={styles.footerInner}>
-          <button
-            type="button"
+          <PrimaryCta
             onClick={onPay}
-            className={[styles.primary_cta_full, "primary-cta"].filter(Boolean).join(" ")}
+            loading={loading}
+            className={styles.primary_cta_full}
           >
             {reviewPayCtaLabel(resolved.summary.bookingAmountToPayInr)}
-          </button>
+          </PrimaryCta>
         </div>
       </div>
 
@@ -403,6 +408,7 @@ function ModifySelectionReviewPayScreenInner({
           open={deliverySheetOpen}
           onClose={() => setDeliverySheetOpen(false)}
           onConfirm={persistDeliveryChoice}
+          navigatesOnConfirm={false}
           initialDeliveryChoice={resolved.deliveryChoice}
           expressDeliveryPriceInr={expressQuote.ackoDrivePriceInr}
           expressDeliveryLine={resolved.option.deliveryLine}

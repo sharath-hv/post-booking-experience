@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
+import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
 import { BookingCarSummaryCard } from "@/components/organisms/BookingCarSummaryCard";
 import { PageLeadHeading } from "@/components/organisms/PageLeadHeading";
 import { StandaloneScreenHeader } from "@/components/organisms/StandaloneScreenHeader";
@@ -13,6 +14,7 @@ import {
   getBookingDeliveryIconSrc,
 } from "@/constants/experience-flow-content";
 import { JOURNEY_PATHS } from "@/helpers/journey-routes";
+import { useCtaNavigation } from "@/hooks/use-cta-navigation";
 import { MODIFY_SELECTION_PAGE_SHELL_CLASS } from "@/constants/modify-selection-content";
 import { getModifySelectionCarCutoutForColour } from "@/helpers/modify-selection-car-cutouts";
 import {
@@ -42,6 +44,7 @@ const { title: STAGGER_TITLE_MS, subtext: STAGGER_SUBTEXT_MS, heading: STAGGER_H
  */
 export function ModifySelectionVariantConfirmationScreen() {
   const router = useRouter();
+  const { loading, start } = useCtaNavigation();
   const [pending, setPending] = useState(() => readModifySelectionVariantPending());
 
   useEffect(() => {
@@ -70,8 +73,8 @@ export function ModifySelectionVariantConfirmationScreen() {
 
   const onConfirmChange = useCallback(() => {
     clearModifySelectionVariantPending();
-    router.push(JOURNEY_PATHS.identity.hub);
-  }, [router]);
+    start(() => router.push(JOURNEY_PATHS.identity.hub));
+  }, [router, start]);
 
   if (pending == null || selection == null) {
     return null;
@@ -113,9 +116,9 @@ export function ModifySelectionVariantConfirmationScreen() {
 
       <div className={[styles.fixed_2, "footer-elevated"].filter(Boolean).join(" ")}>
         <div className={styles.mx_auto_3}>
-          <button type="button" onClick={onConfirmChange} className={[styles.primary_cta_4, "primary-cta"].filter(Boolean).join(" ")}>
+          <PrimaryCta onClick={onConfirmChange} loading={loading} className={styles.primary_cta_4}>
             {MODIFY_SELECTION_VARIANT_CONFIRM_CTA}
-          </button>
+          </PrimaryCta>
         </div>
       </div>
     </div>

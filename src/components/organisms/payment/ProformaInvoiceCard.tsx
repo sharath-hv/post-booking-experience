@@ -17,6 +17,8 @@ export type ProformaInvoiceCardProps = {
   subtitle?: string;
   /** Optional URL for the download link. Shows "Download" CTA regardless; prevents navigation when omitted. */
   downloadHref?: string;
+  /** `glass` — frosted overlay surface; `default` — white elevated card. */
+  variant?: "default" | "glass";
 };
 
 /**
@@ -26,6 +28,7 @@ export function ProformaInvoiceCard({
   title = "Proforma Invoice",
   subtitle = "Hyundai Creta 1.5 X-Line AT Diesel",
   downloadHref,
+  variant = "default",
 }: ProformaInvoiceCardProps) {
   const onPlaceholderClick = useCallback(
     (e: MouseEvent<HTMLAnchorElement>) => {
@@ -50,6 +53,7 @@ export function ProformaInvoiceCard({
       icon={icon}
       title={title}
       body={subtitle}
+      variant={variant}
       cta={{
         label: "Download",
         href: downloadHref,

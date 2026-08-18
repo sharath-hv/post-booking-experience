@@ -3,7 +3,7 @@ import type { StaticImageData } from "next/image";
 import type { ReactNode } from "react";
 
 import tickIcon from "@/assets/tick.svg";
-import { SoftIconPad } from "@/components/molecules/SoftIconPad";
+import { SoftIconPad } from "@/components/atoms/icon/SoftIconPad";
 import type { BottomSheetConfirmBulletPoint } from "@/constants/bottom-sheet-confirm-bullet";
 import styles from "./BottomSheetConfirmBulletList.module.scss";
 

@@ -4,9 +4,9 @@ import Image from "next/image";
 import { useCallback } from "react";
 
 import arrowRightIcon from "@/assets/Arrow_right.svg";
-import { BottomSheetCloseIcon } from "@/components/atoms/BottomSheetCloseIcon";
+import { BottomSheetCloseIcon } from "@/components/atoms/sheet/BottomSheetCloseIcon";
 import { BottomSheetShell } from "@/components/organisms/BottomSheetShell";
-import { IconWell } from "@/components/molecules/IconWell";
+import { IconWell } from "@/components/atoms/icon/IconWell";
 import {
   getKycUploadSourceOptions,
   type KycUploadSource,

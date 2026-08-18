@@ -3,12 +3,14 @@
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
+import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
 import { BookingCarSummaryCard } from "@/components/organisms/BookingCarSummaryCard";
 import { PageLeadHeading } from "@/components/organisms/PageLeadHeading";
 import { StandaloneScreenHeader } from "@/components/organisms/StandaloneScreenHeader";
 import { ModifySelectionVariantCard } from "@/components/organisms/kyc/ModifySelectionVariantCard";
 import { ModifySelectionVariantFilterChips } from "@/components/organisms/kyc/ModifySelectionVariantFilterChips";
 import { writeModifySelectionVariantChoice } from "@/helpers/modify-selection-variant-choice";
+import { useCtaNavigation } from "@/hooks/use-cta-navigation";
 import { readModifySelectionVariantPending } from "@/helpers/modify-selection-variant-pending";
 import styles from "./ModifySelectionVariantScreen.module.scss";
 
@@ -44,6 +46,7 @@ const {
  */
 export function ModifySelectionVariantScreen() {
   const router = useRouter();
+  const { loading, start } = useCtaNavigation();
   const allVariants = useMemo(() => getModifySelectionAvailableVariantOptions(), []);
   const [filters, setFilters] = useState<ModifySelectionVariantFilters>({
     fuel: null,
@@ -69,8 +72,8 @@ export function ModifySelectionVariantScreen() {
   const onContinue = useCallback(() => {
     if (selectedVariantId == null) return;
     writeModifySelectionVariantChoice(selectedVariantId);
-    router.push(MODIFY_SELECTION_VARIANT_COLOUR_PATH);
-  }, [router, selectedVariantId]);
+    start(() => router.push(MODIFY_SELECTION_VARIANT_COLOUR_PATH));
+  }, [router, selectedVariantId, start]);
 
   return (
     <div className={MODIFY_SELECTION_PAGE_SHELL_CLASS}>
@@ -151,14 +154,14 @@ export function ModifySelectionVariantScreen() {
 
       <div className={[styles.fixed_9, "footer-elevated"].filter(Boolean).join(" ")}>
         <div className={styles.mx_auto_10}>
-          <button
-            type="button"
+          <PrimaryCta
             disabled={selectedVariantId == null}
+            loading={loading}
             onClick={onContinue}
-            className={[styles.primary_cta_11, "primary-cta"].filter(Boolean).join(" ")}
+            className={styles.primary_cta_11}
           >
             Continue
-          </button>
+          </PrimaryCta>
         </div>
       </div>
 

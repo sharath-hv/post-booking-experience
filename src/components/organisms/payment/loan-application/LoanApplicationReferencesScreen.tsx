@@ -148,7 +148,6 @@ export function LoanApplicationReferencesScreen() {
   }, [canSubmit, isFinalPass, navigateAfterReferences, persistReferences]);
 
   const onAgreeAndSubmit = useCallback(() => {
-    setTermsSheetOpen(false);
     navigateAfterReferences();
   }, [navigateAfterReferences]);
 
@@ -199,6 +198,7 @@ export function LoanApplicationReferencesScreen() {
         label={isFinalPass ? "Submit loan application" : "Continue to co-applicant"}
         onClick={onCtaClick}
         disabled={!canSubmit}
+        showsLoader={!isFinalPass}
         staggerDelayMs={loanApplicationStaggerAfterCard(2)}
       />
 

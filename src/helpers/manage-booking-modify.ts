@@ -101,7 +101,6 @@ const CAR_PAYMENT_STARTED_PATHS = new Set<string>([
   "/payment/self-finance-transfer-verification",
   "/payment/down-payment-dealer-confirmed",
   "/payment/down-payment-success",
-  "/payment/down-payment-insurance-setup",
   "/payment/loan-disbursement-received",
   "/payment/margin-money-slip",
   "/payment/pay-insurance-premium",

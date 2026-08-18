@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
+import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
 import { BookingCarSummaryCard } from "@/components/organisms/BookingCarSummaryCard";
 import { PageLeadHeading } from "@/components/organisms/PageLeadHeading";
 import { StandaloneScreenHeader } from "@/components/organisms/StandaloneScreenHeader";
@@ -26,6 +27,7 @@ import {
   readModifySelectionDifferentCarPending,
 } from "@/helpers/modify-selection-different-car-pending";
 import { JOURNEY_PATHS } from "@/helpers/journey-routes";
+import { useCtaNavigation } from "@/hooks/use-cta-navigation";
 import { getModifySelectionCarCutoutForColour } from "@/helpers/modify-selection-car-cutouts";
 import {
   findModifySelectionColourOption,
@@ -53,6 +55,7 @@ export function ModifySelectionDifferentCarConfirmationScreen({
   modelId,
 }: ModifySelectionDifferentCarConfirmationScreenProps) {
   const router = useRouter();
+  const { loading, start } = useCtaNavigation();
   const [pending, setPending] = useState(() => readModifySelectionDifferentCarPending());
 
   useEffect(() => {
@@ -86,8 +89,8 @@ export function ModifySelectionDifferentCarConfirmationScreen({
 
   const onConfirmChange = useCallback(() => {
     clearModifySelectionDifferentCarPending();
-    router.push(JOURNEY_PATHS.identity.hub);
-  }, [router]);
+    start(() => router.push(JOURNEY_PATHS.identity.hub));
+  }, [router, start]);
 
   if (pending == null || selection == null) {
     return null;
@@ -129,9 +132,9 @@ export function ModifySelectionDifferentCarConfirmationScreen({
 
       <div className={[styles.fixed_2, "footer-elevated"].filter(Boolean).join(" ")}>
         <div className={styles.mx_auto_3}>
-          <button type="button" onClick={onConfirmChange} className={[styles.primary_cta_4, "primary-cta"].filter(Boolean).join(" ")}>
+          <PrimaryCta onClick={onConfirmChange} loading={loading} className={styles.primary_cta_4}>
             {MODIFY_SELECTION_DIFFERENT_CAR_CONFIRM_CTA}
-          </button>
+          </PrimaryCta>
         </div>
       </div>
     </div>

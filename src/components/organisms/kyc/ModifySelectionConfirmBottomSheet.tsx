@@ -1,9 +1,11 @@
 "use client";
 
 import Image, { type StaticImageData } from "next/image";
-import { useCallback, useId } from "react";
+import { useCallback, useEffect, useId } from "react";
 
+import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
 import { BottomSheetShell } from "@/components/organisms/BottomSheetShell";
+import { useCtaNavigation } from "@/hooks/use-cta-navigation";
 import { BottomSheetConfirmBulletList } from "@/components/molecules/BottomSheetConfirmBulletList";
 import type { BottomSheetConfirmBulletPoint } from "@/constants/bottom-sheet-confirm-bullet";
 import {
@@ -41,14 +43,20 @@ export function ModifySelectionConfirmBottomSheet({
   const titleId = useId();
   const listId = useId();
 
+  const { loading, start, reset } = useCtaNavigation();
+
+  useEffect(() => {
+    if (!open) reset();
+  }, [open, reset]);
+
   const handleConfirm = useCallback(() => {
-    onConfirm();
-  }, [onConfirm]);
+    start(onConfirm);
+  }, [onConfirm, start]);
 
   return (
     <BottomSheetShell
       open={open}
-      onClose={onClose}
+      onClose={loading ? () => {} : onClose}
       aria-labelledby={titleId}
       aria-describedby={listId}
     >
@@ -76,13 +84,13 @@ export function ModifySelectionConfirmBottomSheet({
       </div>
 
       <div className={cn(styles.footer, BOTTOM_SHEET_CTA_STRIP_TOP_CLASS)}>
-        <button
-          type="button"
+        <PrimaryCta
           onClick={handleConfirm}
-          className={cn(styles.cta, "primary-cta")}
+          loading={loading}
+          className={styles.cta}
         >
           {confirmCtaLabel}
-        </button>
+        </PrimaryCta>
       </div>
     </BottomSheetShell>
   );

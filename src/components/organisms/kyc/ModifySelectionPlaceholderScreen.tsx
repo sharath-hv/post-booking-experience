@@ -2,11 +2,13 @@
 
 import { useRouter } from "next/navigation";
 
+import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
 import { PageLeadHeading } from "@/components/organisms/PageLeadHeading";
 import { StandaloneScreenHeader } from "@/components/organisms/StandaloneScreenHeader";
 import { BookingCarSummaryCard } from "@/components/organisms/BookingCarSummaryCard";
 import { MODIFY_SELECTION_PAGE_SHELL_CLASS, MODIFY_SELECTION_PATH, modifySelectionChoiceLabel } from "@/constants/modify-selection-content";
 import { MODIFY_SELECTION_STAGGER_MS } from "@/helpers/modify-selection-stagger";
+import { useCtaNavigation } from "@/hooks/use-cta-navigation";
 import styles from "./ModifySelectionPlaceholderScreen.module.scss";
 
 
@@ -20,6 +22,7 @@ type ModifySelectionPlaceholderScreenProps = {
 /** Demo placeholder until colour / variant / car pickers are built. */
 export function ModifySelectionPlaceholderScreen({ choiceSlug }: ModifySelectionPlaceholderScreenProps) {
   const router = useRouter();
+  const { loading, start } = useCtaNavigation();
   const label = modifySelectionChoiceLabel(choiceSlug) ?? "Modify your booking";
 
   return (
@@ -38,13 +41,13 @@ export function ModifySelectionPlaceholderScreen({ choiceSlug }: ModifySelection
 
       <div className={[styles.fixed_2, "footer-elevated"].filter(Boolean).join(" ")}>
         <div className={styles.mx_auto_3}>
-          <button
-            type="button"
-            onClick={() => router.push(MODIFY_SELECTION_PATH)}
-            className={[styles.primary_cta_4, "primary-cta"].filter(Boolean).join(" ")}
+          <PrimaryCta
+            onClick={() => start(() => router.push(MODIFY_SELECTION_PATH))}
+            loading={loading}
+            className={styles.primary_cta_4}
           >
             Back to modify options
-          </button>
+          </PrimaryCta>
         </div>
       </div>
     </div>

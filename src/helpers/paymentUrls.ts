@@ -141,30 +141,15 @@ export function buildPayFullPaymentHref(
   return `/payment/full-payment-confirmed?${q.toString()}`;
 }
 
-/** Post–payment setup hero (`/payment/down-payment-insurance-setup`). */
-export function buildInsuranceSetupHref(
+/** After a completed down-payment checkout — skip the retired insurance-setup page. */
+export function buildPostDownPaymentCompleteHref(
   bank: string | null,
   loanAmount?: string | null,
-  /** Full down payment received — preserved for manage-booking payment summary. */
-  originalDownPaymentInr?: number | null,
 ): string {
-  const q = new URLSearchParams();
   if (bank === FULL_PAYMENT_BANK_ID) {
-    q.set("bank", FULL_PAYMENT_BANK_ID);
-  } else if (bank) {
-    q.set("bank", bank);
+    return buildPayInsurancePremiumHref({ bank: FULL_PAYMENT_BANK_ID });
   }
-  if (loanAmount) q.set("loan_amount", loanAmount);
-  if (
-    originalDownPaymentInr != null &&
-    Number.isFinite(originalDownPaymentInr) &&
-    originalDownPaymentInr > 0
-  ) {
-    q.set("original_down_payment", String(Math.round(originalDownPaymentInr)));
-    q.set("down_payment", "0");
-  }
-  const qs = q.toString();
-  return qs ? `/payment/down-payment-insurance-setup?${qs}` : "/payment/down-payment-insurance-setup";
+  return buildLoanDisbursementReceivedHref(loanAmount);
 }
 
 /** Loan disbursed success ack — between down-payment setup and insurance prep. */

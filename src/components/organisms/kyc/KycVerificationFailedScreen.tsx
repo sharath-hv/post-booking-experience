@@ -20,7 +20,7 @@ import { TopNavHeader } from "@/components/organisms/TopNavHeader";
 import { ManageBookingBottomSheet } from "@/components/organisms/ManageBookingBottomSheet";
 import { VerificationFailureReasonSwitcher } from "@/components/organisms/VerificationFailureReasonSwitcher";
 import { WordByWordLine } from "@/components/molecules/WordByWordLine";
-import { ExperienceBackdrop } from "@/components/atoms/experience-backdrop";
+import { ExperienceBackdrop } from "@/components/atoms/backdrop/experience-backdrop";
 import { ShimmerInfoCard } from "@/components/molecules/ShimmerInfoCard";
 import styles from "./KycVerificationFailedScreen.module.scss";
 

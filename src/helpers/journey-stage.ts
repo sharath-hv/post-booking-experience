@@ -30,8 +30,7 @@ function isMoneyChapterComplete(path: string): boolean {
   return (
     path === "/payment/loan-disbursement-received" ||
     path === "/payment/full-cash-payment-confirmed" ||
-    path === "/payment/self-finance-transfer-confirmed" ||
-    path === "/payment/down-payment-insurance-setup"
+    path === "/payment/self-finance-transfer-confirmed"
   );
 }
 

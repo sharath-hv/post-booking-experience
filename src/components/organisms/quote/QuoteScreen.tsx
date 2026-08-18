@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
 import { QuoteFlowMenuSheet } from "@/components/organisms/quote/QuoteFlowMenuSheet";
+import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
+import { useCtaNavigation } from "@/hooks/use-cta-navigation";
 import {
   DEFAULT_EXPERIENCE_FLOW,
   getExperienceFlowDefinition,
@@ -56,6 +58,7 @@ export function QuoteScreen() {
   const [discountOpen, setDiscountOpen] = useState(true);
   const [flowMenuOpen, setFlowMenuOpen] = useState(false);
   const [activeFlow, setActiveFlow] = useState<ExperienceFlow>(DEFAULT_EXPERIENCE_FLOW);
+  const { loading, start } = useCtaNavigation();
 
   useEffect(() => {
     setActiveFlow(readExperienceFlow());
@@ -478,13 +481,13 @@ export function QuoteScreen() {
           Offer expires in 24hr 53min
         </div>
         <div className={styles.px_5_73}>
-          <button
-            type="button"
-            onClick={() => router.push("/payment")}
-            className={[styles.primary_cta_74, "primary-cta"].filter(Boolean).join(" ")}
+          <PrimaryCta
+            onClick={() => start(() => router.push("/payment"))}
+            loading={loading}
+            className={styles.primary_cta_74}
           >
             {bookingCtaLabel}
-          </button>
+          </PrimaryCta>
         </div>
       </div>
 

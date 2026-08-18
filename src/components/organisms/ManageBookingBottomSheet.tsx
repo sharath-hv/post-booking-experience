@@ -14,9 +14,9 @@ import {
   activeBookingCarCutoutSrc,
   readActiveBookingSnapshot,
 } from "@/services/active-booking-snapshot";
-import { BottomSheetCloseIcon } from "@/components/atoms/BottomSheetCloseIcon";
+import { BottomSheetCloseIcon } from "@/components/atoms/sheet/BottomSheetCloseIcon";
 import { BottomSheetShell } from "@/components/organisms/BottomSheetShell";
-import { IconWell } from "@/components/molecules/IconWell";
+import { IconWell } from "@/components/atoms/icon/IconWell";
 import {
   BOTTOM_SHEET_SCROLL_BODY_CLASS,
   BOTTOM_SHEET_SCROLL_PANEL_CLASS,

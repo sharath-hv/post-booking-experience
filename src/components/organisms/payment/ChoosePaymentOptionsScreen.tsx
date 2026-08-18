@@ -24,6 +24,7 @@ import {
   PAYMENT_CHOOSE_ASSETS,
 } from "@/components/organisms/payment/payment-choose-assets";
 import { estimateMonthlyEmiInr, parseAnnualRateFromLabel } from "@/helpers/loan-emi";
+import { OVERLAY_GLASS_CARD_CLASS } from "@/helpers/overlay-glass-card";
 import { bankIdToken, bankNameToken, bankSelectionPath } from "@/lib/payment/bank-selection-urls";
 import styles from "./ChoosePaymentOptionsScreen.module.scss";
 
@@ -185,7 +186,11 @@ function OptionCard({
       id={`payment-option-${id}`}
       onClick={onSelect}
       aria-pressed={selected}
-      className={cn(styles.w_full_2, "card-elevated", selected ? styles.border_selected_2 : styles.border_transparent_2)}
+      className={cn(
+        styles.w_full_2,
+        OVERLAY_GLASS_CARD_CLASS,
+        selected && styles.border_selected_2,
+      )}
     >
       <div className={cn(styles.flex_9, !chip && styles.flex_9_center)}>
         <div className={styles.relative_10}>
@@ -274,7 +279,6 @@ export function ChoosePaymentOptionsScreen() {
   }, [choice]);
 
   const onAckoDriveEligibilityConfirm = useCallback(() => {
-    setAckoDriveEligibilityOpen(false);
     router.push(
       bankSelectionPath({
         next: ackoDriveFinanceActionPath(bankIdToken()),
@@ -285,13 +289,11 @@ export function ChoosePaymentOptionsScreen() {
 
   // Straight into Shivi's action turns — no “Payment option confirmed” interstitials.
   const onFullPaymentConfirm = useCallback(() => {
-    setFullPaymentConfirmOpen(false);
     writeConciergeEcho("I'll pay in full");
     router.push("/payment/full-payment-confirmed");
   }, [router]);
 
   const onSelfFinanceConfirm = useCallback(() => {
-    setSelfFinanceConfirmOpen(false);
     writeConciergeEcho("I'll arrange the loan myself");
     router.push("/payment/self-finance-action");
   }, [router]);

@@ -10,8 +10,8 @@ import invoiceIcon from "@/assets/Invoice.svg";
 import { PlanList } from "@/components/organisms/artifacts";
 import { DEMO_BOOKING_ID } from "@/constants/booking-car-card-content";
 import { ManageBookingCarCard, ManageBookingSections } from "@/components/organisms/ManageBookingBottomSheet";
-import { BottomSheetPortal } from "@/components/molecules/BottomSheetPortal";
-import { IconWell } from "@/components/molecules/IconWell";
+import { BottomSheetPortal } from "@/components/atoms/sheet/BottomSheetPortal";
+import { IconWell } from "@/components/atoms/icon/IconWell";
 import { readExperienceFlow, type ExperienceFlow } from "@/helpers/experience-flow";
 import {
   downloadJourneyReceipt,

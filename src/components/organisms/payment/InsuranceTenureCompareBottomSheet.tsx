@@ -8,7 +8,7 @@ import {
   type InsuranceAddonId,
   type InsuranceTenureCompareRow,
 } from "@/components/organisms/payment/insurance-coverage-content";
-import { BottomSheetCloseIcon } from "@/components/atoms/BottomSheetCloseIcon";
+import { BottomSheetCloseIcon } from "@/components/atoms/sheet/BottomSheetCloseIcon";
 import { BottomSheetShell } from "@/components/organisms/BottomSheetShell";
 import {
   BOTTOM_SHEET_BODY_BEFORE_CTA_CLASS,

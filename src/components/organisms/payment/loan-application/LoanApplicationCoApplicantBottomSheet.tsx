@@ -4,7 +4,9 @@ import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 
 import coApplicantIcon from "@/assets/co-applicant.svg";
+import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
 import { BottomSheetShell } from "@/components/organisms/BottomSheetShell";
+import { useCtaNavigation } from "@/hooks/use-cta-navigation";
 import { LoanApplicationSegmentChip } from "@/components/organisms/payment/loan-application/LoanApplicationSegmentChip";
 import {
   BOTTOM_SHEET_BODY_BEFORE_CTA_CLASS,
@@ -33,21 +35,23 @@ export function LoanApplicationCoApplicantBottomSheet({
   onConfirm,
 }: LoanApplicationCoApplicantBottomSheetProps) {
   const [choice, setChoice] = useState<CoApplicantChoice | null>(null);
+  const { loading, start, reset } = useCtaNavigation();
 
   useEffect(() => {
     if (!open) return;
     setChoice(null);
-  }, [open]);
+    reset();
+  }, [open, reset]);
 
   const handleConfirm = useCallback(() => {
-    if (choice == null) return;
-    onConfirm(choice === "yes");
-  }, [choice, onConfirm]);
+    if (choice == null || loading) return;
+    start(() => onConfirm(choice === "yes"));
+  }, [choice, loading, onConfirm, start]);
 
   return (
     <BottomSheetShell
       open={open}
-      onClose={onClose}
+      onClose={loading ? () => {} : onClose}
       aria-labelledby="loan-co-applicant-title"
       aria-describedby="loan-co-applicant-body"
     >
@@ -80,27 +84,34 @@ export function LoanApplicationCoApplicantBottomSheet({
           <LoanApplicationSegmentChip
             label="No, just me"
             selected={choice === "no"}
-            onClick={() => setChoice("no")}
+            onClick={() => {
+              if (loading) return;
+              setChoice("no");
+            }}
             size="employment"
           />
           <LoanApplicationSegmentChip
             label="Yes, add co-applicant"
             selected={choice === "yes"}
-            onClick={() => setChoice("yes")}
+            onClick={() => {
+              if (loading) return;
+              setChoice("yes");
+            }}
             size="employment"
           />
         </div>
       </div>
 
       <div className={cn(styles.shrink_0_5, BOTTOM_SHEET_CTA_STRIP_TOP_CLASS)}>
-        <button
-          type="button"
+        <PrimaryCta
           onClick={handleConfirm}
           disabled={choice == null}
-          className={cn(styles.primary_cta_5, "primary-cta")}
+          loading={loading}
+          loadingLabel="Starting application"
+          className={styles.primary_cta_5}
         >
           {choice === "yes" ? "Start with co-applicant" : "Start application"}
-        </button>
+        </PrimaryCta>
       </div>
     </BottomSheetShell>
   );

@@ -3,14 +3,12 @@
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
+import { CtaLottieLoader } from "@/components/atoms/cta/CtaLottieLoader";
+import { CTA_LOADER_HOLD_MS } from "@/hooks/use-cta-navigation";
 import { writeConciergeEcho } from "@/lib/concierge/echo";
-import { instantRevealEnabled } from "@/lib/concierge/instant";
 import { cn } from "@/utils/utils";
 import styles from "./ConciergeReplies.module.scss";
 
-
-/** Brief pressed beat before navigating — your reply visibly “sends”. */
-const SEND_BEAT_MS = 160;
 
 export type ConciergeReply = {
   /** User-voice label — this is you answering Shivi. */
@@ -18,6 +16,11 @@ export type ConciergeReply = {
   href?: string;
   /** Invoked instead of navigating (e.g. open a confirm sheet). */
   onClick?: () => void;
+  /**
+   * Set when `onClick` routes to the next page (not when it only opens a sheet).
+   * `href` replies always show the loader.
+   */
+  navigates?: boolean;
   /** Filled primary vs quiet secondary answer. */
   kind?: "primary" | "soft";
   /**
@@ -35,55 +38,79 @@ export type ConciergeRepliesProps = {
   layout?: "column" | "row";
 };
 
+function replyNavigates(reply: ConciergeReply): boolean {
+  return Boolean(reply.href) || reply.navigates === true;
+}
+
 /** The user's reply affordances — buttons that act as their side of the dialogue. */
 export function ConciergeReplies({ replies, className, layout = "column" }: ConciergeRepliesProps) {
   const router = useRouter();
-  const [sending, setSending] = useState(false);
+  const [sendingLabel, setSendingLabel] = useState<string | null>(null);
   const sentRef = useRef(false);
 
   const onReply = (reply: ConciergeReply) => {
-    if (sentRef.current) return;
-    // Sheet-opening replies stay re-tappable (the sheet may be dismissed).
+    const willNavigate = replyNavigates(reply);
+    if (willNavigate) {
+      if (sentRef.current) return;
+      sentRef.current = true;
+      setSendingLabel(reply.label);
+    }
+
     if (reply.onClick) {
       if (reply.echo != null) {
         writeConciergeEcho(reply.echo);
       }
-      reply.onClick();
-      return;
+      if (willNavigate) {
+        window.setTimeout(() => {
+          reply.onClick?.();
+        }, CTA_LOADER_HOLD_MS);
+        if (!reply.href) return;
+      } else {
+        reply.onClick();
+        if (!reply.href) return;
+      }
     }
+
     if (!reply.href) return;
     const href = reply.href;
-    sentRef.current = true;
-    setSending(true);
     if (reply.echo !== null) {
       writeConciergeEcho(reply.echo ?? reply.label);
     }
-    if (instantRevealEnabled()) {
-      router.push(href);
-      return;
-    }
     window.setTimeout(() => {
       router.push(href);
-    }, SEND_BEAT_MS);
+    }, CTA_LOADER_HOLD_MS);
   };
 
   return (
     <div className={cn(styles.flex_0, layout === "row" && styles.row, className)}>
-      {replies.map((reply) => (
-        <button
-          key={reply.label}
-          type="button"
-          disabled={sending || reply.disabled}
-          onClick={() => onReply(reply)}
-          className={
-            reply.kind === "soft"
-              ? "reply-soft-cta"
-              : "primary-cta"
-          }
-        >
-          {reply.label}
-        </button>
-      ))}
+      {replies.map((reply) => {
+        const isSending = sendingLabel === reply.label;
+        return (
+          <button
+            key={reply.label}
+            type="button"
+            disabled={sendingLabel != null ? !isSending : reply.disabled}
+            onClick={() => onReply(reply)}
+            aria-busy={isSending || undefined}
+            aria-label={isSending ? "Loading" : undefined}
+            className={cn(
+              reply.kind === "soft" ? "reply-soft-cta" : "primary-cta",
+              isSending && "cta-navigating",
+            )}
+          >
+            {isSending ? (
+              <>
+                <span className="cta-label-hold">{reply.label}</span>
+                <span className="cta-loader-slot" aria-hidden>
+                  <CtaLottieLoader tone={reply.kind === "soft" ? "onLight" : "onDark"} />
+                </span>
+              </>
+            ) : (
+              reply.label
+            )}
+          </button>
+        );
+      })}
     </div>
   );
 }

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import Lottie from "lottie-react";
 
+import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
 import { BookingCarCardDetails } from "@/components/organisms/BookingCarCardDetails";
 import {
   BOOKING_CAR_CARD_SHELL_CLASS,
@@ -22,6 +23,7 @@ import {
   HERO_ICON_TOP_PT,
   SUCCESS_SCREEN_HEADLINE_SUBTEXT_GAP_CLASS,
 } from "@/lib/layout/success-screen-layout";
+import { useCtaNavigation } from "@/hooks/use-cta-navigation";
 import { RevealStagger } from "@/components/molecules/stagger-container";
 import { cn } from "@/utils/utils";
 
@@ -119,6 +121,7 @@ export function BookingCelebrationSuccessScreen({
     vehicleChassisNo != null &&
     vehicleChassisNo.length > 0;
   const router = useRouter();
+  const { loading, start } = useCtaNavigation();
   const showDefaultCarCard = replaceCarCardWith == null && !holdCarCardUntilCustom;
   const showCustomCarCard = replaceCarCardWith != null;
   const showCarSection = showDefaultCarCard || showCustomCarCard;
@@ -255,13 +258,13 @@ export function BookingCelebrationSuccessScreen({
               </div>
             )}
             <div className={styles.px_5_13}>
-              <button
-                type="button"
-                className={[styles.primary_cta_14, "primary-cta"].filter(Boolean).join(" ")}
-                onClick={() => router.push(okayPath)}
+              <PrimaryCta
+                className={styles.primary_cta_14}
+                loading={loading}
+                onClick={() => start(() => router.push(okayPath))}
               >
                 {ctaLabel}
-              </button>
+              </PrimaryCta>
             </div>
           </div>
         </RevealStagger>

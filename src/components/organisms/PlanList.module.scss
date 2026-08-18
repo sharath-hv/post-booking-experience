@@ -71,7 +71,7 @@
   object-fit: contain;
 }
 
-/* Glyph colour on IconWell purple / green / grey. */
+/* Glyph colour on IconWell purple / grey. */
 .planNodeNow {
   color: #5920c5;
 }
@@ -92,10 +92,10 @@
   color: #4b4b4b;
 }
 
-/* Dark glyph → brand purple `#5920c5` on the live well. */
+/* Dark glyph → ACKO purple `#5920c5` on the live well. */
 .planGlyphOnNow {
-  filter: brightness(0) saturate(100%) invert(18%) sepia(90%) saturate(3200%)
-    hue-rotate(255deg) brightness(0.85) contrast(1.1);
+  filter: brightness(0) saturate(100%) invert(18%) sepia(91%) saturate(2878%)
+    hue-rotate(253deg) brightness(0.87) contrast(1.01);
 }
 
 /*
@@ -123,12 +123,12 @@
 .planConnectorIntoNow {
   flex: 0 0 18px;
   min-height: 18px;
-  background-color: #bfe8d2;
+  background-color: #a8d6be;
 }
 
 /* Outgoing rail from a done step (to another done step or into “Now”). */
 .planConnectorFromDone {
-  background-color: #bfe8d2;
+  background-color: #a8d6be;
 }
 
 /* Progress rail — Green/G300 through completed steps; grey after “In progress”. */

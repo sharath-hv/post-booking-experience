@@ -1,11 +1,15 @@
 "use client";
 
+import { OVERLAY_GLASS_CARD_CLASS } from "@/helpers/overlay-glass-card";
+import { cn } from "@/utils/utils";
 import styles from "./DownPaymentSummaryCard.module.scss";
 
 
 export type DownPaymentSummaryCardProps = {
   /** When `full_payment`, row labels match the full-payment journey. */
   variant?: "down_payment" | "full_payment" | "booking_payment";
+  /** `glass` — frosted overlay surface; `default` — white elevated card. */
+  surface?: "default" | "glass";
   /** Total down payment commitment (e.g. ₹3,63,780). */
   downPaymentTotalInr: number;
   /** Already paid across instalments so far (e.g. ₹1,00,000). */
@@ -28,6 +32,7 @@ function formatInr(amount: number) {
  */
 export function DownPaymentSummaryCard({
   variant = "down_payment",
+  surface = "default",
   downPaymentTotalInr,
   amountPaidInr,
   remainingAmountInr,
@@ -53,9 +58,14 @@ export function DownPaymentSummaryCard({
         ? "Payment summary"
         : "Down payment summary";
 
+  const isGlass = surface === "glass";
+
   return (
     <section
-      className={[styles.w_full_0, "card-elevated"].filter(Boolean).join(" ")}
+      className={cn(
+        styles.w_full_0,
+        isGlass ? [OVERLAY_GLASS_CARD_CLASS, styles.surfaceGlass] : "card-elevated",
+      )}
       aria-label={ariaLabel}
     >
       <dl className={styles.m_0_1}>

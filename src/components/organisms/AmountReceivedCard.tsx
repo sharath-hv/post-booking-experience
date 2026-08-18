@@ -3,7 +3,7 @@
 import Image, { type StaticImageData } from "next/image";
 
 import moneyIcon from "@/assets/money.svg";
-import { IconWell, type IconWellTone } from "@/components/molecules/IconWell";
+import { IconWell, type IconWellTone } from "@/components/atoms/icon/IconWell";
 import { cn } from "@/utils/utils";
 import { OVERLAY_GLASS_CARD_CLASS } from "@/helpers/overlay-glass-card";
 import styles from "./AmountReceivedCard.module.scss";

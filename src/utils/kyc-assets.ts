@@ -25,10 +25,6 @@ export const KYC_ASSETS = {
   insurancePremiumHero: asset("Insurance premium.svg"),
   /** Loan sanctioned / approved moment. */
   loanApprovedHero: asset("loan approved.svg"),
-  /** Payment prompt hero — `/payment/default` and similar. */
-  paymentHero: asset("payment.svg"),
-  /** Post–full down payment received (`/payment/down-payment-insurance-setup`). */
-  downPaymentCompleteHero: asset("Downpayment complete.svg"),
   avatar: asset("Shivi image.png"),
   /** Compact crop for nav “Get help” pill. */
   avatarSmall: asset("Shivi small.png"),

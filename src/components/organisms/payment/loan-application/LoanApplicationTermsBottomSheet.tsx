@@ -1,11 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useId, useMemo } from "react";
+import { useCallback, useEffect, useId, useMemo } from "react";
 
 import termsIcon from "@/assets/terms and condition.svg";
 import tickIcon from "@/assets/tick.svg";
+import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
 import { BottomSheetShell } from "@/components/organisms/BottomSheetShell";
+import { useCtaNavigation } from "@/hooks/use-cta-navigation";
 import { SelfFinanceHowItWorksCard } from "@/components/organisms/payment/SelfFinanceHowItWorksCard";
 import type { SelfFinanceHowItWorksStep } from "@/components/organisms/payment/self-finance-confirmed-content";
 import {
@@ -41,9 +43,15 @@ export function LoanApplicationTermsBottomSheet({
   const titleId = useId();
   const listId = useId();
 
+  const { loading, start, reset } = useCtaNavigation();
+
+  useEffect(() => {
+    if (!open) reset();
+  }, [open, reset]);
+
   const handleConfirm = useCallback(() => {
-    onConfirm();
-  }, [onConfirm]);
+    start(onConfirm);
+  }, [onConfirm, start]);
 
   const termSteps: readonly SelfFinanceHowItWorksStep[] = useMemo(
     () =>
@@ -57,7 +65,7 @@ export function LoanApplicationTermsBottomSheet({
   return (
     <BottomSheetShell
       open={open}
-      onClose={onClose}
+      onClose={loading ? () => {} : onClose}
       aria-labelledby={titleId}
       aria-describedby={listId}
     >
@@ -91,13 +99,13 @@ export function LoanApplicationTermsBottomSheet({
       </div>
 
       <div className={cn(styles.cta_strip, BOTTOM_SHEET_CTA_STRIP_TOP_CLASS)}>
-        <button
-          type="button"
+        <PrimaryCta
           onClick={handleConfirm}
-          className={[styles.primary_cta, "primary-cta"].filter(Boolean).join(" ")}
+          loading={loading}
+          className={styles.primary_cta}
         >
           {LOAN_APPLICATION_TERMS_CTA}
-        </button>
+        </PrimaryCta>
       </div>
     </BottomSheetShell>
   );

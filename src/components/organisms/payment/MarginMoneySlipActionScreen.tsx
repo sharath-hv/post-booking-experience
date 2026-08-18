@@ -90,7 +90,6 @@ export function MarginMoneySlipActionScreen() {
   }, [loanAmount]);
 
   const onBankTransferConfirm = useCallback(() => {
-    setBankTransferSheetOpen(false);
     router.push(transferVerificationHref);
   }, [router, transferVerificationHref]);
 

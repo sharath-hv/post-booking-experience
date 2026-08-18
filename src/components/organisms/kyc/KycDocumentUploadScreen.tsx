@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
+import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
 import { TopNavHeader } from "@/components/organisms/TopNavHeader";
 import { KycPanAadhaarDocumentUploadSections } from "@/components/organisms/kyc/KycPanAadhaarDocumentUploadSections";
 import {
@@ -11,6 +12,7 @@ import {
 } from "@/constants/kyc-upload-content";
 import { RevealStagger } from "@/components/molecules/stagger-container";
 import { writeConciergeEcho } from "@/lib/concierge/echo";
+import { useCtaNavigation } from "@/hooks/use-cta-navigation";
 import styles from "./KycDocumentUploadScreen.module.scss";
 
 import {
@@ -31,6 +33,7 @@ const STAGGER_CTA = 0.4;
  */
 export function KycDocumentUploadScreen() {
   const router = useRouter();
+  const { loading, start } = useCtaNavigation();
   const mockUploadCounterRef = useRef(0);
   const hasHydratedUploadsRef = useRef(false);
   const [uploads, setUploads] = useState<KycUploadsState>(createEmptyKycUploads);
@@ -57,8 +60,8 @@ export function KycDocumentUploadScreen() {
   const handleSubmit = useCallback(() => {
     if (!canSubmit) return;
     writeConciergeEcho("Documents sent");
-    router.push("/identity/documents-received");
-  }, [canSubmit, router]);
+    start(() => router.push("/identity/documents-received"));
+  }, [canSubmit, router, start]);
 
   const staggerByKind = useMemo(
     () =>
@@ -97,14 +100,14 @@ export function KycDocumentUploadScreen() {
 
       <div className={styles.fixed_3}>
         <RevealStagger className={styles.mx_auto_4} delay={STAGGER_CTA}>
-          <button
-            type="button"
+          <PrimaryCta
             disabled={!canSubmit}
-            className={[styles.primary_cta_5, "primary-cta"].filter(Boolean).join(" ")}
+            loading={loading}
+            className={styles.primary_cta_5}
             onClick={handleSubmit}
           >
             {KYC_UPLOAD_SUBMIT_LABEL}
-          </button>
+          </PrimaryCta>
         </RevealStagger>
       </div>
     </div>

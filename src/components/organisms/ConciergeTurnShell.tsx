@@ -20,7 +20,7 @@ import {
   type WorkingNarrationMode,
 } from "@/components/organisms/WorkingNarration";
 import { TopNavHeader } from "@/components/organisms/TopNavHeader";
-import { ExperienceBackdrop } from "@/components/atoms/experience-backdrop";
+import { ExperienceBackdrop } from "@/components/atoms/backdrop/experience-backdrop";
 import { ShimmerInfoCard } from "@/components/molecules/ShimmerInfoCard";
 import { consumeConciergeEcho } from "@/lib/concierge/echo";
 import { instantRevealEnabled } from "@/lib/concierge/instant";

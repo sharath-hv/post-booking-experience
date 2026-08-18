@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import infoIcon from "@/assets/Info.svg";
+import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
 import { PageLeadHeading } from "@/components/organisms/PageLeadHeading";
 import { StandaloneScreenHeader } from "@/components/organisms/StandaloneScreenHeader";
 import {
@@ -37,6 +38,7 @@ import {
   formatModifySelectionInr,
 } from "@/constants/modify-selection-review-pay-content";
 import { MODIFY_SELECTION_STAGGER_MS } from "@/helpers/modify-selection-stagger";
+import { useCtaNavigation } from "@/hooks/use-cta-navigation";
 import styles from "./ModifySelectionColourConfirmationScreen.module.scss";
 
 
@@ -49,6 +51,7 @@ const { title: STAGGER_TITLE_MS, section: STAGGER_SELECTION_MS, bookingAmount: S
  */
 export function ModifySelectionColourConfirmationScreen() {
   const router = useRouter();
+  const { loading, start } = useCtaNavigation();
   const bookingAmountSectionRef = useRef<HTMLElement>(null);
   const [pending, setPending] = useState(() => readModifySelectionColourPending());
   const [deliverySheetOpen, setDeliverySheetOpen] = useState(false);
@@ -117,12 +120,14 @@ export function ModifySelectionColourConfirmationScreen() {
       deliveryChoice: pending.deliveryChoice,
     });
     clearModifySelectionColourPending();
-    router.push(
-      buildBookingLockCheckoutHref(summary.bookingAmountToPayInr, {
-        returnSource: MODIFY_SELECTION_RETURN_SOURCE,
-      }),
+    start(() =>
+      router.push(
+        buildBookingLockCheckoutHref(summary.bookingAmountToPayInr, {
+          returnSource: MODIFY_SELECTION_RETURN_SOURCE,
+        }),
+      ),
     );
-  }, [router, summary, pending, option]);
+  }, [router, summary, pending, option, start]);
 
   if (pending == null || option == null || summary == null) {
     return null;
@@ -191,13 +196,13 @@ export function ModifySelectionColourConfirmationScreen() {
               </button>
             </div>
           </div>
-          <button
-            type="button"
+          <PrimaryCta
             onClick={onPay}
-            className={[styles.primary_cta_11, "primary-cta"].filter(Boolean).join(" ")}
+            loading={loading}
+            className={styles.primary_cta_11}
           >
             {MODIFY_SELECTION_COLOUR_CONFIRM_PAY_CTA}
-          </button>
+          </PrimaryCta>
         </div>
       </div>
 
@@ -206,6 +211,7 @@ export function ModifySelectionColourConfirmationScreen() {
           open={deliverySheetOpen}
           onClose={() => setDeliverySheetOpen(false)}
           onConfirm={persistDeliveryChoice}
+          navigatesOnConfirm={false}
           initialDeliveryChoice={deliveryChoice}
           expressDeliveryPriceInr={expressQuote.ackoDrivePriceInr}
           expressDeliveryLine={option.deliveryLine}

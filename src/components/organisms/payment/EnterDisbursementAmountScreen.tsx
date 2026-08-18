@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState, type ChangeEvent } from "react";
 
+import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
 import { ShiviCallSheet } from "@/components/organisms/ShiviCallSheet";
 import { GetHelpPillButton } from "@/components/molecules/GetHelpPillButton";
 import { TopNavHeader } from "@/components/organisms/TopNavHeader";
@@ -13,6 +14,7 @@ import {
   SLIDER_STEP,
 } from "@/constants/loan-amount-demo-constants";
 import { formatInrAmountDigits, parseInrAmountInput } from "@/helpers/loan-emi";
+import { useCtaNavigation } from "@/hooks/use-cta-navigation";
 import styles from "./EnterDisbursementAmountScreen.module.scss";
 
 
@@ -39,6 +41,7 @@ function clampDisbursementLoan(value: number) {
  */
 export function EnterDisbursementAmountScreen() {
   const router = useRouter();
+  const { loading, start } = useCtaNavigation();
   const [shiviSheetOpen, setShiviSheetOpen] = useState(false);
   const [loanAmount, setLoanAmount] = useState(() =>
     clampDisbursementLoan(SELF_FINANCE_LOAN_DEFAULT_INR),
@@ -87,8 +90,8 @@ export function EnterDisbursementAmountScreen() {
   }, [applyLoanAmount, loanAmountInput]);
 
   const navigateNext = useCallback(() => {
-    router.push(`/payment/self-finance-loan-confirmed?loan_amount=${loanAmount}`);
-  }, [loanAmount, router]);
+    start(() => router.push(`/payment/self-finance-loan-confirmed?loan_amount=${loanAmount}`));
+  }, [loanAmount, router, start]);
 
   useEffect(() => {
     router.prefetch("/payment/self-finance-loan-confirmed");
@@ -173,13 +176,13 @@ export function EnterDisbursementAmountScreen() {
 
       <div className={[styles.fixed_13, "footer-elevated"].filter(Boolean).join(" ")}>
         <div className={styles.footerInner}>
-          <button
-            type="button"
+          <PrimaryCta
             onClick={navigateNext}
-            className={[styles.primary_cta_14, "primary-cta"].filter(Boolean).join(" ")}
+            loading={loading}
+            className={styles.primary_cta_14}
           >
             Confirm loan amount
-          </button>
+          </PrimaryCta>
         </div>
       </div>
 

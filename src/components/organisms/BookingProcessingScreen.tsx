@@ -9,6 +9,8 @@ import infoIcon from "@/assets/Info.svg";
 import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
 import type { ConciergeReply } from "@/components/organisms/ConciergeReplies";
 import { isDemoNavCtaLabel } from "@/constants/demo-nav-cta";
+import { OVERLAY_GLASS_CARD_CLASS } from "@/helpers/overlay-glass-card";
+import { cn } from "@/utils/utils";
 import styles from "./BookingProcessingScreen.module.scss";
 
 
@@ -128,7 +130,7 @@ export function BookingProcessingScreen({
   const artifact = (
     <>
       {infoBox != null || sublineLine2 ? (
-        <div className={[styles.flex_0, "card-elevated"].filter(Boolean).join(" ")}>
+        <div className={cn(styles.flex_0, OVERLAY_GLASS_CARD_CLASS)}>
           <span className={styles.relative_1}>
             <Image src={infoBoxIconSrc} alt="" fill className={styles.object_contain_2} unoptimized sizes="20px" />
           </span>

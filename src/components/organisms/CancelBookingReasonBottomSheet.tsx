@@ -5,7 +5,9 @@ import { useCallback, useEffect, useId, useState } from "react";
 
 import checkboxSelected from "@/assets/Checkbox selected.svg";
 import checkboxUnselected from "@/assets/Checkbox unselected.svg";
+import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
 import { BottomSheetShell } from "@/components/organisms/BottomSheetShell";
+import { useCtaNavigation } from "@/hooks/use-cta-navigation";
 import {
   CANCEL_BOOKING_REASON_OPTIONS,
   CANCEL_BOOKING_REASON_SHEET_CTA,
@@ -58,6 +60,8 @@ export type CancelBookingReasonBottomSheetProps = {
   open: boolean;
   onClose: () => void;
   onConfirm: (reasonId: CancelBookingReasonId) => void;
+  /** False when confirm stays on the same page (e.g. concierge cancel phase). */
+  navigatesOnConfirm?: boolean;
 };
 
 /**
@@ -67,24 +71,33 @@ export function CancelBookingReasonBottomSheet({
   open,
   onClose,
   onConfirm,
+  navigatesOnConfirm = true,
 }: CancelBookingReasonBottomSheetProps) {
   const titleId = useId();
   const [selectedReason, setSelectedReason] = useState<CancelBookingReasonId | null>(null);
+  const { loading, start, reset } = useCtaNavigation();
 
   useEffect(() => {
-    if (!open) return;
+    if (!open) {
+      reset();
+      return;
+    }
     setSelectedReason(null);
-  }, [open]);
+  }, [open, reset]);
 
   const handleConfirm = useCallback(() => {
     if (selectedReason == null) return;
+    if (navigatesOnConfirm) {
+      start(() => onConfirm(selectedReason));
+      return;
+    }
     onConfirm(selectedReason);
-  }, [onConfirm, selectedReason]);
+  }, [navigatesOnConfirm, onConfirm, selectedReason, start]);
 
   return (
     <BottomSheetShell
       open={open}
-      onClose={onClose}
+      onClose={loading ? () => {} : onClose}
       constrainHeight={false}
       aria-labelledby={titleId}
     >
@@ -117,14 +130,14 @@ export function CancelBookingReasonBottomSheet({
       </div>
 
       <div className={styles.shrink_0_8}>
-        <button
-          type="button"
+        <PrimaryCta
           onClick={handleConfirm}
           disabled={selectedReason == null}
-          className={[styles.primary_cta_9, "primary-cta"].filter(Boolean).join(" ")}
+          loading={navigatesOnConfirm && loading}
+          className={styles.primary_cta_9}
         >
           {CANCEL_BOOKING_REASON_SHEET_CTA}
-        </button>
+        </PrimaryCta>
       </div>
     </BottomSheetShell>
   );

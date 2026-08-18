@@ -1,7 +1,7 @@
 import Image from "next/image";
 
-import { IconWell } from "@/components/molecules/IconWell";
-import { SoftIconPad } from "@/components/molecules/SoftIconPad";
+import { IconWell } from "@/components/atoms/icon/IconWell";
+import { SoftIconPad } from "@/components/atoms/icon/SoftIconPad";
 import {
   SELF_FINANCE_HOW_IT_WORKS_STEPS,
   type SelfFinanceHowItWorksStep,

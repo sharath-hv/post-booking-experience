@@ -34,6 +34,7 @@ import {
   resolveLoanRejectedOutcome,
   type LoanRejectedOutcome,
 } from "@/constants/loan-rejected-content";
+import { OVERLAY_GLASS_CARD_CLASS } from "@/helpers/overlay-glass-card";
 import { BOOKING_LOCK_AMOUNT_INR } from "@/helpers/paymentUrls";
 import { cn } from "@/utils/utils";
 import styles from "./LoanRejectedScreen.module.scss";
@@ -156,8 +157,8 @@ function LoanRejectedOptionCard({
       aria-pressed={selected}
       className={cn(
         styles.optionCard,
-        "card-elevated",
-        selected ? styles.optionCardSelected : styles.optionCardIdle,
+        OVERLAY_GLASS_CARD_CLASS,
+        selected && styles.optionCardSelected,
       )}
     >
       <div className={styles.optionHead}>
@@ -386,7 +387,7 @@ export function LoanRejectedScreen() {
   const selectedOption = options.find((option) => option.id === choiceId) ?? options[0]!;
 
   const replies = useMemo(
-    () => [{ label: selectedOption.ctaLabel, onClick: selectedOption.perform, echo: null }],
+    () => [{ label: selectedOption.ctaLabel, onClick: selectedOption.perform, navigates: true, echo: null }],
     [selectedOption],
   );
 

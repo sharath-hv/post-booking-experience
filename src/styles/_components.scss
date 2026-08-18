@@ -185,6 +185,25 @@
   color: #ffffff !important;
 }
 
+.primary-cta.cta-navigating,
+.reply-soft-cta.cta-navigating {
+  position: relative;
+  pointer-events: none;
+  cursor: default;
+}
+
+.cta-label-hold {
+  visibility: hidden;
+}
+
+.cta-loader-slot {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .demo-nav-cta {
   display: flex;
   height: 48px;
@@ -265,7 +284,7 @@
   background-color: rgb(255 255 255 / 0.16);
 }
 
-/* Circular icon wells: use `@/components/molecules/IconWell` (grey/green/amber/purple). */
+/* Circular icon wells: use `@/components/atoms/icon/IconWell` (grey/green/amber/purple). */
 
 .card-elevated {
   box-shadow: var(--shadow-card);

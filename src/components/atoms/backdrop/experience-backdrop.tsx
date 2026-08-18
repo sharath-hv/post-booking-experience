@@ -1,7 +1,7 @@
 "use client";
 
-import { AuroraLightLayer } from "@/components/atoms/aurora-light-layer";
-import { VideoBackgroundLayer } from "@/components/atoms/video-background-layer";
+import { AuroraLightLayer } from "@/components/atoms/backdrop/aurora-light-layer";
+import { VideoBackgroundLayer } from "@/components/atoms/backdrop/video-background-layer";
 import { useReducedMotion } from "@/lib/animations/utils";
 import { useBackdropMode } from "@/hooks/use-backdrop-mode";
 import styles from "./experience-backdrop.module.scss";

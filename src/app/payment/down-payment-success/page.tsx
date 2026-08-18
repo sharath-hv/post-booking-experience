@@ -5,10 +5,10 @@ import { useSearchParams } from "next/navigation";
 
 import { DownPaymentInstalmentSuccess } from "@/components/organisms/payment/DownPaymentInstalmentSuccess";
 import {
-  buildInsuranceSetupHref,
   buildMarginMoneySlipActionHref,
   buildPayDownPaymentHref,
   buildPayFullPaymentHref,
+  buildPostDownPaymentCompleteHref,
   FULL_PAYMENT_BANK_ID,
 } from "@/helpers/paymentUrls";
 
@@ -58,7 +58,7 @@ function DownPaymentSuccessInner() {
               loanAmount,
               originalDownPaymentInr: original,
             })
-          : buildInsuranceSetupHref(bank, loanAmount, original),
+          : buildPostDownPaymentCompleteHref(bank, loanAmount),
       };
     }
 
@@ -75,13 +75,13 @@ function DownPaymentSuccessInner() {
                 loanAmount,
                 originalDownPaymentInr: original,
               })
-            : buildInsuranceSetupHref(bank, loanAmount, original),
+            : buildPostDownPaymentCompleteHref(bank, loanAmount),
       };
     }
 
     return {
       subline: "Your payment was received.",
-      nextHref: buildInsuranceSetupHref(bank, loanAmount),
+      nextHref: buildPostDownPaymentCompleteHref(bank, loanAmount),
     };
   }, [searchParams]);
 

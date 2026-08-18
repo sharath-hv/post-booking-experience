@@ -2,7 +2,7 @@
 
 import { useCallback } from "react";
 
-import { BottomSheetCloseIcon } from "@/components/atoms/BottomSheetCloseIcon";
+import { BottomSheetCloseIcon } from "@/components/atoms/sheet/BottomSheetCloseIcon";
 import { BottomSheetShell } from "@/components/organisms/BottomSheetShell";
 import {
   BOTTOM_SHEET_SCROLL_BODY_CLASS,

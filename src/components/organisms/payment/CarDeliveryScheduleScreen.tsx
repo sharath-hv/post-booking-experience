@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import locationIcon from "@/assets/Location.svg";
-import { IconWell } from "@/components/molecules/IconWell";
+import { IconWell } from "@/components/atoms/icon/IconWell";
 import { CarSummaryCardLite } from "@/components/organisms/artifacts";
 import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
 import {
@@ -18,6 +18,7 @@ import {
   DEMO_VEHICLE_REGISTRATION_NO,
 } from "@/constants/demo-vehicle-identification";
 import { PartnerGarageCard } from "@/components/organisms/payment/PartnerGarageCard";
+import { OVERLAY_GLASS_CARD_CLASS } from "@/helpers/overlay-glass-card";
 import { fireBasicCannon } from "@/utils/confetti-basic-cannon";
 import { CAR_SOURCE_DETAIL, CAR_SOURCE_NAME, NAMED_DEALER_DETAIL, NAMED_DEALER_NAME } from "@/constants/dealer-attribution-content";
 import {
@@ -212,7 +213,7 @@ export function CarDeliveryScheduleScreen() {
       replies={replies}
       callLabel="Special instructions? I can call you"
     >
-      <div className={cn(styles.card, "card-elevated")}>
+      <div className={cn(styles.card, OVERLAY_GLASS_CARD_CLASS)}>
         <div className={styles.locationPanel}>
           <IconWell aria-hidden>
             <Image

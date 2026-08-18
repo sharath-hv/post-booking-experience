@@ -3,10 +3,12 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
+import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
 import { type BuyingGuideStep } from "@/components/organisms/kyc/buying-guide-content";
 import { RevealStagger } from "@/components/molecules/stagger-container";
 import { BUYING_GUIDE_STEP_COUNT, buyingGuideNextPath } from "@/helpers/buying-guide-urls";
-import { primaryOrDemoNavCtaClass } from "@/constants/demo-nav-cta";
+import { primaryOrDemoNavCtaClass, isDemoNavCtaLabel } from "@/constants/demo-nav-cta";
+import { useCtaNavigation } from "@/hooks/use-cta-navigation";
 import { cn } from "@/utils/utils";
 import styles from "./BuyingGuideScreen.module.scss";
 
@@ -30,7 +32,9 @@ type BuyingGuideScreenProps = {
  */
 export function BuyingGuideScreen({ step }: BuyingGuideScreenProps) {
   const router = useRouter();
+  const { loading, start } = useCtaNavigation();
   const nextHref = buyingGuideNextPath(step.step);
+  const isDemoNav = isDemoNavCtaLabel(step.ctaLabel);
 
   return (
     <>
@@ -76,16 +80,26 @@ export function BuyingGuideScreen({ step }: BuyingGuideScreenProps) {
           className={styles.mx_auto_7}
           delay={STAGGER_CTA}
         >
-          <button
-            type="button"
-            className={cn(
-              primaryOrDemoNavCtaClass(step.ctaLabel),
-              "focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/30 focus-visible:ring-offset-2",
-            )}
-            onClick={() => router.push(nextHref)}
-          >
-            {step.ctaLabel}
-          </button>
+          {isDemoNav ? (
+            <button
+              type="button"
+              className={cn(
+                primaryOrDemoNavCtaClass(step.ctaLabel),
+                "focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/30 focus-visible:ring-offset-2",
+              )}
+              onClick={() => router.push(nextHref)}
+            >
+              {step.ctaLabel}
+            </button>
+          ) : (
+            <PrimaryCta
+              className="focus-visible:outline focus-visible:ring-2 focus-visible:ring-[#121212]/30 focus-visible:ring-offset-2"
+              loading={loading}
+              onClick={() => start(() => router.push(nextHref))}
+            >
+              {step.ctaLabel}
+            </PrimaryCta>
+          )}
         </RevealStagger>
       </div>
     </>

@@ -2,8 +2,10 @@
 
 import { useCallback, useEffect, useId, useState } from "react";
 
-import { BottomSheetCloseIcon } from "@/components/atoms/BottomSheetCloseIcon";
+import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
+import { BottomSheetCloseIcon } from "@/components/atoms/sheet/BottomSheetCloseIcon";
 import { BottomSheetShell } from "@/components/organisms/BottomSheetShell";
+import { useCtaNavigation } from "@/hooks/use-cta-navigation";
 import { ModifySelectionDeliveryOptionCard } from "@/components/organisms/kyc/ModifySelectionDeliveryOptionCard";
 import { BOOKING_CONFIRMED_ASSETS } from "@/utils/kyc-booking-confirmed-assets";
 import {
@@ -29,6 +31,8 @@ export type ModifySelectionDeliveryOptionBottomSheetProps = {
   open: boolean;
   onClose: () => void;
   onConfirm: (choice: ModifySelectionDeliveryChoice) => void;
+  /** False when confirm only updates the current page (review / confirmation). */
+  navigatesOnConfirm?: boolean;
   /** Express delivery price — same as shown on the colour card. */
   expressDeliveryPriceInr: number;
   expressDeliveryLine: string;
@@ -45,18 +49,27 @@ export function ModifySelectionDeliveryOptionBottomSheet({
   expressDeliveryPriceInr,
   expressDeliveryLine,
   initialDeliveryChoice = "express",
+  navigatesOnConfirm = true,
 }: ModifySelectionDeliveryOptionBottomSheetProps) {
   const titleId = useId();
   const [deliveryChoice, setDeliveryChoice] = useState<ModifySelectionDeliveryChoice>("express");
+  const { loading, start, reset } = useCtaNavigation();
 
   useEffect(() => {
-    if (!open) return;
+    if (!open) {
+      reset();
+      return;
+    }
     setDeliveryChoice(initialDeliveryChoice);
-  }, [open, initialDeliveryChoice]);
+  }, [open, initialDeliveryChoice, reset]);
 
   const handleConfirm = useCallback(() => {
+    if (navigatesOnConfirm) {
+      start(() => onConfirm(deliveryChoice));
+      return;
+    }
     onConfirm(deliveryChoice);
-  }, [deliveryChoice, onConfirm]);
+  }, [deliveryChoice, navigatesOnConfirm, onConfirm, start]);
 
   const standardDeliveryPriceInr =
     modifySelectionStandardDeliveryPriceInr(expressDeliveryPriceInr);
@@ -64,7 +77,7 @@ export function ModifySelectionDeliveryOptionBottomSheet({
   return (
     <BottomSheetShell
       open={open}
-      onClose={onClose}
+      onClose={loading ? () => {} : onClose}
       showCloseButton={false}
       aria-labelledby={titleId}
     >
@@ -77,7 +90,7 @@ export function ModifySelectionDeliveryOptionBottomSheet({
         </h2>
         <button
           type="button"
-          onClick={onClose}
+          onClick={loading ? undefined : onClose}
           className={[styles.cta_ghost_3, "cta-ghost"].filter(Boolean).join(" ")}
           aria-label="Close"
         >
@@ -116,9 +129,13 @@ export function ModifySelectionDeliveryOptionBottomSheet({
           BOTTOM_SHEET_CTA_STRIP_TOP_CLASS,
         )}
       >
-        <button type="button" onClick={handleConfirm} className={[styles.primary_cta_5, "primary-cta"].filter(Boolean).join(" ")}>
+        <PrimaryCta
+          onClick={handleConfirm}
+          loading={navigatesOnConfirm && loading}
+          className={styles.primary_cta_5}
+        >
           Confirm
-        </button>
+        </PrimaryCta>
       </div>
     </BottomSheetShell>
   );

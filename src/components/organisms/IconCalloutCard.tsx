@@ -2,7 +2,7 @@
 
 import type { MouseEvent, ReactNode } from "react";
 
-import { IconWell, type IconWellTone } from "@/components/molecules/IconWell";
+import { IconWell, type IconWellTone } from "@/components/atoms/icon/IconWell";
 import { OVERLAY_GLASS_CARD_CLASS } from "@/helpers/overlay-glass-card";
 import { cn } from "@/utils/utils";
 import styles from "./IconCalloutCard.module.scss";

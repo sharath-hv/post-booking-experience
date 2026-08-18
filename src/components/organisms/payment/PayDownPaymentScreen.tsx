@@ -81,6 +81,7 @@ export function PayDownPaymentScreen() {
       ctaWarningLine={PAY_DOWN_PAYMENT_CTA_WARNING}
       heroSummaryCard={
         <DownPaymentSummaryCard
+          surface="glass"
           downPaymentTotalInr={summary.downPaymentTotalInr}
           amountPaidInr={summary.amountPaidInr}
           remainingAmountInr={summary.remainingAmountInr}

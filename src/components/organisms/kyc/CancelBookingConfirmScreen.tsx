@@ -60,7 +60,6 @@ export function CancelBookingConfirmScreen() {
 
   const onReasonSheetConfirm = useCallback(
     (_: CancelBookingReasonId) => {
-      setReasonSheetOpen(false);
       router.push(CANCEL_BOOKING_SUCCESS_HREF);
     },
     [router],
