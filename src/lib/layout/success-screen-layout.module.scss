@@ -12,6 +12,10 @@
   gap: calc(var(--spacing) * 4);
 }
 
+.copyToCardMt {
+  margin-top: var(--space-copy-to-card);
+}
+
 .celebrationLottieToHeadlinemt {
   margin-top: calc(var(--spacing) * 2);
 }

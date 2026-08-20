@@ -27,21 +27,26 @@ Three named CSS classes cover every surface. Never use inline shadow values for 
 
 # Concierge Artifact Card Spacing
 
-## Stacking multiple artifact cards
+Values live in `src/styles/_tokens.scss`. Change the token — do not hardcode px in screens.
 
-When an artifact contains more than one card stacked vertically, use `gap-4` (16px):
+| Token | Default | Use |
+|---|---|---|
+| `--space-copy-to-card` | 32px | Last body/subtext line → first card |
+| `--space-heading-to-card` | 20px | Section heading (headingLastLine) → first card |
+| `--space-card-stack` | 24px | Vertical gap between stacked artifact/option cards |
+| `--space-car-card-stack` | 20px | Vertical gap between stacked car cards |
 
-```tsx
+```scss
 // ✅ GOOD
-<div className="flex flex-col gap-4">
-  <AmountReceivedCard ... />
-  <ShimmerInfoCard ... />
-</div>
+margin-top: var(--space-copy-to-card);
+gap: var(--space-card-stack);
+gap: var(--space-car-card-stack);
 
-// ❌ BAD — gap-3 is too tight between distinct cards
-<div className="flex flex-col gap-3">...</div>
+// ❌ BAD — a one-off px that will drift from the global rule
+margin-top: 32px;
+gap: calc(var(--spacing) * 6);
 ```
 
 ## Internal rows within a single card
 
-Rows inside a card (e.g., `<dl>`, amount rows) use `gap-3` (12px) or smaller — do not change these.
+Rows inside a card (e.g., `<dl>`, amount rows) use `gap-3` (12px) or smaller — do not change these. Don't use the stack tokens inside a single card.

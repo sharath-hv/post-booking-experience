@@ -1,9 +1,6 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useRef, useState, type ReactNode } from "react";
-
-import phoneIcon from "@/assets/Phone.svg";
 
 import { ConciergeReplies, type ConciergeReply } from "@/components/organisms/ConciergeReplies";
 import {
@@ -95,7 +92,7 @@ export type ConciergeTurn = {
    * Defaults to `you` when the turn has replies (user action), else `shivi`.
    */
   dateHolder?: "you" | "shivi";
-  /** Contextual “talk to her” affordance — quiet button under the replies. */
+  /** Shows the callback row under the replies (“Have a question? Request call-back”). */
   callLabel?: string;
   /** Extra quiet control under the replies (e.g. delivery-timeline sheet trigger). */
   footerExtra?: ReactNode;
@@ -466,7 +463,7 @@ export function ConciergeTurnShell({
               <div
                 className={cn(
                   styles.kyc_stagger_26, "kyc-stagger",
-                  headingLastLine ? styles.mt_4_27 : workingBeforeArtifact ? styles.mt_5_28 : styles.mt_8_29
+                  headingLastLine ? styles.headingToCardMt : styles.mt_4_27
                 )}
               >
                 {artifact}
@@ -546,13 +543,14 @@ export function ConciergeTurnShell({
               <button
                 type="button"
                 onClick={() => setCallSheetOpen(true)}
+                aria-label="Request call-back"
                 className={cn(
                   styles.flex_33,
                   replies?.length ? styles.mt_3_34 : undefined
                 )}
               >
-                <Image src={phoneIcon} alt="" width={20} height={20} className={styles.shrink_0_19} unoptimized aria-hidden />
-                {callLabel}
+                <span className={styles.callPrompt}>Have a question?</span>
+                <span className={styles.callAction}>Request call-back</span>
               </button>
             ) : null}
             {footerExtra ? (

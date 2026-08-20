@@ -42,9 +42,9 @@
 
 
 .documentUploadTitleToTips {
-  margin-top: calc(var(--spacing) * 6);
+  margin-top: var(--space-copy-to-card);
 }
 
 .documentUploadTipsToSections {
-  margin-top: calc(var(--spacing) * 6);
+  margin-top: var(--space-card-stack);
 }

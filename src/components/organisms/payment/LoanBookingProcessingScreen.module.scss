@@ -3,6 +3,6 @@
 .flex_0 {
   display: flex;
   flex-direction: column;
-  gap: calc(var(--spacing) * 4); /* 16px — artifact card stack */
+  gap: var(--space-card-stack);
 }
 

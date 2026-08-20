@@ -13,7 +13,7 @@
 }
 
 .payment_success_stagger_1 {
-  margin-top: calc(var(--spacing) * 6);
+  margin-top: var(--space-copy-to-card);
 }
 
 .payment_success_stagger_2 {}

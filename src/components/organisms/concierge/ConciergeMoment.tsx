@@ -634,11 +634,13 @@ function ConciergeMomentInner({
 export function ConciergeMomentTurn({ children }: { children?: ReactNode }) {
   const { turn, onContentShown } = useConciergeMomentContext();
   const { hideBack, artifact, ...turnProps } = turn;
+  // Don't pass an empty artifact node — the shell still wraps it with
+  // copy-to-card margin, which stacks on top of the working-card gap.
   return (
     <ConciergeTurnShell
       {...turnProps}
       hideBack={hideBack}
-      artifact={children ?? artifact}
+      artifact={artifact != null ? (children ?? artifact) : undefined}
       onContentShown={onContentShown}
     />
   );

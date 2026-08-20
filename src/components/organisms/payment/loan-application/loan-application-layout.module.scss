@@ -73,7 +73,7 @@
 }
 
 .loanApplicationTitleToCardGap {
-  margin-top: calc(var(--spacing) * 5);
+  margin-top: var(--space-copy-to-card);
 }
 
 .loanApplicationControlText {

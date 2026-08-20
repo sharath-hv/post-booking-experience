@@ -165,10 +165,10 @@
 }
 
 .mt_8_15 {
-  margin-top: calc(var(--spacing) * 8);
+  margin-top: var(--space-copy-to-card);
   display: flex;
   flex-direction: column;
-  gap: calc(var(--spacing) * 6);
+  gap: var(--space-card-stack);
 }
 
 .kyc_stagger_16 {}
@@ -179,7 +179,7 @@
   max-width: 640px;
   padding-inline: calc(var(--spacing) * 5);
   padding-top: calc(var(--spacing) * 12);
-  padding-bottom: max(20px, env(safe-area-inset-bottom));
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
   background-image: linear-gradient(
     to top,
     #f1f5fd 55%,
@@ -190,10 +190,6 @@
 .mb_3_18 {
   margin-bottom: calc(var(--spacing) * 3);
   margin-top: calc(var(--spacing) * 3);
-}
-
-.shrink_0_19 {
-  flex-shrink: 0;
 }
 
 .mt_2_20 {
@@ -233,19 +229,15 @@
 .kyc_stagger_26 {
   display: flex;
   flex-direction: column;
-  gap: calc(var(--spacing) * 2);
+  gap: var(--space-card-stack);
 }
 
 .mt_4_27 {
-  margin-top: calc(var(--spacing) * 4);
+  margin-top: var(--space-copy-to-card);
 }
 
-.mt_5_28 {
-  margin-top: calc(var(--spacing) * 5);
-}
-
-.mt_8_29 {
-  margin-top: calc(var(--spacing) * 8);
+.headingToCardMt {
+  margin-top: var(--space-heading-to-card);
 }
 
 .fixed_30 {
@@ -258,32 +250,41 @@
 
 .flex_33 {
   display: flex;
-  height: calc(var(--spacing) * 9);
+  min-height: 44px;
   width: 100%;
   align-items: center;
   justify-content: center;
-  gap: calc(var(--spacing) * 2);
+  gap: 8px;
   padding-inline: calc(var(--spacing) * 3);
+  /* body-sm */
   font-size: 14px;
-  line-height: var(--tw-leading, 20px);
-  --tw-font-weight: var(--font-weight-medium);
+  line-height: 20px;
   font-weight: var(--font-weight-medium);
-  color: #4b4b4b;
-  text-decoration-line: underline;
-  text-decoration-color: #c2c2c2;
-  text-underline-offset: 4px;
-  transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
+  border-radius: var(--radius-md);
+  transition-property: color;
   transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
   transition-duration: var(--tw-duration, var(--default-transition-duration));
 }
+.flex_33:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-link) 35%, transparent);
+}
+
+.callPrompt {
+  color: var(--color-text-secondary);
+}
+
+.callAction {
+  color: var(--color-link);
+}
 @media (hover: hover) {
-  .flex_33:hover {
-    color: #121212;
+  .flex_33:hover .callAction {
+    color: color-mix(in srgb, var(--color-link) 85%, black);
   }
 }
 
 .mt_3_34 {
-  margin-top: calc(var(--spacing) * 3);
+  margin-top: 4px;
 }
 
 .flex_35 {

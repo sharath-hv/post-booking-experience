@@ -202,7 +202,7 @@
 }
 
 .mt_6_4 {
-  margin-top: calc(var(--spacing) * 6);
+  margin-top: var(--space-copy-to-card);
   display: flex;
   align-items: center;
   gap: calc(var(--spacing) * 3);

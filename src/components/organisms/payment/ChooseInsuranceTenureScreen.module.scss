@@ -33,13 +33,13 @@
   display: flex;
   flex-direction: column;
   gap: calc(var(--spacing) * 5);
-  margin-top: calc(var(--spacing) * 6);
+  margin-top: var(--space-copy-to-card);
 }
 
 .optionList {
   display: flex;
   flex-direction: column;
-  gap: calc(var(--spacing) * 4);
+  gap: var(--space-card-stack);
 }
 
 .optionListItem {

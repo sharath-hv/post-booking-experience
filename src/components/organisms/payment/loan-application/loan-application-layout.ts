@@ -24,7 +24,7 @@ export const LOAN_APPLICATION_SECTION_DIVIDER_CLASS = styles.loanApplicationSect
 /** 12px from section label to field/chips. */
 export const LOAN_APPLICATION_FIELD_GAP_CLASS = styles.loanApplicationFieldGap;
 
-/** 20px from page title to content below. */
+/** Title / subtext to the first card (`--space-copy-to-card`). */
 export const LOAN_APPLICATION_TITLE_TO_CARD_GAP_CLASS = styles.loanApplicationTitleToCardGap;
 
 /** 14px — inputs, amount field, and segment chips. */

@@ -14,7 +14,7 @@
 
 .payment_success_stagger_1 {
   margin-inline: calc(var(--spacing) * -5);
-  margin-top: calc(var(--spacing) * 6);
+  margin-top: var(--space-copy-to-card);
 }
 
 .payment_success_stagger_2 {

@@ -51,6 +51,12 @@
   --page-padding-x: 16px;
   --app-max-width: 640px;
 
+  /* Concierge / page rhythm — change these, not per-screen gaps. */
+  --space-copy-to-card: 32px;
+  --space-heading-to-card: 20px;
+  --space-card-stack: 24px;
+  --space-car-card-stack: 20px;
+
   --quote-header: #121212;
   --quote-timer-bg: #fff7e5;
   --quote-timer-text: #d16900;

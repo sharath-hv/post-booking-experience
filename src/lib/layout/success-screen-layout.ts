@@ -13,6 +13,9 @@ export const SUCCESS_SCREEN_HEADLINE_SUBTEXT_GAP_CLASS = styles.successScreenHea
 /** Action hero pages (nav + illustration + CTA) — headline to subline — 16px. */
 export const HERO_ACTION_HEADLINE_SUBLINE_GAP_CLASS = styles.heroActionHeadlineSublineGap;
 
+/** Space between subtext / last copy line and the first card (`--space-copy-to-card`). */
+export const COPY_TO_CARD_MT_CLASS = styles.copyToCardMt;
+
 /** Celebration Lottie (104×104) bottom → headline block — 8px. */
 export const CELEBRATION_LOTTIE_TO_HEADLINE_MT = styles.celebrationLottieToHeadlinemt;
 
