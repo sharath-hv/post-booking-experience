@@ -1,15 +1,13 @@
 "use client";
 
-import Image from "next/image";
 import { cn } from "@/utils/utils";
 
 import {
   DOCUMENT_UPLOAD_CARD_TITLE_CLASS,
 } from "@/constants/kyc-upload-content";
 
-import deleteIcon from "@/assets/Delete.svg";
-import done01Icon from "@/assets/Done.svg";
-import uploadIcon from "@/assets/upload.svg";
+import { UploadFileControl } from "@/components/molecules/upload/UploadFileControl";
+import { UploadFileRow } from "@/components/molecules/upload/UploadFileRow";
 import styles from "./DocumentUploadSection.module.scss";
 
 
@@ -34,48 +32,6 @@ export type DocumentUploadSectionProps = {
   onRemove: (fileId: string) => void;
 };
 
-function UploadSuccessBadge() {
-  return (
-    <span className={styles.relative_0}>
-      <Image src={done01Icon} alt="" fill className={styles.object_contain_1} unoptimized sizes="24px" />
-    </span>
-  );
-}
-
-function UploadFileButton({ onClick }: { onClick: () => void }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={cn(DESCRIPTION_TO_UPLOAD_GAP_CLASS, styles.flex_0)}
-    >
-      <span className={styles.relative_0}>
-        <Image src={uploadIcon} alt="" fill className={styles.object_contain_1} unoptimized sizes="24px" />
-      </span>
-      <span className={styles.text_sm_2}>Upload file</span>
-    </button>
-  );
-}
-
-function UploadedFileRow({ name, onRemove }: { name: string; onRemove: () => void }) {
-  return (
-    <div className={styles.relative_3}>
-      <UploadSuccessBadge />
-      <span className={styles.min_w_0_4}>{name}</span>
-      <button
-        type="button"
-        onClick={onRemove}
-        className={[styles.cta_ghost_5, "cta-ghost"].filter(Boolean).join(" ")}
-        aria-label={`Remove ${name}`}
-      >
-        <span className={styles.relative_6}>
-          <Image src={deleteIcon} alt="" fill className={styles.object_contain_1} unoptimized sizes="20px" />
-        </span>
-      </button>
-    </div>
-  );
-}
-
 export function DocumentUploadSection({
   title,
   description,
@@ -97,12 +53,18 @@ export function DocumentUploadSection({
       {files.length > 0 ? (
         <div className={cn(DESCRIPTION_TO_UPLOAD_GAP_CLASS, styles.flex_1)}>
           {files.map((file) => (
-            <UploadedFileRow key={file.id} name={file.name} onRemove={() => onRemove(file.id)} />
+            <UploadFileRow key={file.id} name={file.name} onRemove={() => onRemove(file.id)} />
           ))}
         </div>
       ) : null}
 
-      {files.length === 0 ? <UploadFileButton onClick={onUploadClick} /> : null}
+      {files.length === 0 ? (
+        <UploadFileControl
+          mode="empty"
+          onUpload={onUploadClick}
+          className={DESCRIPTION_TO_UPLOAD_GAP_CLASS}
+        />
+      ) : null}
 
       {allowMultiple && files.length > 0 ? (
         <button

@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useCallback, useEffect } from "react";
 
 import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
-import { BottomSheetShell } from "@/components/organisms/BottomSheetShell";
+import { ModalFrame } from "@/components/molecules/modal/ModalFrame";
 import { useCtaNavigation } from "@/hooks/use-cta-navigation";
 import { PAYMENT_CHOOSE_ASSETS } from "@/components/organisms/payment/payment-choose-assets";
 import { FULL_PAYMENT_HOW_IT_WORKS_STEPS } from "@/components/organisms/payment/full-payment-confirmed-content";
@@ -43,7 +43,7 @@ export function FullPaymentConfirmBottomSheet({
   }, [onConfirm, start]);
 
   return (
-    <BottomSheetShell
+    <ModalFrame
       open={open}
       onClose={loading ? () => {} : onClose}
       aria-labelledby="full-payment-things-to-know-title"
@@ -87,6 +87,6 @@ export function FullPaymentConfirmBottomSheet({
           Agree and continue
         </PrimaryCta>
       </div>
-    </BottomSheetShell>
+    </ModalFrame>
   );
 }

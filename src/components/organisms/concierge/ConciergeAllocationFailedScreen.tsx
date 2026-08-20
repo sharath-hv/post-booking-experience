@@ -21,8 +21,7 @@ import { cn } from "@/utils/utils";
 import bookingCancelledIllustration from "@/assets/Booking cancelled.svg";
 import standardDeliveryIllustration from "@/assets/standard delivery.svg";
 import changeCarIllustration from "@/assets/Change car.svg";
-import radioOffIcon from "@/assets/Radio button off.svg";
-import radioOnIcon from "@/assets/Radio button on.svg";
+import { Radio } from "@/components/atoms/selection/Radio";
 import clockIcon from "@/assets/Time.svg";
 import lockIcon from "@/assets/lock.svg";
 import moneyIcon from "@/assets/money.svg";
@@ -36,17 +35,6 @@ const STANDARD_DELIVERY_DATE =
 export type AllocationFailedMode = "express_miss" | "discontinued";
 
 type AllocationFailedOptionId = "standard_delivery" | "different_car" | "refund";
-
-/** Radio glyph — on/off from `assets/` (#121212 selected). */
-function RadioIndicator({ selected }: { selected: boolean }) {
-  const src = selected ? radioOnIcon : radioOffIcon;
-
-  return (
-    <span className={styles.relative_0} aria-hidden>
-      <Image src={src} alt="" fill className={styles.object_contain_1} unoptimized sizes="16px" />
-    </span>
-  );
-}
 
 type AllocationFailedOptionCardProps = {
   selected: boolean;
@@ -91,7 +79,7 @@ function AllocationFailedOptionCard({
           />
         </div>
         <span className={styles.mt_0_5_6}>
-          <RadioIndicator selected={selected} />
+          <Radio selected={selected} />
         </span>
       </div>
 

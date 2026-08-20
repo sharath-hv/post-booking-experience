@@ -7,7 +7,7 @@ import cretaCutout from "@/assets/Hyundai Creta.png";
 import ackoDriveWordmark from "@/assets/ACKO Drive wordmark.svg";
 import tickIcon from "@/assets/tick.svg";
 import { IconWell } from "@/components/atoms/icon/IconWell";
-import { BookingCarCardDetails } from "@/components/organisms/BookingCarCardDetails";
+import { BookingCarCardDetails } from "@/components/molecules/card/BookingCarCardDetails";
 import {
   BOOKING_CAR_CARD_SHELL_CLASS,
   BOOKING_CAR_HERO_HEIGHT_CLASS,
@@ -16,7 +16,7 @@ import {
   BOOKING_CAR_SUMMARY_PANEL_POSITION_CLASS,
   BookingCarCardBackdrop,
   BookingCarSummaryCardVisualStage,
-} from "@/components/organisms/BookingCarSummaryCard";
+} from "@/components/molecules/card/CarContentCard";
 import { cn } from "@/utils/utils";
 import styles from "./CarSummaryCardLite.module.scss";
 

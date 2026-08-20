@@ -1,0 +1,15 @@
+.spin {
+  flex-shrink: 0;
+  animation: var(--animate-spin);
+  color: #121212;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spin {
+    animation: none;
+  }
+}
+
+.static {
+  flex-shrink: 0;
+}

@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
+import { OutlineCta } from "@/components/atoms/cta/OutlineCta";
 import { CancelBookingCarCard } from "@/components/organisms/kyc/CancelBookingCarCard";
 import { CancelBookingReasonBottomSheet } from "@/components/organisms/CancelBookingReasonBottomSheet";
 import { CancelBookingRefundSummaryCard } from "@/components/organisms/kyc/CancelBookingRefundSummaryCard";
@@ -102,13 +103,12 @@ export function CancelBookingConfirmScreen() {
               {CANCEL_BOOKING_MODIFY_PROMPT}
             </p>
 
-            <button
-              type="button"
-              className={[styles.payment_success_stagger_9, "payment-success-stagger", "demo-nav-cta"].filter(Boolean).join(" ")}
+            <OutlineCta
+              className={[styles.payment_success_stagger_9, "payment-success-stagger"].filter(Boolean).join(" ")}
               style={{ animationDelay: `${STAGGER_MODIFY_CTA_MS}ms` }}
             >
               {CANCEL_BOOKING_MODIFY_CTA}
-            </button>
+            </OutlineCta>
 
             <p
               className={[styles.payment_success_stagger_10, "payment-success-stagger"].filter(Boolean).join(" ")}
@@ -124,14 +124,13 @@ export function CancelBookingConfirmScreen() {
               <CancelBookingRefundSummaryCard />
             </div>
 
-            <button
-              type="button"
+            <OutlineCta
               onClick={onOpenReasonSheet}
-              className={[styles.payment_success_stagger_9, "payment-success-stagger", "demo-nav-cta"].filter(Boolean).join(" ")}
+              className={[styles.payment_success_stagger_9, "payment-success-stagger"].filter(Boolean).join(" ")}
               style={{ animationDelay: `${STAGGER_CONFIRM_CTA_MS}ms` }}
             >
               {CANCEL_BOOKING_CONFIRM_CTA}
-            </button>
+            </OutlineCta>
           </section>
         </main>
       </div>

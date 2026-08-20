@@ -1,18 +1,15 @@
-"use client";
+import { Suspense } from "react";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { LegacyPathRedirect } from "@/components/molecules/LegacyPathRedirect";
 
 /**
  * Legacy — interstitial removed; the choose screen hands off straight to the
  * self-finance action turn.
  */
 export default function SelfFinanceConfirmedPage() {
-  const router = useRouter();
-
-  useEffect(() => {
-    router.replace("/payment/self-finance-action");
-  }, [router]);
-
-  return null;
+  return (
+    <Suspense fallback={null}>
+      <LegacyPathRedirect to="/payment/self-finance-action" />
+    </Suspense>
+  );
 }

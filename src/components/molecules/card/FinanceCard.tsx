@@ -10,8 +10,7 @@ import {
 import { BOOKING_PAYMENT_SUMMARY_INR } from "@/constants/payment-summary-demo";
 import { OVERLAY_GLASS_CARD_CLASS } from "@/helpers/overlay-glass-card";
 import { cn } from "@/utils/utils";
-import styles from "./PaymentSummaryCard.module.scss";
-
+import styles from "./FinanceCard.module.scss";
 
 function formatInr(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -30,7 +29,7 @@ export const PAYMENT_SUMMARY = {
   amountToPay: formatInr(ON_ROAD_PRICE_INR - BOOKING_AMOUNT_PAID_INR),
 } as const;
 
-export type PaymentSummaryCardProps = {
+export type FinanceCardProps = {
   /** Instalments received toward the car / full-payment commitment (excludes booking lock). */
   paymentPaidInr?: number;
   /** Remaining due before the commitment is complete. */
@@ -43,11 +42,11 @@ export type PaymentSummaryCardProps = {
  * ACKO Drive price, booking amount paid, and amount to pay — shared by payment default hero
  * and manage-booking sheet. Pass `paymentPaidInr` + `amountRemainingInr` for partial full payment.
  */
-export function PaymentSummaryCard({
+export function FinanceCard({
   paymentPaidInr,
   amountRemainingInr,
   variant = "default",
-}: PaymentSummaryCardProps = {}) {
+}: FinanceCardProps = {}) {
   const [priceBreakdownOpen, setPriceBreakdownOpen] = useState(false);
   const showPaymentPaidRow =
     paymentPaidInr != null && paymentPaidInr > 0;

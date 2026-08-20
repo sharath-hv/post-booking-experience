@@ -8,6 +8,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import infoIcon from "@/assets/Info.svg";
 import kycFailedHero from "@/assets/KYC failed.svg";
 import menuIcon from "@/assets/menu.svg";
+import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
 import {
   getKycVerificationFailedCopy,
   KYC_VERIFICATION_FAILED_CTA_WARNING,
@@ -213,14 +214,13 @@ export function KycVerificationFailedScreen() {
               >
                 <ShimmerInfoCard>{KYC_VERIFICATION_FAILED_CTA_WARNING}</ShimmerInfoCard>
               </div>
-              <button
-                type="button"
-                className={cn(styles.primary_cta_6, "primary-cta", HERO_FADE_DURATION_CLASS, styles.ease_out_6, showCta ? styles.opacity_100_6 : styles.pointer_events_none_6)}
+              <PrimaryCta
+                className={cn(styles.primary_cta_6, HERO_FADE_DURATION_CLASS, styles.ease_out_6, showCta ? styles.opacity_100_6 : styles.pointer_events_none_6)}
                 tabIndex={showCta ? 0 : -1}
                 onClick={() => router.push(KYC_VERIFICATION_FAILED_UPLOAD_HREF)}
               >
                 {copy.ctaLabel}
-              </button>
+              </PrimaryCta>
             </div>
           </div>
         </div>

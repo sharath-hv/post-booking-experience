@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState, type ChangeEvent } from "react";
 
 import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
+import { Slider } from "@/components/atoms/input/Slider";
 import { ShiviCallSheet } from "@/components/organisms/ShiviCallSheet";
 import { GetHelpPillButton } from "@/components/molecules/GetHelpPillButton";
 import { TopNavHeader } from "@/components/organisms/TopNavHeader";
@@ -153,10 +154,9 @@ export function EnterDisbursementAmountScreen() {
           style={{ animationDelay: `${STAGGER_SLIDER_MS}ms` }}
         >
           <label className={styles.block_9} htmlFor="self-finance-loan-range">
-            <input
+            <Slider
               id="self-finance-loan-range"
-              type="range"
-              className={[styles.choose_loan_down_range_10, "choose-loan-down-range"].filter(Boolean).join(" ")}
+              className={styles.choose_loan_down_range_10}
               min={MIN_LOAN_INR}
               max={ON_ROAD_PRICE_INR}
               step={SLIDER_STEP}

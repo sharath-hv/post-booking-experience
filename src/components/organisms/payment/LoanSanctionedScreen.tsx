@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 
 import { AmountReceivedCard, NextStepCard } from "@/components/organisms/artifacts";
 import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
-import { bankForQueryParam } from "@/components/organisms/payment/acko-drive-finance-bank";
+import { bankForQueryParam } from "@/helpers/acko-drive-finance-bank";
 import {
   bankLoanTermsForId,
   formatBankRate,

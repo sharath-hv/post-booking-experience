@@ -3,10 +3,10 @@
 import Image from "next/image";
 
 import { splitBookingDeliveryLine } from "@/constants/experience-flow-content";
+import { Radio } from "@/components/atoms/selection/Radio";
 import {
   modifySelectionSelectableCardClass,
   MODIFY_SELECTION_SELECTABLE_CARD_BASE_CLASS,
-  ModifySelectionRadioIndicator,
 } from "@/components/molecules/modify-selection-option-card-ui";
 import { formatModifySelectionInr } from "@/constants/modify-selection-review-pay-content";
 import { cn } from "@/utils/utils";
@@ -76,7 +76,7 @@ export function ModifySelectionDeliveryOptionCard({
           </p>
         </div>
         <span className={styles.mt_0_5_7}>
-          <ModifySelectionRadioIndicator selected={selected} />
+          <Radio selected={selected} />
         </span>
       </div>
     </button>

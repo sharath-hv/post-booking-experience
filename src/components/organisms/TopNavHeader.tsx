@@ -4,25 +4,15 @@ import { useRouter } from "next/navigation";
 import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 
+import { GhostCta } from "@/components/atoms/cta/GhostCta";
+import { BackChevron } from "@/components/atoms/icon/BackChevron";
 import { cn } from "@/utils/utils";
 import styles from "./TopNavHeader.module.scss";
 
+export { BackChevron } from "@/components/atoms/icon/BackChevron";
+
 
 const SCROLL_SOLID_THRESHOLD_PX = 8;
-
-export function BackChevron() {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className={styles.block_0} aria-hidden>
-      <path
-        d="M15 18l-6-6 6-6"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
 
 export type TopNavHeaderProps = {
   /** Optional label after back (e.g. checkout title). */
@@ -113,11 +103,10 @@ export function TopNavHeader({
           afterBack != null ? styles.gap_6_9 : styles.gap_2_10
         )}
       >
-        <button
-          type="button"
+        <GhostCta
           onClick={() => (onBack != null ? onBack() : router.back())}
           className={cn(
-            styles.cta_ghost_11, "cta-ghost",
+            styles.cta_ghost_11,
             inverted
               ? styles.text_white_12
               : styles.text_121212__13
@@ -125,7 +114,7 @@ export function TopNavHeader({
           aria-label="Go back"
         >
           <BackChevron />
-        </button>
+        </GhostCta>
         {afterBack != null ? (
           <div className={styles.flex_1}>{afterBack}</div>
         ) : null}

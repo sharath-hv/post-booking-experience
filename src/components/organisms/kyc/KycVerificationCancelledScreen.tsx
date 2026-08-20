@@ -8,6 +8,7 @@ import { useCallback, useEffect, useState } from "react";
 import infoIcon from "@/assets/Info.svg";
 import kycFailedHero from "@/assets/KYC failed.svg";
 import menuIcon from "@/assets/menu.svg";
+import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
 import { KYC_VERIFICATION_CANCELLED_COPY } from "@/components/organisms/kyc/kyc-verification-cancelled-content";
 import { GetHelpPillButton } from "@/components/molecules/GetHelpPillButton";
 import { TopNavHeader } from "@/components/organisms/TopNavHeader";
@@ -155,14 +156,13 @@ export function KycVerificationCancelledScreen() {
             </div>
 
             <div className={styles.mt_auto_12}>
-              <button
-                type="button"
-                className={cn(styles.primary_cta_5, "primary-cta", HERO_FADE_DURATION_CLASS, styles.ease_out_5, showCta ? styles.opacity_100_5 : styles.pointer_events_none_5)}
+              <PrimaryCta
+                className={cn(styles.primary_cta_5, HERO_FADE_DURATION_CLASS, styles.ease_out_5, showCta ? styles.opacity_100_5 : styles.pointer_events_none_5)}
                 tabIndex={showCta ? 0 : -1}
                 onClick={() => router.push(KYC_VERIFICATION_CANCELLED_COPY.doneHref)}
               >
                 {KYC_VERIFICATION_CANCELLED_COPY.ctaLabel}
-              </button>
+              </PrimaryCta>
             </div>
           </div>
         </div>

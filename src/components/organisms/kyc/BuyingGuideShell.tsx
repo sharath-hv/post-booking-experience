@@ -4,7 +4,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useCallback, useMemo, type ReactNode } from "react";
 
 import { BuyingGuideProgress } from "@/components/organisms/kyc/BuyingGuideProgress";
-import { isBuyingGuideStep } from "@/components/organisms/kyc/buying-guide-content";
+import { isBuyingGuideStep } from "@/constants/buying-guide-content";
 import { TopNavHeader } from "@/components/organisms/TopNavHeader";
 import styles from "./BuyingGuideShell.module.scss";
 

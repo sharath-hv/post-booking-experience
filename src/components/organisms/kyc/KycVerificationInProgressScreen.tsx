@@ -7,6 +7,7 @@ import { useCallback, useEffect, useState } from "react";
 import menuIcon from "@/assets/menu.svg";
 import infoIcon from "@/assets/Info.svg";
 import kycInProgressHero from "@/assets/KYC in progress.svg";
+import { OutlineCta } from "@/components/atoms/cta/OutlineCta";
 import { GetHelpPillButton } from "@/components/molecules/GetHelpPillButton";
 import { TopNavHeader } from "@/components/organisms/TopNavHeader";
 import { WordByWordLine } from "@/components/molecules/WordByWordLine";
@@ -178,10 +179,9 @@ export function KycVerificationInProgressScreen({
 
             {hideDemoCta ? null : (
               <div className={styles.mt_auto_11}>
-                <button
-                  type="button"
+                <OutlineCta
                   className={cn(
-                    styles.demo_nav_cta_12, "demo-nav-cta",
+                    styles.demo_nav_cta_12,
                     HERO_FADE_DURATION_CLASS,
                     styles.ease_out_13,
                     showCta ? styles.opacity_100_14 : styles.pointer_events_none_15,
@@ -195,7 +195,7 @@ export function KycVerificationInProgressScreen({
                   }}
                 >
                   {DEMO_NAV_CTA_LABEL}
-                </button>
+                </OutlineCta>
               </div>
             )}
           </div>

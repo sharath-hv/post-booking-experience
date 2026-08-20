@@ -6,7 +6,7 @@ import { useCallback, useEffect } from "react";
 import close01Icon from "@/assets/Close 01.svg";
 import identityIcon from "@/assets/Identity.svg";
 import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
-import { BottomSheetShell } from "@/components/organisms/BottomSheetShell";
+import { ModalFrame } from "@/components/molecules/modal/ModalFrame";
 import { useCtaNavigation } from "@/hooks/use-cta-navigation";
 import { PAYMENT_CHOOSE_ASSETS } from "@/components/organisms/payment/payment-choose-assets";
 import { SelfFinanceHowItWorksCard } from "@/components/organisms/payment/SelfFinanceHowItWorksCard";
@@ -63,7 +63,7 @@ export function AckoDriveFinanceEligibilityBottomSheet({
   }, [onConfirm, start]);
 
   return (
-    <BottomSheetShell
+    <ModalFrame
       open={open}
       onClose={loading ? () => {} : onClose}
       aria-labelledby="acko-drive-finance-eligibility-title"
@@ -107,6 +107,6 @@ export function AckoDriveFinanceEligibilityBottomSheet({
           Agree and continue
         </PrimaryCta>
       </div>
-    </BottomSheetShell>
+    </ModalFrame>
   );
 }

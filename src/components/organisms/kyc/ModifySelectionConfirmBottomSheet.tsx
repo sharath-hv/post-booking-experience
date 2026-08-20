@@ -4,7 +4,7 @@ import Image, { type StaticImageData } from "next/image";
 import { useCallback, useEffect, useId } from "react";
 
 import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
-import { BottomSheetShell } from "@/components/organisms/BottomSheetShell";
+import { ModalFrame } from "@/components/molecules/modal/ModalFrame";
 import { useCtaNavigation } from "@/hooks/use-cta-navigation";
 import { BottomSheetConfirmBulletList } from "@/components/molecules/BottomSheetConfirmBulletList";
 import type { BottomSheetConfirmBulletPoint } from "@/constants/bottom-sheet-confirm-bullet";
@@ -54,7 +54,7 @@ export function ModifySelectionConfirmBottomSheet({
   }, [onConfirm, start]);
 
   return (
-    <BottomSheetShell
+    <ModalFrame
       open={open}
       onClose={loading ? () => {} : onClose}
       aria-labelledby={titleId}
@@ -92,6 +92,6 @@ export function ModifySelectionConfirmBottomSheet({
           {confirmCtaLabel}
         </PrimaryCta>
       </div>
-    </BottomSheetShell>
+    </ModalFrame>
   );
 }

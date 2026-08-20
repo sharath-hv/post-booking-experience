@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
 import { PageLeadHeading } from "@/components/organisms/PageLeadHeading";
 import { StandaloneScreenHeader } from "@/components/organisms/StandaloneScreenHeader";
-import { BookingCarSummaryCard } from "@/components/organisms/BookingCarSummaryCard";
+import { CarContentCard } from "@/components/molecules/card/CarContentCard";
 import { MODIFY_SELECTION_PAGE_SHELL_CLASS, MODIFY_SELECTION_PATH, modifySelectionChoiceLabel } from "@/constants/modify-selection-content";
 import { MODIFY_SELECTION_STAGGER_MS } from "@/helpers/modify-selection-stagger";
 import { useCtaNavigation } from "@/hooks/use-cta-navigation";
@@ -35,7 +35,7 @@ export function ModifySelectionPlaceholderScreen({ choiceSlug }: ModifySelection
           className={[styles.payment_success_stagger_1, "payment-success-stagger"].filter(Boolean).join(" ")}
           style={{ animationDelay: `${STAGGER_SECTION_MS}ms` }}
         >
-          <BookingCarSummaryCard variant="detailsOnly" />
+          <CarContentCard variant="detailsOnly" />
         </div>
       </main>
 

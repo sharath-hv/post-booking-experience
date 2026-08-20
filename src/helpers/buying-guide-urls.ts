@@ -1,4 +1,4 @@
-import { BUYING_GUIDE_STEP_COUNT } from "@/components/organisms/kyc/buying-guide-content";
+import { BUYING_GUIDE_STEP_COUNT } from "@/constants/buying-guide-content";
 import {
   JOURNEY_PATHS,
   buyingGuideStepPath,

@@ -8,9 +8,10 @@ import {
   SHOW_PRE_APPROVED_LOAN_UI,
   type BankLoanTerms,
 } from "@/components/organisms/payment/bank-loan-terms";
+import { GhostCta } from "@/components/atoms/cta/GhostCta";
 import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
 import { BottomSheetCloseIcon } from "@/components/atoms/sheet/BottomSheetCloseIcon";
-import { BottomSheetShell } from "@/components/organisms/BottomSheetShell";
+import { ModalFrame } from "@/components/molecules/modal/ModalFrame";
 import { useCtaNavigation } from "@/hooks/use-cta-navigation";
 import { IconWell } from "@/components/atoms/icon/IconWell";
 import {
@@ -87,7 +88,7 @@ export function BankLoanDetailBottomSheet({
       : formatBankRate(renderedBank);
 
   return (
-    <BottomSheetShell
+    <ModalFrame
       open={open}
       onClose={loading ? () => {} : onClose}
       showCloseButton={false}
@@ -116,15 +117,14 @@ export function BankLoanDetailBottomSheet({
               <p className={styles.rateLine}>{rateLabel}</p>
             </div>
           </div>
-          <button
-            type="button"
+          <GhostCta
             onClick={loading ? undefined : onClose}
             disabled={loading}
-            className={cn(styles.closeBtn, "cta-ghost")}
+            className={styles.closeBtn}
             aria-label="Close"
           >
             <BottomSheetCloseIcon />
-          </button>
+          </GhostCta>
         </div>
 
         <div className={styles.sections}>
@@ -182,6 +182,6 @@ export function BankLoanDetailBottomSheet({
           Continue with {renderedBank.name}
         </PrimaryCta>
       </div>
-    </BottomSheetShell>
+    </ModalFrame>
   );
 }

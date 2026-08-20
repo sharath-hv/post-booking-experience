@@ -1,8 +1,6 @@
-"use client";
-
 import Image, { type StaticImageData } from "next/image";
 
-import { BookingCarCardDetails } from "@/components/organisms/BookingCarCardDetails";
+import { BookingCarCardDetails } from "@/components/molecules/card/BookingCarCardDetails";
 import { type BookingCarCardDetailsProps } from "@/constants/booking-car-card-content";
 import {
   DEMO_VEHICLE_CHASSIS_NO,
@@ -11,8 +9,7 @@ import {
 } from "@/constants/demo-vehicle-identification";
 import { BOOKING_CONFIRMED_ASSETS } from "@/utils/kyc-booking-confirmed-assets";
 import { cn } from "@/utils/utils";
-import styles from "./BookingCarSummaryCard.module.scss";
-
+import styles from "./CarContentCard.module.scss";
 
 type CarCutoutSrc = string | StaticImageData;
 
@@ -88,7 +85,7 @@ export function BookingCarSummaryCardVisualStage({
   );
 }
 
-type BookingCarSummaryCardProps = {
+export type CarContentCardProps = {
   /** When true, shows engine/chassis rows (post–car-allocation manage booking). */
   showVehicleIdentification?: boolean;
   /** When true with VIN rows, shows car registration number above engine (post-RTO). */
@@ -112,13 +109,13 @@ type BookingCarSummaryCardProps = {
 /**
  * Booked-car summary — hero card (manage booking) or details-only panel (modify-selection).
  */
-export function BookingCarSummaryCard({
+export function CarContentCard({
   showVehicleIdentification = false,
   showVehicleRegistration = false,
   variant = "hero",
   cardDetails,
   carCutoutSrc,
-}: BookingCarSummaryCardProps) {
+}: CarContentCardProps) {
   const details = (
     <BookingCarCardDetails
       engineNo={showVehicleIdentification ? DEMO_VEHICLE_ENGINE_NO : undefined}

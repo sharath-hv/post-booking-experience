@@ -1,4 +1,4 @@
-import { BANK_SHEET_OPTIONS } from "@/components/organisms/payment/payment-choose-assets";
+import { BANK_SHEET_OPTIONS } from "@/constants/payment-bank-sheet";
 
 export function bankForQueryParam(bankId: string | null) {
   if (!bankId) return BANK_SHEET_OPTIONS[0];

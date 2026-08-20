@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-import type { BANK_SHEET_OPTIONS } from "@/components/organisms/payment/payment-choose-assets";
+import type { BANK_SHEET_OPTIONS } from "@/constants/payment-bank-sheet";
 import styles from "./AckoDriveBankPartnerRow.module.scss";
 
 

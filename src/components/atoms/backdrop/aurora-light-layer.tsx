@@ -1,5 +1,3 @@
-"use client";
-
 import { cn } from "@/utils/utils";
 import styles from "./aurora-light-layer.module.scss";
 

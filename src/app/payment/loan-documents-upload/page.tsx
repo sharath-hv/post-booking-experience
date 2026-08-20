@@ -1,22 +1,6 @@
-"use client";
+import { Suspense } from "react";
 
-import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useEffect } from "react";
-
-import { bankForQueryParam } from "@/components/organisms/payment/acko-drive-finance-bank";
-import { loanApplicationDocumentsPath } from "@/helpers/loan-application-urls";
-
-function LegacyLoanDocumentsUploadRedirect() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
-  useEffect(() => {
-    const bank = bankForQueryParam(searchParams.get("bank"));
-    router.replace(loanApplicationDocumentsPath(bank.id));
-  }, [router, searchParams]);
-
-  return null;
-}
+import { LoanApplicationLegacyRedirect } from "@/components/molecules/LoanApplicationLegacyRedirect";
 
 /**
  * Legacy route — redirects into the loan application wizard (documents step).
@@ -24,7 +8,7 @@ function LegacyLoanDocumentsUploadRedirect() {
 export default function LoanDocumentsUploadPage() {
   return (
     <Suspense fallback={null}>
-      <LegacyLoanDocumentsUploadRedirect />
+      <LoanApplicationLegacyRedirect step="documents" />
     </Suspense>
   );
 }

@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { AmountReceivedCard } from "@/components/organisms/artifacts";
 import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
 import { ShimmerInfoCard } from "@/components/molecules/ShimmerInfoCard";
-import { bankForQueryParam } from "@/components/organisms/payment/acko-drive-finance-bank";
+import { bankForQueryParam } from "@/helpers/acko-drive-finance-bank";
 import {
   DEMO_DEFAULT_LOAN_DISBURSEMENT_INR,
   DEMO_LOAN_DISBURSEMENT_TRANSACTION_ID,

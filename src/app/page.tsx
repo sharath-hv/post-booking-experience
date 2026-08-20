@@ -1,14 +1,11 @@
-"use client";
+import { Suspense } from "react";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { LegacyPathRedirect } from "@/components/molecules/LegacyPathRedirect";
 
 export default function Home() {
-  const router = useRouter();
-
-  useEffect(() => {
-    router.replace("/quote");
-  }, [router]);
-
-  return null;
+  return (
+    <Suspense fallback={null}>
+      <LegacyPathRedirect to="/quote" />
+    </Suspense>
+  );
 }

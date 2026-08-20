@@ -1,5 +1,16 @@
-import { QuoteScreen } from "@/components/organisms/quote/QuoteScreen";
+import {
+  QuoteCtaFooter,
+  QuoteDetails,
+  QuoteFlowProvider,
+  QuoteHero,
+} from "@/components/organisms/quote/QuoteScreen";
 
 export default function QuotePage() {
-  return <QuoteScreen />;
+  return (
+    <QuoteFlowProvider>
+      <QuoteHero />
+      <QuoteDetails />
+      <QuoteCtaFooter />
+    </QuoteFlowProvider>
+  );
 }

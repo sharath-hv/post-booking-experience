@@ -1,4 +1,8 @@
-import { ConciergeMoment } from "@/components/organisms/concierge/ConciergeMoment";
+import {
+  ConciergeMomentArtifact,
+  ConciergeMomentProvider,
+  ConciergeMomentTurn,
+} from "@/components/organisms/concierge/ConciergeMoment";
 import { ModifyNoChargesGatedPage } from "@/components/organisms/kyc/ModifyNoChargesGatedPage";
 /**
  * Dealer search — verified; Shivi is out finding the exact car.
@@ -6,7 +10,11 @@ import { ModifyNoChargesGatedPage } from "@/components/organisms/kyc/ModifyNoCha
 export default function KycProcessingPage() {
   return (
     <ModifyNoChargesGatedPage>
-      <ConciergeMoment moment="dealerSearch" />
+      <ConciergeMomentProvider moment="dealerSearch">
+        <ConciergeMomentTurn>
+          <ConciergeMomentArtifact />
+        </ConciergeMomentTurn>
+      </ConciergeMomentProvider>
     </ModifyNoChargesGatedPage>
   );
 }

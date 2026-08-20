@@ -1,4 +1,8 @@
-import { ConciergeMoment } from "@/components/organisms/concierge/ConciergeMoment";
+import {
+  ConciergeMomentArtifact,
+  ConciergeMomentProvider,
+  ConciergeMomentTurn,
+} from "@/components/organisms/concierge/ConciergeMoment";
 import { ModifyNoChargesGatedPage } from "@/components/organisms/kyc/ModifyNoChargesGatedPage";
 /**
  * Dealer found — configuration matched and shortlisted; OTP on Hyundai portal assigns the unit.
@@ -6,7 +10,11 @@ import { ModifyNoChargesGatedPage } from "@/components/organisms/kyc/ModifyNoCha
 export default function KycBookingAcceptedPage() {
   return (
     <ModifyNoChargesGatedPage>
-      <ConciergeMoment moment="dealerFound" />
+      <ConciergeMomentProvider moment="dealerFound">
+        <ConciergeMomentTurn>
+          <ConciergeMomentArtifact />
+        </ConciergeMomentTurn>
+      </ConciergeMomentProvider>
     </ModifyNoChargesGatedPage>
   );
 }

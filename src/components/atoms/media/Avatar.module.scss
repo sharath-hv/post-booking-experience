@@ -1,0 +1,13 @@
+.well {
+  position: relative;
+  height: calc(var(--spacing) * 8);
+  width: calc(var(--spacing) * 8);
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: calc(infinity * 1px);
+  background-color: #f5f5f5;
+}
+
+.cover {
+  object-fit: cover;
+}

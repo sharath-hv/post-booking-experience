@@ -1,5 +1,3 @@
-"use client";
-
 import { Suspense } from "react";
 
 import { FullPaymentConfirmedScreen } from "@/components/organisms/payment/FullPaymentConfirmedScreen";

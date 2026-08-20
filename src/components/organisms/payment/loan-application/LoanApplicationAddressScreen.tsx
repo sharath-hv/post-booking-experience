@@ -1,12 +1,10 @@
 "use client";
 
-import checkboxSelected from "@/assets/Checkbox selected.svg";
 import { cn } from "@/utils/utils";
-import checkboxUnselected from "@/assets/Checkbox unselected.svg";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
+import { Checkbox } from "@/components/atoms/selection/Checkbox";
 import { LoanApplicationApplicantEyebrow } from "@/components/organisms/payment/loan-application/LoanApplicationApplicantEyebrow";
 import { LoanApplicationFixedCta } from "@/components/organisms/payment/loan-application/LoanApplicationFixedCta";
 import { LoanApplicationFormField } from "@/components/organisms/payment/loan-application/LoanApplicationFormField";
@@ -202,14 +200,7 @@ export function LoanApplicationAddressScreen() {
               onChange={(e) => setSameAsPermanent(e.target.checked)}
               className={styles.sr_only_0}
             />
-            <Image
-              src={sameAsPermanent ? checkboxSelected : checkboxUnselected}
-              alt=""
-              width={20}
-              height={20}
-              unoptimized
-              aria-hidden
-            />
+            <Checkbox checked={sameAsPermanent} size={20} />
             <span className={styles.text_sm_1}>
               Same as permanent address
             </span>

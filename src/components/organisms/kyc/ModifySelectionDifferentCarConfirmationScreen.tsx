@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
-import { BookingCarSummaryCard } from "@/components/organisms/BookingCarSummaryCard";
+import { CarContentCard } from "@/components/molecules/card/CarContentCard";
 import { PageLeadHeading } from "@/components/organisms/PageLeadHeading";
 import { StandaloneScreenHeader } from "@/components/organisms/StandaloneScreenHeader";
 import { BOOKING_CONFIRMED_ASSETS } from "@/utils/kyc-booking-confirmed-assets";
@@ -112,7 +112,7 @@ export function ModifySelectionDifferentCarConfirmationScreen({
           className={[styles.payment_success_stagger_1, "payment-success-stagger"].filter(Boolean).join(" ")}
           style={{ animationDelay: `${STAGGER_HERO_MS}ms` }}
         >
-          <BookingCarSummaryCard
+          <CarContentCard
             variant="hero"
             carCutoutSrc={getModifySelectionCarCutoutForColour(selection.colourId)}
             cardDetails={{

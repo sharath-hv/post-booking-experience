@@ -1,0 +1,110 @@
+.chip {
+  display: inline-flex;
+  height: calc(var(--spacing) * 7);
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--spacing);
+  border-radius: 32px;
+  border-style: var(--tw-border-style);
+  border-width: 1px;
+  padding-inline: calc(var(--spacing) * 2);
+  font-size: 12px;
+  font-weight: var(--font-weight-medium);
+  line-height: 16px;
+  color: #121212;
+  transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
+  transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+  transition-duration: var(--tw-duration, var(--default-transition-duration));
+}
+
+.chip:focus-visible {
+  outline-style: var(--tw-outline-style);
+  outline-width: 1px;
+  --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
+  box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  --tw-ring-color: color-mix(in oklab, #121212 20%, transparent);
+  --tw-ring-offset-width: 2px;
+  --tw-ring-offset-shadow: var(--tw-ring-inset,) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+}
+
+.chipSelected {
+  border-color: #121212;
+  background-color: #f3f3f3;
+  padding-right: var(--spacing);
+}
+
+.chipIdle {
+  border-color: #e8e8e8;
+  background-color: var(--color-white);
+}
+
+@media (hover: hover) {
+  .chipIdle:hover {
+    background-color: #fafafa;
+  }
+}
+
+.dismiss {
+  position: relative;
+  display: flex;
+  width: calc(var(--spacing) * 4);
+  height: calc(var(--spacing) * 4);
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.dismissIcon {
+  width: calc(var(--spacing) * 4);
+  height: calc(var(--spacing) * 4);
+}
+
+.segment {
+  border-radius: var(--radius-lg);
+  border-style: var(--tw-border-style);
+  border-width: 1px;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: var(--font-weight-normal);
+  transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
+  transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+  transition-duration: var(--tw-duration, var(--default-transition-duration));
+}
+
+.segment:focus-visible {
+  outline-style: var(--tw-outline-style);
+  outline-width: 1px;
+  --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
+  box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  --tw-ring-color: color-mix(in oklab, #121212 20%, transparent);
+  --tw-ring-offset-width: 2px;
+  --tw-ring-offset-shadow: var(--tw-ring-inset,) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+}
+
+.hEmployment {
+  height: calc(var(--spacing) * 12);
+}
+
+.hTenure {
+  height: calc(var(--spacing) * 10);
+}
+
+.segmentSelected {
+  border-color: #121212;
+  background-color: color-mix(in oklab, #121212 10%, transparent);
+  font-weight: var(--font-weight-medium);
+  color: #040222;
+}
+
+.segmentIdle {
+  border-color: #e8e8e8;
+  background-color: var(--color-white);
+  font-weight: var(--font-weight-normal);
+  color: #040222;
+}
+
+@media (hover: hover) {
+  .segmentIdle:hover {
+    background-color: #fafafa;
+  }
+}

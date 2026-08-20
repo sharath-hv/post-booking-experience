@@ -3,7 +3,7 @@
 import { useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 
-import { bankForQueryParam } from "@/components/organisms/payment/acko-drive-finance-bank";
+import { bankForQueryParam } from "@/helpers/acko-drive-finance-bank";
 
 export function useLoanApplicationBank() {
   const searchParams = useSearchParams();

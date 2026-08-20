@@ -1,5 +1,3 @@
-"use client";
-
 import { Suspense } from "react";
 
 import { MarginMoneySlipActionScreen } from "@/components/organisms/payment/MarginMoneySlipActionScreen";

@@ -2,8 +2,9 @@
 
 import { useCallback } from "react";
 
+import { GhostCta } from "@/components/atoms/cta/GhostCta";
 import { BottomSheetCloseIcon } from "@/components/atoms/sheet/BottomSheetCloseIcon";
-import { BottomSheetShell } from "@/components/organisms/BottomSheetShell";
+import { ModalFrame } from "@/components/molecules/modal/ModalFrame";
 import {
   BOTTOM_SHEET_SCROLL_BODY_CLASS,
   BOTTOM_SHEET_SCROLL_PANEL_CLASS,
@@ -82,7 +83,7 @@ export function QuoteFlowMenuSheet({
   );
 
   return (
-    <BottomSheetShell
+    <ModalFrame
       open={open}
       onClose={onClose}
       showCloseButton={false}
@@ -96,14 +97,13 @@ export function QuoteFlowMenuSheet({
         >
           Switch flows
         </h2>
-        <button
-          type="button"
+        <GhostCta
           onClick={onClose}
-          className={[styles.cta_ghost_8, "cta-ghost"].filter(Boolean).join(" ")}
+          className={styles.cta_ghost_8}
           aria-label="Close"
         >
           <BottomSheetCloseIcon />
-        </button>
+        </GhostCta>
       </header>
 
       <div className={cn(BOTTOM_SHEET_SCROLL_BODY_CLASS, styles.px_5_5)}>
@@ -118,6 +118,6 @@ export function QuoteFlowMenuSheet({
           ))}
         </div>
       </div>
-    </BottomSheetShell>
+    </ModalFrame>
   );
 }

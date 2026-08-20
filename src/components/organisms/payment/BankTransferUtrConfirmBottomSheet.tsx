@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useCallback, useEffect } from "react";
 
 import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
-import { BottomSheetShell } from "@/components/organisms/BottomSheetShell";
+import { ModalFrame } from "@/components/molecules/modal/ModalFrame";
 import { useCtaNavigation } from "@/hooks/use-cta-navigation";
 import { PAYMENT_CHOOSE_ASSETS } from "@/components/organisms/payment/payment-choose-assets";
 import { BOTTOM_SHEET_CTA_STRIP_TOP_CLASS } from "@/lib/layout/bottom-sheet-layout";
@@ -39,7 +39,7 @@ export function BankTransferUtrConfirmBottomSheet({
   }, [onConfirm, start]);
 
   return (
-    <BottomSheetShell
+    <ModalFrame
       open={open}
       onClose={loading ? () => {} : onClose}
       aria-labelledby="bank-transfer-confirm-title"
@@ -77,6 +77,6 @@ export function BankTransferUtrConfirmBottomSheet({
           Yes, bank has transferred
         </PrimaryCta>
       </div>
-    </BottomSheetShell>
+    </ModalFrame>
   );
 }

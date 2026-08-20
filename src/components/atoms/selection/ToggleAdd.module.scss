@@ -1,0 +1,29 @@
+/* Add / Added toggle — insurance addon footer control */
+
+.btn {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  min-width: 70px;
+  border-radius: 8px;
+  border: 1px solid #121212;
+  background-color: #fff;
+  padding: 6px 8px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  color: #121212;
+  cursor: pointer;
+}
+
+.btnSelected {
+  border-color: #bda6e8;
+  background-color: #fff;
+  color: #5920c5;
+}
+
+.btn:focus-visible {
+  outline: 2px solid color-mix(in oklab, #121212 30%, transparent);
+  outline-offset: 2px;
+}

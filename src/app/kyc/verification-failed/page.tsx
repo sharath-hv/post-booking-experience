@@ -1,5 +1,3 @@
-"use client";
-
 import { Suspense } from "react";
 
 import { KycVerificationFailedPageClient } from "@/components/organisms/kyc/KycVerificationFailedPageClient";

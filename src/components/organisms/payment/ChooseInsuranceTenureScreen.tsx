@@ -5,6 +5,7 @@ import { useCallback, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
+import { Radio } from "@/components/atoms/selection/Radio";
 import { PageLeadHeading } from "@/components/organisms/PageLeadHeading";
 import { StandaloneScreenHeader } from "@/components/organisms/StandaloneScreenHeader";
 import { InsuranceTenureCompareBottomSheet } from "@/components/organisms/payment/InsuranceTenureCompareBottomSheet";
@@ -44,23 +45,6 @@ function formatInr(amount: number) {
     currency: "INR",
     maximumFractionDigits: 0,
   }).format(Math.max(0, Math.round(amount)));
-}
-
-function RadioIndicator({ selected }: { selected: boolean }) {
-  const src = selected ? PAYMENT_CHOOSE_ASSETS.radioOn : PAYMENT_CHOOSE_ASSETS.radioOff;
-
-  return (
-    <span className={styles.radioGlyph} aria-hidden>
-      <Image
-        src={src}
-        alt=""
-        fill
-        className={styles.objectContain}
-        unoptimized
-        sizes="16px"
-      />
-    </span>
-  );
 }
 
 type PricedTenureOption = InsuranceTenureOption & {
@@ -112,7 +96,7 @@ function TenureCard({
           </p>
         </div>
         <span className={cn(styles.radio, chip && styles.radioOffset)}>
-          <RadioIndicator selected={selected} />
+          <Radio selected={selected} />
         </span>
       </div>
 

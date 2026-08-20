@@ -19,11 +19,12 @@ import {
   FULL_PAYMENT_CAR_AMOUNT_INR,
 } from "@/constants/loan-amount-demo-constants";
 import {
-  BANK_SHEET_OPTIONS,
   PARTNER_BANK_LOGOS,
   PAYMENT_CHOOSE_ASSETS,
 } from "@/components/organisms/payment/payment-choose-assets";
+import { BANK_SHEET_OPTIONS } from "@/constants/payment-bank-sheet";
 import { estimateMonthlyEmiInr, parseAnnualRateFromLabel } from "@/helpers/loan-emi";
+import { Radio } from "@/components/atoms/selection/Radio";
 import { OVERLAY_GLASS_CARD_CLASS } from "@/helpers/overlay-glass-card";
 import { bankIdToken, bankNameToken, bankSelectionPath } from "@/lib/payment/bank-selection-urls";
 import styles from "./ChoosePaymentOptionsScreen.module.scss";
@@ -52,23 +53,6 @@ const ACKO_EMI_FROM_INR = estimateMonthlyEmiInr(
 const STAGGER_OPTION_STEP_MS = 115;
 
 type PaymentOptionId = "acko_drive" | "self_finance" | "full_payment";
-
-function RadioIndicator({ selected }: { selected: boolean }) {
-  const src = selected ? PAYMENT_CHOOSE_ASSETS.radioOn : PAYMENT_CHOOSE_ASSETS.radioOff;
-
-  return (
-    <span className={styles.relative_0} aria-hidden>
-      <Image
-        src={src}
-        alt=""
-        fill
-        className={styles.object_contain_1}
-        unoptimized
-        sizes="16px"
-      />
-    </span>
-  );
-}
 
 type OptionStat = {
   value: string;
@@ -215,7 +199,7 @@ function OptionCard({
           </p>
         </div>
         <span className={cn(styles.radio_13, chip && styles.radio_13_offset)}>
-          <RadioIndicator selected={selected} />
+          <Radio selected={selected} />
         </span>
       </div>
 

@@ -1,8 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import { useCallback, useState } from "react";
 
+import { GhostCta } from "@/components/atoms/cta/GhostCta";
+import { UploadFileRow } from "@/components/molecules/upload/UploadFileRow";
+import { ShimmerInfoCard, ShimmerInfoCheckList } from "@/components/molecules/ShimmerInfoCard";
 import { UploadSourceBottomSheet } from "@/components/organisms/UploadSourceBottomSheet";
 import {
   type KycDocumentKind,
@@ -12,12 +14,9 @@ import {
   appendKycMockUpload,
 } from "@/services/kyc-mock-upload";
 import type { KycUploadsState } from "@/helpers/kyc-upload-state";
-import { ShimmerInfoCard, ShimmerInfoCheckList } from "@/components/molecules/ShimmerInfoCard";
 import { OVERLAY_GLASS_CARD_CLASS } from "@/helpers/overlay-glass-card";
 import { cn } from "@/utils/utils";
 
-import deleteIcon from "@/assets/Delete.svg";
-import done01Icon from "@/assets/Done.svg";
 import styles from "./document-upload-card-layout.module.scss";
 
 
@@ -32,31 +31,8 @@ type ConciergeDocumentsCardProps = {
   variant?: "default" | "glass";
 };
 
-function UploadSuccessBadge() {
-  return (
-    <span className={styles.relative_0}>
-      <Image src={done01Icon} alt="" fill className={styles.object_contain_1} unoptimized sizes="24px" />
-    </span>
-  );
-}
-
 function FileChip({ name, onRemove }: { name: string; onRemove: () => void }) {
-  return (
-    <div className={styles.relative_2}>
-      <UploadSuccessBadge />
-      <span className={styles.min_w_0_3}>{name}</span>
-      <button
-        type="button"
-        onClick={onRemove}
-        className={[styles.cta_ghost_4, "cta-ghost"].filter(Boolean).join(" ")}
-        aria-label={`Remove ${name}`}
-      >
-        <span className={styles.relative_5}>
-          <Image src={deleteIcon} alt="" fill className={styles.object_contain_1} unoptimized sizes="20px" />
-        </span>
-      </button>
-    </div>
-  );
+  return <UploadFileRow name={name} onRemove={onRemove} />;
 }
 
 type DocumentRowProps = {
@@ -97,13 +73,12 @@ function DocumentRow({
           <p className={styles.mt_0_5_11}>{hint}</p>
         </div>
         {!hasFiles ? (
-          <button
-            type="button"
+          <GhostCta
             onClick={onUpload}
-            className={[styles.cta_ghost_12, "cta-ghost"].filter(Boolean).join(" ")}
+            className={styles.cta_ghost_12}
           >
             {uploadLabel}
-          </button>
+          </GhostCta>
         ) : null}
       </div>
       {hasFiles ? (

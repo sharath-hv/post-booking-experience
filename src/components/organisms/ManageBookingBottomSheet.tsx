@@ -7,15 +7,16 @@ import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import arrowRightIcon from "@/assets/Arrow_right.svg";
 import changeSelectionIcon from "@/assets/change selection.svg";
 import cancelBookingIcon from "@/assets/cancel booking.svg";
-import { BookingCarSummaryCard } from "@/components/organisms/BookingCarSummaryCard";
+import { CarContentCard } from "@/components/molecules/card/CarContentCard";
 import { DEMO_BOOKING_ID } from "@/constants/booking-car-card-content";
 import {
   activeBookingCardDetails,
   activeBookingCarCutoutSrc,
   readActiveBookingSnapshot,
 } from "@/services/active-booking-snapshot";
+import { GhostCta } from "@/components/atoms/cta/GhostCta";
 import { BottomSheetCloseIcon } from "@/components/atoms/sheet/BottomSheetCloseIcon";
-import { BottomSheetShell } from "@/components/organisms/BottomSheetShell";
+import { ModalFrame } from "@/components/molecules/modal/ModalFrame";
 import { IconWell } from "@/components/atoms/icon/IconWell";
 import {
   BOTTOM_SHEET_SCROLL_BODY_CLASS,
@@ -27,7 +28,7 @@ import {
   FULL_PAYMENT_CAR_AMOUNT_INR,
   cashDownPaymentDueInr,
 } from "@/constants/loan-amount-demo-constants";
-import { PaymentSummaryCard } from "@/components/organisms/PaymentSummaryCard";
+import { FinanceCard } from "@/components/molecules/card/FinanceCard";
 import {
   isCancelDemoFlow,
   isModifyNoChargesFlow,
@@ -365,7 +366,7 @@ export function ManageBookingCarCard({
     : baseDetails;
 
   return (
-    <BookingCarSummaryCard
+    <CarContentCard
       showVehicleIdentification={showVehicleIdentification}
       showVehicleRegistration={showVehicleRegistration}
       cardDetails={cardDetails}
@@ -510,7 +511,7 @@ export function ManageBookingSections({
             variant={surface === "overlay" ? "glass" : "default"}
           />
         ) : (
-          <PaymentSummaryCard
+          <FinanceCard
             paymentPaidInr={fullPaymentPlan?.paymentPaidInr}
             amountRemainingInr={fullPaymentPlan?.amountRemainingInr}
             variant={surface === "overlay" ? "glass" : "default"}
@@ -568,7 +569,7 @@ function ManageBookingBottomSheetInner({
   showVehicleIdentification = false,
 }: ManageBookingBottomSheetProps) {
   return (
-    <BottomSheetShell
+    <ModalFrame
       open={open}
       onClose={onClose}
       showCloseButton={false}
@@ -587,14 +588,13 @@ function ManageBookingBottomSheetInner({
             Booking ID: {DEMO_BOOKING_ID}
           </p>
         </div>
-        <button
-          type="button"
+        <GhostCta
           onClick={onClose}
-          className={[styles.cta_ghost_13, "cta-ghost"].filter(Boolean).join(" ")}
+          className={styles.cta_ghost_13}
           aria-label="Close"
         >
           <BottomSheetCloseIcon />
-        </button>
+        </GhostCta>
       </header>
 
       <div
@@ -605,7 +605,7 @@ function ManageBookingBottomSheetInner({
           showVehicleIdentification={showVehicleIdentification}
         />
       </div>
-    </BottomSheetShell>
+    </ModalFrame>
   );
 }
 

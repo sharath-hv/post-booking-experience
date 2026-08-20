@@ -2,9 +2,10 @@
 
 import { useCallback, useEffect, useId, useState } from "react";
 
+import { GhostCta } from "@/components/atoms/cta/GhostCta";
 import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
 import { BottomSheetCloseIcon } from "@/components/atoms/sheet/BottomSheetCloseIcon";
-import { BottomSheetShell } from "@/components/organisms/BottomSheetShell";
+import { ModalFrame } from "@/components/molecules/modal/ModalFrame";
 import { useCtaNavigation } from "@/hooks/use-cta-navigation";
 import { ModifySelectionDeliveryOptionCard } from "@/components/organisms/kyc/ModifySelectionDeliveryOptionCard";
 import { BOOKING_CONFIRMED_ASSETS } from "@/utils/kyc-booking-confirmed-assets";
@@ -75,7 +76,7 @@ export function ModifySelectionDeliveryOptionBottomSheet({
     modifySelectionStandardDeliveryPriceInr(expressDeliveryPriceInr);
 
   return (
-    <BottomSheetShell
+    <ModalFrame
       open={open}
       onClose={loading ? () => {} : onClose}
       showCloseButton={false}
@@ -88,14 +89,13 @@ export function ModifySelectionDeliveryOptionBottomSheet({
         >
           {MODIFY_SELECTION_DELIVERY_SHEET_TITLE}
         </h2>
-        <button
-          type="button"
+        <GhostCta
           onClick={loading ? undefined : onClose}
-          className={[styles.cta_ghost_3, "cta-ghost"].filter(Boolean).join(" ")}
+          className={styles.cta_ghost_3}
           aria-label="Close"
         >
           <BottomSheetCloseIcon />
-        </button>
+        </GhostCta>
       </header>
 
       <div
@@ -137,6 +137,6 @@ export function ModifySelectionDeliveryOptionBottomSheet({
           Confirm
         </PrimaryCta>
       </div>
-    </BottomSheetShell>
+    </ModalFrame>
   );
 }

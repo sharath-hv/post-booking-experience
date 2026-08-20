@@ -218,9 +218,8 @@ export function KycPendingScreen() {
               >
                 {DEADLINE_LINE}
               </p>
-              <button
-                type="button"
-                className={cn(styles.primary_cta_7, "primary-cta", HERO_FADE_DURATION_CLASS, styles.ease_out_7, showCta ? styles.opacity_100_7 : styles.pointer_events_none_7)}
+              <PrimaryCta
+                className={cn(styles.primary_cta_7, HERO_FADE_DURATION_CLASS, styles.ease_out_7, showCta ? styles.opacity_100_7 : styles.pointer_events_none_7)}
                 tabIndex={showCta ? 0 : -1}
                 onClick={() => {
                   if (modifyNoChargesFlow) {
@@ -233,7 +232,7 @@ export function KycPendingScreen() {
                 {modifyNoChargesFlow
                   ? "Modify your booking"
                   : "Start verification • Takes 2 minutes"}
-              </button>
+              </PrimaryCta>
             </div>
           </div>
         </div>

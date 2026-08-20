@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-import type { BANK_SHEET_OPTIONS } from "@/components/organisms/payment/payment-choose-assets";
+import type { BANK_SHEET_OPTIONS } from "@/constants/payment-bank-sheet";
 import { BOOKING_CONFIRMED_ASSETS } from "@/utils/kyc-booking-confirmed-assets";
 import styles from "./LoanApplicationBankSummaryCard.module.scss";
 

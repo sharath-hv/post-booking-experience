@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 
+import { GhostCta } from "@/components/atoms/cta/GhostCta";
 import { BottomSheetCloseIcon } from "@/components/atoms/sheet/BottomSheetCloseIcon";
 import { BottomSheetPortal } from "@/components/atoms/sheet/BottomSheetPortal";
 import {
@@ -10,12 +11,10 @@ import {
 } from "@/lib/layout/bottom-sheet-layout";
 import { cn } from "@/utils/utils";
 
-import styles from "./BottomSheetShell.module.scss";
+import styles from "./ModalFrame.module.scss";
 import { useBottomSheetPresence } from "@/hooks/use-bottom-sheet-presence";
 
-export { BOTTOM_SHEET_TRANSITION_MS, useBottomSheetPresence } from "@/hooks/use-bottom-sheet-presence";
-
-export type BottomSheetShellProps = {
+export type ModalFrameProps = {
   open: boolean;
   onClose: () => void;
   children: ReactNode;
@@ -36,7 +35,7 @@ export type BottomSheetShellProps = {
  * Shared bottom-sheet chrome: body portal, dim scrim, slide-up panel, optional close.
  * Feature sheets supply body + CTA content as children.
  */
-export function BottomSheetShell({
+export function ModalFrame({
   open,
   onClose,
   children,
@@ -45,7 +44,7 @@ export function BottomSheetShell({
   showCloseButton = true,
   "aria-labelledby": ariaLabelledBy,
   "aria-describedby": ariaDescribedBy,
-}: BottomSheetShellProps) {
+}: ModalFrameProps) {
   const { mounted, animateIn } = useBottomSheetPresence(open);
 
   if (!mounted) return null;
@@ -74,14 +73,13 @@ export function BottomSheetShell({
         >
           <div className={styles.panelInner}>
             {showCloseButton ? (
-              <button
-                type="button"
+              <GhostCta
                 onClick={onClose}
-                className={cn(styles.closeAbsolute, "cta-ghost")}
+                className={styles.closeAbsolute}
                 aria-label="Close"
               >
                 <BottomSheetCloseIcon />
-              </button>
+              </GhostCta>
             ) : null}
             {children}
           </div>

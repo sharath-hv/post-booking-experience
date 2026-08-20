@@ -1,8 +1,7 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useState, type ReactNode } from "react";
 
 import {
   AmountReceivedCard,
@@ -23,7 +22,7 @@ import {
   DEMO_VEHICLE_CHASSIS_NO,
   DEMO_VEHICLE_ENGINE_NO,
 } from "@/constants/demo-vehicle-identification";
-import { PaymentSummaryCard } from "@/components/organisms/PaymentSummaryCard";
+import { FinanceCard } from "@/components/molecules/card/FinanceCard";
 import {
   readActiveBookingSnapshot,
   writeActiveBookingSnapshot,
@@ -70,20 +69,48 @@ export type ConciergeMomentProps = {
   moment: ConciergeMomentId;
 };
 
+type ConciergeMomentTurnState = ConciergeTurn & { hideBack?: boolean };
+
+type ConciergeMomentContextValue = {
+  moment: ConciergeMomentId;
+  turn: ConciergeMomentTurnState;
+  onContentShown: (() => void) | undefined;
+};
+
+const ConciergeMomentContext = createContext<ConciergeMomentContextValue | null>(null);
+
+function useConciergeMomentContext() {
+  const value = useContext(ConciergeMomentContext);
+  if (value == null) {
+    throw new Error("Concierge moment sections must render inside ConciergeMomentProvider");
+  }
+  return value;
+}
+
 /**
- * One scripted moment of the concierge journey — resolves the active flow,
- * pulls Shivi's words from the script, and assembles the turn (artifacts,
- * routes, demo time-skips) for the shell.
+ * Shared moment state — no extra DOM. Pages compose turn chrome + artifact.
  */
-export function ConciergeMoment({ moment }: ConciergeMomentProps) {
+export function ConciergeMomentProvider({
+  moment,
+  children,
+}: {
+  moment: ConciergeMomentId;
+  children: ReactNode;
+}) {
   return (
-    <Suspense>
-      <ConciergeMomentInner moment={moment} />
+    <Suspense fallback={null}>
+      <ConciergeMomentInner moment={moment}>{children}</ConciergeMomentInner>
     </Suspense>
   );
 }
 
-function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
+function ConciergeMomentInner({
+  moment,
+  children,
+}: {
+  moment: ConciergeMomentId;
+  children: ReactNode;
+}) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [flow, setFlow] = useState<ExperienceFlow>(DEFAULT_EXPERIENCE_FLOW);
@@ -451,7 +478,7 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
           artifact: (
             <div className={styles.flex_0}>
               {assignedCarCard}
-              <PaymentSummaryCard variant="glass" />
+              <FinanceCard variant="glass" />
             </div>
           ),
           replies: primaryReply(JOURNEY_PATHS.payment.choose),
@@ -574,7 +601,7 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
         // Legacy route — page redirects to choose; keep a safe fallback turn.
         return {
           ...base,
-          artifact: <PaymentSummaryCard variant="glass" />,
+          artifact: <FinanceCard variant="glass" />,
           replies: primaryReply(JOURNEY_PATHS.payment.choose),
         };
     }
@@ -594,20 +621,48 @@ function ConciergeMomentInner({ moment }: ConciergeMomentProps) {
 
   if (shouldRedirectToManualVerification) return null;
 
-  const { hideBack, ...turnProps } = turn;
+  const onContentShown = moment === "arrival" ? () => setArrivalPaid(true) : undefined;
 
+  return (
+    <ConciergeMomentContext.Provider value={{ moment, turn, onContentShown }}>
+      {children}
+    </ConciergeMomentContext.Provider>
+  );
+}
+
+/** Conversation chrome for a scripted moment. */
+export function ConciergeMomentTurn({ children }: { children?: ReactNode }) {
+  const { turn, onContentShown } = useConciergeMomentContext();
+  const { hideBack, artifact, ...turnProps } = turn;
   return (
     <ConciergeTurnShell
       {...turnProps}
       hideBack={hideBack}
-      onContentShown={moment === "arrival" ? () => setArrivalPaid(true) : undefined}
+      artifact={children ?? artifact}
+      onContentShown={onContentShown}
     />
   );
 }
 
-export type { ConciergeMomentId };
-
-/** Convenience wrappers so app pages stay one-liners. */
-export function ConciergeMomentPage({ moment }: { moment: ConciergeMomentId }): ReactNode {
-  return <ConciergeMoment moment={moment} />;
+/** Card / plan / callout the moment hands the user. */
+export function ConciergeMomentArtifact() {
+  const { turn } = useConciergeMomentContext();
+  return turn.artifact ?? null;
 }
+
+/**
+ * One scripted moment of the concierge journey — resolves the active flow,
+ * pulls Shivi's words from the script, and assembles the turn (artifacts,
+ * routes, demo time-skips) for the shell.
+ */
+export function ConciergeMoment({ moment }: ConciergeMomentProps) {
+  return (
+    <ConciergeMomentProvider moment={moment}>
+      <ConciergeMomentTurn>
+        <ConciergeMomentArtifact />
+      </ConciergeMomentTurn>
+    </ConciergeMomentProvider>
+  );
+}
+
+export type { ConciergeMomentId };

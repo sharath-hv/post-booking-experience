@@ -1,4 +1,8 @@
-import { ConciergeMoment } from "@/components/organisms/concierge/ConciergeMoment";
+import {
+  ConciergeMomentArtifact,
+  ConciergeMomentProvider,
+  ConciergeMomentTurn,
+} from "@/components/organisms/concierge/ConciergeMoment";
 import { ModifyNoChargesGatedPage } from "@/components/organisms/kyc/ModifyNoChargesGatedPage";
 
 /**
@@ -8,7 +12,11 @@ import { ModifyNoChargesGatedPage } from "@/components/organisms/kyc/ModifyNoCha
 export default function CarAllocationEarlyConfirmingPage() {
   return (
     <ModifyNoChargesGatedPage>
-      <ConciergeMoment moment="earlyDeliveryConfirming" />
+      <ConciergeMomentProvider moment="earlyDeliveryConfirming">
+        <ConciergeMomentTurn>
+          <ConciergeMomentArtifact />
+        </ConciergeMomentTurn>
+      </ConciergeMomentProvider>
     </ModifyNoChargesGatedPage>
   );
 }

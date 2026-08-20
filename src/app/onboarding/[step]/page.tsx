@@ -1,11 +1,11 @@
 import { notFound, redirect } from "next/navigation";
 
-import { BuyingGuideScreen } from "@/components/organisms/kyc/BuyingGuideScreen";
+import { BuyingGuideContent, BuyingGuideCtaFooter } from "@/components/organisms/kyc/BuyingGuideScreen";
 import {
   BUYING_GUIDE_STEP_COUNT,
   getBuyingGuideStep,
   isBuyingGuideStep,
-} from "@/components/organisms/kyc/buying-guide-content";
+} from "@/constants/buying-guide-content";
 import { BUYING_GUIDE_ENTRY_PATH } from "@/helpers/buying-guide-urls";
 
 type PageProps = {
@@ -39,5 +39,10 @@ export default async function BuyingGuideStepPage({ params }: PageProps) {
     notFound();
   }
 
-  return <BuyingGuideScreen step={step} />;
+  return (
+    <>
+      <BuyingGuideContent step={step} />
+      <BuyingGuideCtaFooter step={step} />
+    </>
+  );
 }

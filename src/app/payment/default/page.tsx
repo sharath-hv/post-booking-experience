@@ -1,8 +1,6 @@
-"use client";
+import { Suspense } from "react";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-
+import { LegacyPathRedirect } from "@/components/molecules/LegacyPathRedirect";
 import { JOURNEY_PATHS } from "@/helpers/journey-routes";
 
 /**
@@ -10,11 +8,9 @@ import { JOURNEY_PATHS } from "@/helpers/journey-routes";
  * booking-confirmed / allocation-confirmed; continue straight to options.
  */
 export default function PaymentDefaultPage() {
-  const router = useRouter();
-
-  useEffect(() => {
-    router.replace(JOURNEY_PATHS.payment.choose);
-  }, [router]);
-
-  return null;
+  return (
+    <Suspense fallback={null}>
+      <LegacyPathRedirect to={JOURNEY_PATHS.payment.choose} />
+    </Suspense>
+  );
 }

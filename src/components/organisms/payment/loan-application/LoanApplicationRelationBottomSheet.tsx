@@ -2,7 +2,7 @@
 
 import { useId } from "react";
 
-import { BottomSheetShell } from "@/components/organisms/BottomSheetShell";
+import { ModalFrame } from "@/components/molecules/modal/ModalFrame";
 import { LoanApplicationSegmentChip } from "@/components/organisms/payment/loan-application/LoanApplicationSegmentChip";
 import {
   LOAN_APPLICATION_CO_APPLICANT_RELATION_OPTIONS,
@@ -30,7 +30,7 @@ export function LoanApplicationRelationBottomSheet({
   const titleId = useId();
 
   return (
-    <BottomSheetShell
+    <ModalFrame
       open={open}
       onClose={onClose}
       constrainHeight={false}
@@ -57,6 +57,6 @@ export function LoanApplicationRelationBottomSheet({
           ))}
         </div>
       </div>
-    </BottomSheetShell>
+    </ModalFrame>
   );
 }

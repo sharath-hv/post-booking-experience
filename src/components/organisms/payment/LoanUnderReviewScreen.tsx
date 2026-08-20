@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 
 import { AmountReceivedCard } from "@/components/organisms/artifacts";
-import { bankForQueryParam } from "@/components/organisms/payment/acko-drive-finance-bank";
+import { bankForQueryParam } from "@/helpers/acko-drive-finance-bank";
 import { BookingProcessingScreen } from "@/components/organisms/BookingProcessingScreen";
 import {
   ACKO_LOAN_DOWN_PAYMENT_INR,

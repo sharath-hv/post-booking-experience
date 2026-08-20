@@ -1,10 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import { useCallback, useMemo, useRef, useState } from "react";
 
-import deleteIcon from "@/assets/Delete.svg";
-import done01Icon from "@/assets/Done.svg";
+import { GhostCta } from "@/components/atoms/cta/GhostCta";
+import { UploadFileRow } from "@/components/molecules/upload/UploadFileRow";
 
 import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
 import docStyles from "@/components/organisms/document-upload-card-layout.module.scss";
@@ -78,48 +77,22 @@ export function CarDeliveryRtoAdditionalDocumentsScreen() {
                   </p>
                 </div>
                 {!hasFiles ? (
-                  <button
-                    type="button"
+                  <GhostCta
                     onClick={() => setSourceSheetOpen(true)}
-                    className={[docStyles.cta_ghost_12, "cta-ghost"].filter(Boolean).join(" ")}
+                    className={docStyles.cta_ghost_12}
                   >
                     Upload
-                  </button>
+                  </GhostCta>
                 ) : null}
               </div>
               {hasFiles ? (
                 <div className={docStyles.mt_2_5_13}>
                   {files.map((file) => (
-                    <div key={file.id} className={docStyles.relative_2}>
-                      <span className={docStyles.relative_0}>
-                        <Image
-                          src={done01Icon}
-                          alt=""
-                          fill
-                          className={docStyles.object_contain_1}
-                          unoptimized
-                          sizes="24px"
-                        />
-                      </span>
-                      <span className={docStyles.min_w_0_3}>{file.name}</span>
-                      <button
-                        type="button"
-                        onClick={() => setFiles((prev) => prev.filter((f) => f.id !== file.id))}
-                        className={[docStyles.cta_ghost_4, "cta-ghost"].filter(Boolean).join(" ")}
-                        aria-label={`Remove ${file.name}`}
-                      >
-                        <span className={docStyles.relative_5}>
-                          <Image
-                            src={deleteIcon}
-                            alt=""
-                            fill
-                            className={docStyles.object_contain_1}
-                            unoptimized
-                            sizes="20px"
-                          />
-                        </span>
-                      </button>
-                    </div>
+                    <UploadFileRow
+                      key={file.id}
+                      name={file.name}
+                      onRemove={() => setFiles((prev) => prev.filter((f) => f.id !== file.id))}
+                    />
                   ))}
                   <button
                     type="button"

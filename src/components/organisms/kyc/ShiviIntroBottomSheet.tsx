@@ -4,12 +4,13 @@ import Image from "next/image";
 import { useCallback } from "react";
 
 import shiviAvatar from "@/assets/Shivi image.png";
+import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
 import { ShiviIntroCoachmark } from "@/components/organisms/kyc/ShiviIntroCoachmark";
 import { BottomSheetPortal } from "@/components/atoms/sheet/BottomSheetPortal";
 import {
   BOTTOM_SHEET_OVERLAY_Z_CLASS,
 } from "@/lib/layout/bottom-sheet-layout";
-import { useBottomSheetPresence } from "@/components/organisms/BottomSheetShell";
+import { useBottomSheetPresence } from "@/hooks/use-bottom-sheet-presence";
 import { cn } from "@/utils/utils";
 
 import styles from "./ShiviIntroBottomSheet.module.scss";
@@ -75,13 +76,12 @@ export function ShiviIntroBottomSheet({ open, onClose }: ShiviIntroBottomSheetPr
               always available if you need help.
             </p>
 
-            <button
-              type="button"
-              className={[styles.primary_cta_5, "primary-cta"].filter(Boolean).join(" ")}
+            <PrimaryCta
+              className={styles.primary_cta_5}
               onClick={onGotIt}
             >
               Got it
-            </button>
+            </PrimaryCta>
           </div>
         </div>
       </div>

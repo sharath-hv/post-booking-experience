@@ -1,12 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import { useCallback, useEffect, useId, useState } from "react";
 
-import checkboxSelected from "@/assets/Checkbox selected.svg";
-import checkboxUnselected from "@/assets/Checkbox unselected.svg";
 import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
-import { BottomSheetShell } from "@/components/organisms/BottomSheetShell";
+import { Checkbox } from "@/components/atoms/selection/Checkbox";
+import { ModalFrame } from "@/components/molecules/modal/ModalFrame";
 import { useCtaNavigation } from "@/hooks/use-cta-navigation";
 import {
   CANCEL_BOOKING_REASON_OPTIONS,
@@ -41,16 +39,7 @@ function CancelBookingReasonOptionRow({
           : styles.border_e8e8e8__12,
       )}
     >
-      <span className={styles.relative_0} aria-hidden>
-        <Image
-          src={selected ? checkboxSelected : checkboxUnselected}
-          alt=""
-          fill
-          className={styles.object_contain_1}
-          unoptimized
-          sizes="16px"
-        />
-      </span>
+      <Checkbox checked={selected} />
       <span className={styles.min_w_0_2}>{label}</span>
     </button>
   );
@@ -95,7 +84,7 @@ export function CancelBookingReasonBottomSheet({
   }, [navigatesOnConfirm, onConfirm, selectedReason, start]);
 
   return (
-    <BottomSheetShell
+    <ModalFrame
       open={open}
       onClose={loading ? () => {} : onClose}
       constrainHeight={false}
@@ -139,6 +128,6 @@ export function CancelBookingReasonBottomSheet({
           {CANCEL_BOOKING_REASON_SHEET_CTA}
         </PrimaryCta>
       </div>
-    </BottomSheetShell>
+    </ModalFrame>
   );
 }

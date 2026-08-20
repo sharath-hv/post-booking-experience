@@ -7,7 +7,7 @@ import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
 import { AckoDriveBankPartnerRow } from "@/components/organisms/payment/AckoDriveBankPartnerRow";
 import { LoanApplicationCoApplicantBottomSheet } from "@/components/organisms/payment/loan-application/LoanApplicationCoApplicantBottomSheet";
 import { LoanDocumentsChecklistCard } from "@/components/organisms/payment/LoanDocumentsChecklistCard";
-import { bankForQueryParam } from "@/components/organisms/payment/acko-drive-finance-bank";
+import { bankForQueryParam } from "@/helpers/acko-drive-finance-bank";
 import { OVERLAY_GLASS_CARD_CLASS } from "@/helpers/overlay-glass-card";
 import {
   createDefaultCoApplicantProfile,

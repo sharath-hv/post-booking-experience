@@ -1,4 +1,4 @@
-import { BANK_SHEET_OPTIONS } from "@/components/organisms/payment/payment-choose-assets";
+import { BANK_SHEET_OPTIONS } from "@/constants/payment-bank-sheet";
 
 /**
  * Flip to `true` to surface pre-approved banners, sort-to-top, and detail chips.

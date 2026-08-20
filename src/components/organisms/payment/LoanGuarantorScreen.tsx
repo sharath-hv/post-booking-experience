@@ -9,7 +9,7 @@ import { PageLeadHeading } from "@/components/organisms/PageLeadHeading";
 import { StandaloneScreenHeader } from "@/components/organisms/StandaloneScreenHeader";
 import { UploadSourceBottomSheet } from "@/components/organisms/UploadSourceBottomSheet";
 import { LoanApplicationFormField } from "@/components/organisms/payment/loan-application/LoanApplicationFormField";
-import { bankForQueryParam } from "@/components/organisms/payment/acko-drive-finance-bank";
+import { bankForQueryParam } from "@/helpers/acko-drive-finance-bank";
 import { KYC_MOCK_UPLOAD_NAMES, type KycUploadSource } from "@/constants/kyc-upload-content";
 import { LOAN_APPLICATION_IDENTITY_DOCUMENTS } from "@/constants/loan-application-documents-content";
 import { MODIFY_SELECTION_PAGE_SHELL_CLASS } from "@/constants/modify-selection-content";

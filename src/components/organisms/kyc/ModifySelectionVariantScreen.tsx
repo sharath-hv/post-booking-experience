@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
-import { BookingCarSummaryCard } from "@/components/organisms/BookingCarSummaryCard";
+import { CarContentCard } from "@/components/molecules/card/CarContentCard";
 import { PageLeadHeading } from "@/components/organisms/PageLeadHeading";
 import { StandaloneScreenHeader } from "@/components/organisms/StandaloneScreenHeader";
 import { ModifySelectionVariantCard } from "@/components/organisms/kyc/ModifySelectionVariantCard";
@@ -99,7 +99,7 @@ export function ModifySelectionVariantScreen() {
             {MODIFY_SELECTION_CURRENT_SELECTION_HEADING}
           </h2>
           <div className={styles.mt_3_3}>
-            <BookingCarSummaryCard variant="detailsOnly" />
+            <CarContentCard variant="detailsOnly" />
           </div>
         </section>
 

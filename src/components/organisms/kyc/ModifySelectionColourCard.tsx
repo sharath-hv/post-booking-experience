@@ -2,10 +2,8 @@
 
 import Image from "next/image";
 
-import {
-  ModifySelectionRadioIndicator,
-  modifySelectionSelectableCardClassName,
-} from "@/components/molecules/modify-selection-option-card-ui";
+import { Radio } from "@/components/atoms/selection/Radio";
+import { modifySelectionSelectableCardClassName } from "@/components/molecules/modify-selection-option-card-ui";
 import { BOOKING_CONFIRMED_ASSETS } from "@/utils/kyc-booking-confirmed-assets";
 import {
   BOOKING_EXPRESS_DELIVERY_TEXT_CLASS,
@@ -103,7 +101,7 @@ export function ModifySelectionColourCard({
 
       {!readOnly ? (
         <span className={styles.mt_0_5_13}>
-          <ModifySelectionRadioIndicator selected={selected} />
+          <Radio selected={selected} />
         </span>
       ) : null}
     </div>

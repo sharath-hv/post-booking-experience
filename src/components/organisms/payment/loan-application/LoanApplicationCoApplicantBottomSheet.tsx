@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import coApplicantIcon from "@/assets/co-applicant.svg";
 import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
-import { BottomSheetShell } from "@/components/organisms/BottomSheetShell";
+import { ModalFrame } from "@/components/molecules/modal/ModalFrame";
 import { useCtaNavigation } from "@/hooks/use-cta-navigation";
 import { LoanApplicationSegmentChip } from "@/components/organisms/payment/loan-application/LoanApplicationSegmentChip";
 import {
@@ -49,7 +49,7 @@ export function LoanApplicationCoApplicantBottomSheet({
   }, [choice, loading, onConfirm, start]);
 
   return (
-    <BottomSheetShell
+    <ModalFrame
       open={open}
       onClose={loading ? () => {} : onClose}
       aria-labelledby="loan-co-applicant-title"
@@ -113,6 +113,6 @@ export function LoanApplicationCoApplicantBottomSheet({
           {choice === "yes" ? "Start with co-applicant" : "Start application"}
         </PrimaryCta>
       </div>
-    </BottomSheetShell>
+    </ModalFrame>
   );
 }

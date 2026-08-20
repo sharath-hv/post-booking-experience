@@ -1,4 +1,8 @@
-import { ConciergeVerifyIdentityScreen } from "@/components/organisms/concierge/ConciergeVerifyIdentityScreen";
+import {
+  IdentityCollectProvider,
+  IdentityDocumentsSection,
+  IdentityTurnSection,
+} from "@/components/organisms/concierge/ConciergeVerifyIdentityScreen";
 
 /**
  * Identity turn — Shivi asks for PAN + Aadhaar and collects them inline.
@@ -6,5 +10,11 @@ import { ConciergeVerifyIdentityScreen } from "@/components/organisms/concierge/
  * Verification outcomes stay under `/kyc/verification-*`.
  */
 export default function IdentityPage() {
-  return <ConciergeVerifyIdentityScreen />;
+  return (
+    <IdentityCollectProvider>
+      <IdentityTurnSection>
+        <IdentityDocumentsSection />
+      </IdentityTurnSection>
+    </IdentityCollectProvider>
+  );
 }

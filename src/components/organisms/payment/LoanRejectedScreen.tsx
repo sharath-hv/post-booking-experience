@@ -10,9 +10,10 @@ import moneyIcon from "@/assets/money.svg";
 
 import { LoanDecisionDeadlineFootnote } from "@/components/organisms/concierge/DeadlineCountdownFootnote";
 import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
-import { bankForQueryParam } from "@/components/organisms/payment/acko-drive-finance-bank";
+import { bankForQueryParam } from "@/helpers/acko-drive-finance-bank";
 import { LoanRejectedOutcomeSwitcher } from "@/components/organisms/payment/LoanRejectedOutcomeSwitcher";
-import { BANK_SHEET_OPTIONS, PAYMENT_CHOOSE_ASSETS } from "@/components/organisms/payment/payment-choose-assets";
+import { PAYMENT_CHOOSE_ASSETS } from "@/components/organisms/payment/payment-choose-assets";
+import { BANK_SHEET_OPTIONS } from "@/constants/payment-bank-sheet";
 import { cancelBookingRefundCancellationFeeDisplay } from "@/constants/cancel-booking-content";
 import {
   BANK_DISBURSEMENT_INR,
@@ -34,6 +35,7 @@ import {
   resolveLoanRejectedOutcome,
   type LoanRejectedOutcome,
 } from "@/constants/loan-rejected-content";
+import { Radio } from "@/components/atoms/selection/Radio";
 import { OVERLAY_GLASS_CARD_CLASS } from "@/helpers/overlay-glass-card";
 import { BOOKING_LOCK_AMOUNT_INR } from "@/helpers/paymentUrls";
 import { cn } from "@/utils/utils";
@@ -62,16 +64,6 @@ function enableCoApplicantPass() {
     next.coApplicant = createDefaultCoApplicantProfile();
   }
   writeLoanApplicationState(next);
-}
-
-/** Radio glyph — same on/off marks as the other selectable-card screens. */
-function RadioIndicator({ selected }: { selected: boolean }) {
-  const src = selected ? PAYMENT_CHOOSE_ASSETS.radioOn : PAYMENT_CHOOSE_ASSETS.radioOff;
-  return (
-    <span className={styles.radio} aria-hidden>
-      <Image src={src} alt="" fill className={styles.radioImg} unoptimized sizes="16px" />
-    </span>
-  );
 }
 
 /** Colour illustration slot — self finance, full cash, co-applicant, cancel. */
@@ -164,7 +156,7 @@ function LoanRejectedOptionCard({
       <div className={styles.optionHead}>
         {illustration}
         <span className={styles.optionRadio}>
-          <RadioIndicator selected={selected} />
+          <Radio selected={selected} />
         </span>
       </div>
       <p className={styles.optionTitle}>{title}</p>

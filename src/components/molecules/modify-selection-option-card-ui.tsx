@@ -1,11 +1,5 @@
-"use client";
-
-import Image from "next/image";
-
 import { cn } from "@/utils/utils";
 
-import radioOffIcon from "@/assets/Radio button off.svg";
-import radioOnIcon from "@/assets/Radio button on.svg";
 import styles from "./modify-selection-option-card-ui.module.scss";
 
 
@@ -27,17 +21,6 @@ export function modifySelectionSelectableCardClass(selected: boolean, readOnly =
     return styles.modifySelectionCardIdle;
   }
   return selected ? styles.modifySelectionCardSelected : styles.modifySelectionCardIdle;
-}
-
-/** Radio glyph — shared by the modify-selection hub and downstream pickers. */
-export function ModifySelectionRadioIndicator({ selected }: { selected: boolean }) {
-  const src = selected ? radioOnIcon : radioOffIcon;
-
-  return (
-    <span className={styles.relative_0} aria-hidden>
-      <Image src={src} alt="" fill className={styles.object_contain_1} unoptimized sizes="16px" />
-    </span>
-  );
 }
 
 export function modifySelectionSelectableCardClassName(

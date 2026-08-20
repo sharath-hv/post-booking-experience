@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useMemo, useState } from "react";
 
 import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
-import { BookingCarSummaryCard } from "@/components/organisms/BookingCarSummaryCard";
+import { CarContentCard } from "@/components/molecules/card/CarContentCard";
 import { PageLeadHeading } from "@/components/organisms/PageLeadHeading";
 import { StandaloneScreenHeader } from "@/components/organisms/StandaloneScreenHeader";
 import { ModifySelectionColourCard } from "@/components/organisms/kyc/ModifySelectionColourCard";
@@ -117,7 +117,7 @@ export function ModifySelectionColourScreen() {
           >
             {MODIFY_SELECTION_CURRENT_SELECTION_HEADING}
           </h2>
-          <BookingCarSummaryCard variant="detailsOnly" />
+          <CarContentCard variant="detailsOnly" />
         </section>
 
         <section

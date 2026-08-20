@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import { Fragment, useEffect, useRef, useState, type ReactNode } from "react";
 
-import shiviAvatar from "@/assets/Shivi image.png";
-import { WordByWordLine } from "@/components/molecules/WordByWordLine";
+import { ShiviContentBody } from "@/components/molecules/shivi/ShiviContentBody";
+import { ShiviHeader } from "@/components/molecules/shivi/ShiviHeader";
+import { ShiviLeadTitle } from "@/components/molecules/shivi/ShiviLeadTitle";
 import { instantRevealEnabled } from "@/lib/concierge/instant";
 import { cn } from "@/utils/utils";
 import styles from "./ShiviDialogue.module.scss";
@@ -17,11 +17,6 @@ const BODY_WORD_DELAY_MS = 65;
 const LINE_GAP_MS = 280;
 /** Longer beat after the lead when something lands between her words. */
 const AFTER_LEAD_SLOT_GAP_MS = 700;
-
-const LEAD_CLASS = styles.lead;
-const BODY_CLASS = styles.body;
-/** Last line acting as a header for the card/artifact directly below it. */
-const HEADING_CLASS = styles.heading;
 
 export type ShiviDialogueProps = {
   /** Her lines for this turn — first line is the lead (large), rest are body. */
@@ -109,55 +104,30 @@ export function ShiviDialogue({
 
   return (
     <div className={cn(styles.flex_8, className)}>
-      <div
-        className={cn(
-          styles.flex_9,
-          startWhen ? styles.opacity_100_10 : styles.opacity_0_11
-        )}
-      >
-        <span className={styles.relative_0}>
-          <Image
-            src={shiviAvatar}
-            alt=""
-            fill
-            className={styles.object_cover_1}
-            unoptimized
-            sizes="32px"
-            priority
-          />
-        </span>
-        <div className={styles.flex_2}>
-          <span className={styles.text_sm_3}>Shivi</span>
-          <span aria-hidden className={styles.text_xs_4}>
-            ·
-          </span>
-          <span className={styles.text_xs_4}>ACKO Drive</span>
-        </div>
-      </div>
+      <ShiviHeader
+        className={startWhen ? styles.opacity_100_10 : styles.opacity_0_11}
+      />
 
       <div className={styles.mt_4_5}>
         {lines.map((line, idx) => {
           if (idx >= activeLines) return null;
           const isHeading = headingLastLine && idx > 0 && idx === lines.length - 1;
-          const lineClass = idx === 0 ? LEAD_CLASS : isHeading ? HEADING_CLASS : BODY_CLASS;
-          const lineTag = idx === 0 ? "h1" : isHeading ? "h2" : "p";
+          const animate = !(skipAnimation || idx < doneLines);
           const lineNode =
-            skipAnimation || idx < doneLines ? (
-              idx === 0 ? (
-                <h1 className={lineClass}>{line}</h1>
-              ) : isHeading ? (
-                <h2 className={lineClass}>{line}</h2>
-              ) : (
-                <p className={lineClass}>{line}</p>
-              )
-            ) : (
-              <WordByWordLine
+            idx === 0 ? (
+              <ShiviLeadTitle
                 text={line}
-                as={lineTag}
-                wordDelayMs={idx === 0 ? LEAD_WORD_DELAY_MS : BODY_WORD_DELAY_MS}
+                animate={animate}
+                wordDelayMs={LEAD_WORD_DELAY_MS}
                 onComplete={() => onLineComplete(idx)}
-                ariaLabel={line}
-                className={lineClass}
+              />
+            ) : (
+              <ShiviContentBody
+                text={line}
+                variant={isHeading ? "heading" : "body"}
+                animate={animate}
+                wordDelayMs={BODY_WORD_DELAY_MS}
+                onComplete={() => onLineComplete(idx)}
               />
             );
           return (

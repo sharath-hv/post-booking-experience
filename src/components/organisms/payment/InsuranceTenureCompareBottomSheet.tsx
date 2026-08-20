@@ -8,8 +8,10 @@ import {
   type InsuranceAddonId,
   type InsuranceTenureCompareRow,
 } from "@/components/organisms/payment/insurance-coverage-content";
+import { GhostCta } from "@/components/atoms/cta/GhostCta";
+import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
 import { BottomSheetCloseIcon } from "@/components/atoms/sheet/BottomSheetCloseIcon";
-import { BottomSheetShell } from "@/components/organisms/BottomSheetShell";
+import { ModalFrame } from "@/components/molecules/modal/ModalFrame";
 import {
   BOTTOM_SHEET_BODY_BEFORE_CTA_CLASS,
   BOTTOM_SHEET_CTA_STRIP_TOP_CLASS,
@@ -103,7 +105,7 @@ export function InsuranceTenureCompareBottomSheet({
   const compareRows = insuranceTenureCompareRowsForSelection(selectedAddonIds);
 
   return (
-    <BottomSheetShell
+    <ModalFrame
       open={open}
       onClose={onClose}
       showCloseButton={false}
@@ -117,14 +119,13 @@ export function InsuranceTenureCompareBottomSheet({
           >
             {INSURANCE_TENURE_COMPARE_SHEET_TITLE}
           </h2>
-          <button
-            type="button"
+          <GhostCta
             onClick={onClose}
-            className={[styles.cta_ghost_25, "cta-ghost"].filter(Boolean).join(" ")}
+            className={styles.cta_ghost_25}
             aria-label="Close"
           >
             <BottomSheetCloseIcon />
-          </button>
+          </GhostCta>
         </div>
         <div
           aria-hidden
@@ -147,10 +148,10 @@ export function InsuranceTenureCompareBottomSheet({
           aria-hidden
           className={styles.pointer_events_none_31}
         />
-        <button type="button" onClick={onClose} className={[styles.primary_cta_32, "primary-cta"].filter(Boolean).join(" ")}>
+        <PrimaryCta onClick={onClose} className={styles.primary_cta_32}>
           Okay
-        </button>
+        </PrimaryCta>
       </div>
-    </BottomSheetShell>
+    </ModalFrame>
   );
 }

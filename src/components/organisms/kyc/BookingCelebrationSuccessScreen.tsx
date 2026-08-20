@@ -6,7 +6,7 @@ import { useCallback, useEffect, useRef, useState, type ReactNode } from "react"
 import Lottie from "lottie-react";
 
 import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
-import { BookingCarCardDetails } from "@/components/organisms/BookingCarCardDetails";
+import { BookingCarCardDetails } from "@/components/molecules/card/BookingCarCardDetails";
 import {
   BOOKING_CAR_CARD_SHELL_CLASS,
   BOOKING_CAR_HERO_HEIGHT_CLASS,
@@ -16,7 +16,7 @@ import {
   BOOKING_CAR_SUMMARY_PANEL_POSITION_CLASS,
   BookingCarCardBackdrop,
   BookingCarSummaryCardVisualStage,
-} from "@/components/organisms/BookingCarSummaryCard";
+} from "@/components/molecules/card/CarContentCard";
 import { BOOKING_CONFIRMED_ASSETS } from "@/utils/kyc-booking-confirmed-assets";
 import {
   CELEBRATION_LOTTIE_TO_HEADLINE_MT,

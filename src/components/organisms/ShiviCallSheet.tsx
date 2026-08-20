@@ -4,7 +4,8 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 import shiviAvatar from "@/assets/Shivi image.png";
-import { BottomSheetShell } from "@/components/organisms/BottomSheetShell";
+import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
+import { ModalFrame } from "@/components/molecules/modal/ModalFrame";
 import {
   SHIVI_BUSINESS_HOUR_END,
   SHIVI_BUSINESS_HOUR_START,
@@ -40,7 +41,7 @@ export function ShiviCallSheet({ open, onClose }: ShiviCallSheetProps) {
   }, [open]);
 
   return (
-    <BottomSheetShell
+    <ModalFrame
       open={open}
       onClose={onClose}
       showCloseButton={false}
@@ -85,14 +86,13 @@ export function ShiviCallSheet({ open, onClose }: ShiviCallSheetProps) {
             : `I'm away outside business hours (${BUSINESS_HOURS_LABEL} IST). Expect my call when we're open. It comes from ACKO Drive on your number ending in 21.`}
         </p>
 
-        <button
-          type="button"
-          className={cn(styles.primary_cta_5, "primary-cta")}
+        <PrimaryCta
+          className={styles.primary_cta_5}
           onClick={onClose}
         >
           Got it
-        </button>
+        </PrimaryCta>
       </div>
-    </BottomSheetShell>
+    </ModalFrame>
   );
 }

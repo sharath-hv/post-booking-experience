@@ -15,8 +15,10 @@ import {
   type InsuranceCoverageItem,
   type InsuranceTenureId,
 } from "@/components/organisms/payment/insurance-coverage-content";
+import { GhostCta } from "@/components/atoms/cta/GhostCta";
+import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
 import { BottomSheetCloseIcon } from "@/components/atoms/sheet/BottomSheetCloseIcon";
-import { BottomSheetShell } from "@/components/organisms/BottomSheetShell";
+import { ModalFrame } from "@/components/molecules/modal/ModalFrame";
 import {
   BOTTOM_SHEET_BODY_BEFORE_CTA_CLASS,
   BOTTOM_SHEET_CTA_STRIP_TOP_CLASS,
@@ -101,7 +103,7 @@ export function InsuranceCoverageBottomSheet({
   const selectedAddons = INSURANCE_OPTIONAL_ADDONS.filter((a) => selectedAddonSet.has(a.id));
 
   return (
-    <BottomSheetShell
+    <ModalFrame
       open={open}
       onClose={onClose}
       showCloseButton={false}
@@ -112,14 +114,13 @@ export function InsuranceCoverageBottomSheet({
           <h2 id="insurance-coverage-sheet-title" className={styles.title}>
             {owned ? INSURANCE_OWNED_SHEET_TITLE : INSURANCE_COVERAGE_SHEET_TITLE}
           </h2>
-          <button
-            type="button"
+          <GhostCta
             onClick={onClose}
-            className={cn(styles.closeBtn, "cta-ghost")}
+            className={styles.closeBtn}
             aria-label="Close"
           >
             <BottomSheetCloseIcon />
-          </button>
+          </GhostCta>
         </div>
         <div aria-hidden className={styles.headerFade} />
       </header>
@@ -173,14 +174,13 @@ export function InsuranceCoverageBottomSheet({
 
       <div className={cn(styles.footer, BOTTOM_SHEET_CTA_STRIP_TOP_CLASS)}>
         <div aria-hidden className={styles.footerFade} />
-        <button
-          type="button"
+        <PrimaryCta
           onClick={onClose}
-          className={cn(styles.confirmCta, "primary-cta")}
+          className={styles.confirmCta}
         >
           {owned ? "Got it" : "Okay"}
-        </button>
+        </PrimaryCta>
       </div>
-    </BottomSheetShell>
+    </ModalFrame>
   );
 }

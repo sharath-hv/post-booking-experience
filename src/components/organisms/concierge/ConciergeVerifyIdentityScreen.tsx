@@ -1,6 +1,17 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type Dispatch,
+  type MutableRefObject,
+  type ReactNode,
+  type SetStateAction,
+} from "react";
 
 import { ConciergeDocumentsCard } from "@/components/organisms/ConciergeDocumentsCard";
 import { ConciergeTurnShell } from "@/components/organisms/ConciergeTurnShell";
@@ -13,12 +24,29 @@ import {
   type KycUploadsState,
 } from "@/helpers/kyc-upload-state";
 
-/**
- * Identity turn — Shivi asks for PAN + Aadhaar and the user hands them over
- * right here: upload cards are the conversation, not a separate form page.
- * The reply stays unanswerable until both documents are in.
- */
-export function ConciergeVerifyIdentityScreen() {
+type IdentityCollectContextValue = {
+  uploads: KycUploadsState;
+  setUploads: Dispatch<SetStateAction<KycUploadsState>>;
+  mockUploadCounterRef: MutableRefObject<number>;
+  replies: {
+    label: string;
+    href: string;
+    echo?: string;
+    disabled: boolean;
+  }[];
+};
+
+const IdentityCollectContext = createContext<IdentityCollectContextValue | null>(null);
+
+function useIdentityCollect() {
+  const value = useContext(IdentityCollectContext);
+  if (value == null) {
+    throw new Error("Identity collect sections must render inside IdentityCollectProvider");
+  }
+  return value;
+}
+
+export function IdentityCollectProvider({ children }: { children: ReactNode }) {
   const mockUploadCounterRef = useRef(0);
   const hasHydratedUploadsRef = useRef(false);
   const [uploads, setUploads] = useState<KycUploadsState>(createEmptyKycUploads);
@@ -54,6 +82,21 @@ export function ConciergeVerifyIdentityScreen() {
     [canSubmit],
   );
 
+  const value = useMemo(
+    () => ({ uploads, setUploads, mockUploadCounterRef, replies }),
+    [uploads, replies],
+  );
+
+  return (
+    <IdentityCollectContext.Provider value={value}>
+      {children}
+    </IdentityCollectContext.Provider>
+  );
+}
+
+/** Conversation chrome for the identity collect turn. */
+export function IdentityTurnSection({ children }: { children: ReactNode }) {
+  const { replies } = useIdentityCollect();
   return (
     <ConciergeTurnShell
       dayStamp={VERIFY_IDENTITY_WORDS.dayStamp}
@@ -61,14 +104,30 @@ export function ConciergeVerifyIdentityScreen() {
       footnote={VERIFY_IDENTITY_WORDS.footnote}
       callLabel={VERIFY_IDENTITY_WORDS.callLabel}
       replies={replies}
-      artifact={
-        <ConciergeDocumentsCard
-          uploads={uploads}
-          onUploadsChange={setUploads}
-          mockUploadCounterRef={mockUploadCounterRef}
-          variant="glass"
-        />
-      }
+      artifact={children}
     />
+  );
+}
+
+/** PAN + Aadhaar upload cards. */
+export function IdentityDocumentsSection() {
+  const { uploads, setUploads, mockUploadCounterRef } = useIdentityCollect();
+  return (
+    <ConciergeDocumentsCard
+      uploads={uploads}
+      onUploadsChange={setUploads}
+      mockUploadCounterRef={mockUploadCounterRef}
+      variant="glass"
+    />
+  );
+}
+
+export function ConciergeVerifyIdentityScreen() {
+  return (
+    <IdentityCollectProvider>
+      <IdentityTurnSection>
+        <IdentityDocumentsSection />
+      </IdentityTurnSection>
+    </IdentityCollectProvider>
   );
 }

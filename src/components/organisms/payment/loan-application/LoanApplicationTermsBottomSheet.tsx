@@ -6,7 +6,7 @@ import { useCallback, useEffect, useId, useMemo } from "react";
 import termsIcon from "@/assets/terms and condition.svg";
 import tickIcon from "@/assets/tick.svg";
 import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
-import { BottomSheetShell } from "@/components/organisms/BottomSheetShell";
+import { ModalFrame } from "@/components/molecules/modal/ModalFrame";
 import { useCtaNavigation } from "@/hooks/use-cta-navigation";
 import { SelfFinanceHowItWorksCard } from "@/components/organisms/payment/SelfFinanceHowItWorksCard";
 import type { SelfFinanceHowItWorksStep } from "@/components/organisms/payment/self-finance-confirmed-content";
@@ -63,7 +63,7 @@ export function LoanApplicationTermsBottomSheet({
   );
 
   return (
-    <BottomSheetShell
+    <ModalFrame
       open={open}
       onClose={loading ? () => {} : onClose}
       aria-labelledby={titleId}
@@ -107,6 +107,6 @@ export function LoanApplicationTermsBottomSheet({
           {LOAN_APPLICATION_TERMS_CTA}
         </PrimaryCta>
       </div>
-    </BottomSheetShell>
+    </ModalFrame>
   );
 }

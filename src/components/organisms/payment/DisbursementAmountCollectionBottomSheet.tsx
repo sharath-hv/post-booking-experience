@@ -10,7 +10,8 @@ import {
   type ChangeEvent,
 } from "react";
 
-import { BottomSheetShell } from "@/components/organisms/BottomSheetShell";
+import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
+import { ModalFrame } from "@/components/molecules/modal/ModalFrame";
 import { PAYMENT_CHOOSE_ASSETS } from "@/components/organisms/payment/payment-choose-assets";
 import { MIN_DOWN_PAYMENT_INR, ON_ROAD_PRICE_INR } from "@/constants/loan-amount-demo-constants";
 import {
@@ -135,7 +136,7 @@ export function DisbursementAmountCollectionBottomSheet({
   const primaryCtaDisabled = disbursementAmountInr <= 0;
 
   return (
-    <BottomSheetShell
+    <ModalFrame
       open={open}
       onClose={onClose}
       aria-labelledby="disbursement-collection-title"
@@ -189,15 +190,14 @@ export function DisbursementAmountCollectionBottomSheet({
       </div>
 
       <div className={cn(styles.shrink_0_5, BOTTOM_SHEET_CTA_STRIP_TOP_CLASS)}>
-        <button
-          type="button"
+        <PrimaryCta
           onClick={handlePrimaryCta}
           disabled={primaryCtaDisabled}
-          className={[styles.primary_cta_9, "primary-cta"].filter(Boolean).join(" ")}
+          className={styles.primary_cta_9}
         >
           {primaryCtaLabel}
-        </button>
+        </PrimaryCta>
       </div>
-    </BottomSheetShell>
+    </ModalFrame>
   );
 }

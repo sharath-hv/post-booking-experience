@@ -6,7 +6,7 @@ import {
 import {
   ackoDriveFinanceActionPath,
   loanApplicationDocumentsPath,
-} from "@/components/organisms/payment/acko-drive-finance-bank";
+} from "@/helpers/acko-drive-finance-bank";
 
 export { ackoDriveFinanceActionPath, loanApplicationDocumentsPath };
 

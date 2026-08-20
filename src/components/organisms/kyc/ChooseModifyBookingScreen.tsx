@@ -5,15 +5,16 @@ import { cn } from "@/utils/utils";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
+import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
 import { PageLeadHeading } from "@/components/organisms/PageLeadHeading";
 import { ModifySelectionConfirmBottomSheet } from "@/components/organisms/kyc/ModifySelectionConfirmBottomSheet";
 import { StandaloneScreenHeader } from "@/components/organisms/StandaloneScreenHeader";
 import styles from "./ChooseModifyBookingScreen.module.scss";
 
+import { Radio } from "@/components/atoms/selection/Radio";
 import {
   modifySelectionSelectableCardClass,
   MODIFY_SELECTION_SELECTABLE_CARD_BASE_CLASS,
-  ModifySelectionRadioIndicator,
 } from "@/components/molecules/modify-selection-option-card-ui";
 import {
   MODIFY_SELECTION_OPTIONS,
@@ -68,7 +69,7 @@ function ModifyOptionCard({
           />
         </div>
         <span className={styles.mt_0_5_3}>
-          <ModifySelectionRadioIndicator selected={selected} />
+          <Radio selected={selected} />
         </span>
       </div>
 
@@ -146,9 +147,9 @@ export function ChooseModifyBookingScreen() {
 
       <div className={[styles.fixed_9, "footer-elevated"].filter(Boolean).join(" ")}>
         <div className={styles.mx_auto_10}>
-          <button type="button" onClick={onContinue} className={[styles.primary_cta_11, "primary-cta"].filter(Boolean).join(" ")}>
+          <PrimaryCta onClick={onContinue} className={styles.primary_cta_11}>
             {selectedOption.continueCtaLabel}
-          </button>
+          </PrimaryCta>
         </div>
       </div>
 

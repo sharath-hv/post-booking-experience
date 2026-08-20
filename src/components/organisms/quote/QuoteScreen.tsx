@@ -3,7 +3,16 @@
 import Image from "next/image";
 import { cn } from "@/utils/utils";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+  type Dispatch,
+  type ReactNode,
+  type SetStateAction,
+} from "react";
 
 import { QuoteFlowMenuSheet } from "@/components/organisms/quote/QuoteFlowMenuSheet";
 import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
@@ -52,7 +61,32 @@ function DottedRule() {
   );
 }
 
-export function QuoteScreen() {
+type QuoteFlowContextValue = {
+  otherOpen: boolean;
+  setOtherOpen: Dispatch<SetStateAction<boolean>>;
+  discountOpen: boolean;
+  setDiscountOpen: Dispatch<SetStateAction<boolean>>;
+  flowMenuOpen: boolean;
+  setFlowMenuOpen: Dispatch<SetStateAction<boolean>>;
+  activeFlow: ExperienceFlow;
+  handleFlowChange: (flow: ExperienceFlow) => void;
+  bookingCtaLabel: string;
+  loading: boolean;
+  startBooking: () => void;
+};
+
+const QuoteFlowContext = createContext<QuoteFlowContextValue | null>(null);
+
+function useQuoteFlow() {
+  const value = useContext(QuoteFlowContext);
+  if (value == null) {
+    throw new Error("Quote sections must render inside QuoteFlowProvider");
+  }
+  return value;
+}
+
+/** Outer quote frame — same `relative_2` wrapper as before. */
+export function QuoteFlowProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
   const [otherOpen, setOtherOpen] = useState(true);
   const [discountOpen, setDiscountOpen] = useState(true);
@@ -80,8 +114,36 @@ export function QuoteScreen() {
     ? `Book now at ₹${BOOKING_LOCK_AMOUNT_INR.toLocaleString("en-IN")}`
     : `Lock this price at ₹${BOOKING_LOCK_AMOUNT_INR.toLocaleString("en-IN")}`;
 
+  const startBooking = useCallback(() => {
+    start(() => router.push("/payment"));
+  }, [router, start]);
+
   return (
-    <div className={styles.relative_2}>
+    <QuoteFlowContext.Provider
+      value={{
+        otherOpen,
+        setOtherOpen,
+        discountOpen,
+        setDiscountOpen,
+        flowMenuOpen,
+        setFlowMenuOpen,
+        activeFlow,
+        handleFlowChange,
+        bookingCtaLabel,
+        loading,
+        startBooking,
+      }}
+    >
+      <div className={styles.relative_2}>{children}</div>
+    </QuoteFlowContext.Provider>
+  );
+}
+
+/** Dark car hero + flow-menu trigger. */
+export function QuoteHero() {
+  const { setFlowMenuOpen } = useQuoteFlow();
+  return (
+    <>
       {/* Floating flow menu — sits above header / content */}
       <div className={styles.pointer_events_none_3}>
         <div className={styles.pointer_events_auto_4}>
@@ -127,7 +189,14 @@ export function QuoteScreen() {
           </div>
         </div>
       </header>
+    </>
+  );
+}
 
+/** Price quote, insurance, cancellation copy. */
+export function QuoteDetails() {
+  const { otherOpen, setOtherOpen, discountOpen, setDiscountOpen } = useQuoteFlow();
+  return (
       <div className={styles.relative_16}>
         {/* Price hero card */}
         <section className={[styles.overflow_hidden_17, "card-elevated"].filter(Boolean).join(" ")}>
@@ -460,6 +529,22 @@ export function QuoteScreen() {
 
       </div>
 
+  );
+}
+
+/** Sticky booking CTA + experience-flow sheet. */
+export function QuoteCtaFooter() {
+  const {
+    bookingCtaLabel,
+    loading,
+    startBooking,
+    flowMenuOpen,
+    activeFlow,
+    handleFlowChange,
+    setFlowMenuOpen,
+  } = useQuoteFlow();
+  return (
+    <>
       {/* Sticky footer */}
         <div className={[styles.fixed_71, "footer-elevated"].filter(Boolean).join(" ")}>
         <div
@@ -482,7 +567,7 @@ export function QuoteScreen() {
         </div>
         <div className={styles.px_5_73}>
           <PrimaryCta
-            onClick={() => start(() => router.push("/payment"))}
+            onClick={startBooking}
             loading={loading}
             className={styles.primary_cta_74}
           >
@@ -497,9 +582,20 @@ export function QuoteScreen() {
         onClose={() => setFlowMenuOpen(false)}
         onFlowChange={handleFlowChange}
       />
-    </div>
+    </>
   );
 }
+
+export function QuoteScreen() {
+  return (
+    <QuoteFlowProvider>
+      <QuoteHero />
+      <QuoteDetails />
+      <QuoteCtaFooter />
+    </QuoteFlowProvider>
+  );
+}
+
 
 function Row({
   label,

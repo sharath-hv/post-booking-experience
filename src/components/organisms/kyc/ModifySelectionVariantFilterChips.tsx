@@ -1,14 +1,11 @@
 "use client";
 
-import Image from "next/image";
-
-import closeIcon from "@/assets/Close.svg";
+import { Chip } from "@/components/atoms/chip/Chip";
 import type {
   ModifySelectionVariantFilters,
   ModifySelectionVariantFuel,
   ModifySelectionVariantTransmission,
 } from "@/constants/modify-selection-variants-content";
-import { cn } from "@/utils/utils";
 import styles from "./ModifySelectionVariantFilterChips.module.scss";
 
 
@@ -17,58 +14,6 @@ type ModifySelectionVariantFilterChipsProps = {
   onFuelChange: (fuel: ModifySelectionVariantFuel | null) => void;
   onTransmissionChange: (transmission: ModifySelectionVariantTransmission | null) => void;
 };
-
-function FilterChip({
-  label,
-  selected,
-  onSelect,
-  onClear,
-  className,
-}: {
-  label: string;
-  selected: boolean;
-  onSelect: () => void;
-  onClear?: () => void;
-  className?: string;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onSelect}
-      aria-pressed={selected}
-      className={cn(
-        styles.inline_flex_5,
-        selected
-          ? styles.border_121212__6
-          : styles.border_e8e8e8__7,
-        className,
-      )}
-    >
-      <span>{label}</span>
-      {selected && onClear != null ? (
-        <span
-          role="button"
-          tabIndex={0}
-          onClick={(event) => {
-            event.stopPropagation();
-            onClear();
-          }}
-          onKeyDown={(event) => {
-            if (event.key === "Enter" || event.key === " ") {
-              event.preventDefault();
-              event.stopPropagation();
-              onClear();
-            }
-          }}
-          className={styles.relative_0}
-          aria-label={`Clear ${label} filter`}
-        >
-          <Image src={closeIcon} alt="" width={16} height={16} className={styles.size_4_1} unoptimized />
-        </span>
-      ) : null}
-    </button>
-  );
-}
 
 /**
  * Quick filters — fuel and transmission chips (Figma 2682:9105).
@@ -92,26 +37,26 @@ export function ModifySelectionVariantFilterChips({
       role="group"
       aria-label="Filter variants"
     >
-      <FilterChip
+      <Chip
         label="Petrol"
         selected={filters.fuel === "petrol"}
         onSelect={() => toggleFuel("petrol")}
         onClear={() => onFuelChange(null)}
       />
-      <FilterChip
+      <Chip
         label="Diesel"
         selected={filters.fuel === "diesel"}
         onSelect={() => toggleFuel("diesel")}
         onClear={() => onFuelChange(null)}
       />
       <span className={styles.mx_0_5_3} aria-hidden />
-      <FilterChip
+      <Chip
         label="Manual"
         selected={filters.transmission === "manual"}
         onSelect={() => toggleTransmission("manual")}
         onClear={() => onTransmissionChange(null)}
       />
-      <FilterChip
+      <Chip
         label="Automatic"
         selected={filters.transmission === "automatic"}
         onSelect={() => toggleTransmission("automatic")}

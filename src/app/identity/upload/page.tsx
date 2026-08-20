@@ -1,8 +1,6 @@
-"use client";
+import { Suspense } from "react";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-
+import { LegacyPathRedirect } from "@/components/molecules/LegacyPathRedirect";
 import { JOURNEY_PATHS } from "@/helpers/journey-routes";
 
 /**
@@ -10,11 +8,9 @@ import { JOURNEY_PATHS } from "@/helpers/journey-routes";
  * (verification-failed re-upload links land here too).
  */
 export default function LegacyIdentityUploadPage() {
-  const router = useRouter();
-
-  useEffect(() => {
-    router.replace(JOURNEY_PATHS.identity.hub);
-  }, [router]);
-
-  return null;
+  return (
+    <Suspense fallback={null}>
+      <LegacyPathRedirect to={JOURNEY_PATHS.identity.hub} />
+    </Suspense>
+  );
 }

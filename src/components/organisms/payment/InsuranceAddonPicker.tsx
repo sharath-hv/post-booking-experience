@@ -6,6 +6,7 @@ import {
   type InsuranceAddonId,
   type InsuranceAddonOption,
 } from "@/components/organisms/payment/insurance-coverage-content";
+import { ToggleAdd } from "@/components/atoms/selection/ToggleAdd";
 import { cn } from "@/utils/utils";
 import styles from "./InsuranceAddonPicker.module.scss";
 
@@ -47,14 +48,12 @@ export function InsuranceAddonCard({ addon, selected, onToggle }: InsuranceAddon
           </span>
           <span className={styles.price}>{formatInr(addon.premiumInr)}</span>
         </p>
-        <button
-          type="button"
+        <ToggleAdd
+          selected={selected}
+          idleLabel={INSURANCE_ADDON_ADD_LABEL}
+          selectedLabel={INSURANCE_ADDON_ADDED_LABEL}
           onClick={() => onToggle(addon.id)}
-          aria-pressed={selected}
-          className={cn(styles.addBtn, selected && styles.addBtnSelected)}
-        >
-          {selected ? INSURANCE_ADDON_ADDED_LABEL : INSURANCE_ADDON_ADD_LABEL}
-        </button>
+        />
       </div>
     </article>
   );

@@ -1,9 +1,7 @@
-"use client";
-
 import Image from "next/image";
 
 import { BOOKING_CONFIRMED_ASSETS } from "@/utils/kyc-booking-confirmed-assets";
-import { VehicleIdentificationRows } from "@/components/organisms/VehicleIdentificationRows";
+import { VehicleIdentificationRows } from "@/components/molecules/card/VehicleIdentificationRows";
 import {
   BOOKING_CAR_COLOR,
   BOOKING_CAR_TITLE,

@@ -3,7 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
-import { CtaLottieLoader } from "@/components/atoms/cta/CtaLottieLoader";
+import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
+import { SecondaryCta } from "@/components/atoms/cta/SecondaryCta";
 import { CTA_LOADER_HOLD_MS } from "@/hooks/use-cta-navigation";
 import { writeConciergeEcho } from "@/lib/concierge/echo";
 import { cn } from "@/utils/utils";
@@ -85,30 +86,16 @@ export function ConciergeReplies({ replies, className, layout = "column" }: Conc
     <div className={cn(styles.flex_0, layout === "row" && styles.row, className)}>
       {replies.map((reply) => {
         const isSending = sendingLabel === reply.label;
+        const Cta = reply.kind === "soft" ? SecondaryCta : PrimaryCta;
         return (
-          <button
+          <Cta
             key={reply.label}
-            type="button"
             disabled={sendingLabel != null ? !isSending : reply.disabled}
             onClick={() => onReply(reply)}
-            aria-busy={isSending || undefined}
-            aria-label={isSending ? "Loading" : undefined}
-            className={cn(
-              reply.kind === "soft" ? "reply-soft-cta" : "primary-cta",
-              isSending && "cta-navigating",
-            )}
+            loading={isSending}
           >
-            {isSending ? (
-              <>
-                <span className="cta-label-hold">{reply.label}</span>
-                <span className="cta-loader-slot" aria-hidden>
-                  <CtaLottieLoader tone={reply.kind === "soft" ? "onLight" : "onDark"} />
-                </span>
-              </>
-            ) : (
-              reply.label
-            )}
-          </button>
+            {reply.label}
+          </Cta>
         );
       })}
     </div>

@@ -4,8 +4,9 @@ import Image from "next/image";
 import { useCallback } from "react";
 
 import arrowRightIcon from "@/assets/Arrow_right.svg";
+import { GhostCta } from "@/components/atoms/cta/GhostCta";
 import { BottomSheetCloseIcon } from "@/components/atoms/sheet/BottomSheetCloseIcon";
-import { BottomSheetShell } from "@/components/organisms/BottomSheetShell";
+import { ModalFrame } from "@/components/molecules/modal/ModalFrame";
 import { IconWell } from "@/components/atoms/icon/IconWell";
 import {
   getKycUploadSourceOptions,
@@ -79,7 +80,7 @@ export function UploadSourceBottomSheet({
   );
 
   return (
-    <BottomSheetShell
+    <ModalFrame
       open={open}
       onClose={onClose}
       showCloseButton={false}
@@ -95,14 +96,13 @@ export function UploadSourceBottomSheet({
           >
             How do you want to upload?
           </h2>
-          <button
-            type="button"
+          <GhostCta
             onClick={onClose}
-            className={[styles.cta_ghost_8, "cta-ghost"].filter(Boolean).join(" ")}
+            className={styles.cta_ghost_8}
             aria-label="Close"
           >
             <BottomSheetCloseIcon />
-          </button>
+          </GhostCta>
         </div>
 
         <div className={styles.flex_9}>
@@ -120,6 +120,6 @@ export function UploadSourceBottomSheet({
           ))}
         </div>
       </div>
-    </BottomSheetShell>
+    </ModalFrame>
   );
 }

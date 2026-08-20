@@ -1,0 +1,12 @@
+.solid {
+  overflow: hidden;
+  border-radius: var(--radius-2xl);
+  border-style: var(--tw-border-style);
+  border-width: 1px;
+  border-color: #e8e8e8;
+  background-color: var(--color-white);
+}
+
+.padMd {
+  padding: calc(var(--spacing) * 4);
+}

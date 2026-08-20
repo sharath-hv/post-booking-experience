@@ -1,10 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
-import warningAmberIcon from "@/assets/Warning amber.svg";
-
+import { StatusLine } from "@/components/molecules/status/StatusLine";
 import { instantRevealEnabled } from "@/lib/concierge/instant";
 import { OVERLAY_GLASS_SURFACE_CLASS } from "@/helpers/overlay-glass-card";
 import { cn } from "@/utils/utils";
@@ -13,81 +11,6 @@ import styles from "./WorkingNarration.module.scss";
 
 /** Time each activity line stays “in progress” before ticking done (live mode). */
 const LINE_ACTIVE_MS = 1500;
-
-function SpinnerIcon() {
-  return (
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
-      fill="none"
-      aria-hidden
-      className={styles.shrink_0_0}
-    >
-      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeOpacity="0.2" strokeWidth="2.5" />
-      <path
-        d="M21 12a9 9 0 0 0-9-9"
-        stroke="currentColor"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
-function DoneTickIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden className={styles.shrink_0_1}>
-      <circle cx="12" cy="12" r="9" fill="#0fa457" />
-      <path
-        d="M8.4 12.2l2.4 2.4 4.8-5"
-        stroke="#ffffff"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function QueuedIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden className={styles.shrink_0_1}>
-      <circle cx="12" cy="12" r="8.5" stroke="#c2c2c2" strokeWidth="1" />
-    </svg>
-  );
-}
-
-function ClockIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 16 16" fill="none" aria-hidden className={styles.shrink_0_1}>
-      <path
-        d="M8 14C11.3137 14 14 11.3137 14 8C14 4.68629 11.3137 2 8 2C4.68629 2 2 4.68629 2 8C2 11.3137 4.68629 14 8 14Z"
-        stroke="#4B4B4B"
-      />
-      <path
-        d="M8 5.60156V8.00156L9.2 9.20156"
-        stroke="#4B4B4B"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function WarningIcon() {
-  return (
-    <Image
-      src={warningAmberIcon}
-      alt=""
-      width={20}
-      height={20}
-      className={styles.shrink_0_1}
-      unoptimized
-      aria-hidden
-    />
-  );
-}
 
 export type WorkingNarrationMode = "live" | "ongoing";
 export type WorkingNarrationDoneTone = "success" | "warning";
@@ -197,37 +120,28 @@ export function WorkingNarration({
           const done = mode === "live" ? idx < activeIndex : idx < ongoingDoneCount;
           const queued = mode === "ongoing" && idx > ongoingDoneCount;
           return (
-            <div key={idx} className={[styles.kyc_stagger_3, "kyc-stagger"].filter(Boolean).join(" ")}>
-              {done ? <DoneTickIcon /> : queued ? <QueuedIcon /> : <SpinnerIcon />}
-              <span
-                className={cn(
-                  styles.text_sm_7,
-                  done || queued ? styles.text_757575__8 : styles.text_121212__9
-                )}
-              >
-                {line}
-              </span>
-            </div>
+            <StatusLine
+              key={idx}
+              state={done ? "done" : queued ? "queued" : "loading"}
+              tone={done || queued ? "muted" : "ink"}
+            >
+              {line}
+            </StatusLine>
           );
         })}
         {allDone && doneLabel ? (
-          <div className={[styles.kyc_stagger_4, "kyc-stagger"].filter(Boolean).join(" ")}>
-            {doneTone === "warning" ? <WarningIcon /> : <DoneTickIcon />}
-            <span
-              className={cn(
-                styles.text_sm_10,
-                doneTone === "warning" ? styles.text_D16900__12 : styles.text_0c7a42__13
-              )}
-            >
-              {doneLabel}
-            </span>
-          </div>
+          <StatusLine
+            variant="footer"
+            state={doneTone === "warning" ? "warning" : "done"}
+            tone={doneTone === "warning" ? "warning" : "success"}
+          >
+            {doneLabel}
+          </StatusLine>
         ) : null}
         {mode === "ongoing" && etaLabel ? (
-          <div className={[styles.kyc_stagger_4, "kyc-stagger"].filter(Boolean).join(" ")}>
-            <ClockIcon />
-            <span className={styles.text_sm_5}>{etaLabel}</span>
-          </div>
+          <StatusLine variant="footer" state="clock" tone="eta">
+            {etaLabel}
+          </StatusLine>
         ) : null}
       </div>
     </div>
