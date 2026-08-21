@@ -1,20 +1,16 @@
 "use client";
 
-import Image, { type StaticImageData } from "next/image";
-import type { CSSProperties } from "react";
+import Image from "next/image";
 
-import carIcon from "@/assets/Car.svg";
-import identityIcon from "@/assets/Identity.svg";
-import moneyRoundIcon from "@/assets/Money round.svg";
-import newCarIcon from "@/assets/New car.svg";
 import tickIcon from "@/assets/tick01.svg";
 import { KYC_ASSETS } from "@/utils/kyc-assets";
 import { IconWell } from "@/components/atoms/icon/IconWell";
 import { cn } from "@/utils/utils";
 import { OVERLAY_GLASS_SURFACE_CLASS } from "@/helpers/overlay-glass-card";
+import { PlanTimelineGlyph, type PlanTimelineIcon } from "./PlanTimelineGlyph";
 import styles from "./PlanList.module.scss";
 
-export type PlanTimelineIcon = "documents" | "car" | "money" | "delivery";
+export type { PlanTimelineIcon };
 
 export type PlanItem = {
   icon: PlanTimelineIcon;
@@ -23,23 +19,6 @@ export type PlanItem = {
   /** Step state — defaults to first=now, rest=todo (the day-one plan). */
   status?: "done" | "now" | "todo";
 };
-
-const PLAN_ICON_ASSETS: Partial<Record<PlanTimelineIcon, StaticImageData>> = {
-  documents: identityIcon,
-  car: carIcon,
-  money: moneyRoundIcon,
-  delivery: newCarIcon,
-};
-
-function PlanTimelineGlyph({ name }: { name: PlanTimelineIcon }) {
-  const asset = PLAN_ICON_ASSETS[name];
-  if (!asset) return null;
-  const maskStyle = {
-    maskImage: `url(${asset.src})`,
-    WebkitMaskImage: `url(${asset.src})`,
-  } satisfies CSSProperties;
-  return <span className={styles.planGlyph} style={maskStyle} aria-hidden />;
-}
 
 export type PlanListProps = {
   items: readonly PlanItem[];

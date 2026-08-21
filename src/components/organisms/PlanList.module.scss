@@ -67,8 +67,7 @@
   object-fit: contain;
 }
 
-/* Glyph colour on IconWell purple / grey — painted via mask, not CSS filter
- * (Safari ignores filter on <img> inside overflow:hidden wells). */
+/* Glyph colour on IconWell purple / grey — inline SVG uses currentColor. */
 .planNodeNow {
   color: #5920c5;
 }
@@ -94,13 +93,6 @@
   flex-shrink: 0;
   width: 20px;
   height: 20px;
-  background-color: currentColor;
-  mask-size: contain;
-  mask-repeat: no-repeat;
-  mask-position: center;
-  -webkit-mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-position: center;
 }
 
 /*
