@@ -85,6 +85,7 @@ export function AckoDriveFinanceActionScreen() {
         artifact={<LoanDocumentsChecklistCard variant="glass" />}
         replies={replies}
         manageShowVehicleIdentification
+        callLabel="Need help with your loan?"
       />
 
       <LoanApplicationCoApplicantBottomSheet

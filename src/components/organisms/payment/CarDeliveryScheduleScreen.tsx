@@ -211,7 +211,7 @@ export function CarDeliveryScheduleScreen() {
         "Registered, insured, and ready to roll. Come collect it — pick a day and a window, and I'll have it waiting.",
       ]}
       replies={replies}
-      callLabel="Special instructions? I can call you"
+      callLabel="Have a question?"
     >
       <div className={cn(styles.card, OVERLAY_GLASS_CARD_CLASS)}>
         <div className={styles.locationPanel}>

@@ -66,7 +66,7 @@ export function LoanBookingProcessingScreen() {
       prefetchHref={nextHref}
       timeSkipLabel="After the call"
       dateHolder="you"
-      callLabel="Anxious about the loan? I can call you"
+      callLabel="Want an update?"
       manageBookingShowVehicleIdentification
       suppressEcho
     />

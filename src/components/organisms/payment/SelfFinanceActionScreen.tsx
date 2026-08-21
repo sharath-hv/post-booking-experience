@@ -25,6 +25,7 @@ export function SelfFinanceActionScreen() {
       prefetchHref="/payment/enter-disbursement-amount"
       nextCtaLabel="I have my loan amount"
       manageBookingShowVehicleIdentification
+      callLabel="Need help with your loan?"
     />
   );
 }

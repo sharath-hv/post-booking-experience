@@ -1,9 +1,5 @@
 /* PlanList — timeline rail (semantic; replaces broken auto-migrated connector) */
 
-.shrink_0_16 {
-  flex-shrink: 0;
-}
-
 .planList {
   display: flex;
   flex-direction: column;
@@ -71,7 +67,8 @@
   object-fit: contain;
 }
 
-/* Glyph colour on IconWell purple / grey. */
+/* Glyph colour on IconWell purple / grey — painted via mask, not CSS filter
+ * (Safari ignores filter on <img> inside overflow:hidden wells). */
 .planNodeNow {
   color: #5920c5;
 }
@@ -92,10 +89,18 @@
   color: #4b4b4b;
 }
 
-/* Dark glyph → ACKO purple `#5920c5` on the live well. */
-.planGlyphOnNow {
-  filter: brightness(0) saturate(100%) invert(18%) sepia(91%) saturate(2878%)
-    hue-rotate(253deg) brightness(0.87) contrast(1.01);
+.planGlyph {
+  display: block;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  background-color: currentColor;
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
 }
 
 /*

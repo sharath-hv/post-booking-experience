@@ -99,7 +99,7 @@ export type TurnWords = {
   footnote?: string;
   /** Semibold prefix for the footnote card, e.g. “A quick heads-up:”. */
   footnoteLead?: string;
-  /** Contextual call affordance under the replies. */
+  /** Short conversational prompt before “Request call-back”. */
   callLabel?: string;
 };
 
@@ -134,7 +134,7 @@ export const VERIFY_IDENTITY_WORDS: TurnWords = {
   ],
   replyLabel: "Here are my documents",
   replyEcho: "Documents sent",
-  callLabel: "Stuck? I can call you",
+  callLabel: "Need help?",
 };
 
 const EXPRESS_ARRIVAL: TurnWords = {
@@ -197,7 +197,7 @@ function standardDealerSearch(
     workingMode: "ongoing",
     workingEtaLabel: "Usually a few hours. I'll message you when a partner is confirmed.",
     timeSkipLabel: "Partner assigned",
-    callLabel: "Questions? I can call you",
+    callLabel: "Want an update?",
     footnoteLead: DEALER_SEARCH_FOOTNOTE_LEAD,
     footnote: DEALER_SEARCH_FOOTNOTE,
   };
@@ -227,7 +227,7 @@ function expressDealerSearch(
     workingMode: "ongoing",
     workingEtaLabel: "I'll update you as soon as I have news",
     timeSkipLabel: "Next morning",
-    callLabel: "Can't sleep on it? I can call you",
+    callLabel: "Want an update?",
     footnoteLead: DEALER_SEARCH_FOOTNOTE_LEAD,
     footnote: DEALER_SEARCH_FOOTNOTE,
   };
@@ -250,7 +250,7 @@ function dealerFoundWords(
   return {
     says: [lead, body],
     timeSkipLabel: "After the call",
-    callLabel: "Questions? I can call you",
+    callLabel: "Want an update?",
   };
 }
 
@@ -271,7 +271,7 @@ function paymentHandoffCta(): Pick<TurnWords, "replyLabel" | "replyEcho" | "call
   return {
     replyLabel: "Show me my payment options",
     replyEcho: "Show me my payment options",
-    callLabel: "Rather talk it through? I can call you",
+    callLabel: "Want to talk?",
   };
 }
 
@@ -303,7 +303,7 @@ const EXPRESS_SCRIPT: Record<ConciergeMomentId, TurnWords> = {
     workingDoneLabel: "Verified. Booking is now open in your name.",
     replyLabel: "What's next?",
     replyEcho: "What's next?",
-    callLabel: "Questions? I can call you",
+    callLabel: "Want an update?",
   },
 
   /** kyc_failed demo branch — OCR can't auto-resolve; a human reviews offline. */
@@ -318,7 +318,7 @@ const EXPRESS_SCRIPT: Record<ConciergeMomentId, TurnWords> = {
       "Checking your name and address",
     ],
     workingDoneLabel: "Taking a bit longer. I'll let you know when they're through.",
-    callLabel: "Questions while you wait? I can call you",
+    callLabel: "Want an update?",
     timeSkipLabel: "A little later",
   },
 
@@ -329,7 +329,7 @@ const EXPRESS_SCRIPT: Record<ConciergeMomentId, TurnWords> = {
       "I'm lining up dealers for your Creta now. Need anything meanwhile — a change, a question, even cancelling? The ⋮ menu up top has it all.",
     ],
     timeSkipLabel: "A little later",
-    callLabel: "Questions? I can call you",
+    callLabel: "Want an update?",
   },
 
   /** Built dynamically via {@link getTurnWords} — placeholder for the record type. */
@@ -350,7 +350,7 @@ const EXPRESS_SCRIPT: Record<ConciergeMomentId, TurnWords> = {
     workingMode: "ongoing",
     workingDoneCount: 1,
     timeSkipLabel: "A few months later",
-    callLabel: "Questions while it's built? I can call you",
+    callLabel: "Want an update?",
   },
 
   /** Standard-only in practice — the manufacturing reveal, mirrors `carReserved`'s payment hand-off. */
@@ -368,7 +368,7 @@ const EXPRESS_SCRIPT: Record<ConciergeMomentId, TurnWords> = {
       "Good news, Sharath. Your Creta is ready earlier than we planned.",
       "Would you like early delivery, or keep your original delivery date?",
     ],
-    callLabel: "Want to talk it through? I can call you",
+    callLabel: "Want to talk?",
   },
 
   /** Standard demo — partner confirmation after the user opts into early delivery. */
@@ -384,7 +384,7 @@ const EXPRESS_SCRIPT: Record<ConciergeMomentId, TurnWords> = {
     workingMode: "ongoing",
     workingDoneCount: 1,
     workingEtaLabel: "Usually confirmed within a few hours",
-    callLabel: "Questions while you wait? I can call you",
+    callLabel: "Want an update?",
   },
 
   /**
@@ -403,7 +403,7 @@ const EXPRESS_SCRIPT: Record<ConciergeMomentId, TurnWords> = {
     workingMode: "ongoing",
     workingDoneCount: 1,
     timeSkipLabel: "A few months later",
-    callLabel: "Questions while it's built? I can call you",
+    callLabel: "Want an update?",
   },
 
   /**
@@ -456,7 +456,7 @@ export function getTurnWords(
           "Share the one-time code when our partner calls. Once it's verified, your earlier delivery date is confirmed.",
         ],
         timeSkipLabel: "After the call",
-        callLabel: "Questions? I can call you",
+        callLabel: "Want an update?",
       };
     }
     return dealerFoundWords(car, afterSelectionChange, isStandardDeliveryFlow(flow));
@@ -497,7 +497,7 @@ export function getTurnWords(
         `Good news, Sharath. Your ${familiar} is ready earlier than we planned.`,
         `Would you like early delivery, or keep your original date of ${originalDate}?`,
       ],
-      callLabel: "Want to talk it through? I can call you",
+      callLabel: "Want to talk?",
     };
   }
 
@@ -515,7 +515,7 @@ export function getTurnWords(
       workingMode: "ongoing",
       workingDoneCount: 1,
       workingEtaLabel: "Usually confirmed within a few hours",
-      callLabel: "Questions while you wait? I can call you",
+      callLabel: "Want an update?",
     };
   }
 
@@ -538,7 +538,7 @@ export function getTurnWords(
       workingDoneCount: 1,
       workingEtaLabel: allocationPendingEta(flow),
       timeSkipLabel: "A few months later",
-      callLabel: "Questions while it's built? I can call you",
+      callLabel: "Want an update?",
     };
   }
 

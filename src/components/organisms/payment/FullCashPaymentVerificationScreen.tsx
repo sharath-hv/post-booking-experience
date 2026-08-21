@@ -67,7 +67,7 @@ export function FullCashPaymentVerificationScreen() {
         </div>
       }
       timeSkip={{ label: "Once dealer confirms", href: nextHref }}
-      callLabel="Questions? I can call you"
+      callLabel="Want an update?"
       showMenu
     />
   );

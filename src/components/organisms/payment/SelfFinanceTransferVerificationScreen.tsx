@@ -94,7 +94,7 @@ export function SelfFinanceTransferVerificationScreen() {
       }
       timeSkip={{ label: "Once dealer confirms", href: nextHref }}
       onBack={onBack}
-      callLabel="Questions? I can call you"
+      callLabel="Want an update?"
       showMenu
     />
   );

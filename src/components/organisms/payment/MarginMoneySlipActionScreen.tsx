@@ -180,7 +180,7 @@ export function MarginMoneySlipActionScreen() {
         }
         dateHolder={dealerConfirmed ? "you" : "shivi"}
         onBack={onBack}
-        callLabel="Questions? I can call you"
+        callLabel="Need help?"
         showMenu
         manageShowVehicleIdentification
       />

@@ -39,7 +39,7 @@ export function PayInsurancePremiumScreen() {
       nextCtaLabel="Continue"
       replyEcho={null}
       heroSummaryCard={<ShieldPolicyCard mode="quote" />}
-      callLabel="Coverage questions? I can call you"
+      callLabel="Need help with insurance?"
       manageBookingShowVehicleIdentification
     />
   );

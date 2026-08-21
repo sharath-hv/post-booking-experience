@@ -156,7 +156,7 @@ export function ConciergeVerificationFailedScreen() {
         { label: "Retries exhausted", href: "/kyc/verification-cancelled" },
         { label: "SLA timed out", href: "/kyc/verification-cancelled?cause=timeout" },
       ]}
-      callLabel="Questions? I can call you"
+      callLabel="Need help?"
     />
   );
 }

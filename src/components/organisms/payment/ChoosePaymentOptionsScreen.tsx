@@ -399,7 +399,7 @@ export function ChoosePaymentOptionsScreen() {
               }
         }
         footnote="Your delivery date locks in once the money plan is set. Best done now."
-        callLabel="Not sure? I can call you"
+        callLabel="Want to talk?"
         manageShowVehicleIdentification
       />
 

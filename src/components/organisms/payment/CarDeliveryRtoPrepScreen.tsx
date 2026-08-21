@@ -29,7 +29,7 @@ export function CarDeliveryRtoPrepScreen() {
     <BookingProcessingScreen
       headline={HEADLINE}
       subline={SUBLINE}
-      callLabel="Want an update? I can call you"
+      callLabel="Want an update?"
       heroIllustrationSrc={KYC_ASSETS.rtoRegistrationProcessHero}
       nextHref={withBank("/delivery/schedule")}
       prefetchHref={withBank("/delivery/schedule")}

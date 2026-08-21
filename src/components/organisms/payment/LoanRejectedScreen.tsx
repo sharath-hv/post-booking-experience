@@ -411,7 +411,7 @@ export function LoanRejectedScreen() {
         label: "SLA timed out",
         href: JOURNEY_PATHS.payment.loanDecisionCancelled,
       }}
-      callLabel="Rather talk it through? I can call you"
+      callLabel="Want to talk?"
     />
   );
 }

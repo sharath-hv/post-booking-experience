@@ -74,7 +74,7 @@ export function FullCashPaymentConfirmedScreen() {
         </div>
       }
       timeSkip={{ label: "When your car's nearly ready", href: insuranceHref }}
-      callLabel="Questions? I can call you"
+      callLabel="Need help?"
       showMenu
     />
   );

@@ -96,7 +96,7 @@ export function LoanDisbursementReceivedScreen({
         </div>
       }
       timeSkip={{ label: "When your car's nearly ready", href: okayHref }}
-      callLabel="Questions? I can call you"
+      callLabel="Need help?"
       showMenu
     />
   );

@@ -85,7 +85,7 @@ export function FullPaymentConfirmedScreen() {
           echo: "I've transferred the amount",
         },
       ]}
-      callLabel="Questions? I can call you"
+      callLabel="Need help?"
       showMenu
     />
   );

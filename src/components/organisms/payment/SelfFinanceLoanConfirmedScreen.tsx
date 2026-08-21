@@ -84,7 +84,7 @@ export function SelfFinanceLoanConfirmedScreen() {
           href: downPaymentPaidHref,
         },
       ]}
-      callLabel="Questions? I can call you"
+      callLabel="Need help?"
       showMenu
     />
   );

@@ -77,7 +77,7 @@ export function LoanUnderReviewScreen() {
         },
       ]}
       dateHolder="shivi"
-      callLabel="Anxious about the loan? I can call you"
+      callLabel="Want an update?"
       manageBookingShowVehicleIdentification
       suppressEcho
     />

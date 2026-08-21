@@ -146,7 +146,7 @@ export function LoanDealerDownPaymentConfirmedScreen() {
       }
       dateHolder="shivi"
       onBack={onBack}
-      callLabel="Questions? I can call you"
+      callLabel="Need help?"
       showMenu
     />
   );

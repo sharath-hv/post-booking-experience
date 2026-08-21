@@ -87,7 +87,7 @@ export function LoanSanctionedScreen() {
           echo: "I've paid the down payment",
         },
       ]}
-      callLabel="Questions on the loan? I can call you"
+      callLabel="Have a question?"
       showMenu
     />
   );

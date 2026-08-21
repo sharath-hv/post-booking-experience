@@ -252,10 +252,12 @@
   display: flex;
   min-height: 44px;
   width: 100%;
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: center;
   gap: 8px;
   padding-inline: calc(var(--spacing) * 3);
+  white-space: nowrap;
   /* body-sm */
   font-size: 14px;
   line-height: 20px;
@@ -271,6 +273,7 @@
 }
 
 .callPrompt {
+  font-weight: var(--font-weight-normal);
   color: var(--color-text-secondary);
 }
 
@@ -284,7 +287,7 @@
 }
 
 .mt_3_34 {
-  margin-top: 4px;
+  margin-top: 8px;
 }
 
 .flex_35 {

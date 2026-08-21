@@ -29,7 +29,7 @@ export function CarDeliveryInsurancePrepScreen() {
     <BookingProcessingScreen
       headline={HEADLINE}
       subline={subline}
-      callLabel="Questions about coverage? I can call you"
+      callLabel="Have a question?"
       heroIllustrationSrc={KYC_ASSETS.insuranceInProgressHero}
       nextHref={withBank("/delivery/rto")}
       prefetchHref={withBank("/delivery/rto")}

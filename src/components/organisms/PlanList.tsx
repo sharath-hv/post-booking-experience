@@ -1,6 +1,7 @@
 "use client";
 
 import Image, { type StaticImageData } from "next/image";
+import type { CSSProperties } from "react";
 
 import carIcon from "@/assets/Car.svg";
 import identityIcon from "@/assets/Identity.svg";
@@ -30,20 +31,14 @@ const PLAN_ICON_ASSETS: Partial<Record<PlanTimelineIcon, StaticImageData>> = {
   delivery: newCarIcon,
 };
 
-function PlanTimelineGlyph({ name, className }: { name: PlanTimelineIcon; className?: string }) {
+function PlanTimelineGlyph({ name }: { name: PlanTimelineIcon }) {
   const asset = PLAN_ICON_ASSETS[name];
   if (!asset) return null;
-  return (
-    <Image
-      src={asset}
-      alt=""
-      width={20}
-      height={20}
-      className={cn(styles.shrink_0_16, className)}
-      unoptimized
-      aria-hidden
-    />
-  );
+  const maskStyle = {
+    maskImage: `url(${asset.src})`,
+    WebkitMaskImage: `url(${asset.src})`,
+  } satisfies CSSProperties;
+  return <span className={styles.planGlyph} style={maskStyle} aria-hidden />;
 }
 
 export type PlanListProps = {
@@ -170,10 +165,7 @@ export function PlanList({
                       aria-hidden
                     />
                   ) : (
-                    <PlanTimelineGlyph
-                      name={item.icon}
-                      className={isNow ? styles.planGlyphOnNow : undefined}
-                    />
+                    <PlanTimelineGlyph name={item.icon} />
                   )}
                 </IconWell>
               )}

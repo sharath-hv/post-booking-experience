@@ -222,7 +222,7 @@ export function ConciergeAllocationFailedScreen({
         label: "SLA timed out",
         href: JOURNEY_PATHS.carAllocation.decisionCancelled,
       }}
-      callLabel="Want to talk it through? I can call you"
+      callLabel="Want to talk?"
     />
   );
 }

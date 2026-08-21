@@ -20,6 +20,7 @@ export function CarAllocationPendingPageClient() {
       heroIllustrationSrc={carAllocationHero}
       heroIllustrationWidth={280}
       heroIllustrationHeight={80}
+      callLabel="Want an update?"
     />
   );
 }

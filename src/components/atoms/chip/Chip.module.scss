@@ -28,8 +28,9 @@
 }
 
 .chipSelected {
-  border-color: #121212;
-  background-color: #f3f3f3;
+  /* Match payment / modify-selection selected cards */
+  border-color: #bda6e8;
+  background-color: #f4eefe;
   padding-right: var(--spacing);
 }
 
@@ -90,9 +91,9 @@
 }
 
 .segmentSelected {
-  border-color: #121212;
-  background-color: color-mix(in oklab, #121212 10%, transparent);
-  font-weight: var(--font-weight-medium);
+  /* Match payment / modify-selection selected cards */
+  border-color: #bda6e8;
+  background-color: #f4eefe;
   color: #040222;
 }
 
