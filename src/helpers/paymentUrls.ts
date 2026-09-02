@@ -4,8 +4,20 @@ export const BOOKING_LOCK_AMOUNT_INR = 10_000;
 /** Query on mock checkout — booking-lock mode with optional custom amount (not loan down payment). */
 export const BOOKING_AMOUNT_QUERY = "booking_amount";
 
+/** Same-app path checkout Back should open (e.g. Confirm your changes). */
+export const RETURN_PATH_QUERY = "return_path";
+
 /** Preserved on checkout → success when returning from modify-selection pay. */
 export const MODIFY_SELECTION_RETURN_SOURCE = "modify-selection";
+
+/** Relative in-app path only — rejects protocol-relative / absolute URLs. */
+export function sanitizeAppReturnPath(raw: string | null): string | null {
+  if (raw == null || raw === "") return null;
+  if (!raw.startsWith("/")) return null;
+  if (raw.startsWith("//") || raw.startsWith("/\\")) return null;
+  if (raw.includes("://")) return null;
+  return raw;
+}
 
 export type BookingLockSuccessOptions = {
   /** e.g. {@link MODIFY_SELECTION_RETURN_SOURCE} — CTA goes to `/kyc` with updated car. */
@@ -37,12 +49,16 @@ export function buildBookingLockSuccessHref(
  */
 export function buildBookingLockCheckoutHref(
   amountInr: number,
-  options?: { returnSource?: string },
+  options?: { returnSource?: string; returnPath?: string },
 ): string {
   const q = new URLSearchParams();
   q.set(BOOKING_AMOUNT_QUERY, String(Math.round(amountInr)));
   if (options?.returnSource) {
     q.set("return_source", options.returnSource);
+  }
+  const returnPath = sanitizeAppReturnPath(options?.returnPath ?? null);
+  if (returnPath != null) {
+    q.set(RETURN_PATH_QUERY, returnPath);
   }
   const qs = q.toString();
   return qs ? `/payment?${qs}` : "/payment";

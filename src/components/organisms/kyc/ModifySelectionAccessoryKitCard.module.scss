@@ -1,0 +1,138 @@
+/* Basic accessory kit — insurance add-on colours, item grid + Add */
+
+.card {
+  overflow: hidden;
+  width: 100%;
+  border-radius: 16px;
+  border: 1px solid #e8e8e8;
+  background-color: #fff;
+  text-align: left;
+  transition-property: color, background-color, border-color, background-image;
+  transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+  transition-duration: var(--tw-duration, var(--default-transition-duration));
+}
+
+.cardSelected {
+  border-color: #bda6e8;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background-color: #fff;
+}
+
+.cardSelected .body {
+  background: linear-gradient(180deg, rgba(244, 238, 254, 1) 0%, rgba(255, 255, 255, 1) 100%);
+}
+
+.title {
+  margin: 0;
+  /* body-md */
+  font-size: 16px;
+  font-weight: var(--font-weight-semibold);
+  line-height: 24px;
+  color: #121212;
+}
+
+.items {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-flow: column;
+  grid-template-rows: auto auto;
+  gap: 8px 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  /* body-sm */
+  font-size: 14px;
+  font-weight: var(--font-weight-normal);
+  line-height: 20px;
+  color: #121212;
+}
+
+.itemIcon {
+  display: inline-flex;
+  height: 16px;
+  width: 16px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid #121212;
+  color: #121212;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 16px;
+  background-color: #f9f6ff;
+}
+
+.priceRow {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0;
+}
+
+.price {
+  /* body-md */
+  font-size: 16px;
+  font-weight: var(--font-weight-semibold);
+  line-height: 24px;
+  font-variant-numeric: tabular-nums;
+  color: #121212;
+}
+
+.compareAt {
+  /* body-sm */
+  font-size: 14px;
+  line-height: 20px;
+  font-variant-numeric: tabular-nums;
+  color: #757575;
+  text-decoration: line-through;
+}
+
+.addBtn {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 78px;
+  border-radius: 8px;
+  border: 1px solid #121212;
+  background-color: #fff;
+  padding: 6px 10px;
+  /* body-sm */
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  line-height: 20px;
+  color: #121212;
+  cursor: pointer;
+}
+
+.addBtnSelected {
+  border-color: #bda6e8;
+  background-color: #fff;
+  color: #5920c5;
+}
+
+.addBtn:focus-visible {
+  outline: 2px solid color-mix(in oklab, #121212 30%, transparent);
+  outline-offset: 2px;
+}

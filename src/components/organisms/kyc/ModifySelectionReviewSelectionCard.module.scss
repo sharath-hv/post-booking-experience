@@ -140,3 +140,10 @@
   line-height: 16px;
 }
 
+/* label-md — tertiary-cta at caption size to match this card’s rows */
+:global(.tertiary-cta).addLink {
+  /* label-md / caption */
+  font-size: 12px;
+  line-height: 16px;
+}
+

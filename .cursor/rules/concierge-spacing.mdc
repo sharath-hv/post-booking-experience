@@ -29,6 +29,8 @@ Three named CSS classes cover every surface. Never use inline shadow values for 
 
 Values live in `src/styles/_tokens.scss`. Change the token — do not hardcode px in screens.
 
+## Shivi concierge turns
+
 | Token | Default | Use |
 |---|---|---|
 | `--space-copy-to-card` | 32px | Last body/subtext line → first card |
@@ -37,15 +39,32 @@ Values live in `src/styles/_tokens.scss`. Change the token — do not hardcode p
 | `--space-car-card-stack` | 20px | Vertical gap between stacked car cards |
 
 ```scss
-// ✅ GOOD
+// ✅ GOOD — Shivi turns
 margin-top: var(--space-copy-to-card);
 gap: var(--space-card-stack);
 gap: var(--space-car-card-stack);
+```
+
+## Standalone option pages
+
+Insurance add-on, tenure, car-change (including confirm / review-and-pay), and other `PageLeadHeading` pickers — not Shivi turns.
+
+| Token | Default | Use |
+|---|---|---|
+| `--space-option-lead-to-card` | 24px | Title + subtext (if any) → first content/card |
+| `--space-option-card-stack` | 16px | Vertical gap between stacked option/car cards |
+
+```scss
+// ✅ GOOD — standalone option pages
+margin-top: var(--space-option-lead-to-card);
+gap: var(--space-option-card-stack);
 
 // ❌ BAD — a one-off px that will drift from the global rule
 margin-top: 32px;
 gap: calc(var(--spacing) * 6);
 ```
+
+Do not reuse Shivi stack tokens on these pages (even when the px value matches).
 
 ## Internal rows within a single card
 

@@ -9,7 +9,13 @@ import { getModifySelectionCarCutoutForColour } from "@/helpers/modify-selection
 import type { ModifySelectionColourOption } from "@/constants/modify-selection-colours-content";
 import type { ModifySelectionDeliveryChoice } from "@/constants/modify-selection-colours-content";
 import type { ModifySelectionReviewPaySummary } from "@/constants/modify-selection-review-pay-content";
-import type { ModifySelectionColourPending } from "@/helpers/modify-selection-colour-pending";
+import {
+  clearModifySelectionColourPending,
+  type ModifySelectionColourPending,
+} from "@/helpers/modify-selection-colour-pending";
+import { clearModifySelectionCoveragePending } from "@/helpers/modify-selection-coverage-pending";
+import { clearModifySelectionDifferentCarPending } from "@/helpers/modify-selection-different-car-pending";
+import { clearModifySelectionVariantPending } from "@/helpers/modify-selection-variant-pending";
 
 const STORAGE_KEY = "pbe_active_booking_snapshot_v1";
 const PENDING_PAYMENT_STORAGE_KEY = "pbe_modify_selection_pending_payment_v1";
@@ -148,6 +154,10 @@ export function commitActiveBookingAfterModifyPayment(
   };
   writeActiveBookingSnapshot(next);
   clearModifySelectionPendingPayment();
+  clearModifySelectionColourPending();
+  clearModifySelectionVariantPending();
+  clearModifySelectionDifferentCarPending();
+  clearModifySelectionCoveragePending();
   return next;
 }
 

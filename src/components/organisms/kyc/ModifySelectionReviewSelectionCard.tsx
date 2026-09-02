@@ -6,6 +6,7 @@ import carBackgroundSmall from "@/assets/Car background small.png";
 import editIcon from "@/assets/Edit.svg";
 import { MODIFY_SELECTION_SUMMARY_CARD_CLASS } from "@/components/molecules/modify-selection-option-card-ui";
 import { BOOKING_CAR_TITLE, BOOKING_CAR_VARIANT } from "@/constants/booking-car-card-content";
+import { MODIFY_SELECTION_ACCESSORY_ADD_CTA } from "@/constants/modify-selection-coverage-content";
 import {
   BOOKING_EXPRESS_DELIVERY_TEXT_CLASS,
   BOOKING_STANDARD_DELIVERY_TEXT_CLASS,
@@ -31,6 +32,12 @@ type ModifySelectionReviewSelectionCardProps = {
   onEditVariant?: () => void;
   /** Different-car flow — change make & model. */
   onEditCar?: () => void;
+  insuranceLine?: string;
+  onEditInsurance?: () => void;
+  accessoryLine?: string;
+  /** When false, show an Add link instead of the kit name + edit pencil. */
+  accessorySelected?: boolean;
+  onEditAccessory?: () => void;
 };
 
 function EditLinkButton({
@@ -67,6 +74,11 @@ export function ModifySelectionReviewSelectionCard({
   carVariant,
   onEditVariant,
   onEditCar,
+  insuranceLine,
+  onEditInsurance,
+  accessoryLine,
+  accessorySelected = true,
+  onEditAccessory,
 }: ModifySelectionReviewSelectionCardProps) {
   const titleLabel = carTitle ?? BOOKING_CAR_TITLE;
   const variantLabel = carVariant ?? BOOKING_CAR_VARIANT;
@@ -141,6 +153,38 @@ export function ModifySelectionReviewSelectionCard({
             <EditLinkButton label="Change delivery" onClick={onEditDelivery} />
           ) : null}
         </div>
+
+        {insuranceLine != null ? (
+          <div className={styles.mt_2_16}>
+            <span className={styles.shrink_0_13}>Insurance:</span>
+            <span className={styles.text_xs_14}>{insuranceLine}</span>
+            {onEditInsurance != null ? (
+              <EditLinkButton label="Change insurance" onClick={onEditInsurance} />
+            ) : null}
+          </div>
+        ) : null}
+
+        {accessoryLine != null || onEditAccessory != null ? (
+          <div className={styles.mt_2_16}>
+            <span className={styles.shrink_0_13}>Accessories:</span>
+            {!accessorySelected && onEditAccessory != null ? (
+              <button
+                type="button"
+                onClick={onEditAccessory}
+                className={cn("tertiary-cta", styles.addLink)}
+              >
+                {MODIFY_SELECTION_ACCESSORY_ADD_CTA}
+              </button>
+            ) : (
+              <>
+                <span className={styles.text_xs_14}>{accessoryLine}</span>
+                {onEditAccessory != null ? (
+                  <EditLinkButton label="Change accessories" onClick={onEditAccessory} />
+                ) : null}
+              </>
+            )}
+          </div>
+        ) : null}
       </div>
     </div>
   );

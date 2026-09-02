@@ -19,7 +19,7 @@ import {
 } from "@/constants/demo-vehicle-identification";
 import { PartnerGarageCard } from "@/components/organisms/payment/PartnerGarageCard";
 import { OVERLAY_GLASS_CARD_CLASS } from "@/helpers/overlay-glass-card";
-import { fireBasicCannon } from "@/utils/confetti-basic-cannon";
+import { ConfettiBurst } from "@/components/atoms/ConfettiBurst";
 import { CAR_SOURCE_DETAIL, CAR_SOURCE_NAME, NAMED_DEALER_DETAIL, NAMED_DEALER_NAME } from "@/constants/dealer-attribution-content";
 import {
   DEFAULT_EXPERIENCE_FLOW,
@@ -154,7 +154,6 @@ export function CarDeliveryScheduleScreen() {
             writeLockedPickupDeliveryLine(pickupLine);
           }
           setScheduled(true);
-          fireBasicCannon();
         },
         disabled: day == null || windowSlot == null,
         echo: null,
@@ -171,7 +170,9 @@ export function CarDeliveryScheduleScreen() {
 
   if (scheduled && day && windowSlot && pickupLine) {
     return (
-      <ConciergeTurnShell
+      <>
+        <ConfettiBurst />
+        <ConciergeTurnShell
         key="schedule-locked"
         says={[
           `Locked: ${day}, ${windowSlot}.`,
@@ -200,6 +201,7 @@ export function CarDeliveryScheduleScreen() {
         timeSkip={{ label: "Start over", href: "/quote" }}
         onBack={onBackFromLocked}
       />
+      </>
     );
   }
 

@@ -226,17 +226,18 @@ export type InsuranceAddonId =
   | "passenger"
   | "paid_driver";
 
-export type InsuranceAddonOption = {
-  id: InsuranceAddonId;
-  /** Product name in the grey footer, e.g. "Engine Protect". */
+/** Card model shared by insurance add-ons and the modify-selection accessory kit. */
+export type AddonToggleCardData = {
+  id: string;
   title: string;
-  /** Joiner before the price — "-" or "@" as in the design. */
   priceConnector: "-" | "@";
-  /** Benefit headline in the white body. */
   headline: string;
   detail: string;
-  /** Extra premium on standard 1+3. */
   premiumInr: number;
+};
+
+export type InsuranceAddonOption = AddonToggleCardData & {
+  id: InsuranceAddonId;
   /** Extra premium on extended 3+3. */
   extendedPremiumInr: number;
 };

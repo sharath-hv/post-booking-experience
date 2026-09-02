@@ -20,7 +20,7 @@ export const MODIFY_SELECTION_NEW_BOOKING_AMOUNT_INR = 15_000;
 export const MODIFY_SELECTION_REVIEW_PAY_TITLE = "Confirm your changes";
 
 /** Sticky footer + booking card — what the user pays on this step. */
-export const MODIFY_SELECTION_REVIEW_PAY_NOW_LABEL = "Amount due";
+export const MODIFY_SELECTION_REVIEW_PAY_NOW_LABEL = "Booking amount due";
 export const MODIFY_SELECTION_REVIEW_PAY_NOTHING_DUE_LABEL = "No payment needed";
 export const MODIFY_SELECTION_REVIEW_PAY_BREAKDOWN_TOGGLE = "How we calculated this";
 /** Full on-road style price — secondary to the pay-now card. */
@@ -53,34 +53,42 @@ export type ModifySelectionBookingAmountCardCopy = {
   heroAmountInr: number | null;
   /** Visual tone for the hero amount. */
   heroAmountTone: "pay" | "credit";
-  /** Breakdown footer label — “Amount due” or “Amount adjusted” for surplus. */
+  /** Breakdown footer label — “Booking amount due” or “Amount adjusted” for surplus. */
   totalLabel: string;
   /** Breakdown footer amount — due today, or surplus adjusted on lower (no fee). */
   totalAmountInr: number;
 };
-/** Price summary demo totals — Figma 2699:9390. */
+/** Price summary — lines sum to ACKO Drive price ₹22,89,555. */
 export const MODIFY_SELECTION_PRICE_SUMMARY_DEMO = {
-  exShowroomPriceInr: 2_016_300,
-  otherChargesTotalInr: 1_365_301,
-  totalDiscountInr: 104_871,
-  ackoDriveDiscountInr: 69_701,
-  ackoDrivePriceInr: 2_256_565,
+  exShowroomPriceInr: 1_857_000,
+  registrationAmountInr: 374_200,
+  dealerInsuranceInr: 79_800,
+  otherChargesTotalInr: 16_364,
+  totalDiscountInr: 37_809,
+  ackoDriveDiscountInr: 37_809,
+  ackoDrivePriceInr: 2_289_555,
 } as const;
 
-/** Demo line items inside “Other charges” (Figma 2699:9401). */
+/** Nested under “Other charges”. Sums to `otherChargesTotalInr`. */
 export const MODIFY_SELECTION_OTHER_CHARGES_LINE_ITEMS: readonly {
   label: string;
   amountInr: number;
 }[] = [
-  { label: "Registration amount", amountInr: 254_693 },
-  { label: "Dealer Insurance premium", amountInr: 64_880 },
-  { label: "Tax collected at source", amountInr: 20_163 },
+  { label: "Tax collected at source", amountInr: 12_579 },
   { label: "FasTag", amountInr: 850 },
-  { label: "HSRP number plate charges", amountInr: 850 },
+  { label: "Auto Card Charges", amountInr: 885 },
+  { label: "HSRP Number Plate Charges", amountInr: 2_050 },
 ] as const;
+
+export const MODIFY_SELECTION_REGISTRATION_LABEL = "Registration amount";
+export const MODIFY_SELECTION_DEALER_INSURANCE_LABEL = "Dealer Insurance - Standard";
+export const MODIFY_SELECTION_OTHER_CHARGES_LABEL = "Other charges";
+export const MODIFY_SELECTION_ACKO_DRIVE_DISCOUNT_LABEL = "ACKO Drive discount";
 
 export type ModifySelectionReviewPaySummary = {
   exShowroomPriceInr: number;
+  registrationAmountInr: number;
+  dealerInsuranceInr: number;
   otherChargesTotalInr: number;
   ackoDrivePriceInr: number;
   ackoDriveDiscountInr: number;
@@ -117,8 +125,15 @@ export function buildModifySelectionColourReviewPaySummary(
   options?: BuildModifySelectionReviewPaySummaryOptions,
 ): ModifySelectionReviewPaySummary {
   const quote = resolveModifySelectionColourQuote(option, deliveryChoice);
-  const { exShowroomPriceInr, otherChargesTotalInr, totalDiscountInr, ackoDriveDiscountInr, ackoDrivePriceInr } =
-    MODIFY_SELECTION_PRICE_SUMMARY_DEMO;
+  const {
+    exShowroomPriceInr,
+    registrationAmountInr,
+    dealerInsuranceInr,
+    otherChargesTotalInr,
+    totalDiscountInr,
+    ackoDriveDiscountInr,
+    ackoDrivePriceInr,
+  } = MODIFY_SELECTION_PRICE_SUMMARY_DEMO;
 
   const demo =
     options?.demoScenario != null
@@ -142,6 +157,8 @@ export function buildModifySelectionColourReviewPaySummary(
 
   return {
     exShowroomPriceInr,
+    registrationAmountInr,
+    dealerInsuranceInr,
     otherChargesTotalInr,
     ackoDrivePriceInr,
     ackoDriveDiscountInr,
@@ -247,7 +264,7 @@ export function getModifySelectionBookingAmountCardCopy(
     case "same_fee":
       return {
         caseId,
-        dueLabel: "One-time fee",
+        dueLabel: "One time change fee",
         whyLine: "This is a one-time fee for updating your booking",
         priceLockTopUpInr,
         heroAmountInr: dueInr,

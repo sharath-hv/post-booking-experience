@@ -18,7 +18,6 @@ import {
 } from "@/constants/modify-selection-car-brands-content";
 import { getModifySelectionCarModelById } from "@/constants/modify-selection-car-models-content";
 import {
-  clearModifySelectionColourPending,
   readModifySelectionColourPending,
   writeModifySelectionColourPending,
 } from "@/helpers/modify-selection-colour-pending";
@@ -29,7 +28,16 @@ import {
 } from "@/constants/modify-selection-colours-content";
 import { MODIFY_SELECTION_PAGE_SHELL_CLASS } from "@/constants/modify-selection-content";
 import {
-  clearModifySelectionDifferentCarPending,
+  MODIFY_SELECTION_ACCESSORIES_PATH,
+  MODIFY_SELECTION_BASIC_ACCESSORY_KIT_TITLE,
+  MODIFY_SELECTION_INSURANCE_PATH,
+  modifySelectionInsuranceCardValue,
+} from "@/constants/modify-selection-coverage-content";
+import {
+  beginModifySelectionCoverage,
+  readModifySelectionCoveragePending,
+} from "@/helpers/modify-selection-coverage-pending";
+import {
   readModifySelectionDifferentCarPending,
   writeModifySelectionDifferentCarPending,
 } from "@/helpers/modify-selection-different-car-pending";
@@ -53,7 +61,6 @@ import { MODIFY_SELECTION_STAGGER_MS } from "@/helpers/modify-selection-stagger"
 import { useCtaNavigation } from "@/hooks/use-cta-navigation";
 import { writeModifySelectionVariantChoice } from "@/helpers/modify-selection-variant-choice";
 import {
-  clearModifySelectionVariantPending,
   readModifySelectionVariantPending,
   writeModifySelectionVariantPending,
 } from "@/helpers/modify-selection-variant-pending";
@@ -136,12 +143,29 @@ function ModifySelectionReviewPayScreenInner({
   const [differentCarPending, setDifferentCarPending] = useState(() =>
     flow === "different-car" ? readModifySelectionDifferentCarPending() : null,
   );
+  const [coveragePending, setCoveragePending] = useState(() =>
+    readModifySelectionCoveragePending(),
+  );
+
+  const confirmPath = useMemo(() => {
+    if (flow === "different-car" && brandId != null && modelId != null) {
+      return `/booking/modify/different-car/${brandId}/${modelId}/confirm`;
+    }
+    return flow === "variant"
+      ? "/booking/modify/variant/confirm"
+      : "/booking/modify/colour/confirm";
+  }, [brandId, flow, modelId]);
 
   useEffect(() => {
     if (flow === "colour") setColourPending(readModifySelectionColourPending());
     if (flow === "variant") setVariantPending(readModifySelectionVariantPending());
     if (flow === "different-car") setDifferentCarPending(readModifySelectionDifferentCarPending());
   }, [flow]);
+
+  useEffect(() => {
+    const coverage = beginModifySelectionCoverage({ flow, confirmPath });
+    setCoveragePending(coverage);
+  }, [confirmPath, flow]);
 
   useEffect(() => {
     writeModifySelectionReviewPayDemoScenario(demoScenario);
@@ -270,9 +294,11 @@ function ModifySelectionReviewPayScreenInner({
   /**
    * Edit cascades from review:
    * - Delivery → sheet only (in place)
-   * - Colour → colour → delivery → confirm
-   * - Variant → variant → colour → delivery → confirm
-   * - Make/model → brand → model → variant → colour → delivery → confirm
+   * - Insurance → tenure → accessory → confirm
+   * - Accessories → accessory → confirm
+   * - Colour → colour → delivery → insurance → accessory → confirm
+   * - Variant → variant → colour → delivery → insurance → accessory → confirm
+   * - Make/model → brand → model → variant → colour → delivery → insurance → accessory → confirm
    *
    * Colour step after confirm needs the intermediate variant choice re-seeded
    * (cleared when pending was written).
@@ -303,6 +329,16 @@ function ModifySelectionReviewPayScreenInner({
     }
   }, [resolved?.option.isExpressDelivery]);
 
+  const onEditInsurance = useCallback(() => {
+    beginModifySelectionCoverage({ flow, confirmPath, returnToConfirm: true });
+    router.push(MODIFY_SELECTION_INSURANCE_PATH);
+  }, [confirmPath, flow, router]);
+
+  const onEditAccessory = useCallback(() => {
+    beginModifySelectionCoverage({ flow, confirmPath, returnToConfirm: true });
+    router.push(MODIFY_SELECTION_ACCESSORIES_PATH);
+  }, [confirmPath, flow, router]);
+
   const onPay = useCallback(() => {
     if (resolved == null) return;
     writeModifySelectionPendingFromSummary(resolved.summary, {
@@ -312,17 +348,15 @@ function ModifySelectionReviewPayScreenInner({
       carTitle: resolved.carTitle,
       carVariant: resolved.carVariant,
     });
-    if (flow === "colour") clearModifySelectionColourPending();
-    if (flow === "variant") clearModifySelectionVariantPending();
-    if (flow === "different-car") clearModifySelectionDifferentCarPending();
     start(() =>
       router.push(
         buildBookingLockCheckoutHref(resolved.summary.bookingAmountToPayInr, {
           returnSource: MODIFY_SELECTION_RETURN_SOURCE,
+          returnPath: confirmPath,
         }),
       ),
     );
-  }, [flow, resolved, router, start]);
+  }, [confirmPath, resolved, router, start]);
 
   if (resolved == null) {
     return null;
@@ -358,6 +392,13 @@ function ModifySelectionReviewPayScreenInner({
               flow === "variant" || flow === "different-car" ? onEditVariant : undefined
             }
             onEditCar={flow === "different-car" ? onEditCar : undefined}
+            insuranceLine={modifySelectionInsuranceCardValue(
+              coveragePending?.insuranceTenure ?? "1+3",
+            )}
+            onEditInsurance={onEditInsurance}
+            accessorySelected={coveragePending?.accessorySelected ?? true}
+            accessoryLine={MODIFY_SELECTION_BASIC_ACCESSORY_KIT_TITLE}
+            onEditAccessory={onEditAccessory}
           />
         </div>
 
@@ -378,7 +419,9 @@ function ModifySelectionReviewPayScreenInner({
             .join(" ")}
           style={{ animationDelay: `${STAGGER_PRICE_MS}ms` }}
         >
-          <ModifySelectionReviewPaymentSummary summary={resolved.summary} />
+          <div className={styles.priceStack}>
+            <ModifySelectionReviewPaymentSummary summary={resolved.summary} />
+          </div>
 
           {/* QA-only — remove and the grey wash still ends the page at the footer */}
           <div className={styles.demo_slot}>

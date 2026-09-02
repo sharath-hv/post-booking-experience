@@ -17,6 +17,8 @@ import {
   clearModifySelectionVariantChoice,
   readModifySelectionVariantChoice,
 } from "@/helpers/modify-selection-variant-choice";
+import { MODIFY_SELECTION_INSURANCE_PATH } from "@/constants/modify-selection-coverage-content";
+import { beginModifySelectionCoverage } from "@/helpers/modify-selection-coverage-pending";
 import {
   readModifySelectionVariantPending,
   writeModifySelectionVariantPending,
@@ -92,7 +94,11 @@ export function ModifySelectionVariantColourScreen() {
         deliveryChoice,
       });
       clearModifySelectionVariantChoice();
-      router.push(MODIFY_SELECTION_VARIANT_CONFIRM_PATH);
+      beginModifySelectionCoverage({
+        flow: "variant",
+        confirmPath: MODIFY_SELECTION_VARIANT_CONFIRM_PATH,
+      });
+      router.push(MODIFY_SELECTION_INSURANCE_PATH);
     },
     [router, selectedColour, selectedVariant, variantId],
   );

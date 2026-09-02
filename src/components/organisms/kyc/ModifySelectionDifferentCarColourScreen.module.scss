@@ -13,10 +13,10 @@
 }
 
 .mt_8_1 {
-  margin-top: var(--space-copy-to-card);
+  margin-top: var(--space-option-lead-to-card);
   display: flex;
   flex-direction: column;
-  gap: var(--space-car-card-stack);
+  gap: var(--space-option-card-stack);
 }
 
 .payment_success_stagger_2 {

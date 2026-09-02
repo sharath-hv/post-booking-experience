@@ -3,8 +3,7 @@
 import {
   INSURANCE_ADDON_ADD_LABEL,
   INSURANCE_ADDON_ADDED_LABEL,
-  type InsuranceAddonId,
-  type InsuranceAddonOption,
+  type AddonToggleCardData,
 } from "@/components/organisms/payment/insurance-coverage-content";
 import { ToggleAdd } from "@/components/atoms/selection/ToggleAdd";
 import { cn } from "@/utils/utils";
@@ -18,10 +17,12 @@ function formatInr(amount: number) {
   }).format(Math.max(0, Math.round(amount)));
 }
 
-export type InsuranceAddonCardProps = {
-  addon: InsuranceAddonOption;
+export type { AddonToggleCardData };
+
+export type InsuranceAddonCardProps<T extends string = string> = {
+  addon: Omit<AddonToggleCardData, "id"> & { id: T };
   selected: boolean;
-  onToggle: (id: InsuranceAddonId) => void;
+  onToggle: (id: T) => void;
 };
 
 /**
@@ -29,7 +30,11 @@ export type InsuranceAddonCardProps = {
  * Selected state matches change-selection cards (lavender border + wash);
  * Add / Added stays the control (no radio).
  */
-export function InsuranceAddonCard({ addon, selected, onToggle }: InsuranceAddonCardProps) {
+export function InsuranceAddonCard<T extends string>({
+  addon,
+  selected,
+  onToggle,
+}: InsuranceAddonCardProps<T>) {
   return (
     <article
       id={`insurance-addon-${addon.id}`}

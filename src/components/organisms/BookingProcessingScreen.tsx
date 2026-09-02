@@ -61,7 +61,7 @@ export type BookingProcessingScreenProps = {
   dayStamp?: string;
   /** Echo written when the primary reply navigates (defaults to the label). */
   replyEcho?: string | null;
-  /** Short conversational prompt before “Request call-back”. */
+  /** Short conversational prompt before “Request a call-back”. */
   callLabel?: string;
   /**
    * Who the Arrives pill waits on — pass when the default

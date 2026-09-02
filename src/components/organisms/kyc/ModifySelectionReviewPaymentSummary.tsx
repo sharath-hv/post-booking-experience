@@ -10,7 +10,11 @@ import { cn } from "@/utils/utils";
 import {
   formatModifySelectionInr,
   formatModifySelectionInrSigned,
+  MODIFY_SELECTION_ACKO_DRIVE_DISCOUNT_LABEL,
+  MODIFY_SELECTION_DEALER_INSURANCE_LABEL,
+  MODIFY_SELECTION_OTHER_CHARGES_LABEL,
   MODIFY_SELECTION_OTHER_CHARGES_LINE_ITEMS,
+  MODIFY_SELECTION_REGISTRATION_LABEL,
   MODIFY_SELECTION_REVIEW_PAY_ACKO_DRIVE_PRICE_LABEL,
   MODIFY_SELECTION_REVIEW_PAY_CAR_PRICE_HINT,
   type ModifySelectionReviewPaySummary,
@@ -69,8 +73,7 @@ export function ModifySelectionReviewPaymentSummary({
   summary,
 }: ModifySelectionReviewPaymentSummaryProps) {
   const [breakupOpen, setBreakupOpen] = useState(false);
-  const [otherChargesOpen, setOtherChargesOpen] = useState(false);
-  const [totalDiscountOpen, setTotalDiscountOpen] = useState(false);
+  const [otherChargesOpen, setOtherChargesOpen] = useState(true);
 
   return (
     <section aria-labelledby="modify-selection-car-price-heading">
@@ -112,8 +115,26 @@ export function ModifySelectionReviewPaymentSummary({
             </div>
 
             <div className={styles.mt_4_9}>
+              <div className={styles.flex_7}>
+                <span className={styles.text_sm_2}>{MODIFY_SELECTION_REGISTRATION_LABEL}</span>
+                <span className={styles.text_sm_8}>
+                  {formatModifySelectionInr(summary.registrationAmountInr)}
+                </span>
+              </div>
+            </div>
+
+            <div className={styles.mt_4_9}>
+              <div className={styles.flex_7}>
+                <span className={styles.text_sm_2}>{MODIFY_SELECTION_DEALER_INSURANCE_LABEL}</span>
+                <span className={styles.text_sm_8}>
+                  {formatModifySelectionInr(summary.dealerInsuranceInr)}
+                </span>
+              </div>
+            </div>
+
+            <div className={styles.mt_4_9}>
               <CollapsiblePriceRow
-                label="Other charges"
+                label={MODIFY_SELECTION_OTHER_CHARGES_LABEL}
                 amount={formatModifySelectionInr(summary.otherChargesTotalInr)}
                 open={otherChargesOpen}
                 onToggle={() => setOtherChargesOpen((v) => !v)}
@@ -133,22 +154,14 @@ export function ModifySelectionReviewPaymentSummary({
 
             <hr className={styles.my_4_13} />
 
-            <CollapsiblePriceRow
-              label="Total discount"
-              amount={formatModifySelectionInrSigned(-summary.totalDiscountInr)}
-              amountClassName={styles.textGreen}
-              open={totalDiscountOpen}
-              onToggle={() => setTotalDiscountOpen((v) => !v)}
-            >
-              <div className={styles.rounded_lg_14}>
-                <div className={styles.flex_7}>
-                  <span className={styles.text_xs_11}>ACKO Drive discount</span>
-                  <span className={styles.text_xs_15}>
-                    {formatModifySelectionInrSigned(-summary.ackoDriveDiscountInr)}
-                  </span>
-                </div>
-              </div>
-            </CollapsiblePriceRow>
+            <div className={styles.flex_7}>
+              <span className={cn(styles.text_sm_2, styles.textGreen)}>
+                {MODIFY_SELECTION_ACKO_DRIVE_DISCOUNT_LABEL}
+              </span>
+              <span className={cn(styles.text_sm_8, styles.textGreen)}>
+                {formatModifySelectionInrSigned(-summary.ackoDriveDiscountInr)}
+              </span>
+            </div>
           </div>
         ) : null}
       </div>

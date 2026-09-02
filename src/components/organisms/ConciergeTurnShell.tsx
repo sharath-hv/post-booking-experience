@@ -92,7 +92,7 @@ export type ConciergeTurn = {
    * Defaults to `you` when the turn has replies (user action), else `shivi`.
    */
   dateHolder?: "you" | "shivi";
-  /** Short prompt before “Request call-back” (e.g. “Stuck?”). Presence shows the row. */
+  /** Short prompt before “Request a call-back” (e.g. “Stuck?”). Presence shows the row. */
   callLabel?: string;
   /** Extra quiet control under the replies (e.g. delivery-timeline sheet trigger). */
   footerExtra?: ReactNode;
@@ -543,11 +543,11 @@ export function ConciergeTurnShell({
               <button
                 type="button"
                 onClick={() => setCallSheetOpen(true)}
-                aria-label="Request call-back"
+                aria-label="Request a call-back"
                 className={cn(styles.flex_33, styles.mt_3_34)}
               >
                 <span className={styles.callPrompt}>{callLabel}</span>
-                <span className={styles.callAction}>Request call-back</span>
+                <span className={styles.callAction}>Request a call-back</span>
               </button>
             ) : null}
             {footerExtra ? (

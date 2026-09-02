@@ -1,7 +1,7 @@
 /* Due-today amount — amount-first, quiet supporting copy */
 
 .section {
-  margin-top: calc(var(--spacing) * 4);
+  margin-top: var(--space-option-card-stack);
   scroll-margin-top: calc(var(--spacing) * 14);
 }
 

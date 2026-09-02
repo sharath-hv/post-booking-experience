@@ -12,6 +12,8 @@ import {
   getModifySelectionCarModelById,
   modifySelectionCarModelPath,
 } from "@/constants/modify-selection-car-models-content";
+import { MODIFY_SELECTION_INSURANCE_PATH } from "@/constants/modify-selection-coverage-content";
+import { beginModifySelectionCoverage } from "@/helpers/modify-selection-coverage-pending";
 import {
   modifySelectionDifferentCarConfirmPath,
 } from "@/helpers/modify-selection-different-car-paths";
@@ -114,7 +116,11 @@ export function ModifySelectionDifferentCarColourScreen({
         deliveryChoice,
       });
       clearModifySelectionDifferentCarVariantChoice();
-      router.push(modifySelectionDifferentCarConfirmPath(brandId, modelId));
+      beginModifySelectionCoverage({
+        flow: "different-car",
+        confirmPath: modifySelectionDifferentCarConfirmPath(brandId, modelId),
+      });
+      router.push(MODIFY_SELECTION_INSURANCE_PATH);
     },
     [brandId, modelId, router, selectedColour, selectedVariant, variantId],
   );

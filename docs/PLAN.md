@@ -107,7 +107,7 @@ Buying-guide routes are bypassed on the spine (the arrival plan replaces them). 
 ## Tech stack
 
 - Next.js 15 (App Router), React 19, TypeScript, SCSS
-- Local dev: `npm run dev` → **http://localhost:3008/post-booking-experience** (`next dev --turbopack --port 3008`; `BASE_PATH` from `lib/site-config.ts`, default `/post-booking-experience`)
+- Local dev: `npm run dev` → **http://localhost:3008** (`next dev --turbopack --port 3008`; `BASE_PATH` from `src/lib/site-config.ts`, default empty — app at domain root)
 - Static export + GitHub Pages: `npm run build` → `out/`; prefer `import` from `@/assets/` or `publicAssetPath()` for `/public/assets/`
 
 ---
@@ -270,8 +270,10 @@ Switch on **`/quote`** via the top-left menu (`QuoteFlowMenuSheet`). Active flow
 | `/booking/processing` | Dealer search (`ConciergeMoment` `dealerSearch`) — demo **Next morning** → `/booking/accepted`; express-only side-by-side alts **No car found** → `/car-allocation/failed`; **Variant discontinued** → `/car-allocation/variant-unavailable` |
 | `/booking/accepted` | Dealer found + OTP `NextStepCard` — demo **After the call** → standard: `/car-allocation/pending` · express: `/booking/confirmed`. **`?earlyDealer=1`** (from early-confirming): faster-delivery verify copy (no dealer-change wording); **After the call** → `/car-allocation/confirmed?early=1` |
 | `/booking/modify` | **Modify-selection demo flows** (`modify_no_charges`, `modify_with_charges`) — chooser; bottom CTA varies by option (See available colours / variants / Browse cars) |
-| `/booking/modify/colour` \| `variant` \| `different-car` | Selection steps; each path has `…/confirm` → shared review-and-pay (`ModifySelectionReviewPayScreen`) |
-| `/booking/modify/*/confirm` | Review selection + pay; edit icons gated by flow (see **Modify selection**) |
+| `/booking/modify/colour` \| `variant` \| `different-car` | Selection steps (colour / variant / brand+model); last picker Continue starts coverage pending and goes to insurance |
+| `/booking/modify/insurance` | Coverage step 1 — tenure 1+3 / 3+3 (`ModifySelectionInsuranceTenureScreen`). First visit Continue → accessories; edit-from-confirm Continue → confirm |
+| `/booking/modify/accessories` | Coverage step 2 — optional basic kit (`ModifySelectionAccessoryKitScreen`). Continue → confirm |
+| `/booking/modify/*/confirm` | Review selection + pay (`ModifySelectionReviewPayScreen`); insurance / accessories rows on the car card |
 | `/booking/confirmed` | Booking confirmed — default spine: **`ConciergeMoment` `carReserved`** — payment handoff → `/payment/choose`; modify-selection pay returns (`?source=payment&return_source=modify-selection`): auto-advance **Payment received** (`DownPaymentInstalmentSuccess`) — next route journey-aware (see **Pay → booking received**) |
 | `/car-allocation/pending` | Manufacturing wait (`allocationPending`); primary skip **A few months later** → `/car-allocation/confirmed`; **standard** alt **Car ready early** → `/car-allocation/early-offer`; **express** side-by-side alts **No car found** → `/car-allocation/failed`; **Variant discontinued** → `/car-allocation/variant-unavailable` |
 | `/car-allocation/early-offer` | **Standard demo** (`earlyDeliveryOffer`) — car ready early; replies **Yes, deliver early** → `/car-allocation/early-confirming` or **Keep my original date** → `/car-allocation/keeping-date` |
@@ -485,27 +487,50 @@ Tap opens `ModifySelectionConfirmBottomSheet` — content-hug height, `BottomShe
 
 **Shared review UI:** `ModifySelectionReviewPayScreen` + `ModifySelectionReviewSelectionCard` (review-and-pay).
 
+### Coverage steps (before confirm)
+
+After the last picker (colour / delivery), **do not** jump to confirm. Persist `pbe_modify_selection_coverage_pending_v1` (`beginModifySelectionCoverage` in `src/helpers/modify-selection-coverage-pending.ts`) and walk:
+
+1. **`/booking/modify/insurance`** — “Which insurance cover would you like?” Standard (1+3) / Extended (3+3). CTA **Continue** (not Pay). Defaults to 1+3.
+2. **`/booking/modify/accessories`** — “Would you like to include car accessories?” Optional **Basic accessory kit** (₹4,999, strike ₹5,499). Defaults to selected. CTA **Continue** → confirm.
+
+Session shape: `{ flow, confirmPath, insuranceTenure, accessorySelected, returnToConfirm }`. Opening insurance/accessories with no pending redirects to `/booking/modify`.
+
+**Edit from confirm (not the first-time cascade):**
+
+| Pencil / link | Opens | Continue |
+|---------------|-------|----------|
+| Insurance | `/booking/modify/insurance` (`returnToConfirm: true`) | Back to that confirm path — **skips** accessories |
+| Accessories (selected) | `/booking/modify/accessories` | Back to confirm |
+| Accessories empty | **Add** (`tertiary-cta`, 12px / 16px) → same accessories page | Back to confirm |
+
+First-time colour / variant / different-car still goes insurance → accessories → confirm (`returnToConfirm: false`).
+
+Insurance/kit amounts are demo session values — **not** added to booking amount due.
+
 ### Review-and-pay page IA
 
-Title: **Confirm your change**. One decision: what is due today to lock the change.
+Title: **Confirm your changes**. One decision: what is due today to lock the change.
 
 | Block | Role |
 |-------|------|
-| Selection card | Identity (car / variant / colour / delivery) with gated edit |
+| Selection card | Identity (car / variant / colour / delivery / **insurance** / **accessories**) with gated edit |
 | **What you pay to confirm the change** | Primary composed card — lavender wash, inset due amount, fee (amber) / surplus (green) notices; math under “How we calculated this” |
 | **Car price** | Secondary composed card — ACKO Drive price; “View breakup” expands ex-showroom / charges / discounts |
 | Demo switcher | QA only — at page bottom (`?demo_booking=`); not product chrome |
-| Footer | **Due today** + **Pay ₹X** (or **Confirm** when ₹0) |
+| Footer | **Due today** + **Pay ₹X** (or **Confirm changes** when ₹0) |
+
+Standalone option pages (insurance, accessories, confirm) use `--space-option-lead-to-card` (24px) and `--space-option-card-stack` (16px) — not Shivi `--space-copy-to-card` / `--space-card-stack`. See `.cursor/rules/concierge-spacing.mdc`.
 
 ### Review page — which rows are editable
 
 Edit icons appear only for fields the user may change on that entry path. **Delivery** edit is shown only when the selected colour is **express** (`resolved.option.isExpressDelivery` → `showDeliveryEdit`); standard colours show delivery as read-only.
 
-| Entry choice | Make & model (title) | Variant | Colour | Delivery (express only) |
-|--------------|----------------------|---------|--------|-------------------------|
-| **Change colour** | Read-only (default booked car) | Read-only | **Edit** → `/booking/modify/colour` | **Edit** (bottom sheet) if express |
-| **Change variant** | Read-only | **Edit** → `/booking/modify/variant` | **Edit** → `/booking/modify/variant/colour` | **Edit** if express |
-| **Choose a different car** | **Edit** → `/booking/modify/different-car` | **Edit** → model/variant step for brand+model | **Edit** → colour step for brand+model | **Edit** if express |
+| Entry choice | Make & model (title) | Variant | Colour | Delivery (express only) | Insurance | Accessories |
+|--------------|----------------------|---------|--------|-------------------------|-----------|-------------|
+| **Change colour** | Read-only (default booked car) | Read-only | **Edit** → `/booking/modify/colour` | **Edit** (bottom sheet) if express | **Edit** → insurance (return to confirm) | Kit name + edit, or **Add** if none |
+| **Change variant** | Read-only | **Edit** → `/booking/modify/variant` | **Edit** → `/booking/modify/variant/colour` | **Edit** if express | Same | Same |
+| **Choose a different car** | **Edit** → `/booking/modify/different-car` | **Edit** → model/variant step for brand+model | **Edit** → colour step for brand+model | **Edit** if express | Same | Same |
 
 **Implementation:** gate callbacks in `ModifySelectionReviewPayScreen` when passing props to `ModifySelectionReviewSelectionCard`:
 
@@ -513,14 +538,16 @@ Edit icons appear only for fields the user may change on that entry path. **Deli
 - `onEditVariant` — only when `flow === "variant"` or `flow === "different-car"`.
 - `onEditColour` — all three flows.
 - `showDeliveryEdit` — all three flows, express colour only.
+- `onEditInsurance` / `onEditAccessory` — all three flows (coverage pending). Empty accessories show **Add** instead of “None”.
 
 The card renders an edit control only when the matching callback is non-null (or `showDeliveryEdit` for delivery).
 
 ### Pay → booking received
 
-- On **Pay**, write pending snapshot: `writeModifySelectionPendingFromSummary` (`lib/active-booking-snapshot.ts`, key `pbe_modify_selection_pending_payment_v1`).
-- Mock checkout: `buildBookingLockCheckoutHref` with `return_source=modify-selection`.
-- Success: `/booking/confirmed?source=payment&paid=…&return_source=modify-selection` — `syncModifySelectionBookingSnapshot` commits **pending** checkout before reading completed (avoids stale car on repeat changes). **Same for all three paths** (colour / variant / different-car): auto-advance **Payment received** via `DownPaymentInstalmentSuccess` (no car card, no CTA; ~3s) — not the celebration layout.
+- On **Pay**, write pending snapshot: `writeModifySelectionPendingFromSummary` (`src/services/active-booking-snapshot.ts`, key `pbe_modify_selection_pending_payment_v1`). **Do not** clear colour/variant/different-car/coverage pending here — confirm must still resolve if the user backs out of checkout.
+- Mock checkout: `buildBookingLockCheckoutHref` with `return_source=modify-selection` and `return_path` = that flow’s confirm URL.
+- Checkout **Back** is explicit (`resolvePaymentCheckoutBackHref`): `return_path` → confirm; insurance premium → tenure; booking-lock without return path → `/quote`. History-only for down-payment instalments.
+- Success: `/booking/confirmed?source=payment&paid=…&return_source=modify-selection` — `commitActiveBookingAfterModifyPayment` commits pending **and** clears in-flight modify pending. **Same for all three paths** (colour / variant / different-car): auto-advance **Payment received** via `DownPaymentInstalmentSuccess` (no car card, no CTA; ~3s) — not the celebration layout.
 - On success (`KycBookingConfirmedPageClient`): when the active flow is **express** or **standard**, `writeExperienceFlow` from the snapshot’s `deliveryChoice` so post-change dealer search / delivery copy follows the new selection. Demo modify flows keep their flow id (journey guards / fee demos).
 - **Connected voice:** when `selectionChangeCompleted` is set, `/booking/processing` (`dealerSearch`) and `/booking/accepted` (`dealerFound`) lead with **“Change locked in…”** / **“Found a match for your new pick…”** — never first-time “paperwork done”. Car title / variant / colour are interpolated from the snapshot (`lib/concierge/script.ts` + `ConciergeMoment`).
 
@@ -530,7 +557,7 @@ The card renders an edit control only when the matching callback is non-null (or
 | **modify_with_charges** | Payment received | `/booking/processing` (dealer search) |
 | **express / standard** (e.g. allocation-failed → pick a different car, or manage-booking change after KYC) | Payment received | `/booking/processing` — resume express or standard spine from delivery choice; **do not** re-ask for verification |
 
-**Key files:** `components/booking/modify-option-card-ui.tsx`, `StandaloneScreenHeader.tsx`, `ModifySelectionReviewPayScreen.tsx`, `ModifySelectionReviewPayDemoSwitcher.tsx`, `ModifySelectionReviewSelectionCard.tsx`, `ModifySelectionReviewBookingAmountCard.tsx`, `KycBookingConfirmedScreen.tsx`, `KycBookingConfirmedPageClient.tsx`, `DownPaymentInstalmentSuccess.tsx`, `lib/modify-selection-review-pay-content.ts`, `lib/modify-selection-review-pay-demo.ts`, `lib/modify-selection-*-pending.ts`, `lib/active-booking-snapshot.ts`, `lib/paymentUrls.ts`.
+**Key files:** `components/molecules/modify-selection-option-card-ui.tsx`, `StandaloneScreenHeader.tsx`, `ModifySelectionReviewPayScreen.tsx`, `ModifySelectionReviewPayDemoSwitcher.tsx`, `ModifySelectionReviewSelectionCard.tsx`, `ModifySelectionReviewBookingAmountCard.tsx`, `ModifySelectionInsuranceTenureScreen.tsx`, `ModifySelectionAccessoryKitScreen.tsx`, `ModifySelectionAccessoryKitCard.tsx`, `KycBookingConfirmedScreen.tsx`, `KycBookingConfirmedPageClient.tsx`, `DownPaymentInstalmentSuccess.tsx`, `PaymentCheckoutScreen.tsx`, `src/constants/modify-selection-coverage-content.ts`, `src/constants/modify-selection-review-pay-content.ts`, `src/helpers/modify-selection-coverage-pending.ts`, `src/helpers/modify-selection-review-pay-demo.ts`, `src/helpers/modify-selection-*-pending.ts`, `src/services/active-booking-snapshot.ts`, `src/helpers/paymentUrls.ts`, `src/readers/payment.ts`.
 
 ---
 
@@ -813,6 +840,11 @@ These paths are **gitignored** (see root `.gitignore`). They are optional helper
 - [x] RTO prep info callout aligned with hero info pattern
 - [x] Manage booking — post-allocation cancel fee ₹5,000; loan plan summary with partial/full DP states
 - [x] Modify selection review — edit icons gated by flow (colour: colour+delivery; variant: variant+colour+delivery; different-car: make/model+variant+colour+delivery; delivery edit express-only)
+- [x] Modify selection — insurance tenure + accessory kit steps before confirm; confirm card rows; edit-from-confirm returns to that page only
+- [x] Checkout Back wired (`return_path` / insurance tenure / `/quote`); modify pending kept until payment succeeds
+- [x] Empty accessories row uses **Add** (`tertiary-cta`, 12px) instead of “None”
+- [x] Standalone option-page spacing tokens (`--space-option-lead-to-card` 24px, `--space-option-card-stack` 16px)
+- [x] Delivery lock confetti (`ConfettiBurst` + `fireBasicCannon`); callback CTA **Request a call-back**
 - [x] Cancel no charges flow — selectable on quote; journey through verification in progress
 - [x] Cancel no charges — manage booking: cancel enabled; change selection visible but not clickable
 - [x] Cancel confirmation full page (Figma 2709:17395) + reason bottom sheet (Figma 2711:21013) + celebration success page; route guards; full booking amount refund (₹10,000, no fee)

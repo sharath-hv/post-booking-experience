@@ -32,13 +32,13 @@
 .addons {
   display: flex;
   flex-direction: column;
-  margin-top: var(--space-copy-to-card);
+  margin-top: var(--space-option-lead-to-card);
 }
 
 .addonList {
   display: flex;
   flex-direction: column;
-  gap: var(--space-card-stack);
+  gap: var(--space-option-card-stack);
 }
 
 .addonListItem {
@@ -93,4 +93,8 @@
   width: auto;
   min-width: 0;
   padding-inline: 24px;
+}
+
+.ctaFull {
+  width: 100%;
 }

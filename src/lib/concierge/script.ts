@@ -99,7 +99,7 @@ export type TurnWords = {
   footnote?: string;
   /** Semibold prefix for the footnote card, e.g. “A quick heads-up:”. */
   footnoteLead?: string;
-  /** Short conversational prompt before “Request call-back”. */
+  /** Short conversational prompt before “Request a call-back”. */
   callLabel?: string;
 };
 

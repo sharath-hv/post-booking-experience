@@ -1,10 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "@/utils/utils";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
+import { TopNavHeader } from "@/components/organisms/TopNavHeader";
 
 import { FULL_PAYMENT_INSURANCE_INR } from "@/constants/loan-amount-demo-constants";
 import {
@@ -13,7 +14,10 @@ import {
   buildDownPaymentSuccessHref,
   buildInsurancePremiumSuccessHref,
 } from "@/helpers/paymentUrls";
-import { readPaymentCheckoutQuery } from "@/readers/payment";
+import {
+  readPaymentCheckoutQuery,
+  resolvePaymentCheckoutBackHref,
+} from "@/readers/payment";
 import styles from "./PaymentCheckoutScreen.module.scss";
 
 /** No artificial delay before navigation to the dedicated success page. */
@@ -99,7 +103,7 @@ function parseInrInputDigits(value: string): number {
  * Down payment flow: `?down_payment=` (e.g. from pay-down-payment) — editable amount / instalments (demo).
  * Insurance premium: `?payment_kind=insurance` — fixed insurance amount (read-only).
  */
-export function PaymentCheckoutScreen({ header }: { header: ReactNode }) {
+export function PaymentCheckoutScreen() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pendingSuccessHref = useRef<string | null>(null);
@@ -120,6 +124,15 @@ export function PaymentCheckoutScreen({ header }: { header: ReactNode }) {
     isFullPayment,
     isInsurancePayment,
   } = checkoutMeta;
+
+  const onBack = useCallback(() => {
+    const href = resolvePaymentCheckoutBackHref(searchParams);
+    if (href != null) {
+      router.replace(href);
+      return;
+    }
+    router.back();
+  }, [router, searchParams]);
 
   const paymentBank = searchParams.get("bank");
 
@@ -276,7 +289,7 @@ export function PaymentCheckoutScreen({ header }: { header: ReactNode }) {
 
   return (
     <div className={styles.min_h_dvh_4}>
-        {header}
+        <TopNavHeader title="Checkout" solid onBack={onBack} />
 
         <main className={styles.mx_auto_5}>
         <div className={[styles.overflow_hidden_6, "card-elevated"].filter(Boolean).join(" ")}>
