@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { PrimaryCta } from "@/components/atoms/cta/PrimaryCta";
@@ -11,20 +11,19 @@ import { StandaloneScreenHeader } from "@/components/organisms/StandaloneScreenH
 import { InsuranceTenureCompareBottomSheet } from "@/components/organisms/payment/InsuranceTenureCompareBottomSheet";
 import {
   INSURANCE_TENURE_DIFFERENCE_CTA,
-  INSURANCE_TENURE_OPTIONS,
   INSURANCE_TENURE_OPTIONS_HEADING,
-  insuranceCompareAtForSelection,
-  insurancePremiumForSelection,
   type InsuranceTenureId,
   type InsuranceTenureOption,
 } from "@/components/organisms/payment/insurance-coverage-content";
 import { MODIFY_SELECTION_PAGE_SHELL_CLASS } from "@/constants/modify-selection-content";
 import {
   MODIFY_SELECTION_ACCESSORIES_PATH,
-  MODIFY_SELECTION_DEFAULT_INSURANCE_TENURE,
   MODIFY_SELECTION_INSURANCE_CONTINUE_CTA,
+  MODIFY_SELECTION_INSURANCE_EXTENDED_EXTRA_INR,
   MODIFY_SELECTION_INSURANCE_SCREEN_SUBLINE,
   MODIFY_SELECTION_INSURANCE_SCREEN_TITLE,
+  MODIFY_SELECTION_INSURANCE_TENURE_OPTIONS,
+  modifySelectionInsuranceExtendedExtraLabel,
 } from "@/constants/modify-selection-coverage-content";
 import {
   ensureModifySelectionCoveragePending,
@@ -44,30 +43,17 @@ const {
   firstCard: STAGGER_FIRST_CARD_MS,
 } = MODIFY_SELECTION_STAGGER_MS;
 
-function formatInr(amount: number) {
-  return new Intl.NumberFormat("en-IN", {
-    style: "currency",
-    currency: "INR",
-    maximumFractionDigits: 0,
-  }).format(Math.max(0, Math.round(amount)));
-}
-
-type PricedTenureOption = InsuranceTenureOption & {
-  pricedPremiumInr: number;
-  pricedCompareAtInr: number;
-};
-
 function TenureCard({
   option,
   selected,
   onSelect,
+  extraInr,
 }: {
-  option: PricedTenureOption;
+  option: InsuranceTenureOption;
   selected: boolean;
   onSelect: () => void;
+  extraInr?: number;
 }) {
-  const savings = option.pricedCompareAtInr - option.pricedPremiumInr;
-  const isStandard = option.id === "1+3";
   const chip = option.badge;
 
   return (
@@ -125,22 +111,15 @@ function TenureCard({
         </div>
       </div>
 
-      <div className={tenureStyles.priceBlock}>
-        {option.upgradeBlurb ? (
-          <p className={tenureStyles.upgradeBlurb}>{option.upgradeBlurb}</p>
-        ) : null}
-        <p className={tenureStyles.priceRow}>
-          <span className={tenureStyles.price}>{formatInr(option.pricedPremiumInr)}</span>
-          {!isStandard ? (
-            <>
-              <span className={tenureStyles.compareAt}>
-                {formatInr(option.pricedCompareAtInr)}
-              </span>
-              <span className={tenureStyles.savings}>Save {formatInr(savings)}</span>
-            </>
-          ) : null}
-        </p>
-      </div>
+      {extraInr != null && extraInr > 0 ? (
+        <div className={tenureStyles.priceBlock}>
+          <p className={tenureStyles.priceRow}>
+            <span className={tenureStyles.price}>
+              {modifySelectionInsuranceExtendedExtraLabel(extraInr)}
+            </span>
+          </p>
+        </div>
+      ) : null}
     </button>
   );
 }
@@ -153,9 +132,7 @@ export function ModifySelectionInsuranceTenureScreen() {
   const { loading, start } = useCtaNavigation();
   const [compareSheetOpen, setCompareSheetOpen] = useState(false);
   const [ready, setReady] = useState(false);
-  const [tenureId, setTenureId] = useState<InsuranceTenureId>(
-    MODIFY_SELECTION_DEFAULT_INSURANCE_TENURE,
-  );
+  const [tenureId, setTenureId] = useState<InsuranceTenureId | null>(null);
 
   useEffect(() => {
     const coverage = ensureModifySelectionCoveragePending();
@@ -163,21 +140,13 @@ export function ModifySelectionInsuranceTenureScreen() {
       router.replace("/booking/modify");
       return;
     }
-    setTenureId(coverage.insuranceTenure);
     setReady(true);
   }, [router]);
 
-  const pricedOptions = useMemo(
-    (): readonly PricedTenureOption[] =>
-      INSURANCE_TENURE_OPTIONS.map((option) => ({
-        ...option,
-        pricedPremiumInr: insurancePremiumForSelection(option.id),
-        pricedCompareAtInr: insuranceCompareAtForSelection(option.id),
-      })),
-    [],
-  );
-
   const onContinue = useCallback(() => {
+    if (tenureId == null) {
+      return;
+    }
     const coverage = ensureModifySelectionCoveragePending();
     if (coverage == null) {
       router.replace("/booking/modify");
@@ -225,7 +194,7 @@ export function ModifySelectionInsuranceTenureScreen() {
             role="radiogroup"
             aria-label={INSURANCE_TENURE_OPTIONS_HEADING}
           >
-            {pricedOptions.map((option, index) => (
+            {MODIFY_SELECTION_INSURANCE_TENURE_OPTIONS.map((option, index) => (
               <div
                 key={option.id}
                 className={cn(tenureStyles.optionListItem, "payment-success-stagger")}
@@ -237,6 +206,11 @@ export function ModifySelectionInsuranceTenureScreen() {
                   option={option}
                   selected={option.id === tenureId}
                   onSelect={() => setTenureId(option.id)}
+                  extraInr={
+                    option.id === "3+3"
+                      ? MODIFY_SELECTION_INSURANCE_EXTENDED_EXTRA_INR
+                      : undefined
+                  }
                 />
               </div>
             ))}
@@ -252,7 +226,7 @@ export function ModifySelectionInsuranceTenureScreen() {
             )}
             style={{
               animationDelay: `${modifySelectionCardStaggerDelay(
-                pricedOptions.length,
+                MODIFY_SELECTION_INSURANCE_TENURE_OPTIONS.length,
                 STAGGER_FIRST_CARD_MS,
               )}ms`,
             }}
@@ -264,7 +238,12 @@ export function ModifySelectionInsuranceTenureScreen() {
 
       <div className={cn(tenureStyles.footer, "footer-elevated")}>
         <div className={tenureStyles.footerInner}>
-          <PrimaryCta onClick={onContinue} loading={loading} className={tenureStyles.cta}>
+          <PrimaryCta
+            onClick={onContinue}
+            disabled={tenureId == null}
+            loading={loading}
+            className={tenureStyles.cta}
+          >
             {MODIFY_SELECTION_INSURANCE_CONTINUE_CTA}
           </PrimaryCta>
         </div>

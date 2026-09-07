@@ -1,4 +1,8 @@
-import { type InsuranceTenureId } from "@/components/organisms/payment/insurance-coverage-content";
+import {
+  INSURANCE_TENURE_OPTIONS,
+  type InsuranceTenureId,
+  type InsuranceTenureOption,
+} from "@/components/organisms/payment/insurance-coverage-content";
 
 export const MODIFY_SELECTION_INSURANCE_PATH = "/booking/modify/insurance";
 export const MODIFY_SELECTION_ACCESSORIES_PATH = "/booking/modify/accessories";
@@ -17,6 +21,15 @@ export const MODIFY_SELECTION_ACCESSORY_CONTINUE_CTA = "Continue";
 export const MODIFY_SELECTION_DEFAULT_INSURANCE_TENURE: InsuranceTenureId = "1+3";
 export const MODIFY_SELECTION_DEFAULT_ACCESSORY_SELECTED = true;
 
+/** Standard first, then Extended — modify-selection only. Payment tenure stays Extended-first. */
+export const MODIFY_SELECTION_INSURANCE_TENURE_OPTIONS: readonly InsuranceTenureOption[] = [
+  ...INSURANCE_TENURE_OPTIONS.filter((option) => option.id === "1+3"),
+  ...INSURANCE_TENURE_OPTIONS.filter((option) => option.id === "3+3"),
+];
+
+/** Extra vs Standard — the only insurance amount shown on the modify-selection tenure step. */
+export const MODIFY_SELECTION_INSURANCE_EXTENDED_EXTRA_INR = 25_000;
+
 export const MODIFY_SELECTION_BASIC_ACCESSORY_KIT_ID = "basic";
 export const MODIFY_SELECTION_BASIC_ACCESSORY_KIT_INR = 4_999;
 export const MODIFY_SELECTION_BASIC_ACCESSORY_KIT_COMPARE_AT_INR = 5_499;
@@ -30,6 +43,15 @@ export const MODIFY_SELECTION_BASIC_ACCESSORY_ITEMS = [
 
 export function modifySelectionInsuranceCardValue(tenure: InsuranceTenureId): string {
   return tenure === "3+3" ? "Extended cover (3+3)" : "Standard (1+3)";
+}
+
+export function modifySelectionInsuranceExtendedExtraLabel(extraInr: number): string {
+  const formatted = new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 0,
+  }).format(Math.max(0, Math.round(extraInr)));
+  return `${formatted} extra`;
 }
 
 export const MODIFY_SELECTION_ACCESSORY_ADD_CTA = "Add";
