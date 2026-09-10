@@ -505,7 +505,7 @@ export function QuoteDetails() {
               When does &ldquo;confirmed&rdquo; happen?
             </p>
             <p className={styles.mt_1_69}>
-              After your paperwork clears and we lock your exact car with a dealer, you&apos;ll
+              After your paperwork clears and we lock your exact car with a partner, you&apos;ll
               be told clearly before that happens. Until then you can walk away free, and even
               after, you can change colour or model once for ₹5,000 instead of cancelling.
             </p>

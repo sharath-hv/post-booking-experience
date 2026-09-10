@@ -170,7 +170,7 @@ const DEALER_SEARCH_FOOTNOTE =
   "From the next step, changing your pick costs ₹5,000, and if you cancel, half your booking amount stays with us.";
 
 /**
- * Standard — lining up a dealer partner is still a real-world wait (hours).
+ * Standard — lining up a partner is still a real-world wait (hours).
  * Clocking state on this turn; demo skip advances to dealer found.
  */
 function standardDealerSearch(
@@ -184,11 +184,11 @@ function standardDealerSearch(
     says: afterSelectionChange
       ? [
           "Change locked in, Sharath.",
-          `I'm lining up a dealer partner for ${exact}. I'll update you once one's confirmed.`,
+          `I'm lining up a partner for ${exact}. I'll update you once one's confirmed.`,
         ]
       : [
           "That's the paperwork done, Sharath.",
-          `I'm lining up a dealer partner for ${exact}. I'll update you once one's confirmed.`,
+          `I'm lining up a partner for ${exact}. I'll update you once one's confirmed.`,
         ],
     workingLines: [
       "Checking nearby partners",
@@ -213,14 +213,14 @@ function expressDealerSearch(
     says: afterSelectionChange
       ? [
           "Change locked in, Sharath.",
-          `Now I'm reaching out to dealers for ${exact}. They usually take a few hours to confirm stock. I'll let you know the moment I hear back.`,
+          `Now I'm reaching out to partners for ${exact}. They usually take a few hours to confirm stock. I'll let you know the moment I hear back.`,
         ]
       : [
           "That's the paperwork done, Sharath.",
-          `Now I'm reaching out to dealers for ${exact}. They usually take a few hours to confirm stock. I'll let you know the moment I hear back.`,
+          `Now I'm reaching out to partners for ${exact}. They usually take a few hours to confirm stock. I'll let you know the moment I hear back.`,
         ],
     workingLines: [
-      "Reaching out to dealers near you",
+      "Reaching out to partners near you",
       `Checking stock for your ${car.variant} in ${car.colour}`,
       "Finding who can deliver soonest",
     ],
@@ -326,7 +326,7 @@ const EXPRESS_SCRIPT: Record<ConciergeMomentId, TurnWords> = {
   verificationInProgress: {
     says: [
       "All set — your paperwork cleared.",
-      "I'm lining up dealers for your Creta now. Need anything meanwhile — a change, a question, even cancelling? The ⋮ menu up top has it all.",
+      "I'm lining up partners for your Creta now. Need anything meanwhile — a change, a question, even cancelling? The ⋮ menu up top has it all.",
     ],
     timeSkipLabel: "A little later",
     callLabel: "Want an update?",

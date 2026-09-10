@@ -1,7 +1,8 @@
 /**
  * Dealer naming rule:
  * - Before the user starts paying the car (down payment / part / full amount beyond
- *   the booking lock): use `PARTNER_DEALER_*` — never the real dealer name.
+ *   the booking lock): use `PARTNER_DEALER_*` ("our partner") — never "dealer"
+ *   and never the real dealer name.
  * - After payment has started: use `NAMED_DEALER_*` (demo fulfilment dealer).
  */
 
@@ -9,9 +10,9 @@
 export const CAR_SOURCE_NAME = "ACKO Drive";
 export const CAR_SOURCE_DETAIL = "Sourced & reserved for you";
 
-/** Generic fulfilment dealer — only before down payment / part payment starts. */
-export const PARTNER_DEALER_LABEL = "our partner dealer";
-export const PARTNER_DEALER_LABEL_CAPITALIZED = "Our partner dealer";
+/** Generic fulfilment partner — only before down payment / part payment starts. */
+export const PARTNER_DEALER_LABEL = "our partner";
+export const PARTNER_DEALER_LABEL_CAPITALIZED = "Our partner";
 
 /** Demo fulfilment dealer — reveal after the user has started paying the car. */
 export const NAMED_DEALER_NAME = "Advaith Hyundai";

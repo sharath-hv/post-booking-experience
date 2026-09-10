@@ -219,10 +219,10 @@ function exactCarNowDetail(pathname: string, flow?: ExperienceFlow): string {
     path === "/identity/documents-received" ||
     path === "/kyc/documents-received"
   ) {
-    return "I'll line up dealers as soon as verification wraps";
+    return "I'll line up partners as soon as verification wraps";
   }
   if (path === "/kyc/verification-in-progress") {
-    return "I'm lining up dealers for your car now";
+    return "I'm lining up partners for your car now";
   }
   if (path === "/booking/accepted") {
     return "Share the one-time code when our partner calls";
@@ -240,7 +240,7 @@ function exactCarNowDetail(pathname: string, flow?: ExperienceFlow): string {
     return "Hyundai's manufacturing your exact car now";
   }
   if (isStandardDeliveryFlow(flow)) {
-    return "Lining up your dealer partner now";
+    return "Lining up your partner now";
   }
   return "I'll update you as soon as I hear from our partner";
 }

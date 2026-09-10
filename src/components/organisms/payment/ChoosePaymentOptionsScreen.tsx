@@ -320,7 +320,7 @@ export function ChoosePaymentOptionsScreen() {
                   "Apply in minutes",
                   "Bank verifies & approves",
                   "Pay your down payment",
-                  "Bank pays the dealer",
+                  "Bank pays the partner",
                 ]}
                 flowBankLogosOnStep={0}
               />
@@ -356,7 +356,7 @@ export function ChoosePaymentOptionsScreen() {
                   "I hand you the invoice",
                   "Your bank approves the loan",
                   "Pay your down payment",
-                  "Your bank pays the dealer",
+                  "Your bank pays the partner",
                 ]}
               />
             </div>

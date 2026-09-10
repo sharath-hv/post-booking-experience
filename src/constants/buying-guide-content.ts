@@ -32,14 +32,14 @@ export const BUYING_GUIDE_STEPS: readonly BuyingGuideStep[] = [
   {
     step: 2,
     title: "Then I will find and confirm your car",
-    body: "I will find the best dealer who has your exact Creta in stock and confirm your booking with them.",
+    body: "I will find the best partner who has your exact Creta in stock and confirm your booking with them.",
     ctaLabel: "Next",
     imageSrc: buyingGuideStep02,
   },
   {
     step: 3,
     title: "Finally, pay and get your Creta delivered",
-    body: "I will help you choose how to pay, then you pick a date and I will confirm the dealer and location for delivery.",
+    body: "I will help you choose how to pay, then you pick a date and I will confirm the partner and location for delivery.",
     ctaLabel: "Let's get started",
     imageSrc: buyingGuideStep03,
   },

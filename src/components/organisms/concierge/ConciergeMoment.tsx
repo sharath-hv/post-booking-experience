@@ -245,7 +245,7 @@ function ConciergeMomentInner({
             title: isStandardDeliveryFlow(flow) ? "Your exact car gets built" : "I find your exact car",
             detail: isStandardDeliveryFlow(flow)
               ? "Your variant and colour, built fresh and assigned to you."
-              : "Your variant and colour, reserved in your name with a dealer.",
+              : "Your variant and colour, reserved in your name with a partner.",
           },
           {
             icon: "money",

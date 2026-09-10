@@ -69,7 +69,7 @@ The business policy (5 stages; Booking Confirmation = lock point; 50%-of-total-p
 | `ConciergeAllocationDecisionCancelledScreen` | Allocation decision SLA timed out — `/car-allocation/decision-cancelled`; **full refund, ₹0 cancellation charge** (car not assigned); refund initiated → demo skip → refund successful (no remediation cards) |
 | `LoanDecisionCancelledScreen` | Loan-rejected decision SLA timed out — `/payment/loan-decision-cancelled`; **post-lock 50% fee** (engine/chassis already assigned); refund initiated → demo skip → refund successful |
 | `lib/concierge/script.ts` | All of Shivi's lines per moment (`EXPRESS_SCRIPT`); **express and standard share the same dialogue** — only `moneyIntro` footnote injects the flow-specific delivery date via `getDeliveryDateShort()` |
-| `lib/dealer-attribution-content.ts` | Car source labels — `CAR_SOURCE_NAME` / `CAR_SOURCE_DETAIL` (“ACKO Drive · Sourced & reserved for you”); `PARTNER_DEALER_LABEL` for post-payment dealer references |
+| `lib/dealer-attribution-content.ts` | Car source labels — `CAR_SOURCE_NAME` / `CAR_SOURCE_DETAIL` (“ACKO Drive · Sourced & reserved for you”); `PARTNER_DEALER_LABEL` (“our partner”) before car payment; named dealer after payment starts |
 | `lib/shivi-business-hours.ts` | Callback availability — `isShiviWithinBusinessHours()` (Asia/Kolkata, 09:00–21:00); drives `ShiviCallSheet` status dot + copy |
 | `lib/concierge/echo.ts` | sessionStorage handoff: reply label → sent chip on the next turn (StrictMode-safe consume) |
 | `lib/concierge/instant.ts` | `sessionStorage.pbe-concierge-instant = "1"` renders turns fully revealed (demos/automation) |
