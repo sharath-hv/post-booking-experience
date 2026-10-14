@@ -4,7 +4,7 @@ import {
   splitBookingDeliveryLine,
 } from "@/constants/experience-flow-content";
 import type { ExperienceFlow } from "@/helpers/experience-flow";
-import { normalizeAppPathname } from "@/helpers/journey-routes";
+import { JOURNEY_PATHS, normalizeAppPathname } from "@/helpers/journey-routes";
 
 /**
  * The four chapters of the journey — one source of truth for the purchase-state
@@ -363,7 +363,11 @@ export function getJourneyReceipts(pathname: string): JourneyReceipt[] {
   }
   // Policy only once the insurance / delivery chapter screens are in play —
   // not merely because funds landed (stage 3).
-  if (path.includes("car-delivery") || path.includes("insurance")) {
+  // Issued policy only — the pending turn is still waiting on the insurer.
+  if (
+    (path.includes("car-delivery") || path.includes("insurance")) &&
+    path !== JOURNEY_PATHS.delivery.insurancePending
+  ) {
     receipts.push({ title: "Insurance policy", meta: "ACKO Drive Shield · your cover" });
   }
   return receipts;

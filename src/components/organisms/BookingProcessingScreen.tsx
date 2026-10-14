@@ -44,6 +44,8 @@ export type BookingProcessingScreenProps = {
   timeSkipLabel?: string;
   /** Alternate demo branch(es) under the time skip (e.g. failure / more-docs paths). */
   altTimeSkip?: { label: string; href: string } | readonly { label: string; href: string }[];
+  /** Primary skip and alternate skips share one row. */
+  timeSkipsInline?: boolean;
   /**
    * When set, primary CTA invokes this instead of navigating to `nextHref` (e.g. open a confirm sheet).
    */
@@ -94,6 +96,7 @@ export function BookingProcessingScreen({
   nextCtaLabel = "Next",
   timeSkipLabel = "Skip ahead",
   altTimeSkip,
+  timeSkipsInline = false,
   onPrimaryCtaClick,
   heroSummaryCard,
   belowHeadline,
@@ -155,6 +158,7 @@ export function BookingProcessingScreen({
       replies={replies}
       timeSkip={timeSkip}
       altTimeSkip={altTimeSkip}
+      timeSkipsInline={timeSkipsInline}
       footnote={ctaWarningLine}
       callLabel={callLabel}
       dateHolder={dateHolder}

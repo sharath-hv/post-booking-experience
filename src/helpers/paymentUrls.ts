@@ -207,6 +207,22 @@ export function buildInsurancePremiumSuccessHref(
   return `/payment/insurance-premium-success?${q.toString()}`;
 }
 
+/** Keep bank, loan, tenure, and add-ons when jumping between the two insurance turns. */
+export function withInsuranceDeliveryQuery(
+  path: string,
+  searchParams: { get(key: string): string | null },
+): string {
+  const q = new URLSearchParams();
+  for (const key of ["bank", "loan_amount", "tenure", "addons"] as const) {
+    const value = searchParams.get(key);
+    if (value) q.set(key, value);
+  }
+  const qs = q.toString();
+  if (!qs) return path;
+  const separator = path.includes("?") ? "&" : "?";
+  return `${path}${separator}${qs}`;
+}
+
 /** Post–insurance premium payment — “We're insuring your car” hero. */
 export function buildCarDeliveryInsurancePrepHref(params?: InsuranceJourneyQuery): string {
   const q = new URLSearchParams();

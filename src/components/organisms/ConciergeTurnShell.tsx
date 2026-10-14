@@ -81,6 +81,8 @@ export type ConciergeTurn = {
   altTimeSkip?:
     | { label: string; href: string; onBeforeNavigate?: () => void }
     | readonly { label: string; href: string; onBeforeNavigate?: () => void }[];
+  /** Place the primary time skip and alternate skips on one row. */
+  timeSkipsInline?: boolean;
   /** Orange commitment line above the footer (deadlines, expectations). */
   footnote?: ReactNode;
   /** Semibold prefix for the footnote card. */
@@ -315,6 +317,7 @@ export function ConciergeTurnShell({
   repliesLayout,
   timeSkip,
   altTimeSkip,
+  timeSkipsInline = false,
   footnote,
   footnoteLead,
   footnoteInline = false,
@@ -379,6 +382,7 @@ export function ConciergeTurnShell({
       ? altTimeSkip
       : [altTimeSkip]
     : [];
+  const inlineTimeSkips = timeSkipsInline && Boolean(timeSkip) && altTimeSkips.length > 0;
 
   const hasFooter = Boolean(
     replies?.length || timeSkip || altTimeSkips.length || footnote || callLabel || footerExtra,
@@ -555,7 +559,32 @@ export function ConciergeTurnShell({
                 {footerExtra}
               </div>
             ) : null}
-            {timeSkip ? (
+            {inlineTimeSkips && timeSkip ? (
+              <div
+                className={cn(
+                  styles.altTimeSkipRow,
+                  styles.altTimeSkipRowSplit,
+                  replies?.length || callLabel ? styles.mt_4_10 : undefined,
+                )}
+              >
+                <TimeSkipChip
+                  label={timeSkip.label}
+                  href={timeSkip.href}
+                  onSelect={timeSkip.onSelect}
+                  onBeforeNavigate={timeSkip.onBeforeNavigate}
+                  className={styles.altTimeSkipChip}
+                />
+                {altTimeSkips.map((skip) => (
+                  <TimeSkipChip
+                    key={`${skip.label}-${skip.href}`}
+                    label={skip.label}
+                    href={skip.href}
+                    onBeforeNavigate={skip.onBeforeNavigate}
+                    className={styles.altTimeSkipChip}
+                  />
+                ))}
+              </div>
+            ) : timeSkip ? (
               <TimeSkipChip
                 label={timeSkip.label}
                 href={timeSkip.href}
@@ -564,7 +593,7 @@ export function ConciergeTurnShell({
                 className={replies?.length || callLabel ? styles.mt_4_10 : undefined}
               />
             ) : null}
-            {altTimeSkips.length > 0 ? (
+            {!inlineTimeSkips && altTimeSkips.length > 0 ? (
               <div
                 className={cn(
                   styles.altTimeSkipRow,

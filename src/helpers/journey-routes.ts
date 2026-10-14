@@ -76,6 +76,8 @@ export const JOURNEY_PATHS = {
   },
   delivery: {
     insurancePrep: "/delivery/insurance-prep",
+    /** Demo — policy is not instant; Shivi is still waiting on the insurer. */
+    insurancePending: "/delivery/insurance-pending",
     rto: "/delivery/rto",
     rtoAdditionalDocuments: "/delivery/rto/additional-documents",
     schedule: "/delivery/schedule",

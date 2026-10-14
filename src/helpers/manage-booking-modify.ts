@@ -111,6 +111,7 @@ const CAR_PAYMENT_STARTED_PATHS = new Set<string>([
   "/delivery/rto",
   "/delivery/rto/additional-documents",
   "/delivery/insurance-prep",
+  "/delivery/insurance-pending",
 ]);
 
 export function isCarPaymentStartedPath(pathname: string): boolean {

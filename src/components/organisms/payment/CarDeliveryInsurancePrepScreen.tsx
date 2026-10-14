@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { BookingProcessingScreen } from "@/components/organisms/BookingProcessingScreen";
 import { KYC_ASSETS } from "@/utils/kyc-assets";
 import { useFullPaymentJourney } from "@/hooks/use-full-payment-journey";
+import { withInsuranceDeliveryQuery } from "@/helpers/paymentUrls";
 import { ShieldPolicyCard } from "@/components/organisms/payment/ShieldPolicyCard";
 import {
   parseInsuranceAddonIds,
@@ -35,6 +36,11 @@ export function CarDeliveryInsurancePrepScreen() {
       prefetchHref={withBank("/delivery/rto")}
       nextCtaLabel={DEMO_NAV_CTA_LABEL}
       timeSkipLabel="RTO registration"
+      altTimeSkip={{
+        label: "Takes longer",
+        href: withInsuranceDeliveryQuery("/delivery/insurance-pending", searchParams),
+      }}
+      timeSkipsInline
       suppressEcho
       heroSummaryCard={
         <ShieldPolicyCard mode="active" tenure={tenure} selectedAddonIds={selectedAddonIds} />
